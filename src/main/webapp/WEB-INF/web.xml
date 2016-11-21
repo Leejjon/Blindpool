@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE web-app PUBLIC
+<!--<!DOCTYPE web-app PUBLIC
  "-//Oracle Corporation//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd">
-
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+ "http://java.sun.com/dtd/web-app_2_3.dtd">-->
+<!--<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+</web-app>-->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.1">
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
