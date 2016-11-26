@@ -2,9 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<%-- If the language is being passed in a parameter, use that language. --%>
+<c:if test="${not empty param.language}">
+    <c:set var="language" value="${param.language}" scope="session" />
+</c:if>
+<%-- If the language variable isn't set at all, use the default locale from the request. --%> 
+<c:if test="${empty language}">
+    <c:set var="language" value="${pageContext.request.locale}" scope="session" />
+</c:if>
+
+<%-- Use the locale to set up the bundle. --%>
 <fmt:setLocale value="${language}" />
-<fmt:setBundle basename="net.leejjon.i18n.messages" />
+<fmt:setBundle basename="net.leejjon.blindpool.i18n.messages" />
 
 <!DOCTYPE html>
 <html lang="${language}">
@@ -13,6 +22,7 @@
     </head>
     <body>
         <form>
+            <label><fmt:message key="language" /></label>
             <select id="language" name="language" onchange="submit()">
                 <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
                 <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
