@@ -3,4 +3,5 @@
     <application>blindepoule</application>
     <version>2</version>
     <threadsafe>true</threadsafe>
+    <sessions-enabled>true</sessions-enabled>
 </appengine-web-app>
