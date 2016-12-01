@@ -12,12 +12,17 @@
         <appengine.app.version>1</appengine.app.version>
         <appengine.target.version>1.9.46</appengine.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <jetty.maven.plugin>9.3.8.v20160314</jetty.maven.plugin>
     </properties>
     <dependencies>
         <!-- Compile/runtime dependencies -->
+        <dependency>
+            <groupId>org.hashids</groupId>
+            <artifactId>hashids</artifactId>
+            <version>1.0.1</version>
+        </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
@@ -33,6 +38,13 @@
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -72,7 +84,7 @@
                 <configuration>
                     <archiveClasses>true</archiveClasses>
                     <webResources>
-                         in order to interpolate version from pom into appengine-web.xml 
+                        in order to interpolate version from pom into appengine-web.xml 
                         <resource>
                             <directory>${basedir}/src/main/webapp/WEB-INF</directory>
                             <filtering>true</filtering>
