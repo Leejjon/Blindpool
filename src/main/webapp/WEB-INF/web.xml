@@ -1,26 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.1">
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-    
     <servlet>
         <servlet-name>_ah_sessioncleanup</servlet-name>
         <servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>_ah_sessioncleanup</servlet-name>
         <url-pattern>/_ah/sessioncleanup</url-pattern>
     </servlet-mapping>
-    
     <security-constraint>
-		<web-resource-collection>
-		    <web-resource-name>Sessions Removal</web-resource-name>
-			<url-pattern>/_ah/sessioncleanup</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
+        <web-resource-collection>
+            <web-resource-name>Sessions Removal</web-resource-name>
+            <url-pattern>/_ah/sessioncleanup</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
     </security-constraint>
 </web-app>
