@@ -3,4 +3,7 @@
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
     <runtime>java8</runtime>
+    <static-files>
+        <include path="css/layout.css" />
+    </static-files>
 </appengine-web-app>

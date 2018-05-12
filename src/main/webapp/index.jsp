@@ -22,9 +22,44 @@
 <html lang="${language}">
 <head>
     <title><fmt:message key="title"/></title>
+    <script>
+        function fillScores() {
+
+        }
+    </script>
 </head>
 <body>
-<div id="languageField" align="center">
+<div id="createPool">
+    <h1>Create a pool</h1>
+    <form>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>Score</td>
+            </tr>
+            <tr>
+                <td><input class="nameInput" type="text"></td>
+                <td><input class="scoreInput" type="text"></td>
+            </tr>
+            <tr>
+                <td><input class="nameInput" type="text"></td>
+                <td><input class="scoreInput" type="text"></td>
+            </tr>
+            <tr>
+                <td><input class="nameInput" type="text"></td>
+                <td><input class="scoreInput" type="text"></td>
+            </tr>
+            <tr>
+                <td><input class="nameInput" type="text"></td>
+                <td><input class="scoreInput" type="text"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button onclick="">Create</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="languageSettings" align="center">
     <form>
         <label><fmt:message key="language"/></label>
         <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
