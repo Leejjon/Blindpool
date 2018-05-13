@@ -23,19 +23,19 @@
 <head>
     <title><fmt:message key="title"/></title>
     <script>
-        function fillScores() {
-
+        function createPool() {
+            // TODO: Fill in the scores.
         }
     </script>
 </head>
 <body>
-<div id="createPool">
-    <h1>Create a pool</h1>
+<div id="createPool" align="center">
+    <h1><fmt:message key="create.pool.title"/></h1>
     <form>
         <table>
             <tr>
-                <td>Name</td>
-                <td>Score</td>
+                <td><fmt:message key="entry.name"/></td>
+                <td><fmt:message key="entry.score"/></td>
             </tr>
             <tr>
                 <td><input class="nameInput" type="text"></td>
@@ -54,10 +54,11 @@
                 <td><input class="scoreInput" type="text"></td>
             </tr>
             <tr>
-                <td colspan="2"><button onclick="">Create</button></td>
+                <td colspan="2"><button onclick="createPool()"><fmt:message key="create.button"/></button></td>
             </tr>
         </table>
     </form>
+    <br />
 </div>
 <div id="languageSettings" align="center">
     <form>
@@ -67,6 +68,7 @@
             <option value="https://blindepoule.nu" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
         </select>
     </form>
+    <p></pp>
     <p>
         <%-- Took me ages to figure out how to use parameters. --%>
         <fmt:message key="number.of.pools">
