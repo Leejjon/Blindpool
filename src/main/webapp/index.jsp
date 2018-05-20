@@ -25,6 +25,25 @@
     <script>
         function createPool() {
             // TODO: Fill in the scores.
+            postAjax("/pool", "blabla", function (data) {
+                alert("Ok: " + data);
+            })
+        }
+
+        function postAjax(url, data, success) {
+            var params = typeof data == 'string' ? data : Object.keys(data).map(
+                function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+            ).join('&');
+
+            var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+            xhr.open('POST', url);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
+            };
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(params);
+            return xhr;
         }
     </script>
 </head>
@@ -32,34 +51,34 @@
 <body>
 <div id="createPool" align="center">
     <h1><fmt:message key="create.pool.title"/></h1>
-    <form>
-        <table>
-            <tr>
-                <td><fmt:message key="entry.name"/></td>
-                <td><fmt:message key="entry.score"/></td>
-            </tr>
-            <tr>
-                <td><input class="nameInput" type="text"></td>
-                <td><input class="scoreInput" type="text"></td>
-            </tr>
-            <tr>
-                <td><input class="nameInput" type="text"></td>
-                <td><input class="scoreInput" type="text"></td>
-            </tr>
-            <tr>
-                <td><input class="nameInput" type="text"></td>
-                <td><input class="scoreInput" type="text"></td>
-            </tr>
-            <tr>
-                <td><input class="nameInput" type="text"></td>
-                <td><input class="scoreInput" type="text"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><button onclick="createPool()"><fmt:message key="create.button"/></button></td>
-            </tr>
-        </table>
-    </form>
-    <br />
+    <table>
+        <tr>
+            <td><fmt:message key="entry.name"/></td>
+            <td><fmt:message key="entry.score"/></td>
+        </tr>
+        <tr>
+            <td><input class="nameInput" type="text"></td>
+            <td><input class="scoreInput" type="text"></td>
+        </tr>
+        <tr>
+            <td><input class="nameInput" type="text"></td>
+            <td><input class="scoreInput" type="text"></td>
+        </tr>
+        <tr>
+            <td><input class="nameInput" type="text"></td>
+            <td><input class="scoreInput" type="text"></td>
+        </tr>
+        <tr>
+            <td><input class="nameInput" type="text"></td>
+            <td><input class="scoreInput" type="text"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button onclick="createPool()"><fmt:message key="create.button"/></button><br />
+            </td>
+        </tr>
+    </table>
+    <br/>
 </div>
 <div id="languageSettings" align="center">
     <form>
@@ -69,7 +88,7 @@
             <option value="https://blindepoule.nu" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
         </select>
     </form>
-    <p></pp>
+    <p></p>
     <p>
         <%-- Took me ages to figure out how to use parameters. --%>
         <fmt:message key="number.of.pools">

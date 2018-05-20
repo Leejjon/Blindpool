@@ -8,8 +8,8 @@
     <artifactId>blindpool</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <appengine.app.version>9</appengine.app.version>
-        <appengine.sdk.version>1.9.59</appengine.sdk.version>
+        <appengine.app.version>3</appengine.app.version>
+        <appengine.sdk.version>1.9.63</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -20,12 +20,23 @@
         <dependency>
             <groupId>org.hashids</groupId>
             <artifactId>hashids</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
             <version>${appengine.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.4</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
