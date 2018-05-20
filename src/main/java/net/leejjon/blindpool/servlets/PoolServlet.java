@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/pool/*")
 public class PoolServlet extends HttpServlet {
@@ -18,9 +20,9 @@ public class PoolServlet extends HttpServlet {
         Participant participant = new Participant("Leejjon", UserType.ANONYMOUS, true);
 
         Score score = new Score(0,0);
-        ParticipantScore[] participantScores = new ParticipantScore[] {
-            new ParticipantScore(participant, score)
-        };
+        List<ParticipantScore> participantScores = new ArrayList<>();
+        participantScores.add(new ParticipantScore(participant, score));
+
         Pool pool = new Pool(participantScores, null, null, null);
         Pool updatedPool = new PoolDataStore().createPool(pool);
 
@@ -35,5 +37,6 @@ public class PoolServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         writer.println("Path is: " + pathInfo.substring(1));
         writer.close();
+        // TODO: Redirect to /?pool=ID
     }
 }

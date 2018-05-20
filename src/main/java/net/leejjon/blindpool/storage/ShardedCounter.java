@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Transaction;
+import net.leejjon.blindpool.storage.persistence.Kind;
 
 import java.util.ConcurrentModificationException;
 import java.util.Random;
@@ -49,7 +50,7 @@ public class ShardedCounter {
      *
      * @return Summed total of all shards' counts
      */
-    public final long getCount() {
+    public final long count() {
         long sum = 0;
 
         Query query = new Query(Kind.POOL_COUNTER_SHARD.toString());

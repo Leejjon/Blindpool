@@ -2,6 +2,7 @@ package net.leejjon.blindpool.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 /**
  * <p>In the Netherlands, people talk about a 'Poule' as some sort of competition where the participants
@@ -20,8 +21,6 @@ import lombok.Setter;
  * @author Leejjon
  */
 public class Pool {
-    public static final String POOL_DATA = "poolData";
-
     @Getter @Setter
     private String key;
 
@@ -31,20 +30,17 @@ public class Pool {
 
     private final Currency currency;
 
-    private final ParticipantScore[] participantsAndScores;
+    @Getter
+    private final List<ParticipantScore> participantsAndScores;
 
     /**
      * @param participantsAndScores The participants and the scores that were randomly assigned to them.
      * @param match Id of match that was selected. Can be null.
      */
-    public Pool(ParticipantScore[] participantsAndScores, String match, String bet, Currency currency) {
+    public Pool(List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency) {
         this.participantsAndScores = participantsAndScores;
         this.match = match;
         this.bet = bet;
         this.currency = currency;
     }
-
-//    public void setKey(String key) {
-//        this.key = key;
-//    }
 }

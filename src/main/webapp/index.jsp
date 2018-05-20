@@ -22,33 +22,10 @@
 <html lang="${language}">
 <head>
     <title><fmt:message key="title"/></title>
-    <script>
-        function createPool() {
-            // TODO: Fill in the scores.
-            postAjax("/pool", "blabla", function (data) {
-                alert("Ok: " + data);
-            })
-        }
-
-        function postAjax(url, data, success) {
-            var params = typeof data == 'string' ? data : Object.keys(data).map(
-                function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
-            ).join('&');
-
-            var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-            xhr.open('POST', url);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
-            };
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send(params);
-            return xhr;
-        }
-    </script>
+    <script src="js/blindpool.js"></script>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<body>
+<body onload="loadPool(getParameterByName('pool'))">
 <div id="createPool" align="center">
     <h1><fmt:message key="create.pool.title"/></h1>
     <table>
@@ -74,11 +51,10 @@
         </tr>
         <tr>
             <td colspan="2">
-                <button onclick="createPool()"><fmt:message key="create.button"/></button><br />
+                <button onclick="createPool()"><fmt:message key="create.button"/></button>
             </td>
         </tr>
     </table>
-    <br/>
 </div>
 <div id="languageSettings" align="center">
     <form>

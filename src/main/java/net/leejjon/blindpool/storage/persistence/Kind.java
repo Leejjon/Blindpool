@@ -1,5 +1,5 @@
 
-package net.leejjon.blindpool.storage;
+package net.leejjon.blindpool.storage.persistence;
 
 public enum Kind {
     /**
