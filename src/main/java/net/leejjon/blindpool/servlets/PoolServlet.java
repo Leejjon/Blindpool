@@ -24,7 +24,7 @@ public class PoolServlet extends HttpServlet {
         participantScores.add(new ParticipantScore(participant, score));
 
         Pool pool = new Pool(participantScores, null, null, null);
-        Pool updatedPool = new PoolDataStore().createPool(pool);
+        Pool updatedPool = PoolDataStore.getInstance().createPool(pool);
 
         PrintWriter writer = response.getWriter();
         writer.println(updatedPool.getKey());

@@ -22,6 +22,7 @@
 <html lang="${language}">
 <head>
     <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" type="text/css" href="layout.css">
     <script src="js/blindpool.js"></script>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,21 +34,9 @@
             <td><fmt:message key="entry.name"/></td>
             <td><fmt:message key="entry.score"/></td>
         </tr>
-        <tr>
+        <tr id="1">
             <td><input class="nameInput" type="text"></td>
-            <td><input class="scoreInput" type="text"></td>
-        </tr>
-        <tr>
-            <td><input class="nameInput" type="text"></td>
-            <td><input class="scoreInput" type="text"></td>
-        </tr>
-        <tr>
-            <td><input class="nameInput" type="text"></td>
-            <td><input class="scoreInput" type="text"></td>
-        </tr>
-        <tr>
-            <td><input class="nameInput" type="text"></td>
-            <td><input class="scoreInput" type="text"></td>
+            <td><input class="scoreInput" type="text" disabled></td>
         </tr>
         <tr>
             <td colspan="2">

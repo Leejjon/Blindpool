@@ -9,8 +9,9 @@ import net.leejjon.blindpool.storage.PoolDataStore;
 
 public class PoolDataTagSupport extends SimpleTagSupport {
     @Override
-    public void doTag() throws JspException, IOException {
+    public void doTag() throws IOException {
         final JspWriter out = getJspContext().getOut();
-        out.print(new PoolDataStore().countPools());
+        out.print(PoolDataStore.getInstance().countPools());
+        out.close();
     }
 }

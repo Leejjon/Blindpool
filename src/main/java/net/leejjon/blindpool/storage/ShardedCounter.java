@@ -8,7 +8,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Transaction;
-import net.leejjon.blindpool.storage.persistence.Kind;
+import net.leejjon.blindpool.storage.persistence.KindType;
 
 import java.util.ConcurrentModificationException;
 import java.util.Random;
@@ -53,7 +53,7 @@ public class ShardedCounter {
     public final long count() {
         long sum = 0;
 
-        Query query = new Query(Kind.POOL_COUNTER_SHARD.toString());
+        Query query = new Query(KindType.POOL_COUNTER_SHARD.toString());
         for (Entity e : DS.prepare(query).asIterable()) {
             sum += (Long) e.getProperty("count");
         }
@@ -66,7 +66,7 @@ public class ShardedCounter {
      */
     public final void increment() {
         int shardNum = generator.nextInt(NUM_SHARDS);
-        Key shardKey = KeyFactory.createKey(Kind.POOL_COUNTER_SHARD.toString(),
+        Key shardKey = KeyFactory.createKey(KindType.POOL_COUNTER_SHARD.toString(),
                 Integer.toString(shardNum));
 
         Transaction tx = DS.beginTransaction();

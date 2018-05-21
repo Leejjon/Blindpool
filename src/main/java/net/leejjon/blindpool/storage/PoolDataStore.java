@@ -3,10 +3,11 @@ package net.leejjon.blindpool.storage;
 import com.google.appengine.api.datastore.*;
 import com.google.gson.Gson;
 import net.leejjon.blindpool.model.Pool;
-import net.leejjon.blindpool.storage.persistence.Kind;
+import net.leejjon.blindpool.storage.persistence.KindType;
 import net.leejjon.blindpool.storage.persistence.PoolProperties;
 import org.hashids.Hashids;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,19 +18,27 @@ import java.util.logging.Logger;
  * @author Leejjon
  */
 public class PoolDataStore {
-
     private final static Logger log = Logger.getLogger(PoolDataStore.class.getName());
+    private final static PoolDataStore INSTANCE = new PoolDataStore();
+
+    private PoolDataStore() {}
+
+    public static PoolDataStore getInstance() {
+        return INSTANCE;
+    }
+
 
     private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     public Pool createPool(Pool newPool) {
         // Create the entity of the pool.
-        Entity pool = new Entity(Kind.POOL.toString());
+        Entity pool = new Entity(KindType.POOL.toString());
         pool.setProperty(PoolProperties.PARTICIPANTS_AND_SCORES.name(), new Gson().toJson(newPool.getParticipantsAndScores()));
 //        pool.
 
         // Store the new pool entity and return the key.
         Key key = datastore.put(pool);
+        log.info("Key is: " + key.toString());
         // TODO: Do the increment action and the save in one transaction maybe?
 
 
@@ -47,8 +56,18 @@ public class PoolDataStore {
         return newPool;
     }
 
-    public Pool getPool(String key) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Pool getPool(String key) throws EntityNotFoundException {
+//        EntityQuery build = Query.newEntityQueryBuilder().build();
+        long[] decodedKey = new Hashids().decode(key);
+
+        log.info("Decoded key size: " + decodedKey.length);
+
+        Entity entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey[0])));
+
+        log.info("We found key:" + key + " " + entity.getKey().getId());
+
+//        getPool.
+        return new Pool(new ArrayList<>(), null, null, null);
     }
 
     public void deletePool() {
@@ -56,26 +75,13 @@ public class PoolDataStore {
     }
 
     public long countPools() {
-//        Query countPools = new Query(Kind.POOL.toString());
-//
-//        /* TODO: If my app ever has more than 1000 pools I'll have to fix this.
-//         * Read:
-//         * https://cloud.google.com/appengine/articles/sharding_counters
-//         * Use something like this:
-//         * https://github.com/instacount/appengine-counter
-//         */
-//        FetchOptions fo = FetchOptions.Builder.withLimit(1000);
-//        int entities = datastore.prepare(countPools).countEntities(fo);
-        long poolCount = new ShardedCounter().count();
-
-        log.log(Level.INFO, "Retrieved pool count: " + poolCount);
-        return poolCount;
+        return new ShardedCounter().count();
     }
 
     /**
      * @return The number of pools from the database.
      */
     public static long getPoolCount() {
-        return new PoolDataStore().countPools();
+        return getInstance().countPools();
     }
 }

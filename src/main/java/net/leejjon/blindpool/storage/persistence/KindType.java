@@ -1,7 +1,7 @@
 
 package net.leejjon.blindpool.storage.persistence;
 
-public enum Kind {
+public enum KindType {
     /**
      * This is the kind used by Google App Engine to store session objects.
      */
@@ -14,7 +14,7 @@ public enum Kind {
     
     private final String kind;
 
-    Kind(String kind) {
+    KindType(String kind) {
         this.kind = kind;
     }
     
