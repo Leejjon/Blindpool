@@ -2,6 +2,8 @@ package net.leejjon.blindpool.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hashids.Hashids;
+
 import java.util.List;
 
 /**
@@ -33,14 +35,24 @@ public class Pool {
     @Getter
     private final List<ParticipantScore> participantsAndScores;
 
+    public Pool(long key, List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency) {
+        this(participantsAndScores, match, bet, currency);
+        this.key = new Hashids().encode(key);
+    }
+
     /**
      * @param participantsAndScores The participants and the scores that were randomly assigned to them.
      * @param match Id of match that was selected. Can be null.
      */
     public Pool(List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency) {
+        // TODO: Precondition to count that there is at least five participants.
         this.participantsAndScores = participantsAndScores;
         this.match = match;
         this.bet = bet;
         this.currency = currency;
+    }
+
+    public String getOwner() {
+        return participantsAndScores.get(0).getParticipant().getName();
     }
 }

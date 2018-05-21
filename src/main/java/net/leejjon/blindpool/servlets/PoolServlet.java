@@ -17,7 +17,7 @@ import java.util.List;
 public class PoolServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Participant participant = new Participant("Leejjon", UserType.ANONYMOUS, true);
+        Participant participant = new Participant("Leejjon", UserType.ANONYMOUS);
 
         Score score = new Score(0,0);
         List<ParticipantScore> participantScores = new ArrayList<>();

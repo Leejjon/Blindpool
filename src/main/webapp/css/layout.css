@@ -1,1 +1,11 @@
+.shareUrl {
+    width: 81%;
+}
 
+#numberOfPlayersLabel {
+    text-align: left;
+}
+
+#numberOfPlayers {
+    width: 35px;
+}

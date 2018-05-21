@@ -2,11 +2,14 @@ package net.leejjon.blindpool.storage;
 
 import com.google.appengine.api.datastore.*;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import net.leejjon.blindpool.model.ParticipantScore;
 import net.leejjon.blindpool.model.Pool;
 import net.leejjon.blindpool.storage.persistence.KindType;
 import net.leejjon.blindpool.storage.persistence.PoolProperties;
 import org.hashids.Hashids;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,17 +60,20 @@ public class PoolDataStore {
     }
 
     public Pool getPool(String key) throws EntityNotFoundException {
-//        EntityQuery build = Query.newEntityQueryBuilder().build();
-        long[] decodedKey = new Hashids().decode(key);
+        // Hopefully this will always
+        long decodedKey = new Hashids().decode(key)[0];
 
-        log.info("Decoded key size: " + decodedKey.length);
+        Entity entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey)));
 
-        Entity entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey[0])));
+        String jsonizedParticipantsAndScores = entity.getProperty(PoolProperties.PARTICIPANTS_AND_SCORES.name()).toString();
+
+        Type listType = new TypeToken<ArrayList<ParticipantScore>>(){}.getType();
+        ArrayList<ParticipantScore> participantScores = new Gson().fromJson(jsonizedParticipantsAndScores, listType);
 
         log.info("We found key:" + key + " " + entity.getKey().getId());
+        participantScores.forEach(participantScore -> log.info("Participant: " + participantScore.getParticipant().getName()));
 
-//        getPool.
-        return new Pool(new ArrayList<>(), null, null, null);
+        return new Pool(entity.getKey().getId(), participantScores, null, null, null);
     }
 
     public void deletePool() {

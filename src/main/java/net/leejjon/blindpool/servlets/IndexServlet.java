@@ -19,15 +19,13 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("Happens");
-
         String pool = req.getParameter("pool");
         if (pool != null && !pool.isEmpty()) {
             PoolDataStore pds = PoolDataStore.getInstance();
             try {
                 req.setAttribute("poolData", pds.getPool(pool));
             } catch (EntityNotFoundException e) {
-                log.log(Level.WARNING, "Could not find entity " + pool, e);
+                log.log(Level.WARNING, "Could not find entity " + pool);
             }
         }
 

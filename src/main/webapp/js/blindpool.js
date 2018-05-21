@@ -5,7 +5,7 @@ function createPool() {
 }
 
 /**
- * This function is being called when loading the page and after creating a pool.
+ * This function is being called after creating a pool.
  *
  * @param data
  */
@@ -13,14 +13,19 @@ function loadPool(data) {
     // According to the following page doing a simple if checks whether the data is null/undefined etc.
     // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     if (data) {
+        // For now, just redirect:
         var currentUrl = window.location.href;
         var queryString = '?pool=' + data;
+        window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+
         // If this function was initiated from loading the page, it means the query parameter might already be there.
         // So only update the window history state if this method was called from the createPool function.
-        if (!currentUrl.endsWith(queryString)) {
-            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
-            window.history.pushState({path:newUrl},'',newUrl);
-        }
+        // if (!currentUrl.endsWith(queryString)) {
+        //     var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+        //     window.history.pushState({path:newUrl},'',newUrl);
+        // }
+
+        // document.getElementById('createPoolButton').style.visibility = 'hidden';
         // TODO: Fill in the scores.
     }
 }
