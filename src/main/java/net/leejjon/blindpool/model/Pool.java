@@ -15,7 +15,7 @@ import java.util.List;
  *
  * <p>In english the word "Pool" is being used too. The phrase "prize pool"
  * is commonly used in lotteries. But it wasn't until I realized that Deadpool
- * is also a reference to the meaning of "Poule". In the Deadpool movie they
+ * is also a reference to the meaning of "Poule". In the first Deadpool movie they
  * have a competition where they predict who is going to die first, and they
  * call it the dead pool. Later Wade Willson decides that it will become his
  * superhero name.</p>

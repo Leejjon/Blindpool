@@ -1,7 +1,34 @@
+var defaultNumberOfPlayers = 5;
+
+function getParticipants() {
+    var empty = "";
+    var participants = [];
+    var i = 1;
+    var participant = getParticipant(1);
+    for (; getParticipant(i) != null; participant = getParticipant(i)) {
+        if (participant.value !== empty) {
+            participants.push(participant.value);
+            i++;
+        } else {
+            throw "Enter all fields! Number filled: " + (i - 1);
+        }
+    }
+    return participants;
+}
+
+function getParticipant(id) {
+    return document.getElementById("participantName" + id);
+}
+
 function createPool() {
-    postAjax("/pool", "blabla", function (data) {
-        loadPool(data);
-    })
+    try {
+        var participants = getParticipants();
+        postAjax("/pool", participants, function (data) {
+            loadPool(data);
+        });
+    } catch (error) {
+        alert(error);
+    }
 }
 
 /**
@@ -13,9 +40,10 @@ function loadPool(data) {
     // According to the following page doing a simple if checks whether the data is null/undefined etc.
     // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     if (data) {
+        var obj = JSON.parse(data);
         // For now, just redirect:
         var currentUrl = window.location.href;
-        var queryString = '?pool=' + data;
+        var queryString = '?pool=' + obj.key;
         window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
 
         // If this function was initiated from loading the page, it means the query parameter might already be there.
@@ -30,19 +58,14 @@ function loadPool(data) {
     }
 }
 
-function postAjax(url, data, success) {
-    var params = typeof data == 'string' ? data : Object.keys(data).map(
-        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
-    ).join('&');
-
+function postAjax(url, participants, success) {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     xhr.open('POST', url);
     xhr.onreadystatechange = function() {
         if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
     };
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(params);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(participants));
     return xhr;
 }
 

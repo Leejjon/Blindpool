@@ -1,13 +1,15 @@
 package net.leejjon.blindpool.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
+@EqualsAndHashCode
 public class Score {
-    private final int homeClubScore;
-    private final int awayClubScore;
+    private final char homeClubScore;
+    private final char awayClubScore;
 
-    public Score(int homeClubScore, int awayClubScore) {
+    public Score(char homeClubScore, char awayClubScore) {
         this.homeClubScore = homeClubScore;
         this.awayClubScore = awayClubScore;
     }

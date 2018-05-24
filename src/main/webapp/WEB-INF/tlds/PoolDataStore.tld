@@ -3,29 +3,6 @@
     <tlib-version>1.0</tlib-version>
     <short-name>PoolDataStore</short-name>
     <uri>/tlds/PoolDataStore</uri>
-    <!-- A validator verifies that the tags are used correctly at JSP
-          translation time. Validator entries look like this: 
-       <validator>
-           <validator-class>com.mycompany.TagLibValidator</validator-class>
-           <init-param>
-              <param-name>parameter</param-name>
-              <param-value>value</param-value>
-           </init-param>
-       </validator>
-    -->
-    <!-- A tag library can register Servlet Context event listeners in
-         case it needs to react to such events. Listener entries look
-         like this: 
-      <listener>
-          <listener-class>com.mycompany.TagLibListener</listener-class> 
-      </listener>
-    -->
-    <!-- Thought I needed to do a tag to use a function, wasnt neccesary. -->
-    <!--  <tag>
-        <name>PoolStorage</name>
-        <tag-class>net.leejjon.blindpool.tags.PoolDataTagSupport</tag-class>
-        <body-content>empty</body-content>
-    </tag>-->
     <function>
         <name>getPoolCount</name>
         <function-class>net.leejjon.blindpool.storage.PoolDataStore</function-class>
