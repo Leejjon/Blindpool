@@ -50,7 +50,7 @@ function removeParticipant(id) {
 function createPool() {
     try {
         let participants = getParticipants();
-        postAjax("/pool", participants, function (data) {
+        postAjax("/pool/", participants, function (data) {
             loadPool(data);
         });
     } catch (error) {
@@ -60,9 +60,12 @@ function createPool() {
 
 function getPool() {
     try {
-        getAjax("/pool/", getParameterByName("pool"), function (data) {
-            loadPool(data);
-        });
+        var poolParam = getParameterByName("pool");
+        if (poolParam != null) {
+            getAjax("/pool/", poolParam, function (data) {
+                loadPool(data);
+            });
+        }
     } catch (error) {
         alert(error);
     }
@@ -76,11 +79,12 @@ function getPool() {
 function loadPool(data) {
     // According to the following page doing a simple if checks whether the data is null/undefined etc.
     // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
-    if (data) {
-        let obj = JSON.parse(data);
+    if (data != null && JSON.parse(data).key != null) {
+        let poolData = JSON.parse(data);
         // For now, just redirect:
         let currentUrl = window.location.href;
-        let queryString = '?pool=' + obj.key;
+        let queryString = '?pool=' + poolData.key;
+
 
         if (!currentUrl.endsWith(queryString)) {
             window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
@@ -92,11 +96,10 @@ function loadPool(data) {
         //     window.history.pushState({path:newUrl},'',newUrl);
         // }
 
-        // document.getElementById('createPoolButton').style.visibility = 'hidden';
         // TODO: Fill in the scores.
         var scoreColumns = document.getElementsByClassName("scoreColumn");
         for (var i = 0; i < scoreColumns.length; i++) {
-            scoreColumns[i].style.display = '';
+            scoreColumns[i].style.display = "block";
         }
     }
 }
@@ -104,10 +107,11 @@ function loadPool(data) {
 function getAjax(url, key, success) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     url = url + "?pool=" + key;
-    xhr.open("GET", url);
+    xhr.open('GET', url, true);
+    // xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(null);
     xhr.onreadystatechange = function(){
-        if (xhr.readyState>3 && xhr.readyState == 200) {
+        if (xhr.readyState>3 && xhr.status == 200) {
             success(xhr.responseText);
         }
     }
@@ -117,7 +121,9 @@ function postAjax(url, participants, success) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     xhr.open('POST', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status == 200) { success(xhr.responseText); }
+        if (xhr.readyState>3 && xhr.status == 200) {
+            success(xhr.responseText);
+        }
     };
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(participants));

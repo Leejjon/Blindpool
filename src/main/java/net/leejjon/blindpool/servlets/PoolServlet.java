@@ -28,7 +28,19 @@ public class PoolServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setStatus(200);
 
-        log.info(request.getParameter("pool"));
+        String poolKeyParameter = request.getParameter("pool");
+
+        if (poolKeyParameter != null && !poolKeyParameter.isEmpty()) {
+            GetPoolResponse poolResponse = new GetPoolResponse(poolKeyParameter);
+
+            PrintWriter writer = response.getWriter();
+            writer.println(new Gson().toJson(poolResponse));
+            writer.close();
+        } else {
+            PrintWriter writer = response.getWriter();
+            writer.println("Your request sucked.");
+            writer.close();
+        }
     }
 
     @Override

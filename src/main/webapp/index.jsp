@@ -62,7 +62,7 @@
             </tr>
         </c:if>
         <tr>
-            <td><fmt:message key="entry.name"/></td>
+            <td colspan="2"><fmt:message key="entry.name"/></td>
             <td class="scoreColumn"><fmt:message key="entry.score"/></td>
         </tr>
         <c:choose>
@@ -77,7 +77,7 @@
                                 <td><fmt:message key="host"/></td>
                             </c:when>
                             <c:otherwise>
-                                <td><button id="participantRemoveButton${loop.index}" onclick="removeParticipant(${loop.index})"><fmt:message key="remove.participant"/></button></td>
+                                <td><button tabindex="-1" id="participantRemoveButton${loop.index}" onclick="removeParticipant(${loop.index})"><fmt:message key="remove.participant"/></button></td>
                             </c:otherwise>
                         </c:choose>
                     </tr>
@@ -94,12 +94,7 @@
             <c:otherwise>
                 <c:forEach var="current" items="${requestScope.poolData.participantsAndScores}" varStatus="loop">
                     <tr id="participant${loop.index}">
-                        <td colspan="2">
-                            <input class="nameInput" type="text" value="${current.participant.name}">
-                            <c:if test="${loop.index eq 0}">
-                                <fmt:message key="host"/>
-                            </c:if>
-                        </td>
+                        <td colspan="2"><input class="nameInput" type="text" value="${current.participant.name}"></td>
                         <td><input class="scoreColumn" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" disabled></td>
                     </tr>
                 </c:forEach>
