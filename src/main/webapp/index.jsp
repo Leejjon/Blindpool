@@ -31,7 +31,7 @@
     <script src="js/blindpool.js"></script>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<body>
+<body onload="getPool()">
 <div id="createPool" align="center">
     <h1>
         <c:choose>
@@ -46,47 +46,47 @@
         </c:choose>
     </h1>
     <table>
-        <c:choose>
-            <c:when test="${empty requestScope.poolData}">
-                <tr>
-                    <td colspan="2" align="center">
-                        <p id="numberOfPlayersLabel">
-                            <fmt:message key="number.of.players.label"/>&nbsp;
-                            <input id="numberOfPlayers" type="number" value="${defaultNumberOfPlayers}" min="5" max="50" maxlength="2">
-                        </p>
-                    </td>
-                </tr>
-            </c:when>
-            <c:otherwise>
-                <tr>
-                    <td colspan="2">
-                        <fmt:message key="share.url.header"/><br/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="white-space:nowrap;">
-                        <input class="shareUrl" type="text" disabled
-                               value="https://blindpool.com/?pool=${requestScope.poolData.key}">
-                        <button>Copy</button>
-                        <br/>&nbsp;
-                    </td>
-                </tr>
-            </c:otherwise>
-        </c:choose>
+        <c:if test="${not empty requestScope.poolData}">
+            <tr>
+                <td colspan="3">
+                    <fmt:message key="share.url.header"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="white-space:nowrap;">
+                    <input class="shareUrl" type="text" disabled
+                           value="https://blindpool.com/?pool=${requestScope.poolData.key}">
+                    <button>Copy</button>
+                    <br/>&nbsp;
+                </td>
+            </tr>
+        </c:if>
         <tr>
             <td><fmt:message key="entry.name"/></td>
-            <td><fmt:message key="entry.score"/></td>
+            <td class="scoreColumn"><fmt:message key="entry.score"/></td>
         </tr>
         <c:choose>
             <c:when test="${empty requestScope.poolData}">
                 <c:forEach begin="1" end="${defaultNumberOfPlayers}" varStatus="loop">
                     <tr id="participant${loop.index}">
                         <td><input id="participantName${loop.index}" class="nameInput" type="text" value=""></td>
-                        <td><input class="scoreInput" type="text" value="" disabled></td>
+                        <td><input class="scoreColumn" type="text" value="" disabled></td>
+                        <%-- You cannot remove the owner --%>
+                        <c:choose>
+                            <c:when test="${loop.index eq 1}">
+                                <td><fmt:message key="host"/></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><button id="participantRemoveButton${loop.index}" onclick="removeParticipant(${loop.index})"><fmt:message key="remove.participant"/></button></td>
+                            </c:otherwise>
+                        </c:choose>
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td colspan="2"><button><fmt:message key="add.participant"/></button></td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center">
                         <p><button id="createPoolButton" onclick="createPool()"><fmt:message key="create.button"/></button></p>
                     </td>
                 </tr>
@@ -94,12 +94,17 @@
             <c:otherwise>
                 <c:forEach var="current" items="${requestScope.poolData.participantsAndScores}" varStatus="loop">
                     <tr id="participant${loop.index}">
-                        <td><input class="nameInput" type="text" value="${current.participant.name}"></td>
-                        <td><input class="scoreInput" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" disabled></td>
+                        <td colspan="2">
+                            <input class="nameInput" type="text" value="${current.participant.name}">
+                            <c:if test="${loop.index eq 0}">
+                                <fmt:message key="host"/>
+                            </c:if>
+                        </td>
+                        <td><input class="scoreColumn" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" disabled></td>
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td colspan="3" align="center">
                         <p><button id="makeNewPoolButton"><fmt:message key="make.another.pool.button"/></button></p>
                     </td>
                 </tr>

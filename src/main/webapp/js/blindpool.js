@@ -1,10 +1,14 @@
-var defaultNumberOfPlayers = 5;
+const defaultNumberOfPlayers = 5;
+let currentNumberOfPlayers = 5;
+const PARTICIPANT_ROW = "participant";
+const PARTICIPANT_NAME = "participantName";
+const PARTICIPANT_REMOVE_BUTTON = "participantRemoveButton";
 
 function getParticipants() {
-    var empty = "";
-    var participants = [];
-    var i = 1;
-    var participant = getParticipant(1);
+    const empty = "";
+    let participants = [];
+    let i = 1;
+    let participant = getParticipant(1);
     for (; getParticipant(i) != null; participant = getParticipant(i)) {
         if (participant.value !== empty) {
             participants.push(participant.value);
@@ -17,13 +21,46 @@ function getParticipants() {
 }
 
 function getParticipant(id) {
-    return document.getElementById("participantName" + id);
+    return document.getElementById(PARTICIPANT_NAME + id);
+}
+
+function addParticipant() {
+
+}
+
+function removeParticipant(id) {
+    if (id > 0 && id <= currentNumberOfPlayers) {
+        let participantRow = document.getElementById(PARTICIPANT_ROW + id);
+        participantRow.parentNode.removeChild(participantRow);
+
+        // Fix the id's of the other participants so there are no gaps.
+        for (let i = id + 1; i <= currentNumberOfPlayers; i++) {
+            let updatedId = i - 1;
+            document.getElementById(PARTICIPANT_ROW + i).id = PARTICIPANT_ROW + updatedId;
+            document.getElementById(PARTICIPANT_NAME + i).id = PARTICIPANT_NAME + updatedId;
+            document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).setAttribute('onclick',`removeParticipant(${updatedId})`);
+            document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).id = PARTICIPANT_REMOVE_BUTTON + updatedId
+        }
+        currentNumberOfPlayers--;
+    } else {
+        console.log("Tried to remove a participant with invalid id: " + id);
+    }
 }
 
 function createPool() {
     try {
-        var participants = getParticipants();
+        let participants = getParticipants();
         postAjax("/pool", participants, function (data) {
+            loadPool(data);
+        });
+    } catch (error) {
+        alert(error);
+    }
+}
+
+function getPool() {
+    try {
+        getAjax("/pool/", getParameterByName("pool"), function (data) {
             loadPool(data);
         });
     } catch (error) {
@@ -40,12 +77,14 @@ function loadPool(data) {
     // According to the following page doing a simple if checks whether the data is null/undefined etc.
     // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     if (data) {
-        var obj = JSON.parse(data);
+        let obj = JSON.parse(data);
         // For now, just redirect:
-        var currentUrl = window.location.href;
-        var queryString = '?pool=' + obj.key;
-        window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+        let currentUrl = window.location.href;
+        let queryString = '?pool=' + obj.key;
 
+        if (!currentUrl.endsWith(queryString)) {
+            window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+        }
         // If this function was initiated from loading the page, it means the query parameter might already be there.
         // So only update the window history state if this method was called from the createPool function.
         // if (!currentUrl.endsWith(queryString)) {
@@ -55,14 +94,30 @@ function loadPool(data) {
 
         // document.getElementById('createPoolButton').style.visibility = 'hidden';
         // TODO: Fill in the scores.
+        var scoreColumns = document.getElementsByClassName("scoreColumn");
+        for (var i = 0; i < scoreColumns.length; i++) {
+            scoreColumns[i].style.display = '';
+        }
+    }
+}
+
+function getAjax(url, key, success) {
+    let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    url = url + "?pool=" + key;
+    xhr.open("GET", url);
+    xhr.send(null);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState>3 && xhr.readyState == 200) {
+            success(xhr.responseText);
+        }
     }
 }
 
 function postAjax(url, participants, success) {
-    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     xhr.open('POST', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }
+        if (xhr.readyState>3 && xhr.status == 200) { success(xhr.responseText); }
     };
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(participants));
@@ -77,9 +132,9 @@ function postAjax(url, participants, success) {
  * @returns {*} Null, '' or the query parameter value.
  */
 function getParameterByName(parameterKey) {
-    var url = window.location.href;
+    let url = window.location.href;
     parameterKey = parameterKey.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + parameterKey + "(=([^&#]*)|&|#|$)"),
+    let regex = new RegExp("[?&]" + parameterKey + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';

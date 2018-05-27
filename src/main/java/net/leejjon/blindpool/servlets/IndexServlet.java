@@ -1,6 +1,5 @@
 package net.leejjon.blindpool.servlets;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
 import net.leejjon.blindpool.storage.PoolDataStore;
 
 import javax.servlet.RequestDispatcher;
@@ -19,14 +18,11 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pool = req.getParameter("pool");
-        if (pool != null && !pool.isEmpty()) {
+        String poolParameter = req.getParameter("pool");
+        if (poolParameter != null && !poolParameter.isEmpty()) {
             PoolDataStore pds = PoolDataStore.getInstance();
-            try {
-                req.setAttribute("poolData", pds.getPool(pool));
-            } catch (EntityNotFoundException e) {
-                log.log(Level.WARNING, "Could not find entity " + pool);
-            }
+
+            pds.getPool(poolParameter).ifPresent(pool -> req.setAttribute("poolData", pool));
         }
 
         // Still just load the contents of index.jsp

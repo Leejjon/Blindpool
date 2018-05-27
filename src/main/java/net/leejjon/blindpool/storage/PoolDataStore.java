@@ -15,6 +15,7 @@ import org.hashids.Hashids;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -71,18 +72,30 @@ public class PoolDataStore {
         return poolResponse;
     }
 
-    public Pool getPool(String key) throws EntityNotFoundException {
+    public Optional<Pool> getPool(String key) {
         // Hopefully this will always contain one.
-        long decodedKey = new Hashids().decode(key)[0];
+        long[] keys = new Hashids().decode(key);
 
-        Entity entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey)));
+        if (keys.length == 0) {
+            return Optional.empty();
+        } else {
+            long decodedKey = keys[0];
 
-        String jsonizedParticipantsAndScores = entity.getProperty(PoolProperties.PARTICIPANTS_AND_SCORES.name()).toString();
+            Entity entity = null;
+            try {
+                entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey)));
 
-        Type listType = new TypeToken<ArrayList<ParticipantScore>>(){}.getType();
-        ArrayList<ParticipantScore> participantScores = new Gson().fromJson(jsonizedParticipantsAndScores, listType);
+                String jsonizedParticipantsAndScores = entity.getProperty(PoolProperties.PARTICIPANTS_AND_SCORES.name()).toString();
 
-        return new Pool(entity.getKey().getId(), participantScores, null, null, null);
+                Type listType = new TypeToken<ArrayList<ParticipantScore>>(){}.getType();
+                ArrayList<ParticipantScore> participantScores = new Gson().fromJson(jsonizedParticipantsAndScores, listType);
+
+                return Optional.of(new Pool(entity.getKey().getId(), participantScores, null, null, null));
+            } catch (EntityNotFoundException e) {
+                log.warning("Could not find entity for key " + key);
+                return Optional.empty();
+            }
+        }
     }
 
     public void deletePool() {

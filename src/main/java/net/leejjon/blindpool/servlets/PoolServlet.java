@@ -19,13 +19,21 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
 
-@WebServlet("/pool")
+@WebServlet("/pool/")
 public class PoolServlet extends HttpServlet {
     private final static Logger log = Logger.getLogger(PoolServlet.class.getName());
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setStatus(200);
+
+        log.info(request.getParameter("pool"));
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         response.setContentType("application/json");
         response.setStatus(200);
 

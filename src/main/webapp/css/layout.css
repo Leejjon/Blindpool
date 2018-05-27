@@ -2,10 +2,6 @@
     width: 81%;
 }
 
-#numberOfPlayersLabel {
-    text-align: center;
-}
-
-#numberOfPlayers {
-    width: 35px;
+.scoreColumn {
+    display: none;
 }
