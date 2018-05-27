@@ -49,7 +49,7 @@
         <c:choose>
             <c:when test="${empty requestScope.poolData}">
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" align="center">
                         <p id="numberOfPlayersLabel">
                             <fmt:message key="number.of.players.label"/>&nbsp;
                             <input id="numberOfPlayers" type="number" value="${defaultNumberOfPlayers}" min="5" max="50" maxlength="2">
