@@ -51,7 +51,7 @@ function createPool() {
     try {
         let participants = getParticipants();
         postAjax("/pool/", participants, function (data) {
-            loadPool(data);
+            loadCreatedPool(data);
         });
     } catch (error) {
         alert(error);
@@ -63,7 +63,7 @@ function getPool() {
         var poolParam = getParameterByName("pool");
         if (poolParam != null) {
             getAjax("/pool/", poolParam, function (data) {
-                loadPool(data);
+                loadRetrievedPool(data);
             });
         }
     } catch (error) {
@@ -76,7 +76,7 @@ function getPool() {
  *
  * @param data
  */
-function loadPool(data) {
+function loadCreatedPool(data) {
     // According to the following page doing a simple if checks whether the data is null/undefined etc.
     // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     if (data != null && JSON.parse(data).key != null) {
@@ -97,10 +97,21 @@ function loadPool(data) {
         // }
 
         // TODO: Fill in the scores.
-        var scoreColumns = document.getElementsByClassName("scoreColumn");
-        for (var i = 0; i < scoreColumns.length; i++) {
-            scoreColumns[i].style.display = "block";
-        }
+        showScoreColumns();
+    }
+}
+
+function loadRetrievedPool(data) {
+    if (data != null && JSON.parse(data).key != null) {
+
+        showScoreColumns();
+    }
+}
+
+function showScoreColumns() {
+    var scoreColumns = document.getElementsByClassName("scoreColumn");
+    for (var i = 0; i < scoreColumns.length; i++) {
+        scoreColumns[i].style.display = "block";
     }
 }
 
@@ -111,7 +122,7 @@ function getAjax(url, key, success) {
     // xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(null);
     xhr.onreadystatechange = function(){
-        if (xhr.readyState>3 && xhr.status == 200) {
+        if (xhr.readyState > 3 && xhr.status == 200) {
             success(xhr.responseText);
         }
     }
@@ -121,7 +132,7 @@ function postAjax(url, participants, success) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     xhr.open('POST', url);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState>3 && xhr.status == 200) {
+        if (xhr.readyState > 3 && xhr.status == 200) {
             success(xhr.responseText);
         }
     };

@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @WebServlet("/pool/")
@@ -30,8 +31,10 @@ public class PoolServlet extends HttpServlet {
 
         String poolKeyParameter = request.getParameter("pool");
 
-        if (poolKeyParameter != null && !poolKeyParameter.isEmpty()) {
-            GetPoolResponse poolResponse = new GetPoolResponse(poolKeyParameter);
+        Optional<Pool> optionalPool = PoolDataStore.getInstance().getPool(poolKeyParameter);
+        if (optionalPool.isPresent()) {
+            Pool pool = optionalPool.get();
+            GetPoolResponse poolResponse = new GetPoolResponse(pool.getKey());
 
             PrintWriter writer = response.getWriter();
             writer.println(new Gson().toJson(poolResponse));

@@ -32,11 +32,13 @@ public class Pool {
 
     private final Currency currency;
 
+    private final long createdTimestamp;
+
     @Getter
     private final List<ParticipantScore> participantsAndScores;
 
-    public Pool(long key, List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency) {
-        this(participantsAndScores, match, bet, currency);
+    public Pool(long key, List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency, long createdTimestamp) {
+        this(participantsAndScores, match, bet, currency, createdTimestamp);
         this.key = new Hashids().encode(key);
     }
 
@@ -44,12 +46,13 @@ public class Pool {
      * @param participantsAndScores The participants and the scores that were randomly assigned to them.
      * @param match Id of match that was selected. Can be null.
      */
-    public Pool(List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency) {
+    public Pool(List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency, long createdTimestamp) {
         // TODO: Precondition to count that there is at least five participants.
         this.participantsAndScores = participantsAndScores;
         this.match = match;
         this.bet = bet;
         this.currency = currency;
+        this.createdTimestamp = createdTimestamp;
     }
 
     public String getOwner() {

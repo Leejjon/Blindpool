@@ -1,6 +1,7 @@
 package net.leejjon.blindpool.storage;
 
 import com.google.appengine.api.datastore.*;
+import com.google.cloud.Timestamp;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.leejjon.blindpool.logic.ScoreGenerator;
@@ -13,7 +14,10 @@ import net.leejjon.blindpool.storage.persistence.PoolProperties;
 import org.hashids.Hashids;
 
 import java.lang.reflect.Type;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -49,6 +53,12 @@ public class PoolDataStore {
         Entity pool = new Entity(KindType.POOL.toString());
         pool.setProperty(PoolProperties.PARTICIPANTS_AND_SCORES.name(), new Gson().toJson(participantScores));
 
+        // I think I should only be using Java 8 time libraries, however Google Datastore has java.util.Date
+        // as the recommended way to store a timestamp.
+        // https://cloud.google.com/appengine/docs/standard/java/datastore/entities#Java_Properties_and_value_types
+        OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
+        pool.setProperty(PoolProperties.CREATED_TIMESTAMP.name(), Date.from(utc.toInstant()));
+
         // Store the new pool entity and return the key.
         Key key = datastore.put(pool);
         log.info("Key is: " + key.toString());
@@ -81,16 +91,16 @@ public class PoolDataStore {
         } else {
             long decodedKey = keys[0];
 
-            Entity entity = null;
             try {
-                entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey)));
+                Entity entity = datastore.get(KeyFactory.stringToKey(KeyFactory.createKeyString(KindType.POOL.toString(), decodedKey)));
 
                 String jsonizedParticipantsAndScores = entity.getProperty(PoolProperties.PARTICIPANTS_AND_SCORES.name()).toString();
+                Date createdTimestamp = (Date) entity.getProperty(PoolProperties.CREATED_TIMESTAMP.name());
 
                 Type listType = new TypeToken<ArrayList<ParticipantScore>>(){}.getType();
                 ArrayList<ParticipantScore> participantScores = new Gson().fromJson(jsonizedParticipantsAndScores, listType);
 
-                return Optional.of(new Pool(entity.getKey().getId(), participantScores, null, null, null));
+                return Optional.of(new Pool(entity.getKey().getId(), participantScores, null, null, null, createdTimestamp.getTime()));
             } catch (EntityNotFoundException e) {
                 log.warning("Could not find entity for key " + key);
                 return Optional.empty();
