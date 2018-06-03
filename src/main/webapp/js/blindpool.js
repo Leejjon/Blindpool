@@ -10,7 +10,7 @@ function getParticipants() {
     const empty = "";
     let participants = [];
     let i = 1;
-    let participant = getParticipant(1);
+    let participant = getParticipant(i);
     for (; getParticipant(i) != null; participant = getParticipant(i)) {
         if (participant.value !== empty) {
             participants.push(participant.value);
@@ -26,8 +26,32 @@ function getParticipant(id) {
     return document.getElementById(PARTICIPANT_NAME + id);
 }
 
-function addParticipant() {
+function calculateNextId() {
+    // First calculate what the next id needs to be.
+    let i = 1;
+    let participant = getParticipant(i);
+    for (; participant != null; participant = getParticipant(i)) {
+        i++;
+    }
+    return i;
+}
 
+function addNextParticipant() {
+    let nextId = calculateNextId();
+    let newParticipant = document.createElement("tr");
+    let removeParticipantMessage = MESSAGE_BUNDLE["remove.participant"];
+    newParticipant.innerHTML = `<td><input id="participantName${nextId}" class="nameInput" autocomplete="off" type="text" value=""></td>
+                                <td><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" disabled></td>
+                                <td><button class="hostAndRemoveColumn" tabindex="-1" id="participantRemoveButton${nextId}" onclick="removeParticipant(${nextId})">${removeParticipantMessage}</button></td>`;
+    newParticipant.id = "participant" + nextId;
+
+    // Place the new participant just above the addParticipantButton.
+    let addParticipantButton = document.getElementById("addParticipantButtonRow");
+    addParticipantButton.parentNode.insertBefore(newParticipant, addParticipantButton);
+
+    currentNumberOfPlayers++;
+
+    document.getElementById("participantName" + nextId).focus();
 }
 
 function removeParticipant(id) {
@@ -164,7 +188,6 @@ function getAjax(url, param, success) {
     }
 
     xhr.open('GET', url, true);
-    // xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(null);
     xhr.onreadystatechange = function(){
         if (xhr.readyState > 3 && xhr.status == 200) {

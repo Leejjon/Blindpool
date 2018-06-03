@@ -45,7 +45,7 @@
             </c:otherwise>
         </c:choose>
     </h1>
-    <table>
+    <table id="poolTable">
         <c:if test="${not empty requestScope.poolData}">
             <tr>
                 <td colspan="3">
@@ -83,8 +83,8 @@
                         </c:choose>
                     </tr>
                 </c:forEach>
-                <tr>
-                    <td colspan="2"><button id="addParticipantButton"><fmt:message key="add.participant"/></button></td>
+                <tr id="addParticipantButtonRow">
+                    <td colspan="2"><button id="addParticipantButton" onclick="addNextParticipant()"><fmt:message key="add.participant"/></button></td>
                 </tr>
             </c:when>
             <c:otherwise>
