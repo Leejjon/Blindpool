@@ -133,7 +133,7 @@ function loadCreatedPool(data) {
         fillScoreColumns(scores);
         showScoreColumns();
         hideHostAddAndRemoveButtons();
-        showShareUrlRows();
+        showShareUrlRows(poolData.key);
 
         // TODO: Update title header.
         updateTitleHeader();
@@ -168,11 +168,12 @@ function showScoreColumns() {
     }
 }
 
-function showShareUrlRows() {
+function showShareUrlRows(poolDataKey) {
     let shareRows = document.getElementsByClassName("shareRow");
     for (let i = 0; i < shareRows.length; i++) {
         shareRows[i].style.display = "block";
     }
+    document.getElementById("shareUrl").value = `https://blindpool.com/?pool=${poolDataKey}`;
 }
 
 function hideHostAddAndRemoveButtons() {

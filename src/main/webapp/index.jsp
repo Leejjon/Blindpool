@@ -6,12 +6,15 @@
 
 <!-- Constant variables -->
 <c:set var="internationalDomain" value="https://blindpool.com" scope="page"/>
-<c:set var="dutchDomain" value="https://blindepoule.nu" scope="page"/>
+<c:set var="dutchDomain" value="https://blindepool.nl" scope="page"/>
 <c:set var="defaultNumberOfPlayers" value="5" scope="page"/>
 
 <%-- If the language is Dutch, show dutch! --%>
 <c:choose>
     <c:when test="${fn:endsWith(pageContext.request.serverName, 'blindepoule.nu')}">
+        <c:set var="language" value="nl" scope="session"/>
+    </c:when>
+    <c:when test="${fn:endsWith(pageContext.request.serverName, 'blindepool.nl')}">
         <c:set var="language" value="nl" scope="session"/>
     </c:when>
     <c:otherwise>
