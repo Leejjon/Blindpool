@@ -1,9 +1,13 @@
-.shareUrl {
-    width: 81%;
-}
-
 .scoreColumn {
     display: none;
+}
+
+.shareRow {
+    display: none;
+}
+
+#shareUrl {
+    width: 6cm;
 }
 
 #makeNewPoolButtonRow {

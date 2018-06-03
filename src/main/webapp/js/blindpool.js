@@ -41,7 +41,7 @@ function addNextParticipant() {
     let newParticipant = document.createElement("tr");
     let removeParticipantMessage = MESSAGE_BUNDLE["remove.participant"];
     newParticipant.innerHTML = `<td><input id="participantName${nextId}" class="nameInput" autocomplete="off" type="text" value=""></td>
-                                <td><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" disabled></td>
+                                <td><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
                                 <td><button class="hostAndRemoveColumn" tabindex="-1" id="participantRemoveButton${nextId}" onclick="removeParticipant(${nextId})">${removeParticipantMessage}</button></td>`;
     newParticipant.id = "participant" + nextId;
 
@@ -99,7 +99,7 @@ function loadPage() {
 
 function getPool() {
     try {
-        var poolParam = getParameterByName("pool");
+        let poolParam = getParameterByName("pool");
         if (poolParam != null) {
             getAjax("/pool/", "?pool=" + poolParam, function (data) {
                 loadRetrievedPool(data);
@@ -133,6 +133,7 @@ function loadCreatedPool(data) {
         fillScoreColumns(scores);
         showScoreColumns();
         hideHostAddAndRemoveButtons();
+        showShareUrlRows();
 
         // TODO: Update title header.
         updateTitleHeader();
@@ -150,6 +151,7 @@ function loadRetrievedPool(data) {
         // }
 
         showScoreColumns();
+        showShareUrlRows();
     }
 }
 
@@ -166,6 +168,13 @@ function showScoreColumns() {
     }
 }
 
+function showShareUrlRows() {
+    let shareRows = document.getElementsByClassName("shareRow");
+    for (let i = 0; i < shareRows.length; i++) {
+        shareRows[i].style.display = "block";
+    }
+}
+
 function hideHostAddAndRemoveButtons() {
     let hostAndRemoveColumns = document.getElementsByClassName("hostAndRemoveColumn");
     for (let i = 0; i < hostAndRemoveColumns.length; i++) {
@@ -178,6 +187,12 @@ function updateTitleHeader() {
     // The first name entered is always the organizer of the pool.
     let organizerName = document.getElementById("participantName1").value;
     document.getElementById("titleHeader").innerHTML = MESSAGE_BUNDLE["owners.pool.title"].replace("{0}'", organizerName);
+}
+
+function copyUrlToClipboard() {
+    var shareUrl = document.getElementById("shareUrl");
+    shareUrl.select();
+    document.execCommand("copy");
 }
 
 function getAjax(url, param, success) {

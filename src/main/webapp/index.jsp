@@ -45,22 +45,22 @@
             </c:otherwise>
         </c:choose>
     </h1>
+    <table>
+        <tr class="shareRow">
+            <td colspan="3">
+                <fmt:message key="share.url.header"/><br/>
+            </td>
+        </tr>
+        <tr class="shareRow" style="white-space:nowrap;">
+            <td colspan="3" >
+                <input id="shareUrl" autocomplete="off" type="text" readonly="readonly"
+                       value="https://blindpool.com/?pool=${requestScope.poolData.key}">
+                <button onclick="copyUrlToClipboard()"><fmt:message key="copy.button"/></button>
+                <br/>&nbsp;
+            </td>
+        </tr>
+    </table>
     <table id="poolTable">
-        <c:if test="${not empty requestScope.poolData}">
-            <tr>
-                <td colspan="3">
-                    <fmt:message key="share.url.header"/><br/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" style="white-space:nowrap;">
-                    <input class="shareUrl" autocomplete="off" type="text" disabled
-                           value="https://blindpool.com/?pool=${requestScope.poolData.key}">
-                    <button>Copy</button>
-                    <br/>&nbsp;
-                </td>
-            </tr>
-        </c:if>
         <tr>
             <td><fmt:message key="entry.name"/></td>
             <td><label class="scoreColumn"><fmt:message key="entry.score"/></label></td>
@@ -71,7 +71,7 @@
                 <c:forEach begin="1" end="${defaultNumberOfPlayers}" varStatus="loop">
                     <tr id="participant${loop.index}">
                         <td><input id="participantName${loop.index}" class="nameInput" autocomplete="off" type="text" value=""></td>
-                        <td><input  id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="" disabled></td>
+                        <td><input  id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
                         <%-- You cannot remove the owner --%>
                         <c:choose>
                             <c:when test="${loop.index eq 1}">
@@ -84,14 +84,14 @@
                     </tr>
                 </c:forEach>
                 <tr id="addParticipantButtonRow">
-                    <td colspan="2"><button id="addParticipantButton" onclick="addNextParticipant()"><fmt:message key="add.participant"/></button></td>
+                    <td colspan="3"><button id="addParticipantButton" onclick="addNextParticipant()"><fmt:message key="add.participant"/></button></td>
                 </tr>
             </c:when>
             <c:otherwise>
                 <c:forEach var="current" items="${requestScope.poolData.participantsAndScores}" varStatus="loop">
                     <tr id="participant${loop.index}">
                         <td><input class="nameInput" autocomplete="off" type="text" value="${current.participant.name}"></td>
-                        <td><input id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" disabled></td>
+                        <td><input id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" readonly="readonly"></td>
                         <td><!-- Using colspan in the other cells fucks this up, so I'll leave this empty cell --></td>
                     </tr>
                 </c:forEach>
