@@ -22,7 +22,8 @@ public class IndexServlet extends HttpServlet {
         if (poolParameter != null && !poolParameter.isEmpty()) {
             PoolDataStore pds = PoolDataStore.getInstance();
 
-            pds.getPool(poolParameter).ifPresent(pool -> req.setAttribute("poolData", pool));
+            pds.getPool(poolParameter).ifPresent(pool ->
+                    req.setAttribute("poolData", pool));
         }
 
         // Still just load the contents of index.jsp

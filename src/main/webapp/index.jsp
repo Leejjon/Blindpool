@@ -31,9 +31,9 @@
     <script src="js/blindpool.js"></script>
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<body onload="getPool()">
+<body onload="loadPage()">
 <div id="createPool" align="center">
-    <h1>
+    <h1 id="titleHeader">
         <c:choose>
             <c:when test="${empty requestScope.poolData}">
                 <fmt:message key="create.pool.title"/>
@@ -54,7 +54,7 @@
             </tr>
             <tr>
                 <td colspan="3" style="white-space:nowrap;">
-                    <input class="shareUrl" type="text" disabled
+                    <input class="shareUrl" autocomplete="off" type="text" disabled
                            value="https://blindpool.com/?pool=${requestScope.poolData.key}">
                     <button>Copy</button>
                     <br/>&nbsp;
@@ -62,49 +62,51 @@
             </tr>
         </c:if>
         <tr>
-            <td colspan="2"><fmt:message key="entry.name"/></td>
-            <td class="scoreColumn"><fmt:message key="entry.score"/></td>
+            <td><fmt:message key="entry.name"/></td>
+            <td><label class="scoreColumn"><fmt:message key="entry.score"/></label></td>
+            <td><!-- Using colspan in the other cells fucks this up, so I'll leave this empty cell --></td>
         </tr>
         <c:choose>
             <c:when test="${empty requestScope.poolData}">
                 <c:forEach begin="1" end="${defaultNumberOfPlayers}" varStatus="loop">
                     <tr id="participant${loop.index}">
-                        <td><input id="participantName${loop.index}" class="nameInput" type="text" value=""></td>
-                        <td><input class="scoreColumn" type="text" value="" disabled></td>
+                        <td><input id="participantName${loop.index}" class="nameInput" autocomplete="off" type="text" value=""></td>
+                        <td><input  id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="" disabled></td>
                         <%-- You cannot remove the owner --%>
                         <c:choose>
                             <c:when test="${loop.index eq 1}">
-                                <td><fmt:message key="host"/></td>
+                                <td><label class="hostAndRemoveColumn"><fmt:message key="host"/></label></td>
                             </c:when>
                             <c:otherwise>
-                                <td><button tabindex="-1" id="participantRemoveButton${loop.index}" onclick="removeParticipant(${loop.index})"><fmt:message key="remove.participant"/></button></td>
+                                <td><button class="hostAndRemoveColumn" tabindex="-1" id="participantRemoveButton${loop.index}" onclick="removeParticipant(${loop.index})"><fmt:message key="remove.participant"/></button></td>
                             </c:otherwise>
                         </c:choose>
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td colspan="2"><button><fmt:message key="add.participant"/></button></td>
-                </tr>
-                <tr>
-                    <td colspan="3" align="center">
-                        <p><button id="createPoolButton" onclick="createPool()"><fmt:message key="create.button"/></button></p>
-                    </td>
+                    <td colspan="2"><button id="addParticipantButton"><fmt:message key="add.participant"/></button></td>
                 </tr>
             </c:when>
             <c:otherwise>
                 <c:forEach var="current" items="${requestScope.poolData.participantsAndScores}" varStatus="loop">
                     <tr id="participant${loop.index}">
-                        <td colspan="2"><input class="nameInput" type="text" value="${current.participant.name}"></td>
-                        <td><input class="scoreColumn" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" disabled></td>
+                        <td><input class="nameInput" autocomplete="off" type="text" value="${current.participant.name}"></td>
+                        <td><input id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="${current.score.homeClubScore}-${current.score.awayClubScore}" disabled></td>
+                        <td><!-- Using colspan in the other cells fucks this up, so I'll leave this empty cell --></td>
                     </tr>
                 </c:forEach>
-                <tr>
-                    <td colspan="3" align="center">
-                        <p><button id="makeNewPoolButton"><fmt:message key="make.another.pool.button"/></button></p>
-                    </td>
-                </tr>
             </c:otherwise>
         </c:choose>
+        <tr id="createPoolButtonRow">
+            <td colspan="3" align="center">
+                <p><button onclick="createPool()"><fmt:message key="create.button"/></button></p>
+            </td>
+        </tr>
+        <tr id="makeNewPoolButtonRow">
+            <td colspan="3" align="center">
+                <p><button><fmt:message key="make.another.pool.button"/></button></p>
+            </td>
+        </tr>
     </table>
     &nbsp;
 </div>

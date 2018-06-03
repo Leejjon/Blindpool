@@ -3,6 +3,8 @@ let currentNumberOfPlayers = 5;
 const PARTICIPANT_ROW = "participant";
 const PARTICIPANT_NAME = "participantName";
 const PARTICIPANT_REMOVE_BUTTON = "participantRemoveButton";
+const SCORE_FIELD = "scoreField";
+let MESSAGE_BUNDLE;
 
 function getParticipants() {
     const empty = "";
@@ -40,6 +42,7 @@ function removeParticipant(id) {
             document.getElementById(PARTICIPANT_NAME + i).id = PARTICIPANT_NAME + updatedId;
             document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).setAttribute('onclick',`removeParticipant(${updatedId})`);
             document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).id = PARTICIPANT_REMOVE_BUTTON + updatedId
+            document.getElementById(SCORE_FIELD + i).id = SCORE_FIELD + updatedId;
         }
         currentNumberOfPlayers--;
     } else {
@@ -58,11 +61,23 @@ function createPool() {
     }
 }
 
+function loadPage() {
+    try {
+        getAjax("/messages/", null, function (data) {
+            MESSAGE_BUNDLE = JSON.parse(data);
+        });
+
+        getPool();
+    } catch (error) {
+        alert(error);
+    }
+}
+
 function getPool() {
     try {
         var poolParam = getParameterByName("pool");
         if (poolParam != null) {
-            getAjax("/pool/", poolParam, function (data) {
+            getAjax("/pool/", "?pool=" + poolParam, function (data) {
                 loadRetrievedPool(data);
             });
         }
@@ -81,43 +96,73 @@ function loadCreatedPool(data) {
     // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     if (data != null && JSON.parse(data).key != null) {
         let poolData = JSON.parse(data);
-        // For now, just redirect:
-        let currentUrl = window.location.href;
         let queryString = '?pool=' + poolData.key;
+        let scores = poolData.scores;
 
-
-        if (!currentUrl.endsWith(queryString)) {
-            window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
-        }
-        // If this function was initiated from loading the page, it means the query parameter might already be there.
-        // So only update the window history state if this method was called from the createPool function.
         // if (!currentUrl.endsWith(queryString)) {
-        //     var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
-        //     window.history.pushState({path:newUrl},'',newUrl);
+        //     window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
         // }
 
-        // TODO: Fill in the scores.
+        let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+        window.history.pushState({path:newUrl},'',newUrl);
+
+        fillScoreColumns(scores);
         showScoreColumns();
+        hideHostAddAndRemoveButtons();
+
+        // TODO: Update title header.
+        updateTitleHeader();
     }
 }
 
 function loadRetrievedPool(data) {
     if (data != null && JSON.parse(data).key != null) {
+        let poolData = JSON.parse(data);
+        let participantsAndScores = poolData.participantsAndScores;
+        console.log(participantsAndScores.length);
+
+        // for (let i = 0; i < scoreColumns.length; i++) {
+        //
+        // }
 
         showScoreColumns();
     }
 }
 
+function fillScoreColumns(scores) {
+    for (let i = 0; i < scores.length; i++) {
+        document.getElementById(SCORE_FIELD + (i + 1)).value = scores[i].homeClubScore + "-" + scores[i].awayClubScore;
+    }
+}
+
 function showScoreColumns() {
-    var scoreColumns = document.getElementsByClassName("scoreColumn");
-    for (var i = 0; i < scoreColumns.length; i++) {
+    let scoreColumns = document.getElementsByClassName("scoreColumn");
+    for (let i = 0; i < scoreColumns.length; i++) {
         scoreColumns[i].style.display = "block";
     }
 }
 
-function getAjax(url, key, success) {
+function hideHostAddAndRemoveButtons() {
+    let hostAndRemoveColumns = document.getElementsByClassName("hostAndRemoveColumn");
+    for (let i = 0; i < hostAndRemoveColumns.length; i++) {
+        hostAndRemoveColumns[i].style.display = "none";
+    }
+    document.getElementById("addParticipantButton").style.display = "none";
+}
+
+function updateTitleHeader() {
+    // The first name entered is always the organizer of the pool.
+    let organizerName = document.getElementById("participantName1").value;
+    document.getElementById("titleHeader").innerHTML = MESSAGE_BUNDLE["owners.pool.title"].replace("{0}'", organizerName);
+}
+
+function getAjax(url, param, success) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-    url = url + "?pool=" + key;
+
+    if (param != null) {
+        url = url + param;
+    }
+
     xhr.open('GET', url, true);
     // xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(null);

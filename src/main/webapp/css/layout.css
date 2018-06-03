@@ -5,3 +5,7 @@
 .scoreColumn {
     display: none;
 }
+
+#makeNewPoolButtonRow {
+    display: none;
+}

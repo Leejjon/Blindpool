@@ -34,10 +34,9 @@ public class PoolServlet extends HttpServlet {
         Optional<Pool> optionalPool = PoolDataStore.getInstance().getPool(poolKeyParameter);
         if (optionalPool.isPresent()) {
             Pool pool = optionalPool.get();
-            GetPoolResponse poolResponse = new GetPoolResponse(pool.getKey());
 
             PrintWriter writer = response.getWriter();
-            writer.println(new Gson().toJson(poolResponse));
+            writer.println(new Gson().toJson(pool));
             writer.close();
         } else {
             PrintWriter writer = response.getWriter();
