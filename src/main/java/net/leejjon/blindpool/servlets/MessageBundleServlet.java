@@ -40,9 +40,4 @@ public class MessageBundleServlet extends HttpServlet {
         prop.load(MessageBundleServlet.class.getResourceAsStream("/net/leejjon/blindpool/i18n/" + fileName));
         return prop;
     }
-
-    public static void main(String[] args) throws IOException {
-        new MessageBundleServlet();
-        getProperties("messages.properties");
-    }
 }

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet("/")
+@WebServlet("")
 public class IndexServlet extends HttpServlet {
     private final static Logger log = Logger.getLogger(IndexServlet.class.getName());
 

@@ -13,3 +13,8 @@
 #makeNewPoolButtonRow {
     display: none;
 }
+
+#errorMessage {
+    color: red;
+    display: none;
+}

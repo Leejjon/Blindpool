@@ -36,6 +36,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body onload="loadPage()">
 <div id="createPool" align="center">
+
     <h1 id="titleHeader">
         <c:choose>
             <c:when test="${empty requestScope.poolData}">
@@ -48,6 +49,7 @@
             </c:otherwise>
         </c:choose>
     </h1>
+    <label id="errorMessage"></label>
     <table>
         <tr class="shareRow">
             <td colspan="3">
@@ -74,7 +76,7 @@
                 <c:forEach begin="1" end="${defaultNumberOfPlayers}" varStatus="loop">
                     <tr id="participant${loop.index}">
                         <td><input id="participantName${loop.index}" class="nameInput" autocomplete="off" type="text" value=""></td>
-                        <td><input  id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
+                        <td><input id="scoreField${loop.index}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
                         <%-- You cannot remove the owner --%>
                         <c:choose>
                             <c:when test="${loop.index eq 1}">

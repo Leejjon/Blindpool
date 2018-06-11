@@ -29,8 +29,6 @@ public class ScoreGeneratorTest {
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
         List<ParticipantScore> participantScores = ScoreGenerator.assignRandomScores(participantList);
         assertEquals(participantNames.length, participantScores.size());
-
-        participantScores.forEach(participantScore -> System.out.println(participantScore.getScore().getAwayClubScore()));
     }
 
     @Test
@@ -40,7 +38,5 @@ public class ScoreGeneratorTest {
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
         List<ParticipantScore> participantScores = ScoreGenerator.assignRandomScores(participantList);
         assertEquals(participantNames.length, participantScores.size());
-
-        participantScores.forEach(participantScore -> System.out.println(participantScore.getScore().getAwayClubScore()));
     }
 }

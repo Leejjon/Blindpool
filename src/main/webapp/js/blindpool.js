@@ -16,7 +16,8 @@ function getParticipants() {
             participants.push(participant.value);
             i++;
         } else {
-            throw "Enter all fields! Number filled: " + (i - 1);
+            participant.focus();
+            throw "enter.all.fields";
         }
     }
     return participants;
@@ -75,14 +76,35 @@ function removeParticipant(id) {
 }
 
 function createPool() {
+    hideError();
     try {
-        let participants = getParticipants();
+        let participants = validateFields();
         postAjax("/pool/", participants, function (data) {
             loadCreatedPool(data);
         });
     } catch (error) {
-        alert(error);
+        showError(MESSAGE_BUNDLE[error]);
     }
+}
+
+function validateFields() {
+    hideError();
+
+    let participants = getParticipants();
+
+    let sortedParticipants = participants.slice().sort(); // You can define the comparing function here.
+    // JS by default uses a crappy string compare.
+    // (we use slice to clone the array so the
+    // original array won't be modified)
+    let results = [];
+    for (var i = 0; i < sortedParticipants.length - 1; i++) {
+        if (sortedParticipants[i + 1] === sortedParticipants[i]) {
+            results.push(sortedParticipants[i]);
+        }
+    }
+
+    console.log(results);
+    return participants;
 }
 
 function loadPage() {
@@ -146,13 +168,25 @@ function loadRetrievedPool(data) {
         let participantsAndScores = poolData.participantsAndScores;
         console.log(participantsAndScores.length);
 
-        // for (let i = 0; i < scoreColumns.length; i++) {
-        //
-        // }
+        // TODO: Fill fields in page with data from json request.
 
         showScoreColumns();
         showShareUrlRows();
+    } else if (data != null && JSON.parse(data).errorMessage != null) {
+        showError(MESSAGE_BUNDLE[JSON.parse(data).errorMessage]);
     }
+}
+
+function showError(error) {
+    let errorMessageLabel = document.getElementById("errorMessage");
+    errorMessageLabel.style.display = "block";
+    errorMessageLabel.innerHTML = error;
+}
+
+function hideError() {
+    let errorMessageLabel = document.getElementById("errorMessage");
+    errorMessageLabel.style.display = "none";
+    errorMessageLabel.innerHTML = "";
 }
 
 function fillScoreColumns(scores) {
@@ -206,7 +240,7 @@ function getAjax(url, param, success) {
     xhr.open('GET', url, true);
     xhr.send(null);
     xhr.onreadystatechange = function(){
-        if (xhr.readyState > 3 && xhr.status == 200) {
+        if (xhr.readyState > 3 && (xhr.status === 200 || xhr.status === 404)) {
             success(xhr.responseText);
         }
     }

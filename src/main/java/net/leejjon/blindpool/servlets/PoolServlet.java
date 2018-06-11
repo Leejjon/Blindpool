@@ -2,6 +2,7 @@ package net.leejjon.blindpool.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import net.leejjon.blindpool.constants.ResourceBundleKeys;
 import net.leejjon.blindpool.model.*;
 import net.leejjon.blindpool.storage.PoolDataStore;
 
@@ -39,8 +40,9 @@ public class PoolServlet extends HttpServlet {
             writer.println(new Gson().toJson(pool));
             writer.close();
         } else {
+            response.setStatus(404);
             PrintWriter writer = response.getWriter();
-            writer.println("Your request sucked.");
+            writer.println(new Gson().toJson(new ErrorResponse(ResourceBundleKeys.POOL_NOT_FOUND)));
             writer.close();
         }
     }
@@ -55,8 +57,10 @@ public class PoolServlet extends HttpServlet {
         String line;
         try {
             BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null) {
                 jb.append(line);
+            }
+
         } catch (Exception e) {
             response.setStatus(400);
             PrintWriter writer = response.getWriter();
