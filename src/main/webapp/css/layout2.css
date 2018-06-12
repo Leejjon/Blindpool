@@ -1,9 +1,38 @@
 #logoImage {
-    width: 400px;
-    height: 75px;
+    width: 300px;
+    height: 57px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /*max-height: 257px;*/
+    /*max-width: 1366px;*/
 }
 
 .green.accent-5 {
     background-color: #00cc47 !important;
 }
 
+.input-field {
+    width: 250px;
+}
+
+table {
+    max-width: 300px;
+}
+
+tr {
+    /* Remove the divider that is being added after every cell. */
+    border-bottom: 0px;
+}
+
+th {
+    margin: 0px;
+    padding: 1rem 0px 0px;
+}
+
+td {margin: 0px;padding: 0px;}
+
+.input-field {
+    position: relative;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
