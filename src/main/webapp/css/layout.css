@@ -1,20 +1,61 @@
-.scoreColumn {
-    display: none;
+#logoImage {
+    width: 300px;
+    height: 57px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /*max-height: 257px;*/
+    /*max-width: 1366px;*/
 }
 
-.shareRow {
-    display: none;
+body {
+    font-family: 'Archivo', sans-serif;
 }
 
-#shareUrl {
-    width: 6cm;
+.green.accent-5 {
+    background-color: #00cc47 !important;
 }
 
-#makeNewPoolButtonRow {
-    display: none;
+.navbar-item {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-#errorMessage {
-    color: red;
-    display: none;
+#languageDropdown {
+    margin: 0;
+}
+
+.input-field {
+    width: 250px;
+}
+
+table {
+    max-width: 300px;
+}
+
+tr {
+    /* Remove the divider that is being added after every cell. */
+    border-bottom: 0;
+}
+
+th {
+    margin: 0;
+    padding: 1rem 0 0;
+}
+
+td {margin: 0;padding: 0;}
+
+.input-field {
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.numberColumn {
+    vertical-align: text-top;
+    padding-top: 0.9em;
+    padding-right: 10px;
+}
+
+#createPoolButton {
+    padding-bottom: 10px;
 }

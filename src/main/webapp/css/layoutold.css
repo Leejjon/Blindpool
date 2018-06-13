@@ -1,0 +1,20 @@
+.scoreColumn {
+    display: none;
+}
+
+.shareRow {
+    display: none;
+}
+
+#shareUrl {
+    width: 6cm;
+}
+
+#makeNewPoolButtonRow {
+    display: none;
+}
+
+#errorMessage {
+    color: red;
+    display: none;
+}
