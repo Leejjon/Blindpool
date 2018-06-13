@@ -32,9 +32,13 @@
 
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Archivo" rel="stylesheet">
+
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
     <link rel="stylesheet" type="text/css" href="css/layout2.css">
+
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -53,7 +57,6 @@
                     <li><a href="#!">Nederlands</a></li>
                 </ul>
                 </li>
-
             </ul>
         </div>
     </nav>
@@ -65,62 +68,67 @@
 
         <table>
             <tr>
-                <th>&nbsp;&nbsp;&nbsp;<fmt:message key="entry.name"/></th>
+                <th></th>
+                <th><fmt:message key="entry.name"/></th>
+                <th></th>
             </tr>
             <tr>
+                <td class="numberColumn"><b>1</b></td>
                 <td>
                     <div class="input-field" style="white-space:nowrap;">
-                        <b>1</b>&nbsp;&nbsp;<input placeholder="Enter" id="participantName1" type="text" class="validate">
+                        <%-- This invisible fmt tag puts the resource bundle value in a jstl variable. --%>
+                        <fmt:message key="host" var="hostPlaceHolder" />
+                        <input placeholder="${hostPlaceHolder}" id="participantName1" type="text" class="validate">
                     </div>
                 </td>
                 <td>
-                    &nbsp;<i class="material-icons">person</i>
+                    <i class="material-icons" onclick="removeParticipant(1)">person</i>
                 </td>
             </tr>
             <tr>
+                <td>2</td>
                 <td>
                     <div class="input-field" style="white-space:nowrap;">
-                        2&nbsp;&nbsp;<input placeholder="Enter" id="participantName2" type="text" class="validate">
+                        <input placeholder="Player 2" id="participantName2" type="text" class="validate">
                     </div>
                 </td>
                 <td>
-                    &nbsp;<i class="material-icons">remove_circle_outline</i>
+                    <i class="material-icons" onclick="removeParticipant(2)">remove_circle_outline</i>
                 </td>
             </tr>
             <tr>
+                <td>3</td>
                 <td>
                     <div class="input-field" style="white-space:nowrap;">
-                        3&nbsp;&nbsp;<input placeholder="Enter" id="participantName3" type="text" class="validate">
+                        <input placeholder="Player 3" id="participantName3" type="text" class="validate">
                     </div>
                 </td>
                 <td>
-                    &nbsp;<i class="material-icons">remove_circle_outline</i>
+                    <i class="material-icons" onclick="removeParticipant(3)">remove_circle_outline</i>
                 </td>
             </tr>
             <tr>
+                <td>4</td>
                 <td>
                     <div class="input-field" style="white-space:nowrap;">
-                        4&nbsp;&nbsp;<input placeholder="Enter" id="participantName4" type="text" class="validate">
+                        <input placeholder="Player 4" id="participantName4" type="text" class="validate">
                     </div>
                 </td>
                 <td>
-                    &nbsp;<a class="waves-effect waves-teal btn-floating btn-small blue-grey lighten-3"><i class="material-icons">remove</i></a>
+                    <i class="material-icons" onclick="removeParticipant(4)">remove_circle_outline</i>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <div class="input-field" style="white-space:nowrap;">
-                        5&nbsp;&nbsp;<input placeholder="Enter" id="participantName5" type="text" class="validate">
-                    </div>
+                <td></td>
+                <td style="text-align: center; line-height: 80%;"><br />
+                    <a class="btn-floating btn-small waves-effect waves-light black"><i class="material-icons" style="color: white;" onclick="addNextParticipant()">add</i></a>
                 </td>
-                <td>
-                    &nbsp;<a class="btn-floating btn-small waves-effect waves-light black"><i class="material-icons" style="color: white;">remove</i></a>
-                </td>
+                <td></td>
             </tr>
             <tr>
-                <td colspan="2" align="left"><br />
-                    &nbsp;&nbsp;&nbsp<a class="btn-floating btn-small waves-effect waves-light black"><i class="material-icons" style="color: white;">add</i></a><i class="material-icons">add_circle_outline</i>
-                </td>
+                <td></td>
+                <td style="text-align: center">&nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5"><b><fmt:message key="create.button"/></b></a></td>
+                <td></td>
             </tr>
         </table>
     </div>

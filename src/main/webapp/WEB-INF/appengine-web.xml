@@ -5,11 +5,13 @@
     <runtime>java8</runtime>
     <static-files>
         <include path="js/blindpool.js" />
+        <include path="js/blindpool2.js" />
         <include path="js/materialize.js" />
         <include path="css/layout.css" />
         <include path="css/layout2.css" />
         <include path="css/materialize.css" />
         <include path="images/logo.png" />
         <include path="js/jquery-3.3.1.js" />
+        <include path="favicon.png"/>
     </static-files>
 </appengine-web-app>

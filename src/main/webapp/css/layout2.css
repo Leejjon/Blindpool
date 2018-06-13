@@ -7,6 +7,10 @@
     /*max-width: 1366px;*/
 }
 
+body {
+    font-family: 'Archivo', sans-serif;
+}
+
 .green.accent-5 {
     background-color: #00cc47 !important;
 }
@@ -35,4 +39,12 @@ td {margin: 0px;padding: 0px;}
     position: relative;
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.numberColumn {
+    padding-right: 10px;
+}
+
+#createPoolButton {
+    padding-bottom: 10px;
 }
