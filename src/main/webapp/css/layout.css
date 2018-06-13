@@ -59,3 +59,7 @@ td {margin: 0;padding: 0;}
 #createPoolButton {
     padding-bottom: 10px;
 }
+
+.scoreColumn {
+    display: none;
+}
