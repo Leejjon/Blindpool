@@ -52,8 +52,13 @@ td {margin: 0;padding: 0;}
 
 .numberColumn {
     vertical-align: text-top;
-    padding-top: 0.9em;
+    padding-top: 0.85em;
     padding-right: 10px;
+}
+
+.iconColumn {
+    padding-top: 0.79em;
+    vertical-align: top;
 }
 
 #createPoolButton {

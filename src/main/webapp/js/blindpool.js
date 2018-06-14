@@ -13,24 +13,35 @@ function getParticipants() {
     let participants = [];
     let i = 1;
     let participant = getParticipant(i);
+
+    // Reading participants and verifying if the field isn't empty.
     for (; getParticipant(i) != null; participant = getParticipant(i)) {
         if (participant.value !== empty) {
+
+            // Check for duplicates.
+            if (i > 1) {
+                let otherParticipants = participants.slice(0, i - 1);
+                let indexOfPossibleDuplicate = otherParticipants.indexOf(participant.value);
+                if (indexOfPossibleDuplicate !== -1) {
+                    participant.classList.add("invalid");
+                    participant.focus();
+                    document.getElementById(PARTICIPANT_NAME_VALIDATION + i).style.display = "block";
+                    document.getElementById(PARTICIPANT_NAME_VALIDATION + i).setAttribute("data-error", MESSAGE_BUNDLE["duplicate.name"]);
+                    throw "duplicate.name";
+                }
+            }
+
             participants.push(participant.value);
             i++;
         } else {
-            // The magic materialize framework will only start to detect whether a field is empty once it has been selected.
-            // So we call the blur() function once to trigger materialize's detection that the field cannot be empty.
-            // Of course the blur() implementation is clever enough to not do shit if there is no focus. So we focus() first.
-            participant.focus();
-            participant.blur();
-            // Since blur() removes the focus, we trigger focus once again (sigh).
+            participant.classList.add("invalid");
             participant.focus();
             document.getElementById(PARTICIPANT_NAME_VALIDATION + i).style.display = "block";
-            document.getElementById(PARTICIPANT_NAME_VALIDATION + i).innerText = MESSAGE_BUNDLE["enter.all.fields"];
-            document.getElementById(PARTICIPANT_NAME_VALIDATION + i).style.color = "red";
+            document.getElementById(PARTICIPANT_NAME_VALIDATION + i).setAttribute("data-error", MESSAGE_BUNDLE["enter.all.fields"]);
             throw "enter.all.fields";
         }
     }
+
     return participants;
 }
 
@@ -54,11 +65,11 @@ function addNextParticipant() {
     let playerPlaceHolder = MESSAGE_BUNDLE["player.name.placeholder"];
 
     newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
-        <td><div class="input-field" style="white-space:nowrap;">
-            <input maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideError(${nextId})">
+        <td><div class="input-field" id="inputFieldDiv${nextId}">
+            <input maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onkeyup="unselect(${nextId})"">
             <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
         </div></td>
-        <td><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
+        <td class="iconColumn"><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
         <td><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>`;
 
     newParticipant.id = "participant" + nextId;
@@ -71,7 +82,6 @@ function addNextParticipant() {
 
     document.getElementById("participantName" + nextId).focus();
 }
-
 
 function removeParticipant(id) {
     if (id > 0 && id <= currentNumberOfPlayers) {
@@ -86,9 +96,11 @@ function removeParticipant(id) {
             document.getElementById(PARTICIPANT_NUMBER_COLUMN + i).innerHTML = updatedId;
             document.getElementById(PARTICIPANT_NUMBER_COLUMN + i).id = PARTICIPANT_NUMBER_COLUMN + updatedId;
             document.getElementById(PARTICIPANT_ROW + i).id = PARTICIPANT_ROW + updatedId;
-            document.getElementById(PARTICIPANT_NAME + i).setAttribute('placeholder', playerPlaceHolder + " " + updatedId);
+            document.getElementById(PARTICIPANT_NAME + i).setAttribute("onfocus", `selectNumber(${updatedId})`);
+            document.getElementById(PARTICIPANT_NAME + i).setAttribute("onblur", `unselect(${updatedId})`);
+            document.getElementById(PARTICIPANT_NAME + i).setAttribute("placeholder", playerPlaceHolder + " " + updatedId);
             document.getElementById(PARTICIPANT_NAME + i).id = PARTICIPANT_NAME + updatedId;
-            document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).setAttribute('onclick',`removeParticipant(${updatedId})`);
+            document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).setAttribute("onclick",`removeParticipant(${updatedId})`);
             document.getElementById(PARTICIPANT_REMOVE_BUTTON + i).id = PARTICIPANT_REMOVE_BUTTON + updatedId
             document.getElementById(SCORE_FIELD + i).id = SCORE_FIELD + updatedId;
         }
@@ -125,10 +137,6 @@ function validateFields() {
     hideErrors();
 
     let participants = getParticipants();
-
-    for (participant of participants) {
-
-    }
 
     return participants;
 }
@@ -171,8 +179,18 @@ function hideErrors() {
     }
 }
 
-function hideError(number) {
+function hideSolvedErrors(number) {
+    // TODO: On switching after fixing something, the green label doesn't dissapear.
+}
+
+function unselect(number) {
     document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "none";
+
+    let input = document.getElementById(PARTICIPANT_NAME + number);
+    if (input.value.length > 0) {
+        input.classList.remove("invalid");
+    }
+    // document.getElementById(PARTICIPANT_NUMBER_COLUMN + number).innerHTML = `${number}`;
 }
 
 function getAjax(url, param, success) {
