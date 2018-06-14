@@ -63,3 +63,11 @@ td {margin: 0;padding: 0;}
 .scoreColumn {
     display: none;
 }
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: #000 !important;
+}
+
+.helper-text.nameValidation {
+    display: none;
+}

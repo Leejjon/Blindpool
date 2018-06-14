@@ -3,8 +3,36 @@ const PARTICIPANT_ROW = "participant";
 const PARTICIPANT_NAME = "participantName";
 const PARTICIPANT_NUMBER_COLUMN = "numberColumn";
 const PARTICIPANT_REMOVE_BUTTON = "participantRemoveButton";
+const PARTICIPANT_NAME_VALIDATION = "nameValidation";
+const PARTICIPANT_INPUT_DIV = "inputFieldDiv";
 const SCORE_FIELD = "scoreField";
 let MESSAGE_BUNDLE;
+
+function getParticipants() {
+    const empty = "";
+    let participants = [];
+    let i = 1;
+    let participant = getParticipant(i);
+    for (; getParticipant(i) != null; participant = getParticipant(i)) {
+        if (participant.value !== empty) {
+            participants.push(participant.value);
+            i++;
+        } else {
+            // The magic materialize framework will only start to detect whether a field is empty once it has been selected.
+            // So we call the blur() function once to trigger materialize's detection that the field cannot be empty.
+            // Of course the blur() implementation is clever enough to not do shit if there is no focus. So we focus() first.
+            participant.focus();
+            participant.blur();
+            // Since blur() removes the focus, we trigger focus once again (sigh).
+            participant.focus();
+            document.getElementById(PARTICIPANT_NAME_VALIDATION + i).style.display = "block";
+            document.getElementById(PARTICIPANT_NAME_VALIDATION + i).innerText = MESSAGE_BUNDLE["enter.all.fields"];
+            document.getElementById(PARTICIPANT_NAME_VALIDATION + i).style.color = "red";
+            throw "enter.all.fields";
+        }
+    }
+    return participants;
+}
 
 function getParticipant(id) {
     return document.getElementById(PARTICIPANT_NAME + id);
@@ -26,7 +54,10 @@ function addNextParticipant() {
     let playerPlaceHolder = MESSAGE_BUNDLE["player.name.placeholder"];
 
     newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
-        <td><div class="input-field" style="white-space:nowrap;"><input placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate"></div></td>
+        <td><div class="input-field" style="white-space:nowrap;">
+            <input maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideError(${nextId})">
+            <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
+        </div></td>
         <td><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
         <td><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>`;
 
@@ -79,6 +110,70 @@ function loadPage() {
     }
 }
 
+function createPool() {
+    try {
+        let participants = validateFields();
+        // postAjax("/pool/", participants, function (data) {
+        //     loadCreatedPool(data);
+        // });
+    } catch (error) {
+        console.log(MESSAGE_BUNDLE[error]);
+    }
+}
+
+function validateFields() {
+    hideErrors();
+
+    let participants = getParticipants();
+
+    for (participant of participants) {
+
+    }
+
+    return participants;
+}
+
+/**
+ * This function is being called after creating a pool.
+ *
+ * @param data
+ */
+function loadCreatedPool(data) {
+    // According to the following page doing a simple if checks whether the data is null/undefined etc.
+    // https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
+    if (data != null && JSON.parse(data).key != null) {
+        let poolData = JSON.parse(data);
+        let queryString = '?pool=' + poolData.key;
+        let scores = poolData.scores;
+
+        // if (!currentUrl.endsWith(queryString)) {
+        //     window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+        // }
+
+        let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
+        window.history.pushState({path:newUrl},'',newUrl);
+
+        fillScoreColumns(scores);
+        showScoreColumns();
+        hideHostAddAndRemoveButtons();
+        showShareUrlRows(poolData.key);
+
+        // TODO: Update title header.
+        updateTitleHeader();
+    }
+}
+
+function hideErrors() {
+    let errorLabels = document.querySelectorAll('.nameValidation');
+
+    for (let errorLabel of errorLabels) {
+        errorLabel.style.display = "none";
+    }
+}
+
+function hideError(number) {
+    document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "none";
+}
 
 function getAjax(url, param, success) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -94,4 +189,17 @@ function getAjax(url, param, success) {
             success(xhr.responseText);
         }
     }
+}
+
+function postAjax(url, participants, success) {
+    let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    xhr.open('POST', url);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState > 3 && xhr.status === 200) {
+            success(xhr.responseText);
+        }
+    };
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(participants));
+    return xhr;
 }

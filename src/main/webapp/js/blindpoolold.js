@@ -177,7 +177,7 @@ function loadRetrievedPool(data) {
     }
 }
 
-function showError(error) {
+function showError(id, error) {
     let errorMessageLabel = document.getElementById("errorMessage");
     errorMessageLabel.style.display = "block";
     errorMessageLabel.innerHTML = error;

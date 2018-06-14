@@ -37,7 +37,7 @@
 
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
-    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/blindpool.css">
 
     <link rel="icon" type="image/png" href="favicon.png">
 
@@ -50,16 +50,26 @@
     <!-- Language dropdown list -->
     <nav class="green accent-5">
         <div class="nav-wrapper">
-            <%--<a href="#" class="brand-logo">Logo</a>--%>
+            <a href="#!" class="navbar-item">&nbsp;<b><fmt:message key="what.is.a.blindpool"/></b></a>
             <ul class="right">
-                <li><a class="navbar-item" href="#!"><b><fmt:message key="what.is.a.blindpool" /></b></a></li>
-                <li><a class="navbar-item" href="#!"><b><fmt:message key="about.page" /></b></a></li>
-                <li><a class="navbar-item" class="dropdown-trigger" href="#!" data-target="dropdown1"><b><fmt:message key="language" /></b><i id="languageDropdown" class="material-icons right">arrow_drop_down</i></a>
-                <ul id="dropdown1" class="dropdown-content">
-                    <li><a href="#!">English</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#!">Nederlands</a></li>
-                </ul>
+                <li>
+                    <a class="navbar-item hide-on-med-and-down" href="#!"><b><fmt:message key="about.page"/></b></a>
+                </li>
+                <!-- Dropdown Trigger -->
+                <li>
+                    <a class="dropdown-trigger navbar-item" href="#!" data-target="dropdown"><b><fmt:message
+                            key="language"/></b>
+                        <i id="languageDropdown" class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    <ul id="dropdown" class="dropdown-content" tabindex="0" style="">
+                        <li tabindex="0">
+                            <a href="https://blindpool.com">English</a>
+                        </li>
+                        <li class="divider" tabindex="0"></li>
+                        <li tabindex="0">
+                            <a href="https://blindepool.nl">Nederlands</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -80,10 +90,10 @@
             <tr id="participant1">
                 <td id="numberColumn1" class="numberColumn"><b>1</b></td>
                 <td>
-                    <div class="input-field" style="white-space:nowrap;">
-                        <%-- This invisible fmt tag puts the resource bundle value in a jstl variable. --%>
+                    <div class="input-field">
                         <fmt:message key="host" var="hostPlaceHolder" />
-                        <input placeholder="${hostPlaceHolder}" id="participantName1" type="text" class="validate">
+                        <input maxlength="16" required="required" placeholder="${hostPlaceHolder}" id="participantName1" class="validate" type="text" onblur="hideError(1)">
+                        <span id="nameValidation1" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
                 <td>
@@ -95,8 +105,9 @@
             <tr id="participant2">
                 <td id="numberColumn2" class="numberColumn">2</td>
                 <td>
-                    <div class="input-field" style="white-space:nowrap;">
-                        <input placeholder="${playerPlaceHolder} 2" id="participantName2" type="text" class="validate">
+                    <div class="input-field">
+                        <input maxlength="16" required="required" placeholder="${playerPlaceHolder} 2" id="participantName2" class="validate" type="text">
+                        <span id="nameValidation2" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
                 <td>
@@ -108,7 +119,8 @@
                 <td id="numberColumn3" class="numberColumn">3</td>
                 <td>
                     <div class="input-field" style="white-space:nowrap;">
-                        <input placeholder="${playerPlaceHolder} 3" id="participantName3" type="text" class="validate">
+                        <input maxlength="16" required="required" placeholder="${playerPlaceHolder} 3" id="participantName3" class="validate" type="text">
+                        <span id="nameValidation3" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
                 <td>
@@ -120,7 +132,8 @@
                 <td id="numberColumn4" class="numberColumn">4</td>
                 <td>
                     <div class="input-field" style="white-space:nowrap;">
-                        <input placeholder="${playerPlaceHolder} 4" id="participantName4" type="text" class="validate">
+                        <input maxlength="16" required="required" placeholder="${playerPlaceHolder} 4" id="participantName4" class="validate" type="text">
+                        <span id="nameValidation4" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
                 <td>
@@ -138,12 +151,18 @@
             </tr>
             <tr>
                 <td></td>
-                <td style="text-align: center">&nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5"><b><fmt:message key="create.button"/></b></a></td>
+                <td style="text-align: center">&nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a></td>
                 <td></td>
                 <td></td>
             </tr>
         </table>
     </div>
     <script type="text/javascript" src="js/materialize.js"></script>
+    <script>
+        // Initialize the dropdown menu without jQuery, yay!
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
 </body>
 </html>
