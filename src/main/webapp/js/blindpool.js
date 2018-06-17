@@ -45,6 +45,20 @@ function getParticipants() {
     return participants;
 }
 
+function isDuplicateParticipantName(number) {
+    let participant = getParticipant(number);
+
+    let i = number;
+    while (i > 1) {
+        i--;
+        let participantBefore = getParticipant(i);
+        if (participant.value === participantBefore.value) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function getParticipant(id) {
     return document.getElementById(PARTICIPANT_NAME + id);
 }
@@ -66,7 +80,7 @@ function addNextParticipant() {
 
     newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
         <td><div class="input-field" id="inputFieldDiv${nextId}">
-            <input maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onkeyup="unselect(${nextId})"">
+            <input maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})"">
             <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
         </div></td>
         <td class="iconColumn"><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
@@ -181,13 +195,26 @@ function hideErrors() {
 
 function hideSolvedErrors(number) {
     // TODO: On switching after fixing something, the green label doesn't dissapear.
+    let input = document.getElementById(PARTICIPANT_NAME + number);
+    if (input.value) {
+        if (isDuplicateParticipantName(number)) {
+            input.classList.add("invalid");
+            input.focus();
+            document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "block";
+            document.getElementById(PARTICIPANT_NAME_VALIDATION + number).setAttribute("data-error", MESSAGE_BUNDLE["duplicate.name"]);
+        }
+    }
+
+    if (!input.classList.contains("invalid")) {
+        document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "none";
+    }
 }
 
 function unselect(number) {
     document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "none";
 
     let input = document.getElementById(PARTICIPANT_NAME + number);
-    if (input.value.length > 0) {
+    if (input.value.length > 0 && !isDuplicateParticipantName(number)) {
         input.classList.remove("invalid");
     }
     // document.getElementById(PARTICIPANT_NUMBER_COLUMN + number).innerHTML = `${number}`;
