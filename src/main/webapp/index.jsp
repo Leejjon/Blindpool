@@ -92,7 +92,7 @@
                 <td>
                     <div class="input-field" id="inputFieldDiv1">
                         <fmt:message key="host" var="hostPlaceHolder" />
-                        <input autofocus maxlength="16" required="required" placeholder="${hostPlaceHolder}" id="participantName1" class="validate" type="text" onblur="hideSolvedErrors(1)" onkeyup="unselect(1)">
+                        <input autocomplete="off" autofocus maxlength="16" required="required" placeholder="${hostPlaceHolder}" id="participantName1" class="validate" type="text" onblur="hideSolvedErrors(1)" onkeyup="unselect(1)">
                         <span id="nameValidation1" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
@@ -106,7 +106,7 @@
                 <td id="numberColumn2" class="numberColumn">2</td>
                 <td>
                     <div class="input-field" id="inputFieldDiv2">
-                        <input maxlength="16" required="required" placeholder="${playerPlaceHolder} 2" id="participantName2" class="validate" type="text" onblur="hideSolvedErrors(2)"  onkeyup="unselect(2)">
+                        <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} 2" id="participantName2" class="validate" type="text" onblur="hideSolvedErrors(2)"  onkeyup="unselect(2)">
                         <span id="nameValidation2" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
@@ -119,7 +119,7 @@
                 <td id="numberColumn3" class="numberColumn">3</td>
                 <td>
                     <div class="input-field" id="inputFieldDiv3">
-                        <input maxlength="16" required="required" placeholder="${playerPlaceHolder} 3" id="participantName3" class="validate" type="text" onblur="hideSolvedErrors(3)"  onkeyup="unselect(3)">
+                        <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} 3" id="participantName3" class="validate" type="text" onblur="hideSolvedErrors(3)"  onkeyup="unselect(3)">
                         <span id="nameValidation3" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
@@ -132,7 +132,7 @@
                 <td id="numberColumn4" class="numberColumn">4</td>
                 <td>
                     <div class="input-field" id="inputFieldDiv4">
-                        <input maxlength="16" required="required" placeholder="${playerPlaceHolder} 4" id="participantName4" class="validate" type="text" onblur="hideSolvedErrors(4)"  onkeyup="unselect(4)">
+                        <input autocomplete="off"  maxlength="16" required="required" placeholder="${playerPlaceHolder} 4" id="participantName4" class="validate" type="text" onblur="hideSolvedErrors(4)"  onkeyup="unselect(4)">
                         <span id="nameValidation4" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>

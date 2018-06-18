@@ -23,10 +23,7 @@ function getParticipants() {
                 let otherParticipants = participants.slice(0, i - 1);
                 let indexOfPossibleDuplicate = otherParticipants.indexOf(participant.value);
                 if (indexOfPossibleDuplicate !== -1) {
-                    participant.classList.add("invalid");
-                    participant.focus();
-                    document.getElementById(PARTICIPANT_NAME_VALIDATION + i).style.display = "block";
-                    document.getElementById(PARTICIPANT_NAME_VALIDATION + i).setAttribute("data-error", MESSAGE_BUNDLE["duplicate.name"]);
+                    showDuplicateParticipantError(i);
                     throw "duplicate.name";
                 }
             }
@@ -80,7 +77,7 @@ function addNextParticipant() {
 
     newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
         <td><div class="input-field" id="inputFieldDiv${nextId}">
-            <input maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})"">
+            <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})"">
             <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
         </div></td>
         <td class="iconColumn"><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
@@ -139,9 +136,9 @@ function loadPage() {
 function createPool() {
     try {
         let participants = validateFields();
-        // postAjax("/pool/", participants, function (data) {
-        //     loadCreatedPool(data);
-        // });
+        postAjax("/pool/", participants, function (data) {
+            loadCreatedPool(data);
+        });
     } catch (error) {
         console.log(MESSAGE_BUNDLE[error]);
     }
@@ -193,18 +190,23 @@ function hideErrors() {
     }
 }
 
+function showDuplicateParticipantError(number) {
+    let input = document.getElementById(PARTICIPANT_NAME + number);
+    input.classList.add("invalid");
+    input.focus();
+    document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "block";
+    document.getElementById(PARTICIPANT_NAME_VALIDATION + number).setAttribute("data-error", MESSAGE_BUNDLE["duplicate.name"]);
+}
+
 function hideSolvedErrors(number) {
-    // TODO: On switching after fixing something, the green label doesn't dissapear.
     let input = document.getElementById(PARTICIPANT_NAME + number);
     if (input.value) {
         if (isDuplicateParticipantName(number)) {
-            input.classList.add("invalid");
-            input.focus();
-            document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "block";
-            document.getElementById(PARTICIPANT_NAME_VALIDATION + number).setAttribute("data-error", MESSAGE_BUNDLE["duplicate.name"]);
+            showDuplicateParticipantError(number);
         }
     }
 
+    // TODO: On switching after fixing something, the green label doesn't dissapear.
     if (!input.classList.contains("invalid")) {
         document.getElementById(PARTICIPANT_NAME_VALIDATION + number).style.display = "none";
     }

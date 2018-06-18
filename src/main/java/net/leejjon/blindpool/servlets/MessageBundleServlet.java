@@ -20,11 +20,13 @@ public class MessageBundleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setStatus(200);
+        response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+        response.setDateHeader("Expires", 0);
 
         String languageParameter = request.getParameter("pool");
 
         Properties messageBundle;
-        if ((languageParameter != null && languageParameter.toLowerCase().equals("nl")) || request.getLocale().equals(NL)) {
+        if ((languageParameter != null && languageParameter.toLowerCase().equals("nl")) || request.getLocale().equals(NL) || request.getRemoteHost().contains("blindepool.nl")) {
             messageBundle = getProperties("messages_nl.properties");
         } else {
             messageBundle = getProperties("messages.properties");
