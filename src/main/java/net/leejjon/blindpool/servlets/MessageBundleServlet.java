@@ -11,9 +11,11 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 @WebServlet("/messages/")
 public class MessageBundleServlet extends HttpServlet {
+    private final static Logger log = Logger.getLogger(PoolServlet.class.getName());
     private static final Locale NL = new Locale("nl", "NL");
 
     @Override
@@ -23,10 +25,10 @@ public class MessageBundleServlet extends HttpServlet {
         response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
         response.setDateHeader("Expires", 0);
 
-        String languageParameter = request.getParameter("pool");
+        String languageParameter = request.getParameter("lang");
 
         Properties messageBundle;
-        if ((languageParameter != null && languageParameter.toLowerCase().equals("nl")) || request.getLocale().equals(NL) || request.getRemoteHost().contains("blindepool.nl")) {
+        if ((languageParameter != null && languageParameter.toLowerCase().equals("nl")) || request.getLocale().equals(NL)) {
             messageBundle = getProperties("messages_nl.properties");
         } else {
             messageBundle = getProperties("messages.properties");

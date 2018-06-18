@@ -123,7 +123,11 @@ function removeParticipant(id) {
 
 function loadPage() {
     try {
-        getAjax("/messages/", null, function (data) {
+        let languageOtherThanEnglish = null;
+        if (window.location.hostname === "blindepool.nl" || window.location.hostname === "www.blindepool.nl") {
+            languageOtherThanEnglish = "?lang=nl";
+        }
+        getAjax("/messages/", languageOtherThanEnglish, function (data) {
             MESSAGE_BUNDLE = JSON.parse(data);
         });
 
