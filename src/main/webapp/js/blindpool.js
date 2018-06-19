@@ -81,11 +81,11 @@ function addNextParticipant() {
 
     newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
         <td class="nameColumn"><div class="input-field input-phase-name-width" id="inputFieldDiv${nextId}">
-            <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})"">
+            <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})">
             <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
         </div></td>
-        <td class="iconColumn"><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
-        <td class="scoreColumn"><div class="input-field pool-phase"><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></div></td>`;
+        <td class="scoreColumn"><div class="input-field"><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></div></td>
+        <td class="iconColumn"><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>`;
 
     newParticipant.id = "participant" + nextId;
 
@@ -195,7 +195,7 @@ function loadCreatedPool(data) {
 
 function fillScoreColumns(scores) {
     for (let i = 0; i < scores.length; i++) {
-        document.getElementById(SCORE_FIELD + (i + 1)).value = scores[i].homeClubScore + "-" + scores[i].awayClubScore;
+        document.getElementById(SCORE_FIELD + (i + 1)).value = scores[i].homeClubScore + " - " + scores[i].awayClubScore;
     }
 }
 
