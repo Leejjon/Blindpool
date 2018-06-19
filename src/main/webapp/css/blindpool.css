@@ -43,7 +43,7 @@ tr {
 
 th {
     margin: 0;
-    padding: 1rem 0 0;
+    padding: 1rem 0 0.5rem 0;
 }
 
 td {margin: 0;padding: 0;}
@@ -52,6 +52,10 @@ td {margin: 0;padding: 0;}
     position: relative;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.nameColumn {
+    vertical-align: top;
 }
 
 .numberColumn {
@@ -65,12 +69,17 @@ td {margin: 0;padding: 0;}
     vertical-align: top;
 }
 
+.createPoolButtonColumn {
+    text-align: center;
+}
+
 #createPoolButton {
     padding-bottom: 10px;
 }
 
 .scoreColumn {
     display: none;
+    text-align: center;
 }
 
 .dropdown-content li > a, .dropdown-content li > span {

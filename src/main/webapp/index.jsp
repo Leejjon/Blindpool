@@ -63,11 +63,11 @@
                     </a>
                     <ul id="dropdown" class="dropdown-content" tabindex="0" style="">
                         <li tabindex="0">
-                            <a href="https://blindpool.com">English</a>
+                            <a onclick="toExistingPage('blindpool.com')">English</a>
                         </li>
                         <li class="divider" tabindex="0"></li>
                         <li tabindex="0">
-                            <a href="https://blindepool.nl">Nederlands</a>
+                            <a onclick="toExistingPage('blindepool.nl')">Nederlands</a>
                         </li>
                     </ul>
                 </li>
@@ -166,7 +166,9 @@
                 <td class="iconColumn"></td>
             </tr>
             <tr>
-                <td colspan="4" style="text-align: center">&nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a></td>
+                <td class="createPoolButtonColumn" colspan="4">
+                    &nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a>
+                </td>
             </tr>
         </table>
     </div>

@@ -100,8 +100,8 @@ function addNextParticipant() {
 
 function addDividerRow(participantRow) {
     let newDivider = document.createElement("tr");
-    newDivider.innerHTML = `<td colspan="4"><div class="divider"></div></td>`;
-    participantRow.parentNode.insertBefore(newDivider, participantRow.nextSibling);
+    newDivider.innerHTML = `<td colspan="4"><div class="divider scoreDivider"></div></td>`;
+    participantRow.parentNode.insertBefore(newDivider, participantRow);
 }
 
 function removeParticipant(id) {
@@ -185,6 +185,7 @@ function loadCreatedPool(data) {
         fillScoreColumns(scores);
         showScoreColumns();
         hideNumbersAddAndRemoveButtons();
+        updateCreatePoolButton();
         showShareUrlRows(poolData.key);
 
         // TODO: Update title header.
@@ -237,12 +238,31 @@ function hideNumbersAddAndRemoveButtons() {
 
     let j = 1;
     let participantRow = getParticipantRow(j);
-    for (; getParticipantRow(j) != null; participant = getParticipantRow(j)) {
+    for (; getParticipantRow(j) != null; participantRow = getParticipantRow(j)) {
         addDividerRow(participantRow);
         j++;
     }
 
     document.getElementById("addParticipantButtonRow").style.display = "none";
+}
+
+function updateCreatePoolButton() {
+    let newPoolButton = document.getElementById("createPoolButton");
+    newPoolButton.removeAttribute("onclick");
+    let newButtonMessage = MESSAGE_BUNDLE["make.another.pool.button"];
+    newPoolButton.innerHTML = `<b>${newButtonMessage}</b>`;
+    document.getElementById("createPoolButton").setAttribute("onclick", "toNewPool()");
+
+
+}
+
+function toNewPool() {
+    window.location.href = '/';
+}
+
+function toExistingPage(domain) {
+    let newUrl = window.location.protocol + "//" + domain + '/' + window.location.search;
+    window.location.href = newUrl;
 }
 
 function hideErrors() {
