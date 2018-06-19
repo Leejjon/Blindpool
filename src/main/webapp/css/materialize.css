@@ -6159,8 +6159,9 @@ input[type=search]:not(.browser-default):disabled,
 input[type=search]:not(.browser-default)[readonly="readonly"],
 textarea.materialize-textarea:disabled,
 textarea.materialize-textarea[readonly="readonly"] {
-  color: rgba(0, 0, 0, 0.42);
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.42);
+  /*color: rgba(0, 0, 0, 0.42);*/
+  border-bottom: 0px solid rgba(0, 0, 0, 0.42);
+  margin-bottom: 0px;
 }
 
 input:not([type]):disabled + label,

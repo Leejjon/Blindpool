@@ -82,78 +82,91 @@
 
         <table>
             <tr>
-                <th></th>
-                <th><fmt:message key="entry.name"/></th>
-                <th></th>
-                <th></th>
+                <th class="numberColumn"></th>
+                <th class="nameColumn"><fmt:message key="entry.name"/></th>
+                <th class="scoreColumn"><fmt:message key="entry.score"/></th>
+                <th class="iconColumn"></th>
             </tr>
             <tr id="participant1">
                 <td id="numberColumn1" class="numberColumn"><b>1</b></td>
-                <td>
-                    <div class="input-field" id="inputFieldDiv1">
+                <td class="nameColumn">
+                    <div class="input-field input-phase-name-width" id="inputFieldDiv1">
                         <fmt:message key="host" var="hostPlaceHolder" />
                         <input autocomplete="off" autofocus maxlength="16" required="required" placeholder="${hostPlaceHolder}" id="participantName1" class="validate" type="text" onblur="hideSolvedErrors(1)" onkeyup="unselect(1)">
                         <span id="nameValidation1" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
                     </div>
                 </td>
+                <td class="scoreColumn">
+                    <div class="input-field">
+                        <input id="scoreField1" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly">
+                    </div>
+                </td>
                 <td class="iconColumn">
                     <i class="material-icons">person</i>
                 </td>
-                <td><input id="scoreField1" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
             </tr>
             <fmt:message key="player.name.placeholder" var="playerPlaceHolder" />
             <tr id="participant2">
                 <td id="numberColumn2" class="numberColumn">2</td>
-                <td>
-                    <div class="input-field" id="inputFieldDiv2">
+                <td class="nameColumn">
+                    <div class="input-field input-phase-name-width" id="inputFieldDiv2">
                         <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} 2" id="participantName2" class="validate" type="text" onblur="hideSolvedErrors(2)"  onkeyup="unselect(2)">
                         <span id="nameValidation2" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
+                    </div>
+                </td>
+                <td class="scoreColumn">
+                    <div class="input-field">
+                        <input id="scoreField2" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly">
                     </div>
                 </td>
                 <td class="iconColumn">
                     <i id="participantRemoveButton2" class="material-icons" onclick="removeParticipant(2)">remove_circle_outline</i>
                 </td>
-                <td><input id="scoreField2" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
             </tr>
             <tr id="participant3">
                 <td id="numberColumn3" class="numberColumn">3</td>
-                <td>
-                    <div class="input-field" id="inputFieldDiv3">
+                <td class="nameColumn">
+                    <div class="input-field input-phase-name-width" id="inputFieldDiv3">
                         <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} 3" id="participantName3" class="validate" type="text" onblur="hideSolvedErrors(3)"  onkeyup="unselect(3)">
                         <span id="nameValidation3" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
+                    </div>
+                </td>
+                <td class="scoreColumn">
+                    <div class="input-field">
+                        <input id="scoreField3" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly">
                     </div>
                 </td>
                 <td class="iconColumn">
                     <i id="participantRemoveButton3" class="material-icons" onclick="removeParticipant(3)">remove_circle_outline</i>
                 </td>
-                <td><input id="scoreField3" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
             </tr>
             <tr id="participant4">
                 <td id="numberColumn4" class="numberColumn">4</td>
-                <td>
-                    <div class="input-field" id="inputFieldDiv4">
+                <td class="nameColumn">
+                    <div class="input-field input-phase-name-width" id="inputFieldDiv4">
                         <input autocomplete="off"  maxlength="16" required="required" placeholder="${playerPlaceHolder} 4" id="participantName4" class="validate" type="text" onblur="hideSolvedErrors(4)"  onkeyup="unselect(4)">
                         <span id="nameValidation4" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
+                    </div>
+                </td>
+                <td class="scoreColumn">
+                    <div class="input-field">
+                        <input id="scoreField4" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly">
                     </div>
                 </td>
                 <td class="iconColumn">
                     <i id="participantRemoveButton4" class="material-icons" onclick="removeParticipant(4)">remove_circle_outline</i>
                 </td>
-                <td><input id="scoreField4" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>
             </tr>
             <tr id="addParticipantButtonRow">
-                <td></td>
-                <td style="text-align: center; line-height: 80%;"><br />
+                <td class="numberColumn"></td>
+                <td class="nameColumn" style="text-align: center; line-height: 80%;"><br />
                     <a class="btn-floating btn-small waves-effect waves-light black"><i class="material-icons" style="color: white;" onclick="addNextParticipant()">add</i></a>
                 </td>
                 <td></td>
-                <td></td>
+                <td class="iconColumn"></td>
             </tr>
             <tr>
-                <td></td>
-                <td style="text-align: center">&nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a></td>
-                <td></td>
-                <td></td>
+                <td colspan="4" style="text-align: center">&nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a></td>
             </tr>
         </table>
     </div>

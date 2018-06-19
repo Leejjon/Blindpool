@@ -24,8 +24,12 @@ body {
     margin: 0;
 }
 
-.input-field {
+.input-phase-name-width {
     width: 250px;
+}
+
+.nameColumn {
+    width: 100%;
 }
 
 table {

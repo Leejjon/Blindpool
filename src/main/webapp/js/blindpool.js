@@ -60,6 +60,10 @@ function getParticipant(id) {
     return document.getElementById(PARTICIPANT_NAME + id);
 }
 
+function getParticipantRow(id) {
+    return document.getElementById(PARTICIPANT_ROW + id);
+}
+
 function calculateNextId() {
     // First calculate what the next id needs to be.
     let i = 1;
@@ -76,12 +80,12 @@ function addNextParticipant() {
     let playerPlaceHolder = MESSAGE_BUNDLE["player.name.placeholder"];
 
     newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
-        <td><div class="input-field" id="inputFieldDiv${nextId}">
+        <td class="nameColumn"><div class="input-field input-phase-name-width" id="inputFieldDiv${nextId}">
             <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})"">
             <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
         </div></td>
         <td class="iconColumn"><i id="participantRemoveButton${nextId}" class="material-icons" onclick="removeParticipant(${nextId})">remove_circle_outline</i></td>
-        <td><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></td>`;
+        <td class="scoreColumn"><div class="input-field pool-phase"><input id="scoreField${nextId}" class="scoreColumn" autocomplete="off" type="text" value="" readonly="readonly"></div></td>`;
 
     newParticipant.id = "participant" + nextId;
 
@@ -92,6 +96,12 @@ function addNextParticipant() {
     currentNumberOfPlayers++;
 
     document.getElementById("participantName" + nextId).focus();
+}
+
+function addDividerRow(participantRow) {
+    let newDivider = document.createElement("tr");
+    newDivider.innerHTML = `<td colspan="4"><div class="divider"></div></td>`;
+    participantRow.parentNode.insertBefore(newDivider, participantRow.nextSibling);
 }
 
 function removeParticipant(id) {
@@ -169,21 +179,70 @@ function loadCreatedPool(data) {
         let queryString = '?pool=' + poolData.key;
         let scores = poolData.scores;
 
-        // if (!currentUrl.endsWith(queryString)) {
-        //     window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
-        // }
-
         let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
         window.history.pushState({path:newUrl},'',newUrl);
 
         fillScoreColumns(scores);
         showScoreColumns();
-        hideHostAddAndRemoveButtons();
+        hideNumbersAddAndRemoveButtons();
         showShareUrlRows(poolData.key);
 
         // TODO: Update title header.
         updateTitleHeader();
     }
+}
+
+function fillScoreColumns(scores) {
+    for (let i = 0; i < scores.length; i++) {
+        document.getElementById(SCORE_FIELD + (i + 1)).value = scores[i].homeClubScore + "-" + scores[i].awayClubScore;
+    }
+}
+
+function showScoreColumns() {
+    let scoreColumns = document.getElementsByClassName("scoreColumn");
+    for (let i = 0; i < scoreColumns.length; i++) {
+        scoreColumns[i].style.display = "block";
+    }
+}
+
+function hideNumbersAddAndRemoveButtons() {
+    let hostAndRemoveColumns = document.getElementsByClassName("iconColumn");
+    for (let i = 0; i < hostAndRemoveColumns.length; i++) {
+        hostAndRemoveColumns[i].style.visibility = "hidden";
+    }
+    let numberColumns = document.getElementsByClassName("numberColumn");
+    for (let i = 0; i < numberColumns.length; i++) {
+        numberColumns[i].style.visibility = "hidden";
+    }
+
+    let inputPhaseNameDivs = document.getElementsByClassName("input-phase-name-width");
+
+    // Using a regular for loop fucks up because you're deleting elements in the array you're looping over.
+    // I think lambdas are unreadable as fuck but this works while making a const list and doing a regular loop over it does not.
+    const removeInputPhaseClass = (inputPhaseElementsListThatCanModify) => [...inputPhaseElementsListThatCanModify].forEach(inputPhaseNameDiv => {
+        inputPhaseNameDiv.classList.remove("input-phase-name-width");
+    });
+    removeInputPhaseClass(inputPhaseNameDivs);
+
+    let i = 1;
+    let participant = getParticipant(i);
+    for (; getParticipant(i) != null; participant = getParticipant(i)) {
+        participant.setAttribute("readonly", "readonly");
+        participant.removeAttribute("onkeyup");
+        participant.removeAttribute("onblur")
+        participant.classList.remove("validate");
+        participant.classList.remove("valid");
+        i++;
+    }
+
+    let j = 1;
+    let participantRow = getParticipantRow(j);
+    for (; getParticipantRow(j) != null; participant = getParticipantRow(j)) {
+        addDividerRow(participantRow);
+        j++;
+    }
+
+    document.getElementById("addParticipantButtonRow").style.display = "none";
 }
 
 function hideErrors() {
