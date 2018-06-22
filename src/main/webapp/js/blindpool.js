@@ -206,10 +206,27 @@ function showScoreColumns() {
     }
 }
 
+function showShareUrlRows(poolDataKey) {
+    document.getElementById("shareDiv").style.display = "block";
+    document.getElementById("shareButton").style.display = "block";
+    document.getElementById("shareTitle").style.display = "block";
+
+    let organizerLabel = document.getElementById("organizerLabel");
+    organizerLabel.style.display = "block";
+    // The first name entered is always the organizer of the pool.
+    let organizerName = document.getElementById("participantName1").value;
+    organizerLabel.innerText = MESSAGE_BUNDLE["owners.pool.title"].replace("{0}'", organizerName);
+    document.getElementById("organizerLabel").style.paddingTop = "10px";
+
+    let domain = MESSAGE_BUNDLE["domain"];
+    document.getElementById("shareUrl").value = `https://${domain}/?pool=${poolDataKey}`;
+}
+
 function hideNumbersAddAndRemoveButtons() {
     let hostAndRemoveColumns = document.getElementsByClassName("iconColumn");
     for (let i = 0; i < hostAndRemoveColumns.length; i++) {
-        hostAndRemoveColumns[i].style.visibility = "hidden";
+        // hostAndRemoveColumns[i].style.visibility = "hidden";
+        hostAndRemoveColumns[i].style.display = "none";
     }
     let numberColumns = document.getElementsByClassName("numberColumn");
     for (let i = 0; i < numberColumns.length; i++) {
@@ -252,8 +269,6 @@ function updateCreatePoolButton() {
     let newButtonMessage = MESSAGE_BUNDLE["make.another.pool.button"];
     newPoolButton.innerHTML = `<b>${newButtonMessage}</b>`;
     document.getElementById("createPoolButton").setAttribute("onclick", "toNewPool()");
-
-
 }
 
 function toNewPool() {
@@ -303,6 +318,13 @@ function unselect(number) {
         input.classList.remove("invalid");
     }
     // document.getElementById(PARTICIPANT_NUMBER_COLUMN + number).innerHTML = `${number}`;
+}
+
+function copyUrlToClipboard() {
+    let input = document.getElementById("shareUrl");
+    input.focus();
+    input.setSelectionRange(0,99999);
+    document.execCommand("copy");
 }
 
 function getAjax(url, param, success) {

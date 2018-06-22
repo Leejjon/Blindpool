@@ -50,10 +50,10 @@
     <!-- Language dropdown list -->
     <nav class="green accent-5">
         <div class="nav-wrapper">
-            <a href="#!" class="navbar-item">&nbsp;<b><fmt:message key="what.is.a.blindpool"/></b></a>
+            <a href="#!" class="navbar-item" style="display: none">&nbsp;<b><fmt:message key="what.is.a.blindpool"/></b></a>
             <ul class="right">
                 <li>
-                    <a class="navbar-item hide-on-med-and-down" href="#!"><b><fmt:message key="about.page"/></b></a>
+                    <a class="navbar-item hide-on-med-and-down" style="display: none" href="#!"><b><fmt:message key="about.page"/></b></a>
                 </li>
                 <!-- Dropdown Trigger -->
                 <li>
@@ -79,7 +79,7 @@
         <img id="logoImage" src="images/logo.png"/>
 
         <div class="divider"></div>
-
+        <b id="organizerLabel"></b>
         <table>
             <tr>
                 <th class="numberColumn"></th>
@@ -162,7 +162,25 @@
                 <td class="nameColumn" style="text-align: center; line-height: 80%;"><br />
                     <a class="btn-floating btn-small waves-effect waves-light black"><i class="material-icons" style="color: white;" onclick="addNextParticipant()">add</i></a>
                 </td>
-                <td></td>
+                <td class="scoreColumn"></td>
+                <td class="iconColumn"></td>
+            </tr>
+            <tr>
+                <td class="numberColumn"></td>
+                <td class="nameColumn"><b id="shareTitle"><fmt:message key="share.url.header" /></b></td>
+                <td class="scoreColumn"></td>
+                <td class="iconColumn"></td>
+            </tr>
+            <tr>
+                <td class="numberColumn"></td>
+                <td class="nameColumn">
+                    <div id="shareDiv" class="input-field inline">
+                        <input id="shareUrl" autocomplete="off" type="text" value="http://blindpool.com/?pool=YQ9GDxl3GLM">
+                    </div>
+                </td>
+                <td class="scoreColumn">
+                    <a id="shareButton" onclick="copyUrlToClipboard()" class="waves-effect waves-light btn-small green accent-5" style="display: none"><i class="material-icons">content_copy</i></a>
+                </td>
                 <td class="iconColumn"></td>
             </tr>
             <tr>

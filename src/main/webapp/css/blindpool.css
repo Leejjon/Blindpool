@@ -73,13 +73,12 @@ td {margin: 0;padding: 0;}
     text-align: center;
 }
 
-#createPoolButton {
-    padding-bottom: 10px;
+#shareColumn {
+    text-align: center;
 }
 
-.scoreColumn {
-    display: none;
-    text-align: center;
+#createPoolButton {
+    padding-bottom: 10px;
 }
 
 .dropdown-content li > a, .dropdown-content li > span {
@@ -87,5 +86,37 @@ td {margin: 0;padding: 0;}
 }
 
 .helper-text.nameValidation {
+    display: none;
+}
+
+#shareDiv {
+    display: none;
+    white-space:nowrap;
+    width: 200px;
+}
+
+.scoreColumn {
+    display: none;
+    text-align: center;
+    padding-right: 1em;
+}
+
+#shareTitle {
+    display: none;
+}
+
+#shareUrl {
+    border: 1px solid #D6D6D6;
+    color: #767676;
+    padding: 0px 0px 3px 2px;
+    height: 2.2em;
+    margin: 0px 10px 0px -5px;
+    width: 100%;
+    font-size: small;
+    vertical-align: middle;
+    box-shadow: none;
+}
+
+#organizerLabel {
     display: none;
 }

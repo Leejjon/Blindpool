@@ -28,7 +28,7 @@ public class ScoreGenerator {
         Set<Score> possibleScores = new HashSet<>();
 
         // Add the wildcard score.
-        possibleScores.add(new Score('*', '*'));
+        possibleScores.add(new Score('X', 'X'));
         int x;
         int y;
         for (x = 0; possibleScores.size() < participantNameSize; x++) {
