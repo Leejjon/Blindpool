@@ -11,6 +11,12 @@ body {
     font-family: 'Archivo', sans-serif;
 }
 
+h1 {
+    font-size: large;
+    font-weight: bold;
+    margin: 0px;
+}
+
 .green.accent-5 {
     background-color: #00cc47 !important;
 }
@@ -77,10 +83,6 @@ td {margin: 0;padding: 0;}
     text-align: center;
 }
 
-#createPoolButton {
-    padding-bottom: 10px;
-}
-
 .dropdown-content li > a, .dropdown-content li > span {
     color: #000 !important;
 }
@@ -119,4 +121,10 @@ td {margin: 0;padding: 0;}
 
 #organizerLabel {
     display: none;
+}
+
+#serverErrorLabel {
+    color: red;
+    display: none;
+    padding-bottom: 1em;
 }

@@ -150,20 +150,48 @@ function loadPage() {
 function createPool() {
     try {
         let participants = validateFields();
+        disableCreatePoolButton();
+
         postAjax("/pool/", participants, function (data) {
+            hideErrorLabel();
             loadCreatedPool(data);
+        }, function () {
+            showErrorLabel(MESSAGE_BUNDLE["server.error"]);
+            enableCreatePoolButton();
         });
     } catch (error) {
         console.log(MESSAGE_BUNDLE[error]);
     }
 }
 
+function showErrorLabel(message) {
+    document.getElementById("serverErrorLabel").style.display = "block";
+    document.getElementById("serverErrorLabel").innerText = message;
+}
+
+function hideErrorLabel() {
+    document.getElementById("serverErrorLabel").style.display = "none";
+}
+
+function disableCreatePoolButton() {
+    let createPoolButton = document.getElementById("createPoolButton");
+    createPoolButton.classList.add("disabled");
+    createPoolButton.classList.remove("green");
+    createPoolButton.classList.remove("accent-5");
+}
+
+function enableCreatePoolButton() {
+    let createPoolButton = document.getElementById("createPoolButton");
+    createPoolButton.classList.remove("disabled");
+    createPoolButton.classList.add("green");
+    createPoolButton.classList.add("accent-5");
+    createPoolButton.style.marginTop = "1.5em";
+}
+
 function validateFields() {
     hideErrors();
 
-    let participants = getParticipants();
-
-    return participants;
+    return getParticipants();
 }
 
 /**
@@ -269,6 +297,7 @@ function updateCreatePoolButton() {
     let newButtonMessage = MESSAGE_BUNDLE["make.another.pool.button"];
     newPoolButton.innerHTML = `<b>${newButtonMessage}</b>`;
     document.getElementById("createPoolButton").setAttribute("onclick", "toNewPool()");
+    enableCreatePoolButton();
 }
 
 function toNewPool() {
@@ -343,12 +372,14 @@ function getAjax(url, param, success) {
     }
 }
 
-function postAjax(url, participants, success) {
+function postAjax(url, participants, success, failure) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     xhr.open('POST', url);
     xhr.onreadystatechange = function() {
         if (xhr.readyState > 3 && xhr.status === 200) {
             success(xhr.responseText);
+        } else if (xhr.readyState > 3 && xhr.status >= 400) {
+            failure();
         }
     };
     xhr.setRequestHeader("Content-Type", "application/json");

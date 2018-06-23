@@ -43,6 +43,12 @@
 
     <script src="js/blindpool.js"></script>
 
+    <meta charset="UTF-8">
+    <fmt:message key="site.description" var="description"/>
+    <meta name="description" content="${description}">
+    <fmt:message key="site.keywords" var="keywords" />
+    <meta name="keywords" content="${keywords}">
+    <meta name="author" content="Leon Liefting">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -79,7 +85,7 @@
         <img id="logoImage" src="images/logo.png"/>
 
         <div class="divider"></div>
-        <b id="organizerLabel"></b>
+        <h1 id="organizerLabel">Blindpool</h1>
         <table>
             <tr>
                 <th class="numberColumn"></th>
@@ -165,17 +171,17 @@
                 <td class="scoreColumn"></td>
                 <td class="iconColumn"></td>
             </tr>
-            <tr>
+            <tr class="hideByDefaultRow">
                 <td class="numberColumn"></td>
                 <td class="nameColumn"><b id="shareTitle"><fmt:message key="share.url.header" /></b></td>
                 <td class="scoreColumn"></td>
                 <td class="iconColumn"></td>
             </tr>
-            <tr>
+            <tr class="hideByDefaultRow">
                 <td class="numberColumn"></td>
                 <td class="nameColumn">
                     <div id="shareDiv" class="input-field inline">
-                        <input id="shareUrl" autocomplete="off" type="text" value="http://blindpool.com/?pool=YQ9GDxl3GLM">
+                        <input readonly="readonly" id="shareUrl" autocomplete="off" type="text" value="http://blindpool.com/?pool=YQ9GDxl3GLM">
                     </div>
                 </td>
                 <td class="scoreColumn">
@@ -185,7 +191,8 @@
             </tr>
             <tr>
                 <td class="createPoolButtonColumn" colspan="4">
-                    &nbsp;<br /><a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a>
+                    <label id="serverErrorLabel"></label>
+                    <a id="createPoolButton" class="waves-effect waves-light btn-large green accent-5" onclick="createPool()"><b><fmt:message key="create.button"/></b></a>
                 </td>
             </tr>
         </table>

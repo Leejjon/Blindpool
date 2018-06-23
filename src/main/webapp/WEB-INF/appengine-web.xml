@@ -10,6 +10,7 @@
         <include path="css/blindpool.css" />
         <include path="css/materialize.css" />
         <include path="images/logo.png" />
-        <include path="favicon.png"/>
+        <include path="favicon.png" />
+        <include path="robots.txt "/>
     </static-files>
 </appengine-web-app>
