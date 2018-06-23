@@ -267,10 +267,10 @@ function updateTitleHeader() {
 }
 
 function createOrRemoveRows(numberOfParticipants) {
-    //TODO: Do
     let i;
     for (i = 2; i <= numberOfParticipants; i++) {
         let participantRow = document.getElementById(PARTICIPANT_ROW + i);
+        getParticipant(i).classList.remove("validate");
         if (participantRow === null) {
             addNextParticipant();
         }
@@ -281,6 +281,8 @@ function createOrRemoveRows(numberOfParticipants) {
         removeParticipant(i);
         leftOverParticipantRows = document.getElementById(PARTICIPANT_ROW + i);
     } while (leftOverParticipantRows !== null);
+
+
 }
 
 function fillNameColumn(participantName, number) {
