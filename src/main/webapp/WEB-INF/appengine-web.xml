@@ -4,7 +4,6 @@
     <sessions-enabled>true</sessions-enabled>
     <runtime>java8</runtime>
     <static-files>
-        <include path="js/blindpoolold.js" />
         <include path="js/blindpool.js" />
         <include path="js/materialize.js" />
         <include path="css/blindpool.css" />

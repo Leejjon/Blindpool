@@ -139,11 +139,23 @@ function loadPage() {
         }
         getAjax("/messages/", languageOtherThanEnglish, function (data) {
             MESSAGE_BUNDLE = JSON.parse(data);
+            getPool();
         });
-
-        // getPool();
     } catch (error) {
         alert(error);
+    }
+}
+
+function getPool() {
+    try {
+        let poolParam = getParameterByName("pool");
+        if (poolParam != null) {
+            getAjax("/pool/", "?pool=" + poolParam, function (data) {
+                loadRetrievedPool(data);
+            });
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -210,21 +222,73 @@ function loadCreatedPool(data) {
         let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
         window.history.pushState({path:newUrl},'',newUrl);
 
-        fillScoreColumns(scores);
+        for (let i = 0; i < scores.length; i++) {
+            fillScoreColumn(scores[i], i);
+        }
         showScoreColumns();
         hideNumbersAddAndRemoveButtons();
         updateCreatePoolButton();
         showShareUrlRows(poolData.key);
-
-        // TODO: Update title header.
         updateTitleHeader();
     }
 }
 
-function fillScoreColumns(scores) {
-    for (let i = 0; i < scores.length; i++) {
-        document.getElementById(SCORE_FIELD + (i + 1)).value = scores[i].homeClubScore + " - " + scores[i].awayClubScore;
+function loadRetrievedPool(data) {
+    if (data != null && JSON.parse(data).key != null) {
+        let poolData = JSON.parse(data);
+        let participantsAndScores = poolData.participantsAndScores;
+
+        createOrRemoveRows(participantsAndScores.length);
+
+        for (let i = 0; i < participantsAndScores.length; i++) {
+            fillNameColumn(participantsAndScores[i].participant.name, i);
+            fillScoreColumn(participantsAndScores[i].score, i);
+        }
+
+        showScoreColumns();
+        hideNumbersAddAndRemoveButtons();
+        updateCreatePoolButton();
+        showShareUrlRows(poolData.key);
+        updateTitleHeader();
+    } else if (data != null && JSON.parse(data).errorMessage != null) {
+        showErrorLabel(MESSAGE_BUNDLE[JSON.parse(data).errorMessage]);
+    } else {
+        showErrorLabel(MESSAGE_BUNDLE["server.error"]);
     }
+}
+
+function updateTitleHeader() {
+    let organizerLabel = document.getElementById("organizerLabel");
+    organizerLabel.style.display = "block";
+    // The first name entered is always the organizer of the pool.
+    let organizerName = document.getElementById("participantName1").value;
+    organizerLabel.innerText = MESSAGE_BUNDLE["owners.pool.title"].replace("{0}'", organizerName);
+    organizerLabel.style.paddingTop = "10px";
+}
+
+function createOrRemoveRows(numberOfParticipants) {
+    //TODO: Do
+    let i;
+    for (i = 2; i <= numberOfParticipants; i++) {
+        let participantRow = document.getElementById(PARTICIPANT_ROW + i);
+        if (participantRow === null) {
+            addNextParticipant();
+        }
+    }
+
+    let leftOverParticipantRows = document.getElementById(PARTICIPANT_ROW + i);
+    do {
+        removeParticipant(i);
+        leftOverParticipantRows = document.getElementById(PARTICIPANT_ROW + i);
+    } while (leftOverParticipantRows !== null);
+}
+
+function fillNameColumn(participantName, number) {
+    document.getElementById(PARTICIPANT_NAME + (number + 1)).value = participantName;
+}
+
+function fillScoreColumn(score, number) {
+    document.getElementById(SCORE_FIELD + (number + 1)).value = score.homeClubScore + " - " + score.awayClubScore;
 }
 
 function showScoreColumns() {
@@ -238,13 +302,6 @@ function showShareUrlRows(poolDataKey) {
     document.getElementById("shareDiv").style.display = "block";
     document.getElementById("shareButton").style.display = "block";
     document.getElementById("shareTitle").style.display = "block";
-
-    let organizerLabel = document.getElementById("organizerLabel");
-    organizerLabel.style.display = "block";
-    // The first name entered is always the organizer of the pool.
-    let organizerName = document.getElementById("participantName1").value;
-    organizerLabel.innerText = MESSAGE_BUNDLE["owners.pool.title"].replace("{0}'", organizerName);
-    document.getElementById("organizerLabel").style.paddingTop = "10px";
 
     let domain = MESSAGE_BUNDLE["domain"];
     document.getElementById("shareUrl").value = `https://${domain}/?pool=${poolDataKey}`;
@@ -385,4 +442,22 @@ function postAjax(url, participants, success, failure) {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(participants));
     return xhr;
+}
+
+
+/**
+ * I have no clue what the regex does. Stolen from:
+ * https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+ *
+ * @param parameterKey
+ * @returns {*} Null, '' or the query parameter value.
+ */
+function getParameterByName(parameterKey) {
+    let url = window.location.href;
+    parameterKey = parameterKey.replace(/[\[\]]/g, "\\$&");
+    let regex = new RegExp("[?&]" + parameterKey + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
