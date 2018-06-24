@@ -74,7 +74,7 @@ function calculateNextId() {
     return i;
 }
 
-function addNextParticipant() {
+function addNextParticipant(disableValidation) {
     let nextId = calculateNextId();
     let newParticipant = document.createElement("tr");
     let playerPlaceHolder = MESSAGE_BUNDLE["player.name.placeholder"];
@@ -94,6 +94,10 @@ function addNextParticipant() {
     addParticipantButton.parentNode.insertBefore(newParticipant, addParticipantButton);
 
     currentNumberOfPlayers++;
+
+    if (disableValidation) {
+        document.getElementById("participantName" + nextId).classList.remove("validate");
+    }
 
     document.getElementById("participantName" + nextId).focus();
 }
@@ -267,23 +271,19 @@ function updateTitleHeader() {
 }
 
 function createOrRemoveRows(numberOfParticipants) {
-    getParticipant(1).classList.remove("invalid");
+    getParticipant(1).classList.remove("validate");
 
     let i;
     for (i = 2; i <= numberOfParticipants; i++) {
         let participantRow = document.getElementById(PARTICIPANT_ROW + i);
         if (participantRow === null) {
-            addNextParticipant();
+            addNextParticipant(true);
         }
     }
 
-    let leftOverParticipantRows = document.getElementById(PARTICIPANT_ROW + i);
-    do {
+    while (document.getElementById(PARTICIPANT_ROW + i) !== null) {
         removeParticipant(i);
-        leftOverParticipantRows = document.getElementById(PARTICIPANT_ROW + i);
-    } while (leftOverParticipantRows !== null);
-
-
+    }
 }
 
 function fillNameColumn(participantName, number) {
