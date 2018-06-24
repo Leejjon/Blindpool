@@ -29,10 +29,13 @@ public class ScoreGenerator {
 
         // Add the wildcard score.
         possibleScores.add(new Score('X', 'X'));
+
+        final int numberOfScoresThatWeNeedToGenerated = participantNameSize - 1;
+
         int x;
         int y;
         for (x = 0; possibleScores.size() < participantNameSize; x++) {
-            for (y = 0; y <= x; y++) {
+            for (y = 0; y <= x && possibleScores.size() < participantNameSize; y++) {
                 char xChar = Character.forDigit(x, 10);
                 char yChar = Character.forDigit(y, 10);
 
@@ -49,4 +52,6 @@ public class ScoreGenerator {
         }
         return possibleScores;
     }
+
+
 }
