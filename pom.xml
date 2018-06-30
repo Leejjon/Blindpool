@@ -7,14 +7,28 @@
     <groupId>net.leejjon</groupId>
     <artifactId>blindpool</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <properties>
-        <appengine.app.version>36</appengine.app.version>
-        <appengine.sdk.version>1.9.63</appengine.sdk.version>
+        <appengine.app.version>37</appengine.app.version>
+        <appengine.sdk.version>1.9.64</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jetty.maven.plugin>9.4.0.v20161208</jetty.maven.plugin>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>google-cloud-bom</artifactId>
+                <version>0.53.0-alpha</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- Compile/runtime dependencies -->
         <dependency>
@@ -30,7 +44,6 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-datastore</artifactId>
-            <version>1.29.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
