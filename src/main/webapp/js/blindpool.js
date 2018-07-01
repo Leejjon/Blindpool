@@ -154,6 +154,7 @@ function getPool() {
     try {
         let poolParam = getParameterByName("pool");
         if (poolParam != null) {
+            noRobotIndexing();
             getAjax("/pool/", "?pool=" + poolParam, function (data) {
                 loadRetrievedPool(data);
             });
@@ -223,6 +224,7 @@ function loadCreatedPool(data) {
         let queryString = '?pool=' + poolData.key;
         let scores = poolData.scores;
 
+        noRobotIndexing(); // Is this necessary?
         let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
         window.history.pushState({path:newUrl},'',newUrl);
 
@@ -406,7 +408,6 @@ function unselect(number) {
     if (input.value.length > 0 && !isDuplicateParticipantName(number)) {
         input.classList.remove("invalid");
     }
-    // document.getElementById(PARTICIPANT_NUMBER_COLUMN + number).innerHTML = `${number}`;
 }
 
 function copyUrlToClipboard() {
@@ -463,4 +464,12 @@ function getParameterByName(parameterKey) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function noRobotIndexing() {
+    // Following: https://support.google.com/webmasters/answer/93710
+    let noRobotsElement = document.createElement("meta");
+    noRobotsElement.setAttribute("name", "robots");
+    noRobotsElement.setAttribute("content", "noindex");
+    document.getElementsByTagName('head')[0].appendChild(noRobotsElement);
 }

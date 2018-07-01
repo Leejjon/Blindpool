@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="pds" uri="/tlds/PoolDataStore" %>
 
-<!-- Constant variables -->
+<%-- Constant variables --%>
 <c:set var="internationalDomain" value="https://blindpool.com" scope="page"/>
 <c:set var="dutchDomain" value="https://blindepool.nl" scope="page"/>
 <c:set var="defaultNumberOfPlayers" value="5" scope="page"/>
@@ -49,6 +49,7 @@
     <fmt:message key="site.keywords" var="keywords" />
     <meta name="keywords" content="${keywords}">
     <meta name="author" content="Leon Liefting">
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -82,10 +83,11 @@
     </nav>
 
     <div align="center" class="container">
-        <img id="logoImage" src="images/logo.png"/>
+        <fmt:message key="title" var="title"/>
+        <h1><img id="logoImage" alt="${title}" src="images/logo.png"/></h1>
 
         <div class="divider"></div>
-        <h1 id="organizerLabel">Blindpool</h1>
+        <h2 id="organizerLabel"></h2>
         <table>
             <tr>
                 <th class="numberColumn"></th>
