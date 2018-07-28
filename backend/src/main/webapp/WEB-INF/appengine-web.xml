@@ -9,7 +9,6 @@
     <!--<public-root>/static</public-root>-->
 
     <static-files>
-        <include path="frontend/**.*" />
         <include path="js/blindpool.js" />
         <include path="js/materialize.js" />
         <include path="css/blindpool.css" />

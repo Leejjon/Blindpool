@@ -2,3 +2,4 @@ backend/.idea/
 backend/target/
 backend/*.iml
 frontend/node_modules/*.iml
+frontend/build/

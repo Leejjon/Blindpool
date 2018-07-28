@@ -13,12 +13,16 @@
 
 # [START app_yaml]
 runtime: nodejs8
-service: frontend
 
+# Leejjon: I first wanted to call this service "frontend", but having a default service seems to be required.
+# Source: https://stackoverflow.com/questions/42360790/why-do-i-need-to-deploy-a-default-app-before-i-can-deploy-multiple-services-in/42361987#42361987
+service: default
+
+# These handlers are not easy tbh.
 handlers:
-  - url: /static
+  - url: /static2
     static_dir: public
 
-  - url: /.*
+  - url: /static/.*
     script: auto
 # [END app_yaml]
