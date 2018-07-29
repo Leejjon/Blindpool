@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../BlindpoolFrontend/BlindpoolFrontend.iml" filepath="$PROJECT_DIR$/../BlindpoolFrontend/BlindpoolFrontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/blindpool.iml" filepath="$PROJECT_DIR$/backend/blindpool.iml" />
       <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../nodejs-docs-samples/appengine/static-files/static-files.iml" filepath="$PROJECT_DIR$/../nodejs-docs-samples/appengine/static-files/static-files.iml" />
     </modules>
   </component>
 </project>

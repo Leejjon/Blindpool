@@ -1,5 +1,5 @@
 backend/.idea/
 backend/target/
 backend/*.iml
-frontend/node_modules/*.iml
+frontend/node_modules/
 frontend/build/

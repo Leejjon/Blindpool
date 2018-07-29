@@ -20,9 +20,6 @@ service: default
 
 # These handlers are not easy tbh.
 handlers:
-  - url: /static2
-    static_dir: public
-
-  - url: /static/.*
-    script: auto
+  - url: /static
+    static_dir: build
 # [END app_yaml]

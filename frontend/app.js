@@ -19,14 +19,8 @@
 const express = require('express');
 const app = express();
 
-app.set('view engine', 'pug');
-
 // Use the built-in express middleware for serving static files from './public'
-app.use('/static2', express.static('public'));
-
-app.get('/static', (req, res) => {
-  res.render('index');
-});
+app.use('/static', express.static('build'));
 
 // Start the server
 const PORT = process.env.PORT || 8080;
