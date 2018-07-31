@@ -2,6 +2,12 @@
 # Put specific cases at the top, other
 dispatch:
 # Except for the react frontend on a custom url.
+  - url: "blindepoule.appspot.com/static/"
+    service: default
+  - url: "blindpool.com/static/"
+    service: default
+  - url: "blindepoule.nl/static/"
+    service: default
   - url: "blindepoule.appspot.com/static/*"
     service: default
   - url: "blindpool.com/static/*"
