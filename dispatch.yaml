@@ -2,22 +2,13 @@
 # Put specific cases at the top, other
 dispatch:
 # Except for the react frontend on a custom url.
-  - url: "blindepoule.appspot.com/static/"
+#  - url: "*/static/*"
+#    service: default
+
+  - url: "*/static*"
     service: default
-  - url: "blindpool.com/static/"
+  - url: "*/static/*"
     service: default
-  - url: "blindepoule.nl/static/"
-    service: default
-  - url: "blindepoule.appspot.com/static/*"
-    service: default
-  - url: "blindpool.com/static/*"
-    service: default
-  - url: "blindepoule.nl/static/*"
-    service: default
-# Currently route everything to the backend
-  - url: "blindepoule.appspot.com/*"
-    service: backend
-  - url: "blindpool.com/*"
-    service: backend
-  - url: "blindepool.nl/*"
+## Currently route everything to the backend
+  - url: "*/*"
     service: backend
