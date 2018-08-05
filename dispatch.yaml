@@ -2,13 +2,8 @@
 # Put specific cases at the top, other
 dispatch:
 # Except for the react frontend on a custom url.
-#  - url: "*/static/*"
-#    service: default
-
-  - url: "*/static*"
+  - url: "*/frontend/*"
     service: default
-  - url: "*/static/*"
-    service: default
-## Currently route everything to the backend
+# Route everything to the backend
   - url: "*/*"
     service: backend

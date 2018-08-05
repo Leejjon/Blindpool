@@ -20,6 +20,9 @@ service: default
 
 # These handlers are not easy tbh.
 handlers:
-  - url: /static
+  - url: /frontend/
+    static_files: build/index.html
+    upload: build/index.html
+  - url: /frontend/
     static_dir: build
 # [END app_yaml]

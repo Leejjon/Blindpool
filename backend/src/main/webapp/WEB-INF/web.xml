@@ -12,12 +12,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>_ah_sessioncleanup</servlet-name>
-        <url-pattern>/_ah/sessioncleanup</url-pattern>
+        <url-pattern>/api/_ah/sessioncleanup</url-pattern>
     </servlet-mapping>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Sessions Removal</web-resource-name>
-            <url-pattern>/_ah/sessioncleanup</url-pattern>
+            <url-pattern>/api/_ah/sessioncleanup</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
