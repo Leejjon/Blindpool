@@ -60,7 +60,6 @@ public class PoolServlet extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jb.append(line);
             }
-
         } catch (Exception e) {
             response.setStatus(400);
             PrintWriter writer = response.getWriter();

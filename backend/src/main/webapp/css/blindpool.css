@@ -11,6 +11,12 @@ body {
     font-family: 'Archivo', sans-serif;
 }
 
+label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    line-height: 22.5px;
+}
+
 h1 {
     margin: 0px;
     line-height: 0px;
