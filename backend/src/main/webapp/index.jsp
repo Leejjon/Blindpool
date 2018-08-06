@@ -12,13 +12,13 @@
 <%-- If the language is Dutch, show dutch! --%>
 <c:choose>
     <c:when test="${fn:endsWith(pageContext.request.serverName, 'blindepoule.nu')}">
-        <c:set var="language" value="nl" scope="session"/>
+        <c:set var="language" value="nl" scope="page"/>
     </c:when>
     <c:when test="${fn:endsWith(pageContext.request.serverName, 'blindepool.nl')}">
-        <c:set var="language" value="nl" scope="session"/>
+        <c:set var="language" value="nl" scope="page"/>
     </c:when>
     <c:otherwise>
-        <c:set var="language" value="en" scope="session"/>
+        <c:set var="language" value="en" scope="page"/>
     </c:otherwise>
 </c:choose>
 
@@ -115,7 +115,7 @@
             </tr>
             <fmt:message key="player.name.placeholder" var="playerPlaceHolder" />
             <tr id="participant2">
-                <td id="numberColumn2" class="numberColumn">2</td>
+                <td id="numberColumn2" class="numberColumn"><label for="scoreField2">2</label></td>
                 <td class="nameColumn">
                     <div class="input-field input-phase-name-width" id="inputFieldDiv2">
                         <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} 2" id="participantName2" class="validate" type="text" onblur="hideSolvedErrors(2)"  onkeyup="unselect(2)">
@@ -132,7 +132,7 @@
                 </td>
             </tr>
             <tr id="participant3">
-                <td id="numberColumn3" class="numberColumn">3</td>
+                <td id="numberColumn3" class="numberColumn"><label for="scoreField3">3</label></td>
                 <td class="nameColumn">
                     <div class="input-field input-phase-name-width" id="inputFieldDiv3">
                         <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} 3" id="participantName3" class="validate" type="text" onblur="hideSolvedErrors(3)"  onkeyup="unselect(3)">
@@ -149,7 +149,7 @@
                 </td>
             </tr>
             <tr id="participant4">
-                <td id="numberColumn4" class="numberColumn">4</td>
+                <td id="numberColumn4" class="numberColumn"><label for="scoreField4">4</label></td>
                 <td class="nameColumn">
                     <div class="input-field input-phase-name-width" id="inputFieldDiv4">
                         <input autocomplete="off"  maxlength="16" required="required" placeholder="${playerPlaceHolder} 4" id="participantName4" class="validate" type="text" onblur="hideSolvedErrors(4)"  onkeyup="unselect(4)">

@@ -79,7 +79,7 @@ function addNextParticipant(disableValidation) {
     let newParticipant = document.createElement("tr");
     let playerPlaceHolder = MESSAGE_BUNDLE["player.name.placeholder"];
 
-    newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn">${nextId}</td>
+    newParticipant.innerHTML = `<td id="numberColumn${nextId}" class="numberColumn"><label for="scoreField${nextId}">${nextId}</label></td>
         <td class="nameColumn"><div class="input-field input-phase-name-width" id="inputFieldDiv${nextId}">
             <input autocomplete="off" maxlength="16" required="required" placeholder="${playerPlaceHolder} ${nextId}" id="participantName${nextId}" type="text" class="validate" onblur="hideSolvedErrors(${nextId})" onkeyup="unselect(${nextId})">
             <span id="nameValidation${nextId}" class="helper-text nameValidation" data-error="Enter a valid name."  data-success="Correct, but this shouldn't be visible."></span>
