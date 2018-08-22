@@ -18,11 +18,20 @@ runtime: nodejs8
 # Source: https://stackoverflow.com/questions/42360790/why-do-i-need-to-deploy-a-default-app-before-i-can-deploy-multiple-services-in/42361987#42361987
 service: default
 
-# These handlers are not easy tbh.
+# These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
 handlers:
   - url: /frontend/
     static_files: build/index.html
     upload: build/index.html
   - url: /frontend/
     static_dir: build
+#  - url: /frontend/(.*\.(ico|png))$
+#    static_files: build/\1
+#    upload: build/.*\.(ico|png)$
+#  - url: /frontend/static
+#    static_dir: build/static
+#  - url: /frontend/(service-worker\.(js))$
+#    static_files: build/\1
+#    upload: build/(service-worker\.(js))$
+# Redirect all other calls to the index.html page
 # [END app_yaml]
