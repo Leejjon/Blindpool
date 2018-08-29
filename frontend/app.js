@@ -20,15 +20,9 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Use the built-in express middleware for serving static files from './public'
-// app.use('/frontend/static', express.static('build/static'));
-
-// Serve any static files
 app.use('/frontend', express.static(path.join(__dirname, 'build')));
 
-// Handle React routing, return all requests to React app
-app.get('*', function(req, res) {
-    console.log(`Redirecting request to index.html`);
+app.get('/frontend/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 

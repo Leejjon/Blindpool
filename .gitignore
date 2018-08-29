@@ -1,7 +1,7 @@
 backend/.idea/
 backend/target/
 backend/blindpool.iml
-frontend/node_modules/
 frontend/build/
 frontend/frontend.iml
 .idea/
+/frontend/node_modules

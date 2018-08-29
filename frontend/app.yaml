@@ -19,19 +19,16 @@ runtime: nodejs8
 service: default
 
 # These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
+#handlers:
+env: standard
+instance_class: F1
 handlers:
-  - url: /frontend/
-    static_files: build/index.html
-    upload: build/index.html
-  - url: /frontend/
-    static_dir: build
-#  - url: /frontend/(.*\.(ico|png))$
-#    static_files: build/\1
-#    upload: build/.*\.(ico|png)$
-#  - url: /frontend/static
-#    static_dir: build/static
-#  - url: /frontend/(service-worker\.(js))$
-#    static_files: build/\1
-#    upload: build/(service-worker\.(js))$
-# Redirect all other calls to the index.html page
+  - url: '/frontend/.*'
+    script: auto
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
+
 # [END app_yaml]
