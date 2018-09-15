@@ -23,7 +23,7 @@ service: default
 env: standard
 instance_class: F1
 handlers:
-  - url: '/frontend/.*'
+  - url: '.*'
     script: auto
 automatic_scaling:
   min_idle_instances: automatic

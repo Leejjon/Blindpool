@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-@WebServlet("/messages/")
+@WebServlet("/messages")
 public class MessageBundleServlet extends HttpServlet {
     private final static Logger log = Logger.getLogger(PoolServlet.class.getName());
     private static final Locale NL = new Locale("nl", "NL");

@@ -2,8 +2,10 @@
 # Put specific cases at the top, other
 dispatch:
 # Except for the react frontend on a custom url.
-  - url: "*/frontend/*"
-    service: default
-# Route everything to the backend
   - url: "*/*"
+    service: default
+# Route only the urls that match the servlets to the backend
+  - url: "*/messages/"
+    service: backend
+  - url: "*/pool/"
     service: backend

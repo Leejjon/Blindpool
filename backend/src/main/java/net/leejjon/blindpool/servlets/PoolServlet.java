@@ -32,19 +32,22 @@ public class PoolServlet extends HttpServlet {
 
         String poolKeyParameter = request.getParameter("pool");
 
-        Optional<Pool> optionalPool = PoolDataStore.getInstance().getPool(poolKeyParameter);
-        if (optionalPool.isPresent()) {
-            Pool pool = optionalPool.get();
+        if (poolKeyParameter != null || poolKeyParameter.isEmpty()) {
+            Optional<Pool> optionalPool = PoolDataStore.getInstance().getPool(poolKeyParameter);
+            if (optionalPool.isPresent()) {
+                Pool pool = optionalPool.get();
 
-            PrintWriter writer = response.getWriter();
-            writer.println(new Gson().toJson(pool));
-            writer.close();
-        } else {
-            response.setStatus(404);
-            PrintWriter writer = response.getWriter();
-            writer.println(new Gson().toJson(new ErrorResponse(ResourceBundleKeys.POOL_NOT_FOUND)));
-            writer.close();
+                PrintWriter writer = response.getWriter();
+                writer.println(new Gson().toJson(pool));
+                writer.close();
+                return;
+            }
         }
+
+        response.setStatus(404);
+        PrintWriter writer = response.getWriter();
+        writer.println(new Gson().toJson(new ErrorResponse(ResourceBundleKeys.POOL_NOT_FOUND)));
+        writer.close();
     }
 
     @Override

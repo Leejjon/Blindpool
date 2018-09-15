@@ -141,7 +141,7 @@ function loadPage() {
         if (window.location.hostname === "blindepool.nl" || window.location.hostname === "www.blindepool.nl") {
             languageOtherThanEnglish = "?lang=nl";
         }
-        getAjax("/messages/", languageOtherThanEnglish, function (data) {
+        getAjax("/messages", languageOtherThanEnglish, function (data) {
             MESSAGE_BUNDLE = JSON.parse(data);
             getPool();
         });
