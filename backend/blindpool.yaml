@@ -1,0 +1,58 @@
+openapi: 3.0.0
+servers:
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/Leejjon/Blindpool/1.0.0
+- description: Production server on Google App Engine
+  url: https://blindpool.com/api/v1
+- description: Localhost for testing purposes
+  url: https://localhost:8080/api/v1
+info:
+  description: Backend API for the Blindpool.com progressive web app.
+  version: "1.0.0"
+  title: Blindpool.com
+  contact:
+    email: leejjon@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  '/messages/{langTld}':
+    get:
+      parameters:
+      - name: langTld
+        in: path
+        required: true
+        description: The tld of the language we are requesting.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A message bundle containing key/valeues used in the front end.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageBundle'
+        default:
+          description: An error wrapper.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    MessageBundle:
+      type: object
+      additionalProperties:
+        type: string
+    ErrorResponse:
+      required:
+      - uuid
+      - message
+      properties:
+        uuid:
+          description: Logs a UUID. If a stacktrace has occurred in the
+          type: string
+        message:
+          description: Message of error that occurred.
+          type: string
