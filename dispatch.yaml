@@ -5,7 +5,5 @@ dispatch:
   - url: "*/*"
     service: default
 # Route only the urls that match the servlets to the backend
-  - url: "*/messages/"
-    service: backend
-  - url: "*/pool/"
+  - url: "*/api/v1/"
     service: backend
