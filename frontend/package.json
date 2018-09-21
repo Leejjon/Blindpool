@@ -3,7 +3,6 @@
   "description": "Serving static files of React frontend in Node.js for Google App Engine Standard",
   "version": "0.0.1",
   "private": true,
-  "homepage": ".",
   "license": "Apache Version 2.0",
   "author": "Leon Liefting",
   "engines": {
