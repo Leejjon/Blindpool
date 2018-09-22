@@ -141,7 +141,7 @@ function loadPage() {
         if (window.location.hostname === "blindepool.nl" || window.location.hostname === "www.blindepool.nl") {
             languageOtherThanEnglish = "?lang=nl";
         }
-        getAjax("/messages", languageOtherThanEnglish, function (data) {
+        getAjax2("/messages", languageOtherThanEnglish, function (data) {
             MESSAGE_BUNDLE = JSON.parse(data);
             getPool();
         });
@@ -155,7 +155,7 @@ function getPool() {
         let poolParam = getParameterByName("pool");
         if (poolParam != null) {
             noRobotIndexing();
-            getAjax("/pool/", "?pool=" + poolParam, function (data) {
+            getAjax("api/v1/pool/" + poolParam, function (data) {
                 loadRetrievedPool(data);
             });
         }
@@ -169,7 +169,7 @@ function createPool() {
         let participants = validateFields();
         disableCreatePoolButton();
 
-        postAjax("/pool/", participants, function (data) {
+        postAjax("api/v1/pool/", participants, function (data) {
             hideErrorLabel();
             loadCreatedPool(data);
         }, function () {
@@ -222,14 +222,14 @@ function loadCreatedPool(data) {
     if (data != null && JSON.parse(data).key != null) {
         let poolData = JSON.parse(data);
         let queryString = '?pool=' + poolData.key;
-        let scores = poolData.scores;
+        let participantsAndScores = poolData.participantsAndScores;
 
         noRobotIndexing(); // Is this necessary?
         let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString;
         window.history.pushState({path:newUrl},'',newUrl);
 
-        for (let i = 0; i < scores.length; i++) {
-            fillScoreColumn(scores[i], i);
+        for (let i = 0; i < participantsAndScores.length; i++) {
+            fillScoreColumn(participantsAndScores[i], i);
         }
         showScoreColumns();
         hideNumbersAddAndRemoveButtons();
@@ -248,7 +248,7 @@ function loadRetrievedPool(data) {
 
         for (let i = 0; i < participantsAndScores.length; i++) {
             fillNameColumn(participantsAndScores[i].participant.name, i);
-            fillScoreColumn(participantsAndScores[i].score, i);
+            fillScoreColumn(participantsAndScores[i], i);
         }
 
         showScoreColumns();
@@ -292,8 +292,8 @@ function fillNameColumn(participantName, number) {
     document.getElementById(PARTICIPANT_NAME + (number + 1)).value = participantName;
 }
 
-function fillScoreColumn(score, number) {
-    document.getElementById(SCORE_FIELD + (number + 1)).value = score.homeClubScore + " - " + score.awayClubScore;
+function fillScoreColumn(participantScore, number) {
+    document.getElementById(SCORE_FIELD + (number + 1)).value = participantScore.score.homeClubScore + " - " + participantScore.score.awayClubScore;
 }
 
 function showScoreColumns() {
@@ -417,7 +417,19 @@ function copyUrlToClipboard() {
     document.execCommand("copy");
 }
 
-function getAjax(url, param, success) {
+function getAjax(url, success) {
+    let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+    xhr.open('GET', url, true);
+    xhr.send(null);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState > 3 && (xhr.status === 200 || xhr.status === 404)) {
+            success(xhr.responseText);
+        }
+    }
+}
+
+function getAjax2(url, param, success) {
     let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 
     if (param != null) {

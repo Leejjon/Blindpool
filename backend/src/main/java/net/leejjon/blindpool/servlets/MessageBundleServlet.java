@@ -8,14 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 @WebServlet("/messages")
 public class MessageBundleServlet extends HttpServlet {
-    private final static Logger log = Logger.getLogger(PoolServlet.class.getName());
+    private final static Logger log = Logger.getLogger(MessageBundleServlet.class.getName());
     private static final Locale NL = new Locale("nl", "NL");
 
     @Override
