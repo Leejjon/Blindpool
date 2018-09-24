@@ -20,17 +20,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Simple class to do stuff with the pools in the datastore.
  *
  * @author Leejjon
  */
-public class PoolDataStore {
+public class PoolDataStore implements PoolDataService {
     private final static Logger log = Logger.getLogger(PoolDataStore.class.getName());
 
-    public static Pool createPool(List<Participant> participantNames) {
+    @Override
+    public Pool createPool(List<Participant> participantNames) {
         // Create the entity of the pool.
         List<ParticipantScore> participantScores = ScoreGenerator.assignRandomScores(participantNames);
 
@@ -60,7 +60,8 @@ public class PoolDataStore {
         return new Pool(key.getId(), participantScores, null, null, null, timestamp.getTime());
     }
 
-    public static Optional<Pool> getPool(String key) {
+    @Override
+    public Optional<Pool> getPool(String key) {
         // Hopefully this will always contain one.
         long[] keys = new Hashids().decode(key);
 
