@@ -1,9 +1,7 @@
 package net.leejjon.blindpool.config;
 
 import net.leejjon.blindpool.api.PoolApi;
-import net.leejjon.blindpool.storage.PoolDataService;
-import net.leejjon.blindpool.storage.PoolDataStore;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;
@@ -26,16 +24,7 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/api/*")
 public class JaxRsConfig extends ResourceConfig {
     public JaxRsConfig() {
-
-        // Make sure the fields with @Inject annotations are initialized with
-//        register(new AbstractBinder() {
-//            @Override
-//            protected void configure() {
-//                bind(PoolDataStore.class).to(PoolDataService.class);
-//            }
-//        });
-
-        // Initialize the PoolApi and inject
-        register(new PoolApi(new PoolDataStore()));
+        // Initialize the PoolApi and inject a service on runtime (that can be mocked in tests).
+        register(new PoolApi(new PoolDataServiceImpl()));
     }
 }

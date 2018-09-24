@@ -1,5 +1,7 @@
 package net.leejjon.blindpool.model;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hashids.Hashids;
@@ -22,9 +24,13 @@ import java.util.List;
  *
  * @author Leejjon
  */
+@Builder
+@EqualsAndHashCode
 public class Pool {
     @Getter @Setter
     private String key;
+    @Getter
+    private final List<ParticipantScore> participantsAndScores;
 
     private final String match;
 
@@ -34,12 +40,10 @@ public class Pool {
 
     private final long createdTimestamp;
 
-    @Getter
-    private final List<ParticipantScore> participantsAndScores;
 
-    public Pool(long key, List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency, long createdTimestamp) {
+    public Pool(String key, List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency, long createdTimestamp) {
         this(participantsAndScores, match, bet, currency, createdTimestamp);
-        this.key = new Hashids().encode(key);
+        this.key = key;
     }
 
     /**
@@ -58,4 +62,6 @@ public class Pool {
     public String getOwner() {
         return participantsAndScores.get(0).getParticipant().getName();
     }
+
+
 }
