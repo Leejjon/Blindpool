@@ -29,6 +29,7 @@ import java.util.List;
 public class Pool {
     @Getter @Setter
     private String key;
+
     @Getter
     private final List<ParticipantScore> participantsAndScores;
 

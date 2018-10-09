@@ -1,5 +1,6 @@
 package net.leejjon.blindpool.api;
 
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gson.Gson;
 import net.leejjon.blindpool.logic.ScoreGenerator;
 import net.leejjon.blindpool.model.Participant;
@@ -22,23 +23,34 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PoolApiTest {
+
     private PoolApi poolApi;
 
     @Mock
     private PoolDataServiceImpl poolDataService;
 
     @Test
-    public void testGetPool_success() {
-        when(poolDataService.createPool(any())).thenReturn(getPoolFourParticipants());
+    public void testCreatePool_success() {
+        Pool poolToReturn = getPoolFourParticipants();
+        when(poolDataService.createPool(any())).thenReturn(poolToReturn);
 
         poolApi = new PoolApi(poolDataService);
         Response poolResponse = poolApi.createPool(Arrays.asList("Leon", "Dirk", "Robert", "Jaimy"));
         assertEquals(200, poolResponse.getStatus());
 
         String jsonString = new Gson().toJson(poolResponse.getEntity());
-        System.out.println(jsonString);
         Pool poolFromJsonString = new Gson().fromJson(jsonString, Pool.class);
-        assertEquals(getPoolFourParticipants(), poolFromJsonString);
+        assertEquals(poolToReturn, poolFromJsonString);
+    }
+
+    @Test
+    public void testGetPool_success() throws EntityNotFoundException {
+        Pool poolToReturn = getPoolFourParticipants();
+        when(poolDataService.getPool(any())).thenReturn(poolToReturn);
+
+        poolApi = new PoolApi(poolDataService);
+        Response poolResponse = poolApi.getPool("anyPool");
+        assertEquals(200, poolResponse.getStatus());
     }
 
     private Pool getPoolFourParticipants() {

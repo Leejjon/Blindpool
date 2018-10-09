@@ -7,12 +7,10 @@ import net.leejjon.blindpool.model.Participant;
 import net.leejjon.blindpool.model.Pool;
 import net.leejjon.blindpool.storage.PoolDataService;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +20,6 @@ import java.util.stream.Collectors;
 public class PoolApi {
     private final static Logger log = Logger.getLogger(PoolApi.class.getName());
 
-//    @Inject
     private final PoolDataService poolDataService;
 
     public PoolApi(PoolDataService poolDataService) {
