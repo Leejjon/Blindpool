@@ -16,6 +16,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@material-ui/core": "^3.2.2",
     "express": "4.16.2",
     "materialize-css": "^1.0.0-rc.2"
   },

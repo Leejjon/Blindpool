@@ -1,15 +1,12 @@
 import React, {Component} from 'react';
-import {Navbar, NavItem} from 'react-materialize'
+import Button from '@material-ui/core/Button';
 
 class BlindPoolNavbar extends Component {
     render() {
         return (
-            <Navbar className='green accent-4'>
-                <NavItem>Haha</NavItem>
-                <ul className="right">
-                    <li><NavItem>Hoi</NavItem></li>
-                </ul>
-            </Navbar>
+            <Button variant="contained" color="primary">
+                Hello World
+            </Button>
         );
     }
 }
