@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navbar2 from "./components/BlindpoolNavbar";
+import 'typeface-roboto';
 
 import {  MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -8,7 +9,8 @@ const theme = createMuiTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
-            main: '#ff4400',
+            main: '#00cc47',
+            contrastText: '#ffffff',
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
         },
@@ -22,40 +24,14 @@ const theme = createMuiTheme({
     },
 });
 
-// function App() {
-//     return (
-//         <MuiThemeProvider theme={theme}>
-//             <Root />
-//         </MuiThemeProvider>
-//     );
-// }
-//
-// render(<App />, document.querySelector('#app'));
-
-// /*
-//  * These imports make sure the materialize css is imported without me
-//  * having to add it manually in the index.html
-//  */
-// import 'materialize-css';
-// import 'materialize-css/dist/css/materialize.min.css';
-
 class App extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            // currentTitle: "Pool van Leejjon",
-            // showPool: false,
-            // currentContent: 'home',
-        };
-    }
-
 
     render() {
         return (
           <div className="App">
-              <Navbar2 />
-
+              <MuiThemeProvider theme={theme}>
+                <Navbar2 />
+              </MuiThemeProvider>
           </div>
         );
     }

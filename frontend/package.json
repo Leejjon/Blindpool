@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.2.2",
+    "@material-ui/icons": "^3.0.1",
     "express": "4.16.2",
-    "materialize-css": "^1.0.0-rc.2"
+    "typeface-roboto": "0.0.54"
   },
   "devDependencies": {
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-materialize": "^2.3.3",
     "react-scripts": "^1.1.5"
   }
 }
