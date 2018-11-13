@@ -23,6 +23,7 @@ const theme = createMuiTheme({
         // error: will use the default color
     },
     typography: {
+        useNextVariants: true,
         fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
         fontSize: 14,
         fontWeightLight: 300,

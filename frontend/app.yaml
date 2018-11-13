@@ -17,7 +17,6 @@ runtime: nodejs8
 # Leejjon: I first wanted to call this service "frontend", but having a default service seems to be required.
 # Source: https://stackoverflow.com/questions/42360790/why-do-i-need-to-deploy-a-default-app-before-i-can-deploy-multiple-services-in/42361987#42361987
 service: default
-api_version: '1.0'
 env: standard
 instance_class: F1
 # These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
