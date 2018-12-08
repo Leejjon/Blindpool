@@ -6,6 +6,16 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Grid from "@material-ui/core/Grid/Grid";
 import Menu from "@material-ui/core/Menu/Menu";
+// import LocalizedStrings from 'react-localization';
+//
+// let resourceBundle = new LocalizedStrings({
+//     en: {
+//
+//     },
+//     nl: {
+//
+//     }
+// });
 
 class BlindPoolNavbar extends Component {
     // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.

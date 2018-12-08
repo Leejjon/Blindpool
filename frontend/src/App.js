@@ -1,9 +1,17 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
-import Navbar2 from "./components/BlindpoolNavbar";
+import BlindpoolNavbar from "./components/BlindpoolNavbar";
 import 'typeface-roboto';
+import intl from 'react-intl-universal';
+import Button from '@material-ui/core/Button';
 
-import {  MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+
+// locale data
+const locales = {
+    "en-US": require('./locales/en-US.json'),
+    "nl-NL": require('./locales/nl-NL.json'),
+};
 
 const theme = createMuiTheme({
     palette: {
@@ -39,15 +47,59 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+    state = {initDone: false}
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        this.loadLocales();
+        document.title = intl.get('TITLE');
+    }
+
+    loadLocales(specificLocale) {
+        let currentLocale;
+
+        if (specificLocale) {
+            currentLocale = specificLocale;
+        } else {
+            currentLocale = intl.determineLocale({
+                urlLocaleKey: "lang",
+                cookieLocaleKey: "lang"
+            });
+        }
+
+        console.log(currentLocale);
+
+        // init method will load CLDR locale data according to currentLocale
+        // react-intl-universal is singleton, so you should init it only once in your app
+        intl.init({
+            currentLocale: currentLocale, // TODO: determine locale here
+            locales,
+        }).then(() => {
+            // After loading CLDR locale data, start to render
+            this.setState({initDone: true});
+        });
+    }
 
     render() {
         return (
-          <div className="App">
-              <MuiThemeProvider theme={theme}>
-                <Navbar2 />
-              </MuiThemeProvider>
-          </div>
+            this.state.initDone &&
+            <div className="App">
+                <MuiThemeProvider theme={theme}>
+                    <BlindpoolNavbar/>
+                </MuiThemeProvider>
+                <br />
+                <br />
+                <Button color="secondary" onClick={this.switchToEnglish}>{intl.get('TITLE')}</Button>
+            </div>
         );
+    }
+
+    switchToEnglish = () => {
+        console.log("Blabla");
+        this.loadLocales("nl-NL");
     }
 }
 
