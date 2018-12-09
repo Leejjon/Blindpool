@@ -6,16 +6,8 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Grid from "@material-ui/core/Grid/Grid";
 import Menu from "@material-ui/core/Menu/Menu";
-// import LocalizedStrings from 'react-localization';
-//
-// let resourceBundle = new LocalizedStrings({
-//     en: {
-//
-//     },
-//     nl: {
-//
-//     }
-// });
+import intl from "react-intl-universal";
+import FlagIcon from "../../locales/FlagIcon";
 
 class BlindPoolNavbar extends Component {
     // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.
@@ -34,14 +26,9 @@ class BlindPoolNavbar extends Component {
     };
 
     // Probably should replace
-    selectEnglish = () => {
-        this.setState({ anchorEl: null });
-        console.log("Switch to English.");
-    };
-
-    selectDutch = () => {
-        this.setState({ anchorEl: null });
-        console.log("Switch to Dutch.");
+    selectLanguage(lang) {
+        this.setState({ anchorEl: null, languageCode: lang});
+        this.props.setLanguage(lang);
     };
 
     render() {
@@ -57,7 +44,7 @@ class BlindPoolNavbar extends Component {
                         <Button aria-owns={anchorEl ? 'simple-menu' : undefined}
                                 aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
-                            <Typography variant="subtitle2">Language</Typography>
+                            <FlagIcon code="nl" size="lg" />
                             <Icon color="secondary">arrow_drop_down</Icon>
                         </Button>
                         <Menu
@@ -65,8 +52,8 @@ class BlindPoolNavbar extends Component {
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={this.closeLanguageSelect}>
-                            <MenuItem onClick={this.selectEnglish}>English</MenuItem>
-                            <MenuItem onClick={this.selectDutch}>Nederlands</MenuItem>
+                            <MenuItem onClick={() => this.selectLanguage('en-US')}>English</MenuItem>
+                            <MenuItem onClick={() => this.selectLanguage('nl-NL')}>Nederlands</MenuItem>
                         </Menu>
                     </Grid>
                 </Grid>

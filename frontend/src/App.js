@@ -3,8 +3,6 @@ import './App.css';
 import BlindpoolNavbar from "./components/BlindpoolNavbar";
 import 'typeface-roboto';
 import intl from 'react-intl-universal';
-import Button from '@material-ui/core/Button';
-
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 
 // locale data
@@ -51,6 +49,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
+        this.loadLocales = this.loadLocales.bind(this);
     }
 
     componentDidMount() {
@@ -70,14 +69,17 @@ class App extends Component {
             });
         }
 
-        console.log(currentLocale);
-
         // init method will load CLDR locale data according to currentLocale
         // react-intl-universal is singleton, so you should init it only once in your app
         intl.init({
-            currentLocale: currentLocale, // TODO: determine locale here
+            currentLocale: currentLocale,
             locales,
+            commonLocaleDataUrls: {
+                en: "./locales/en.js",
+                zh: "./locales/nl.js",
+            }
         }).then(() => {
+            console.log(intl.toLocaleString());
             // After loading CLDR locale data, start to render
             this.setState({initDone: true});
         });
@@ -88,18 +90,11 @@ class App extends Component {
             this.state.initDone &&
             <div className="App">
                 <MuiThemeProvider theme={theme}>
-                    <BlindpoolNavbar/>
+                    <BlindpoolNavbar setLanguage={this.loadLocales} />
                 </MuiThemeProvider>
                 <br />
-                <br />
-                <Button color="secondary" onClick={this.switchToEnglish}>{intl.get('TITLE')}</Button>
             </div>
         );
-    }
-
-    switchToEnglish = () => {
-        console.log("Blabla");
-        this.loadLocales("nl-NL");
     }
 }
 
