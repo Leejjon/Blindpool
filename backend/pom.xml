@@ -10,7 +10,7 @@
 
     <properties>
         <appengine.app.version>43</appengine.app.version>
-        <appengine.sdk.version>1.9.64</appengine.sdk.version>
+        <appengine.sdk.version>1.9.70</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -22,7 +22,7 @@
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>google-cloud-bom</artifactId>
-                <version>0.62.0-alpha</version>
+                <version>0.73.0-alpha</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
