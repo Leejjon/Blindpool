@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ScoreGeneratorTest {
+class ScoreGeneratorTest {
     @Test
     void testGeneratingScores_fiveUsers_Succeed() {
         String[] participantNames = {"Leon", "Niels", "Dirk", "Jaimy", "Robert"};
