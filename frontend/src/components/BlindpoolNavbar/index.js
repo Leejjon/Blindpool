@@ -14,6 +14,7 @@ class BlindPoolNavbar extends Component {
     // Just copy pasted it from: https://material-ui.com/demos/menus/
     state = {
         anchorEl: null,
+        currentLang: 'gb'
     };
 
     openLanguageSelect = event => {
@@ -27,9 +28,25 @@ class BlindPoolNavbar extends Component {
 
     // Probably should replace
     selectLanguage(lang) {
-        this.setState({ anchorEl: null, languageCode: lang});
+        let lastTwoCharacters = lang.substr(lang.length - 2).toLowerCase();
+
+        if (lastTwoCharacters === 'us') {
+            // Nobody in the US watches football, so let's show the GB flag instead.
+            lastTwoCharacters = 'gb';
+        }
+
+        this.setState({ anchorEl: null, currentLang: lastTwoCharacters});
+        console.log(lastTwoCharacters);
         this.props.setLanguage(lang);
     };
+
+    currentFlag() {
+        if (this.state.currentLang !== null) {
+            return <FlagIcon code={this.state.currentLang} size="lg" />
+        } else {
+            return <FlagIcon code="gb" size="lg"/>
+        }
+    }
 
     render() {
         const { anchorEl } = this.state;
@@ -41,10 +58,13 @@ class BlindPoolNavbar extends Component {
                     container
                     spacing={24}>
                     <Grid item>
+                        <Typography>{intl.get('TITLE')}</Typography>
+                    </Grid>
+                    <Grid item>
                         <Button aria-owns={anchorEl ? 'simple-menu' : undefined}
                                 aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
-                            <FlagIcon code="nl" size="lg" />
+                            {this.currentFlag()}
                             <Icon color="secondary">arrow_drop_down</Icon>
                         </Button>
                         <Menu
@@ -52,8 +72,8 @@ class BlindPoolNavbar extends Component {
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={this.closeLanguageSelect}>
-                            <MenuItem onClick={() => this.selectLanguage('en-US')}>English</MenuItem>
-                            <MenuItem onClick={() => this.selectLanguage('nl-NL')}>Nederlands</MenuItem>
+                            <MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}><FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English</MenuItem>
+                            <MenuItem onClick={this.selectLanguage.bind(this, 'nl-NL')}><FlagIcon code="nl" size="lg"/>&nbsp;&nbsp;Nederlands</MenuItem>
                         </Menu>
                     </Grid>
                 </Grid>

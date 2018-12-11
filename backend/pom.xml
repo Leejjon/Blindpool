@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <appengine.app.version>43</appengine.app.version>
+        <appengine.app.version>44</appengine.app.version>
         <appengine.sdk.version>1.9.70</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -67,8 +67,6 @@
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
-            <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
-            <!-- artifactId>jersey-container-servlet</artifactId -->
             <exclusions>
                 <exclusion><!-- Exclude this repackaged javax.inject. -->
                     <groupId>org.glassfish.hk2.external</groupId>
@@ -133,11 +131,11 @@
                 <version>1.3.2</version>
                 <configuration>
                     <deploy.project>blindepoule</deploy.project>
-                    <deploy.version>44</deploy.version>
+                    <deploy.version>${appengine.app.version}</deploy.version>
                     <promote>false</promote>
                     <!-- This lets my phone reach my webapp that runs local on my PC by going to ip:8080 via wifi. -->
                     <host>0.0.0.0</host>
-                    <cloudSdkPath>C:\Users\lliefting\AppData\Local\Google\Cloud SDK\google-cloud-sdk</cloudSdkPath>
+                    <cloudSdkPath>C:\Users\Leejjon\AppData\Local\Google\Cloud SDK\google-cloud-sdk</cloudSdkPath>
                 </configuration>
             </plugin>
         </plugins>
@@ -158,6 +156,7 @@
                         <configuration>
                             <project>blindepoule</project>
                             <version>${appengine.app.version}</version>
+                            <cloudSdkPath>C:\Users\Leejjon\AppData\Local\Google\Cloud SDK\google-cloud-sdk</cloudSdkPath>
                             <promote>true</promote>
                         </configuration>
                     </plugin>

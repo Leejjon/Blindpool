@@ -7,7 +7,7 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 
 // locale data
 const locales = {
-    "en-US": require('./locales/en-US.json'),
+    "en-US": require('./locales/en-GB.json'),
     "nl-NL": require('./locales/nl-NL.json'),
 };
 
@@ -45,7 +45,7 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-    state = {initDone: false}
+    state = {initDone: false, currentLang: null}
 
     constructor(props) {
         super(props);
@@ -76,12 +76,11 @@ class App extends Component {
             locales,
             commonLocaleDataUrls: {
                 en: "./locales/en.js",
-                zh: "./locales/nl.js",
+                nl: "./locales/nl.js",
             }
         }).then(() => {
-            console.log(intl.toLocaleString());
             // After loading CLDR locale data, start to render
-            this.setState({initDone: true});
+            this.setState({initDone: true, currentLang: currentLocale});
         });
     }
 
@@ -90,7 +89,7 @@ class App extends Component {
             this.state.initDone &&
             <div className="App">
                 <MuiThemeProvider theme={theme}>
-                    <BlindpoolNavbar setLanguage={this.loadLocales} />
+                    <BlindpoolNavbar setLanguage={this.loadLocales} currentLocale={this.state.currentLang} />
                 </MuiThemeProvider>
                 <br />
             </div>
