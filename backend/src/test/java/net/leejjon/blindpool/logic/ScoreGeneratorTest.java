@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ScoreGeneratorTest {
+class ScoreGeneratorTest {
     @Test
-    public void testGeneratingScores_fiveUsers_Succeed() {
+    void testGeneratingScores_fiveUsers_Succeed() {
         String[] participantNames = {"Leon", "Niels", "Dirk", "Jaimy", "Robert"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
@@ -24,7 +24,7 @@ public class ScoreGeneratorTest {
     }
 
     @Test
-    public void testGeneratingScores_oneUser_fail() {
+    void testGeneratingScores_oneUser_fail() {
         String[] participantNames = {"Leon"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
@@ -33,7 +33,7 @@ public class ScoreGeneratorTest {
     }
 
     @Test
-    public void testGeneratingScores_oneTwoUsers_fail() {
+    void testGeneratingScores_oneTwoUsers_fail() {
         String[] participantNames = {"Leon", "Blabla"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class ScoreGeneratorTest {
     }
 
     @Test
-    public void testGeneratingScores_sevenUsers_Succeed() {
+    void testGeneratingScores_sevenUsers_Succeed() {
         String[] participantNames = {"Peter", "Leon", "Simone", "Inge", "Yvette", "Yde", "Baby"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());

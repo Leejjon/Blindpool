@@ -10,27 +10,25 @@ import net.leejjon.blindpool.model.Score;
 import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PoolApiTest {
+class PoolApiTest {
 
     private PoolApi poolApi;
 
-    @Mock
-    private PoolDataServiceImpl poolDataService;
+    private PoolDataServiceImpl poolDataService = mock(PoolDataServiceImpl.class);
 
     @Test
-    public void testCreatePool_success() {
+    void testCreatePool_success() {
         Pool poolToReturn = getPoolFourParticipants();
         when(poolDataService.createPool(any())).thenReturn(poolToReturn);
 
@@ -44,7 +42,7 @@ public class PoolApiTest {
     }
 
     @Test
-    public void testGetPool_success() throws EntityNotFoundException {
+    void testGetPool_success() throws EntityNotFoundException {
         Pool poolToReturn = getPoolFourParticipants();
         when(poolDataService.getPool(any())).thenReturn(poolToReturn);
 

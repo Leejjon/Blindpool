@@ -10,9 +10,9 @@ import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LanguageTest {
+class LanguageTest {
     @Test
-    public void testIfResourceBundleKeysHaveValuesInFrontend() throws IOException {
+    void testIfResourceBundleKeysHaveValuesInFrontend() throws IOException {
         Properties properties = MessageBundleServlet.getProperties("messages.properties");
         Properties dutchProperties = MessageBundleServlet.getProperties("messages_nl.properties");
 
