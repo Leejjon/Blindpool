@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Grid from "@material-ui/core/Grid/Grid";
 import Menu from "@material-ui/core/Menu/Menu";
-import intl from "react-intl-universal";
 import FlagIcon from "../../locales/FlagIcon";
 
 class BlindPoolNavbar extends Component {
@@ -58,7 +57,7 @@ class BlindPoolNavbar extends Component {
                     container
                     spacing={24}>
                     <Grid item>
-                        <Typography>{intl.get('TITLE')}</Typography>
+                        {/*<Typography>{intl.get('TITLE')}</Typography>*/}
                     </Grid>
                     <Grid item>
                         <Button aria-owns={anchorEl ? 'simple-menu' : undefined}
