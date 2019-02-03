@@ -4,6 +4,13 @@ import BlindpoolNavbar from "./components/BlindpoolNavbar";
 import 'typeface-roboto';
 import intl from 'react-intl-universal';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import WebFont from 'webfontloader';
+
+WebFont.load({
+    google: {
+        families: ['Archivo', 'sans-serif']
+    }
+});
 
 // locale data
 const locales = {
@@ -30,8 +37,8 @@ const theme = createMuiTheme({
     },
     typography: {
         useNextVariants: true,
-        fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-        fontSize: 14,
+        fontFamily: "\"Archivo\", \"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+        fontSize: 12,
         fontWeightLight: 300,
         fontWeightRegular: 400,
         fontWeightMedium: 500,
@@ -89,9 +96,8 @@ class App extends Component {
             this.state.initDone &&
             <div className="App">
                 <MuiThemeProvider theme={theme}>
-                    <BlindpoolNavbar setLanguage={this.loadLocales} currentLocale={this.state.currentLang} />
+                    <BlindpoolNavbar setLanguage={this.loadLocales} currentLang={this.state.currentLang} />
                 </MuiThemeProvider>
-                <br />
             </div>
         );
     }

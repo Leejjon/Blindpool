@@ -4,26 +4,29 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import Grid from "@material-ui/core/Grid/Grid";
 import Menu from "@material-ui/core/Menu/Menu";
+import MenuIcon from '@material-ui/icons/Menu';
 import FlagIcon from "../../locales/FlagIcon";
 import Toolbar from "@material-ui/core/Toolbar";
-import * as PropTypes from "prop-types";
 import {withStyles} from '@material-ui/core/styles';
 import intl from 'react-intl-universal';
+import IconButton from "@material-ui/core/IconButton";
 
 const styles = {
-    root: {
-        flexGrow: 1,
-    },
     grow: {
         flexGrow: 1,
     },
     menuButton: {
-
-        marginLeft: 12,
-        marginRight: 20,
+        marginLeft: -20,
+        marginRight: 0,
     },
+    toolBar: {
+        marginTop: -15,
+        marginBottom: -15
+    },
+    languageSelector: {
+        marginRight: -25,
+    }
 };
 
 class BlindPoolNavbar extends Component {
@@ -31,7 +34,7 @@ class BlindPoolNavbar extends Component {
     // Just copy pasted it from: https://material-ui.com/demos/menus/
     state = {
         anchorEl: null,
-        currentLang: 'gb'
+        currentLang: "gb"
     };
 
     openLanguageSelect = event => {
@@ -67,52 +70,32 @@ class BlindPoolNavbar extends Component {
 
     render() {
         const {anchorEl} = this.state;
+            /* https://material-ui.com/demos/app-bar/ */
         return (
-            {/* https://material-ui.com/demos/app-bar/ */}
             <div>
                 <AppBar color="primary" position="static">
-                    <Toolbar>
-                        <Typography variant="body1" color="inherit">
-                            {intl.get('TITLE')}
+                    <Toolbar className={this.props.classes.toolBar}>
+                        <IconButton className={this.props.classes.menuButton} color="inherit" aria-label="Menu">
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" color="inherit" className={this.props.classes.grow}>
+                            <b>{intl.get('CREATE_POOL')}</b>
                         </Typography>
-                        <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
+                        <Button className={this.props.classes.languageSelector} aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
                             {this.currentFlag()}
                             <Icon color="secondary">arrow_drop_down</Icon>
                         </Button>
                         <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)}
                               onClose={this.closeLanguageSelect}>
-                            <MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}><FlagIcon code="gb"
-                                                                                                  size="lg"/>&nbsp;&nbsp;English</MenuItem>
-                            <MenuItem onClick={this.selectLanguage.bind(this, 'nl-NL')}><FlagIcon code="nl"
-                                                                                                  size="lg"/>&nbsp;&nbsp;Nederlands</MenuItem>
+                            <MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}>
+                                <FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English
+                            </MenuItem>
+                            <MenuItem onClick={this.selectLanguage.bind(this, 'nl-NL')}>
+                                <FlagIcon code="nl" size="lg"/>&nbsp;&nbsp;Nederlands
+                            </MenuItem>
                         </Menu>
                     </Toolbar>
-                    {/* I suppose you put stuff in grids and then give grids positions instead of positioning separate buttons. Makes sense I guess. */}
-                    {/*<Grid*/}
-                    {/*justify="flex-end"*/}
-                    {/*container*/}
-                    {/*spacing={24}>*/}
-                    {/*<Grid item>*/}
-                    {/*/!*<Typography>{intl.get('TITLE')}</Typography>*!/*/}
-                    {/*</Grid>*/}
-                    {/*<Grid item>*/}
-                    {/*<Button aria-owns={anchorEl ? 'simple-menu' : undefined}*/}
-                    {/*aria-haspopup="true"*/}
-                    {/*onClick={this.openLanguageSelect}>*/}
-                    {/*{this.currentFlag()}*/}
-                    {/*<Icon color="secondary">arrow_drop_down</Icon>*/}
-                    {/*</Button>*/}
-                    {/*<Menu*/}
-                    {/*id="simple-menu"*/}
-                    {/*anchorEl={anchorEl}*/}
-                    {/*open={Boolean(anchorEl)}*/}
-                    {/*onClose={this.closeLanguageSelect}>*/}
-                    {/*<MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}><FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English</MenuItem>*/}
-                    {/*<MenuItem onClick={this.selectLanguage.bind(this, 'nl-NL')}><FlagIcon code="nl" size="lg"/>&nbsp;&nbsp;Nederlands</MenuItem>*/}
-                    {/*</Menu>*/}
-                    {/*</Grid>*/}
-                    {/*</Grid>*/}
                 </AppBar>
             </div>
         );
