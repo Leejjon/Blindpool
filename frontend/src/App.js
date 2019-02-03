@@ -48,6 +48,12 @@ const theme = createMuiTheme({
         button: {
             textTransform: 'none'
         }
+    },
+    mixins: {
+        toolbar: {
+            paddingLeft: 0,
+            paddingRight: 0
+        }
     }
 });
 
@@ -70,6 +76,7 @@ class App extends Component {
         if (specificLocale) {
             currentLocale = specificLocale;
         } else {
+            // TODO: Just base this on what url is being used instead.
             currentLocale = intl.determineLocale({
                 urlLocaleKey: "lang",
                 cookieLocaleKey: "lang"

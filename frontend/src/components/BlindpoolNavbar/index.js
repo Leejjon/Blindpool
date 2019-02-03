@@ -13,19 +13,21 @@ import intl from 'react-intl-universal';
 import IconButton from "@material-ui/core/IconButton";
 
 const styles = {
+    root: {
+        flexGrow: 1,
+    },
     grow: {
         flexGrow: 1,
     },
     menuButton: {
-        marginLeft: -20,
         marginRight: 0,
     },
     toolBar: {
-        marginTop: -15,
-        marginBottom: -15
+        // marginTop: -15,
+        // marginBottom: -15
     },
     languageSelector: {
-        marginRight: -25,
+        paddingRight: 0
     }
 };
 
@@ -79,7 +81,7 @@ class BlindPoolNavbar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={this.props.classes.grow}>
-                            <b>{intl.get('CREATE_POOL')}</b>
+                            <b><u>{intl.get('WHAT_IS_A_BLINDPOOL')}</u></b>
                         </Typography>
                         <Button className={this.props.classes.languageSelector} aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
