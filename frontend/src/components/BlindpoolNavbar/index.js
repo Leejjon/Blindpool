@@ -81,7 +81,7 @@ class BlindPoolNavbar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={this.props.classes.grow}>
-                            <b><u>{intl.get('WHAT_IS_A_BLINDPOOL')}</u></b>
+                            <b>{intl.get('WHAT_IS_A_BLINDPOOL')}</b>
                         </Typography>
                         <Button className={this.props.classes.languageSelector} aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
