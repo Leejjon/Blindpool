@@ -25,8 +25,10 @@ handlers:
   - url: /googleb39dfeb792153037\.html
     static_files: build/googleb39dfeb792153037.html
     upload: build/googleb39dfeb792153037\.html
+    secure: always
   - url: '.*'
     script: auto
+    secure: always
 automatic_scaling:
   min_idle_instances: automatic
   max_idle_instances: automatic

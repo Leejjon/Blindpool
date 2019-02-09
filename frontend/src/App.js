@@ -5,6 +5,8 @@ import 'typeface-roboto';
 import intl from 'react-intl-universal';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import WebFont from 'webfontloader';
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import ViewCreatePool from "./components/views/createpool";
 
 WebFont.load({
     google: {
@@ -42,8 +44,11 @@ const theme = createMuiTheme({
         fontWeightLight: 300,
         fontWeightRegular: 400,
         fontWeightMedium: 500,
-        subtitle2: {
-            color: "#ffffff",
+        h1: {
+            fontWeight: 500,
+            fontSize: "1.25rem",
+            lineHeight: 1.6,
+            letterSpacing: "0.0075em"
         },
         button: {
             textTransform: 'none'
@@ -103,7 +108,10 @@ class App extends Component {
             this.state.initDone &&
             <div className="App">
                 <MuiThemeProvider theme={theme}>
-                    <BlindpoolNavbar setLanguage={this.loadLocales} currentLang={this.state.currentLang} />
+                    <BlindpoolNavbar navBarTitle={intl.get('WHAT_IS_A_BLINDPOOL')} setLanguage={this.loadLocales} currentLang={this.state.currentLang}/>
+                    <Router>
+                        <Route exact path="/" component={ViewCreatePool}/>
+                    </Router>
                 </MuiThemeProvider>
             </div>
         );

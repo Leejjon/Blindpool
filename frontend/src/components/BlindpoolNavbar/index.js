@@ -11,6 +11,12 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {withStyles} from '@material-ui/core/styles';
 import intl from 'react-intl-universal';
 import IconButton from "@material-ui/core/IconButton";
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import PropTypes from 'prop-types';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import List from "@material-ui/core/List";
 
 const styles = {
     root: {
@@ -28,23 +34,41 @@ const styles = {
     },
     languageSelector: {
         paddingRight: 0
-    }
+    },
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    },
 };
 
 class BlindPoolNavbar extends Component {
-    // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.
-    // Just copy pasted it from: https://material-ui.com/demos/menus/
-    state = {
-        anchorEl: null,
-        currentLang: "gb"
+    constructor(props) {
+        super(props);
+        // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.
+        // Just copy pasted it from: https://material-ui.com/demos/menus/
+        this.state = {
+            languageAnchorEl: null,
+            menuOpen: false,
+            currentLang: "gb",
+            navBarTitle: "blabla",
+            classes: PropTypes.object.isRequired,
+        };
+    }
+
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+            [side]: open,
+        });
     };
 
     openLanguageSelect = event => {
-        this.setState({anchorEl: event.currentTarget});
+        this.setState({languageAnchorEl: event.currentTarget});
     };
 
     closeLanguageSelect = () => {
-        this.setState({anchorEl: null});
+        this.setState({languageAnchorEl: null});
         console.log("Clicked outside of the menu and thus closed language select.");
     };
 
@@ -57,38 +81,70 @@ class BlindPoolNavbar extends Component {
             lastTwoCharacters = 'gb';
         }
 
-        this.setState({anchorEl: null, currentLang: lastTwoCharacters});
+        this.setState({languageAnchorEl: null, currentLang: lastTwoCharacters});
         console.log(lastTwoCharacters);
         this.props.setLanguage(lang);
     };
 
     currentFlag() {
-        if (this.state.currentLang !== null) {
-            return <FlagIcon code={this.state.currentLang} size="lg"/>
-        } else {
-            return <FlagIcon code="gb" size="lg"/>
-        }
+        console.log(this.state.currentLang);
+        // if (this.state.currentLang !== null) {
+            return (
+                <FlagIcon code={this.state.currentLang} size="lg"/>
+                // <Typography>Hoi</Typography>
+            );
+        // } else {
+        //     return <FlagIcon code="gb" size="lg"/>
+        // }
     }
 
     render() {
-        const {anchorEl} = this.state;
-            /* https://material-ui.com/demos/app-bar/ */
+        const {languageAnchorEl} = this.state;
+        const {classes} = this.props;
+        const menuDrawer = (
+            <div className={classes.list}>
+                <AppBar color="primary" position="static">
+                    <Toolbar className={this.props.classes.toolBar}>
+                        <IconButton className={this.props.classes.menuButton} color="inherit"
+                                    aria-label="Navigation menu" aria-owns={undefined} aria-haspopup="true"
+                                    onClick={this.toggleDrawer("menuOpen", false)}>
+                            <MenuIcon/>
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+                <List>
+                    <ListItem button>
+                        {/*<Link onClick={() => this.closeMenu()} to="/">Home</Link>*/}
+                        <ListItemText primary={intl.get("WHAT_IS_A_BLINDPOOL")}/>
+                    </ListItem>
+                </List>
+            </div>
+        );
+        /* https://material-ui.com/demos/app-bar/ */
         return (
             <div>
                 <AppBar color="primary" position="static">
                     <Toolbar className={this.props.classes.toolBar}>
-                        <IconButton className={this.props.classes.menuButton} color="inherit" aria-label="Menu">
-                            <MenuIcon />
+                        <IconButton className={this.props.classes.menuButton} color="inherit"
+                                    aria-label="Navigation menu" aria-owns={undefined} aria-haspopup="true"
+                                    onClick={this.toggleDrawer("menuOpen", true)}>
+                            <MenuIcon/>
                         </IconButton>
-                        <Typography variant="h6" color="inherit" className={this.props.classes.grow}>
-                            <b>{intl.get('WHAT_IS_A_BLINDPOOL')}</b>
+                        <SwipeableDrawer open={this.state.menuOpen}
+                                         onClose={this.toggleDrawer('menuOpen', false)}
+                                         onOpen={this.toggleDrawer('menuOpen', true)}>
+                            {menuDrawer}
+                        </SwipeableDrawer>
+                        <Typography variant="h1" color="inherit" className={this.props.classes.grow}>
+                            <b>{this.state.navBarTitle}</b>
                         </Typography>
-                        <Button className={this.props.classes.languageSelector} aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
+                        <Button className={this.props.classes.languageSelector} aria-label="Language menu"
+                                aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
                             {this.currentFlag()}
                             <Icon color="secondary">arrow_drop_down</Icon>
                         </Button>
-                        <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)}
+                        <Menu id="language-menu" anchorEl={languageAnchorEl} open={Boolean(languageAnchorEl)}
                               onClose={this.closeLanguageSelect}>
                             <MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}>
                                 <FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English
