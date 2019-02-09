@@ -63,11 +63,15 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-    state = {initDone: false, currentLang: null}
 
     constructor(props) {
         super(props);
         this.loadLocales = this.loadLocales.bind(this);
+        this.state = {
+            initDone: false,
+            currentLang: null,
+            currentPageTitle: "WHAT_IS_A_BLINDPOOL"
+        };
     }
 
     componentDidMount() {
@@ -103,12 +107,20 @@ class App extends Component {
         });
     }
 
+
     render() {
+        const resolvePageTitle = function(key) {
+            return () => intl.get(key);
+        };
+
         return (
             this.state.initDone &&
             <div className="App">
                 <MuiThemeProvider theme={theme}>
-                    <BlindpoolNavbar navBarTitle={intl.get('WHAT_IS_A_BLINDPOOL')} setLanguage={this.loadLocales} currentLang={this.state.currentLang}/>
+                    <BlindpoolNavbar
+                        currentPageTitleKeyFunction={resolvePageTitle(this.state.currentPageTitle)}
+                        setLanguage={this.loadLocales}
+                        currentLang={this.state.currentLang}/>
                     <Router>
                         <Route exact path="/" component={ViewCreatePool}/>
                     </Router>

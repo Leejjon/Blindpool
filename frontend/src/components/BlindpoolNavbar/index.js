@@ -48,11 +48,12 @@ class BlindPoolNavbar extends Component {
         super(props);
         // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.
         // Just copy pasted it from: https://material-ui.com/demos/menus/
+        console.log(this.props.currentPageTitleKey);
         this.state = {
             languageAnchorEl: null,
             menuOpen: false,
             currentLang: "gb",
-            navBarTitle: "blabla",
+            currentPageTitleKeyFunction: this.props.currentPageTitleKeyFunction,
             classes: PropTypes.object.isRequired,
         };
     }
@@ -88,14 +89,13 @@ class BlindPoolNavbar extends Component {
 
     currentFlag() {
         console.log(this.state.currentLang);
-        // if (this.state.currentLang !== null) {
+        if (this.state.currentLang !== null) {
             return (
                 <FlagIcon code={this.state.currentLang} size="lg"/>
-                // <Typography>Hoi</Typography>
             );
-        // } else {
-        //     return <FlagIcon code="gb" size="lg"/>
-        // }
+        } else {
+            return <FlagIcon code="gb" size="lg"/>
+        }
     }
 
     render() {
@@ -136,7 +136,7 @@ class BlindPoolNavbar extends Component {
                             {menuDrawer}
                         </SwipeableDrawer>
                         <Typography variant="h1" color="inherit" className={this.props.classes.grow}>
-                            <b>{this.state.navBarTitle}</b>
+                            <b>{this.state.currentPageTitleKeyFunction()}</b>
                         </Typography>
                         <Button className={this.props.classes.languageSelector} aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
