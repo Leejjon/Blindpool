@@ -70,7 +70,7 @@ class App extends Component {
         this.state = {
             initDone: false,
             currentLang: null,
-            currentPageTitle: "WHAT_IS_A_BLINDPOOL"
+            currentPageTitle: "CREATE_POOL"
         };
     }
 
@@ -109,16 +109,12 @@ class App extends Component {
 
 
     render() {
-        const resolvePageTitle = function(key) {
-            return () => intl.get(key);
-        };
-
-        return (
+       return (
             this.state.initDone &&
             <div className="App">
                 <MuiThemeProvider theme={theme}>
                     <BlindpoolNavbar
-                        currentPageTitleKeyFunction={resolvePageTitle(this.state.currentPageTitle)}
+                        currentPageTitleKeyFunction={() => intl.get(this.state.currentPageTitle)}
                         setLanguage={this.loadLocales}
                         currentLang={this.state.currentLang}/>
                     <Router>

@@ -28,10 +28,6 @@ const styles = {
     menuButton: {
         marginRight: 0,
     },
-    toolBar: {
-        // marginTop: -15,
-        // marginBottom: -15
-    },
     languageSelector: {
         paddingRight: 0
     },
@@ -48,11 +44,9 @@ class BlindPoolNavbar extends Component {
         super(props);
         // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.
         // Just copy pasted it from: https://material-ui.com/demos/menus/
-        console.log(this.props.currentPageTitleKey);
         this.state = {
             languageAnchorEl: null,
             menuOpen: false,
-            currentLang: "gb",
             currentPageTitleKeyFunction: this.props.currentPageTitleKeyFunction,
             classes: PropTypes.object.isRequired,
         };
@@ -75,23 +69,27 @@ class BlindPoolNavbar extends Component {
 
     // Probably should replace
     selectLanguage(lang) {
-        let lastTwoCharacters = lang.substr(lang.length - 2).toLowerCase();
+        let lastTwoCharacters = BlindPoolNavbar.getLangFromLanguageAndCountryNotation(lang);
+
+        this.setState({languageAnchorEl: null, currentLang: lastTwoCharacters});
+        this.props.setLanguage(lang);
+    };
+
+    static getLangFromLanguageAndCountryNotation(langAndCountry) {
+        let lastTwoCharacters = langAndCountry.substr(langAndCountry.length - 2).toLowerCase();
 
         if (lastTwoCharacters === 'us') {
             // Nobody in the US watches football, so let's show the GB flag instead.
             lastTwoCharacters = 'gb';
         }
-
-        this.setState({languageAnchorEl: null, currentLang: lastTwoCharacters});
-        console.log(lastTwoCharacters);
-        this.props.setLanguage(lang);
-    };
+        return lastTwoCharacters;
+    }
 
     currentFlag() {
-        console.log(this.state.currentLang);
-        if (this.state.currentLang !== null) {
+        if (this.props.currentLang !== null) {
+            let lastTwoCharacters = BlindPoolNavbar.getLangFromLanguageAndCountryNotation(this.props.currentLang);
             return (
-                <FlagIcon code={this.state.currentLang} size="lg"/>
+                <FlagIcon code={lastTwoCharacters} size="lg"/>
             );
         } else {
             return <FlagIcon code="gb" size="lg"/>
@@ -113,6 +111,10 @@ class BlindPoolNavbar extends Component {
                     </Toolbar>
                 </AppBar>
                 <List>
+                    <ListItem button>
+                        {/*<Link onClick={() => this.closeMenu()} to="/">Home</Link>*/}
+                        <ListItemText primary={intl.get("CREATE_POOL")}/>
+                    </ListItem>
                     <ListItem button>
                         {/*<Link onClick={() => this.closeMenu()} to="/">Home</Link>*/}
                         <ListItemText primary={intl.get("WHAT_IS_A_BLINDPOOL")}/>
