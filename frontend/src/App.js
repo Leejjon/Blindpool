@@ -85,11 +85,13 @@ class App extends Component {
         if (specificLocale) {
             currentLocale = specificLocale;
         } else {
-            // TODO: Just base this on what url is being used instead.
-            currentLocale = intl.determineLocale({
-                urlLocaleKey: "lang",
-                cookieLocaleKey: "lang"
-            });
+            const language = window.navigator.language;
+
+            if (language === "nl" || language === "nl-BE") {
+                currentLocale = "nl-NL";
+            } else {
+                currentLocale = "en-US";
+            }
         }
 
         // init method will load CLDR locale data according to currentLocale

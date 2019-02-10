@@ -148,6 +148,7 @@ class BlindPoolNavbar extends Component {
                         </Button>
                         <Menu id="language-menu" anchorEl={languageAnchorEl} open={Boolean(languageAnchorEl)}
                               onClose={this.closeLanguageSelect}>
+                            {/* Do something to make sure the current language is selected, and not always the top one. */}
                             <MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}>
                                 <FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English
                             </MenuItem>
