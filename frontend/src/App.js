@@ -118,7 +118,6 @@ class App extends Component {
         });
     }
 
-
     render() {
        return (
             this.state.initDone &&

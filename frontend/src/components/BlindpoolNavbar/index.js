@@ -46,6 +46,7 @@ const styles = {
     },
     linktext: {
         paddingLeft: 0,
+        paddingRight: 0,
         marginTop: '0.13em'
     },
 };
@@ -119,7 +120,7 @@ class BlindPoolNavbar extends Component {
                 <AppBar color="primary" position="static">
                     <Toolbar className={this.props.classes.toolBar}>
                         <IconButton className={this.props.classes.menuButton} color="inherit"
-                                    aria-label="Navigation menu" aria-owns={undefined} aria-haspopup="true"
+                                    aria-label="Navigation menu" aria-haspopup="true"
                                     onClick={this.toggleDrawer("menuOpen", false)}>
                             <MenuIcon/>
                         </IconButton>
@@ -158,7 +159,7 @@ class BlindPoolNavbar extends Component {
                 <AppBar color="primary" position="static">
                     <Toolbar className={this.props.classes.toolBar}>
                         <IconButton className={this.props.classes.menuButton} color="inherit"
-                                    aria-label="Navigation menu" aria-owns={undefined} aria-haspopup="true"
+                                    aria-label="Navigation menu" aria-haspopup="true"
                                     onClick={this.toggleDrawer("menuOpen", true)}>
                             <MenuIcon/>
                         </IconButton>
