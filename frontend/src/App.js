@@ -5,8 +5,9 @@ import 'typeface-roboto';
 import intl from 'react-intl-universal';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import WebFont from 'webfontloader';
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import ViewCreatePool from "./components/views/createpool";
+import ViewHowTo from "./components/views/howto";
 
 WebFont.load({
     google: {
@@ -46,10 +47,18 @@ const theme = createMuiTheme({
         fontWeightMedium: 500,
         h1: {
             fontWeight: 500,
-            fontSize: "1.25rem",
+            fontSize: "1.1rem",
             lineHeight: 1.6,
             letterSpacing: "0.0075em"
         },
+        body1: {
+            color: "rgba(0, 0, 0, 0.87)",
+            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+            fontWeight: 400,
+            fontSize: "1rem",
+            lineHeight: 1.5
+        },
+
         button: {
             textTransform: 'none'
         }
@@ -57,7 +66,7 @@ const theme = createMuiTheme({
     mixins: {
         toolbar: {
             paddingLeft: 0,
-            paddingRight: 0
+            paddingRight: '1em'
         }
     }
 });
@@ -113,17 +122,18 @@ class App extends Component {
     render() {
        return (
             this.state.initDone &&
-            <div className="App">
-                <MuiThemeProvider theme={theme}>
-                    <BlindpoolNavbar
-                        currentPageTitleKeyFunction={() => intl.get(this.state.currentPageTitle)}
-                        setLanguage={this.loadLocales}
-                        currentLang={this.state.currentLang}/>
-                    <Router>
-                        <Route exact path="/" component={ViewCreatePool}/>
-                    </Router>
-                </MuiThemeProvider>
-            </div>
+            <Router>
+                <div className="App">
+                    <MuiThemeProvider theme={theme}>
+                        <BlindpoolNavbar
+                            currentPageTitleKeyFunction={() => intl.get(this.state.currentPageTitle)}
+                            setLanguage={this.loadLocales}
+                            currentLang={this.state.currentLang}/>
+                                <Route exact path="/create" component={ViewCreatePool}/>
+                                <Route exact path="/howto" component={ViewHowTo}/>
+                    </MuiThemeProvider>
+                </div>
+            </Router>
         );
     }
 }

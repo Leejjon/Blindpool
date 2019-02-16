@@ -3,13 +3,13 @@
     <url>
         <loc>http://www.blindpool.com/</loc>
         <lastmod>2019-02-15</lastmod>
-        <changefreq>weekly</changefreq>
+        <changefreq>daily</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>http://www.blindpool.com/blindpool</loc>
+        <loc>http://www.blindpool.com/what-is-a-blindpool</loc>
         <lastmod>2019-02-15</lastmod>
-        <changefreq>weekly</changefreq>
+        <changefreq>daily</changefreq>
         <priority>0.5</priority>
     </url>
 </urlset>

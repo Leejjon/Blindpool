@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class ViewCreatePool extends Component {
     render() {
         return (
-            <div className="page"></div>
+            <div className="page">Create Pool</div>
         );
     }
 }

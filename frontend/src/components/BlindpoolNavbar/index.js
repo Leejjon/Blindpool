@@ -17,6 +17,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
+import {Link} from "react-router-dom";
 
 const styles = {
     root: {
@@ -26,7 +27,8 @@ const styles = {
         flexGrow: 1,
     },
     menuButton: {
-        marginRight: 0,
+        marginLeft: '0.5em',
+        marginRight: '0.5em',
     },
     languageSelector: {
         paddingRight: 0
@@ -36,6 +38,15 @@ const styles = {
     },
     fullList: {
         width: 'auto',
+    },
+    icon: {
+        // margin: theme.spacing.unit * 2,
+        color: '#00cc47',
+        marginRight: 0,
+    },
+    linktext: {
+        paddingLeft: 0,
+        marginTop: '0.13em'
     },
 };
 
@@ -96,6 +107,10 @@ class BlindPoolNavbar extends Component {
         }
     }
 
+    closeMenu() {
+        this.setState({menuOpen: false});
+    }
+
     render() {
         const {languageAnchorEl} = this.state;
         const {classes} = this.props;
@@ -108,17 +123,32 @@ class BlindPoolNavbar extends Component {
                                     onClick={this.toggleDrawer("menuOpen", false)}>
                             <MenuIcon/>
                         </IconButton>
+                        <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
+                            <strong>Menu</strong>
+                        </Typography>
                     </Toolbar>
                 </AppBar>
                 <List>
-                    <ListItem button>
-                        {/*<Link onClick={() => this.closeMenu()} to="/">Home</Link>*/}
-                        <ListItemText primary={intl.get("CREATE_POOL")}/>
-                    </ListItem>
-                    <ListItem button>
-                        {/*<Link onClick={() => this.closeMenu()} to="/">Home</Link>*/}
-                        <ListItemText primary={intl.get("WHAT_IS_A_BLINDPOOL")}/>
-                    </ListItem>
+                    <Link onClick={() => this.closeMenu()} to="/create" style={{ textDecoration: 'none' }}>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <Icon className={classes.icon} fontSize="large">
+                                    add_circle
+                                </Icon>
+                            </ListItemIcon>
+                            <ListItemText className={classes.linktext}>{intl.get("CREATE_POOL")}</ListItemText>
+                        </ListItem>
+                    </Link>
+                    <Link onClick={() => this.closeMenu()} to="/howto" style={{ textDecoration: 'none' }}>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <Icon fontSize="large">
+                                    help
+                                </Icon>
+                            </ListItemIcon>
+                            <ListItemText className={classes.linktext}>{intl.get("WHAT_IS_A_BLINDPOOL")}</ListItemText>
+                        </ListItem>
+                    </Link>
                 </List>
             </div>
         );
