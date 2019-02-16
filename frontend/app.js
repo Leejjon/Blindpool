@@ -20,6 +20,18 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'build')));
 
+app.get('/sitemap.xml', function(req, res) {
+    switch (String(req.get('host'))) {
+        case "blindepool.nl":
+        case "www.blindepool.nl":
+            res.sendFile(path.join(__dirname, 'build', 'sitemap-nl.xml'));
+            break;
+        default:
+            res.sendFile(path.join(__dirname, 'build', 'sitemap-en.xml'));
+            break;
+    }
+});
+
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
