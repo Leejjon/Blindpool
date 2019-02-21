@@ -9,49 +9,38 @@ import MenuIcon from '@material-ui/icons/Menu';
 import FlagIcon from "../../locales/FlagIcon";
 import Toolbar from "@material-ui/core/Toolbar";
 import {withStyles} from '@material-ui/core/styles';
-import intl from 'react-intl-universal';
 import IconButton from "@material-ui/core/IconButton";
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import PropTypes from 'prop-types';
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import {Link} from "react-router-dom";
+import BpMenu from "../bpmenu";
 
 const styles = {
     root: {
         flexGrow: 1,
     },
     grow: {
+        // align: "left",
         flexGrow: 1,
     },
     menuButton: {
         marginLeft: '0.5em',
         marginRight: '0.5em',
     },
-    languageSelector: {
+    logoImage: {
+        width: "150px",
+        height: "24px",
+        marginTop: "0.5em",
+        // marginBottom: "0.8em"
+    },
+    toolBar: {
+        marginRight: 0,
         paddingRight: 0
     },
-    list: {
-        width: 250,
-    },
-    fullList: {
-        width: 'auto',
-    },
-    icon: {
-        // margin: theme.spacing.unit * 2,
-        color: '#00cc47',
-        marginRight: 0,
-    },
-    linktext: {
-        paddingLeft: 0,
-        paddingRight: 0,
-        marginTop: '0.13em'
-    },
+    pageHeader: {
+        marginTop: "0.5em"
+    }
 };
 
-class BlindPoolNavbar extends Component {
+class BpAppBar extends Component {
     constructor(props) {
         super(props);
         // I have no fucking clue what the anchorEI is doing. But it probably has something to do with the menu.
@@ -60,7 +49,6 @@ class BlindPoolNavbar extends Component {
             languageAnchorEl: null,
             menuOpen: false,
             currentPageTitleKeyFunction: this.props.currentPageTitleKeyFunction,
-            classes: PropTypes.object.isRequired,
         };
     }
 
@@ -69,6 +57,10 @@ class BlindPoolNavbar extends Component {
             [side]: open,
         });
     };
+
+    closeMenu() {
+        this.setState({menuOpen: false});
+    }
 
     openLanguageSelect = event => {
         this.setState({languageAnchorEl: event.currentTarget});
@@ -81,7 +73,7 @@ class BlindPoolNavbar extends Component {
 
     // Probably should replace
     selectLanguage(lang) {
-        let lastTwoCharacters = BlindPoolNavbar.getLangFromLanguageAndCountryNotation(lang);
+        let lastTwoCharacters = BpAppBar.getLangFromLanguageAndCountryNotation(lang);
 
         this.setState({languageAnchorEl: null, currentLang: lastTwoCharacters});
         this.props.setLanguage(lang);
@@ -99,7 +91,7 @@ class BlindPoolNavbar extends Component {
 
     currentFlag() {
         if (this.props.currentLang !== null) {
-            let lastTwoCharacters = BlindPoolNavbar.getLangFromLanguageAndCountryNotation(this.props.currentLang);
+            let lastTwoCharacters = BpAppBar.getLangFromLanguageAndCountryNotation(this.props.currentLang);
             return (
                 <FlagIcon code={lastTwoCharacters} size="lg"/>
             );
@@ -108,55 +100,12 @@ class BlindPoolNavbar extends Component {
         }
     }
 
-    closeMenu() {
-        this.setState({menuOpen: false});
-    }
-
     render() {
         const {languageAnchorEl} = this.state;
-        const {classes} = this.props;
-        const menuDrawer = (
-            <div className={classes.list}>
-                <AppBar color="primary" position="static">
-                    <Toolbar className={this.props.classes.toolBar}>
-                        <IconButton className={this.props.classes.menuButton} color="inherit"
-                                    aria-label="Navigation menu" aria-haspopup="true"
-                                    onClick={this.toggleDrawer("menuOpen", false)}>
-                            <MenuIcon/>
-                        </IconButton>
-                        <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
-                            <strong>Menu</strong>
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <List>
-                    <Link onClick={() => this.closeMenu()} to="/create" style={{ textDecoration: 'none' }}>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <Icon className={classes.icon} fontSize="large">
-                                    add_circle
-                                </Icon>
-                            </ListItemIcon>
-                            <ListItemText className={classes.linktext}>{intl.get("CREATE_POOL")}</ListItemText>
-                        </ListItem>
-                    </Link>
-                    <Link onClick={() => this.closeMenu()} to="/howto" style={{ textDecoration: 'none' }}>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <Icon fontSize="large">
-                                    help
-                                </Icon>
-                            </ListItemIcon>
-                            <ListItemText className={classes.linktext}>{intl.get("WHAT_IS_A_BLINDPOOL")}</ListItemText>
-                        </ListItem>
-                    </Link>
-                </List>
-            </div>
-        );
         /* https://material-ui.com/demos/app-bar/ */
         return (
             <div>
-                <AppBar color="primary" position="static">
+                <AppBar color="primary" position="static" style={{marginRight: 0, paddingRight: 0}}>
                     <Toolbar className={this.props.classes.toolBar}>
                         <IconButton className={this.props.classes.menuButton} color="inherit"
                                     aria-label="Navigation menu" aria-haspopup="true"
@@ -166,12 +115,12 @@ class BlindPoolNavbar extends Component {
                         <SwipeableDrawer open={this.state.menuOpen}
                                          onClose={this.toggleDrawer('menuOpen', false)}
                                          onOpen={this.toggleDrawer('menuOpen', true)}>
-                            {menuDrawer}
+                            <BpMenu closeMenu={() => this.closeMenu()} />
                         </SwipeableDrawer>
                         <Typography variant="h1" color="inherit" className={this.props.classes.grow}>
-                            <b>{this.state.currentPageTitleKeyFunction()}</b>
+                            <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />
                         </Typography>
-                        <Button className={this.props.classes.languageSelector} aria-label="Language menu"
+                        <Button aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
                             {this.currentFlag()}
@@ -189,9 +138,10 @@ class BlindPoolNavbar extends Component {
                         </Menu>
                     </Toolbar>
                 </AppBar>
+                <Typography className={this.props.classes.pageHeader} variant="h1"><b>{this.state.currentPageTitleKeyFunction()}</b></Typography>
             </div>
         );
     }
 }
 
-export default withStyles(styles)(BlindPoolNavbar);
+export default withStyles(styles)(BpAppBar);

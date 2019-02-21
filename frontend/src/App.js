@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import './App.css';
-import BlindpoolNavbar from "./components/BlindpoolNavbar";
+import BpAppBar from "./components/bpappbar";
 import 'typeface-roboto';
 import intl from 'react-intl-universal';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import WebFont from 'webfontloader';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import ViewCreatePool from "./components/views/createpool";
-import ViewHowTo from "./components/views/howto";
+import ViewWhatIs from "./components/views/whatis";
 
 WebFont.load({
     google: {
@@ -124,12 +124,12 @@ class App extends Component {
             <Router>
                 <div className="App">
                     <MuiThemeProvider theme={theme}>
-                        <BlindpoolNavbar
+                        <BpAppBar
                             currentPageTitleKeyFunction={() => intl.get(this.state.currentPageTitle)}
                             setLanguage={this.loadLocales}
                             currentLang={this.state.currentLang}/>
                                 <Route exact path="/create" component={ViewCreatePool}/>
-                                <Route exact path="/howto" component={ViewHowTo}/>
+                                <Route exact path="/whatis" component={ViewWhatIs}/>
                     </MuiThemeProvider>
                 </div>
             </Router>
