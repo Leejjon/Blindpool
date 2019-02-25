@@ -64,7 +64,7 @@ class BpMenu extends Component {
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
-                            <strong>Menu</strong>
+                            Menu
                         </Typography>
                     </Toolbar>
                 </AppBar>
