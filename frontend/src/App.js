@@ -8,6 +8,7 @@ import WebFont from 'webfontloader';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import ViewCreatePool from "./components/views/createpool";
 import ViewWhatIs from "./components/views/whatis";
+import ViewHome from "./components/views/home";
 
 WebFont.load({
     google: {
@@ -79,7 +80,6 @@ class App extends Component {
         this.state = {
             initDone: false,
             currentLang: null,
-            currentPageTitle: "CREATE_POOL"
         };
     }
 
@@ -125,11 +125,12 @@ class App extends Component {
                 <div className="App">
                     <MuiThemeProvider theme={theme}>
                         <BpAppBar
-                            currentPageTitleKeyFunction={() => intl.get(this.state.currentPageTitle)}
                             setLanguage={this.loadLocales}
                             currentLang={this.state.currentLang}/>
-                                <Route exact path="/create" component={ViewCreatePool}/>
-                                <Route exact path="/whatis" component={ViewWhatIs}/>
+                        <Route exact path="/" component={ViewHome}/>
+                        <Route exact path="/create" component={ViewCreatePool}/>
+                        <Route exact path="/whatis" component={ViewWhatIs}/>
+
                     </MuiThemeProvider>
                 </div>
             </Router>

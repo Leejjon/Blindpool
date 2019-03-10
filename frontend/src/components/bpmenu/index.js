@@ -23,7 +23,7 @@ const styles = {
     },
     menuButton: {
         marginLeft: '0.5em',
-        marginRight: '0.5em',
+        marginRight: '0.3em',
     },
     list: {
         width: 250,
@@ -40,6 +40,11 @@ const styles = {
         paddingLeft: 0,
         paddingRight: 0,
         marginTop: '0.13em'
+    },
+    logoImage: {
+        width: "150px",
+        height: "24px",
+        marginTop: "0.4em",
     },
 };
 
@@ -63,30 +68,37 @@ class BpMenu extends Component {
                                     onClick={this.props.closeMenu}>
                             <MenuIcon/>
                         </IconButton>
-                        <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
-                            Menu
-                        </Typography>
+                        <Link onClick={this.props.closeMenu} to="/" style={{textDecoration: 'none'}}>
+                            <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
+                                <img alt="BLINDPOOL" className={this.props.classes.logoImage}
+                                     src={require("../../images/logo2.png")}/>
+                            </Typography>
+                        </Link>
                     </Toolbar>
                 </AppBar>
                 <List>
-                    <Link onClick={this.props.closeMenu} to="/create" style={{ textDecoration: 'none' }}>
+                    <Link onClick={this.props.closeMenu} to="/create" style={{textDecoration: 'none'}}>
                         <ListItem button>
                             <ListItemIcon>
                                 <Icon className={this.props.classes.icon} fontSize="large">
                                     add_circle
                                 </Icon>
                             </ListItemIcon>
-                            <ListItemText className={this.props.classes.linktext}>{intl.get("CREATE_POOL")}</ListItemText>
+                            <ListItemText className={this.props.classes.linktext}>
+                                {intl.get("CREATE_POOL")}
+                            </ListItemText>
                         </ListItem>
                     </Link>
-                    <Link onClick={this.props.closeMenu} to="/whatis" style={{ textDecoration: 'none' }}>
+                    <Link onClick={this.props.closeMenu} to="/whatis" style={{textDecoration: 'none'}}>
                         <ListItem button>
                             <ListItemIcon>
                                 <Icon fontSize="large">
                                     help
                                 </Icon>
                             </ListItemIcon>
-                            <ListItemText className={this.props.classes.linktext}>{intl.get("WHAT_IS_A_BLINDPOOL")}</ListItemText>
+                            <ListItemText className={this.props.classes.linktext}>
+                                {intl.get("WHAT_IS_A_BLINDPOOL")}
+                            </ListItemText>
                         </ListItem>
                     </Link>
                 </List>

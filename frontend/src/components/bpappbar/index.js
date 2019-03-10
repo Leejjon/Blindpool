@@ -48,7 +48,6 @@ class BpAppBar extends Component {
         this.state = {
             languageAnchorEl: null,
             menuOpen: false,
-            currentPageTitleKeyFunction: this.props.currentPageTitleKeyFunction,
         };
     }
 
@@ -138,7 +137,6 @@ class BpAppBar extends Component {
                         </Menu>
                     </Toolbar>
                 </AppBar>
-                <Typography className={this.props.classes.pageHeader} variant="h1"><b>{this.state.currentPageTitleKeyFunction()}</b></Typography>
             </div>
         );
     }
