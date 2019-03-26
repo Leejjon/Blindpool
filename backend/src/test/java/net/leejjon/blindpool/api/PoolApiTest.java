@@ -67,6 +67,6 @@ class PoolApiTest {
                 new ParticipantScore(participant3, score3),
                 new ParticipantScore(participant4, score4));
 
-        return Pool.builder().key("1").participantsAndScores(participantScoreList).createdTimestamp(System.currentTimeMillis()).build();
+        return new Pool("1", participantScoreList, System.currentTimeMillis());
     }
 }

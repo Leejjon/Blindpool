@@ -23,11 +23,10 @@ import java.util.List;
  *
  * @author Leejjon
  */
-@Builder
 @EqualsAndHashCode
 public class Pool {
-    @Getter @Setter
-    private String key;
+    @Getter
+    private final String key;
 
     @Getter
     private final List<ParticipantScore> participantsAndScores;
