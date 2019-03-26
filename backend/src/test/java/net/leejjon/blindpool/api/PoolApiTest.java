@@ -1,6 +1,5 @@
 package net.leejjon.blindpool.api;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gson.Gson;
 import net.leejjon.blindpool.logic.ScoreGenerator;
 import net.leejjon.blindpool.model.Participant;
@@ -42,9 +41,9 @@ class PoolApiTest {
     }
 
     @Test
-    void testGetPool_success() throws EntityNotFoundException {
+    void testGetPool_success() {
         Pool poolToReturn = getPoolFourParticipants();
-        when(poolDataService.getPool(any())).thenReturn(poolToReturn);
+        when(poolDataService.getPool(any())).thenReturn(Optional.of(poolToReturn));
 
         poolApi = new PoolApi(poolDataService);
         Response poolResponse = poolApi.getPool("anyPool");

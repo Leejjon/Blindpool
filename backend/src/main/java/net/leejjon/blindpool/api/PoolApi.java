@@ -1,6 +1,5 @@
 package net.leejjon.blindpool.api;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
 import net.leejjon.blindpool.constants.ResourceBundleKeys;
 import net.leejjon.blindpool.model.ErrorResponse;
 import net.leejjon.blindpool.model.Participant;
@@ -11,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,14 +32,16 @@ public class PoolApi {
     public Response getPool(@PathParam("poolId") String poolId) {
         try {
             if (poolId != null && !poolId.isEmpty()) {
-                Pool pool = poolDataService.getPool(poolId);
-                return Response.ok(pool).build();
+                Optional<Pool> pool = poolDataService.getPool(poolId);
+                if (pool.isEmpty()) {
+                    log.warning("Could not find entity for key " + poolId);
+                    return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse(ResourceBundleKeys.POOL_NOT_FOUND)).build();
+                } else {
+                    return Response.ok(pool.get()).build();
+                }
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-        } catch (EntityNotFoundException e) {
-            log.warning("Could not find entity for key " + poolId);
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorResponse(ResourceBundleKeys.POOL_NOT_FOUND)).build();
         } catch (Exception e) {
             String uuid = UUID.randomUUID().toString();
             log.log(Level.SEVERE, uuid + " " + e.getMessage(), e);

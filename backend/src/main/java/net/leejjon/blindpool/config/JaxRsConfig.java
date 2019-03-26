@@ -1,5 +1,6 @@
 package net.leejjon.blindpool.config;
 
+import com.google.cloud.datastore.DatastoreOptions;
 import net.leejjon.blindpool.api.PoolApi;
 import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -25,6 +26,6 @@ import javax.ws.rs.ApplicationPath;
 public class JaxRsConfig extends ResourceConfig {
     public JaxRsConfig() {
         // Initialize the PoolApi and inject a service on runtime (that can be mocked in tests).
-        register(new PoolApi(new PoolDataServiceImpl()));
+        register(new PoolApi(new PoolDataServiceImpl(DatastoreOptions.getDefaultInstance().getService())));
     }
 }

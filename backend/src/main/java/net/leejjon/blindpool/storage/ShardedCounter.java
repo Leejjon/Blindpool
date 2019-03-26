@@ -1,22 +1,9 @@
 package net.leejjon.blindpool.storage;
 
-//import com.google.appengine.api.datastore.DatastoreService;
-//import com.google.appengine.api.datastore.DatastoreServiceFactory;
-//import com.google.appengine.api.datastore.Entity;
-//import com.google.appengine.api.datastore.EntityNotFoundException;
-//import com.google.appengine.api.datastore.Key;
-//import com.google.appengine.api.datastore.KeyFactory;
-//import com.google.appengine.api.datastore.Query;
-//import com.google.appengine.api.datastore.Transaction;
-import com.google.cloud.datastore.Datastore;
-import com.google.cloud.datastore.DatastoreOptions;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Key;
-import net.leejjon.blindpool.storage.persistence.KindType;
+import com.google.cloud.datastore.*;
+import net.leejjon.blindpool.storage.persistence.Kind;
 
-import java.util.ConcurrentModificationException;
 import java.util.Random;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -26,15 +13,9 @@ import java.util.logging.Logger;
  * datastore.
  */
 public class ShardedCounter {
-
-    /**
-     * DatastoreService object for Datastore access.
-     */
-//    private static final DatastoreService DS = DatastoreServiceFactory
-//            .getDatastoreService();
-
     private static final Datastore DS = DatastoreOptions.getDefaultInstance().getService();
 
+    private static final String COUNT_ATTRIBUTE = "count";
 
     /**
      * Default number of shards.
@@ -58,66 +39,44 @@ public class ShardedCounter {
      * @return Summed total of all shards' counts
      */
     public final long count() {
-        long sum = 0;
+        Query<Entity> getAllShardsQuery = Query.newEntityQueryBuilder()
+                .setKind(Kind.POOL_COUNTER_SHARD.toString())
+                .build();
 
-//        Query query = new Query(KindType.POOL_COUNTER_SHARD.toString());
-//        for (Entity e : DS.prepare(query).asIterable()) {
-//            sum += (Long) e.getProperty("count");
-//        }
+        QueryResults<Entity> allShardsResult = DS.run(getAllShardsQuery);
 
+        long counter = 0;
+        while (allShardsResult.hasNext()) {
+            Entity shard = allShardsResult.next();
+            counter += shard.getLong(COUNT_ATTRIBUTE);
+        }
 
-        return sum;
+        return counter;
     }
 
     /**
      * Increment the value of this sharded counter.
      */
-    public final void increment() {
+    final void increment() {
         int shardNum = generator.nextInt(NUM_SHARDS);
 
         Key shardKey = DS.newKeyFactory()
-                .setKind(KindType.POOL_COUNTER_SHARD.toString())
+                .setKind(Kind.POOL_COUNTER_SHARD.toString())
                 .newKey(Integer.toString(shardNum));
 
-//        Key shardKey = KeyFactory.createKey(KindType.POOL_COUNTER_SHARD.toString(),
-//                Integer.toString(shardNum));
+        Transaction tx = DS.newTransaction();
+        Entity currentShard = tx.get(shardKey);
 
-        Entity shard = DS.get(shardKey);
+        final long count;
+        final Entity incrementedShard;
+        if (currentShard != null) {
+            count = currentShard.getLong("count");
+            incrementedShard = Entity.newBuilder(currentShard).set(COUNT_ATTRIBUTE, count + 1L).build();
+        } else {
+            incrementedShard = Entity.newBuilder(shardKey).set(COUNT_ATTRIBUTE, 1L).build();
+        }
 
-        long count = shard.getLong("count");
-
-        Entity updatedShard = Entity.newBuilder(shardKey)
-        .set("count", "Personal")
-        .build();
-
-        // Saves the entity
-        DS.put(task);
-
-
-//
-//        Transaction tx = DS.beginTransaction();
-//        Entity shard;
-//        try {
-//            try {
-//                shard = DS.get(tx, shardKey);
-//                long count = (Long) shard.getProperty("count");
-//                shard.setUnindexedProperty("count", count + 1L);
-//            } catch (EntityNotFoundException e) {
-//                shard = new Entity(shardKey);
-//                shard.setUnindexedProperty("count", 1L);
-//            }
-//            DS.put(tx, shard);
-//            tx.commit();
-//        } catch (ConcurrentModificationException e) {
-//            LOG.log(Level.WARNING,
-//                    "You may need more shards. Consider adding more shards.");
-//            LOG.log(Level.WARNING, e.toString(), e);
-//        } catch (Exception e) {
-//            LOG.log(Level.WARNING, e.toString(), e);
-//        } finally {
-//            if (tx.isActive()) {
-//                tx.rollback();
-//            }
-//        }
+        tx.update(incrementedShard);
+        tx.commit();
     }
 }
