@@ -1,12 +1,12 @@
 package net.leejjon.blindpool.api;
 
-import com.google.gson.Gson;
-import net.leejjon.blindpool.logic.ScoreGenerator;
 import net.leejjon.blindpool.model.Participant;
-import net.leejjon.blindpool.model.ParticipantScore;
 import net.leejjon.blindpool.model.Pool;
 import net.leejjon.blindpool.model.Score;
 import net.leejjon.blindpool.storage.PoolDataServiceImpl;
+import com.google.gson.Gson;
+import net.leejjon.blindpool.logic.ScoreGenerator;
+import net.leejjon.blindpool.model.ParticipantScore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

@@ -1,8 +1,8 @@
 package net.leejjon.blindpool.config;
 
+import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 import com.google.cloud.datastore.DatastoreOptions;
 import net.leejjon.blindpool.api.PoolApi;
-import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;

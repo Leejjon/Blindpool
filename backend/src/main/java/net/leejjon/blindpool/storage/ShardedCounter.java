@@ -1,7 +1,7 @@
 package net.leejjon.blindpool.storage;
 
-import com.google.cloud.datastore.*;
 import net.leejjon.blindpool.storage.persistence.Kind;
+import com.google.cloud.datastore.*;
 
 import java.util.Random;
 import java.util.logging.Logger;

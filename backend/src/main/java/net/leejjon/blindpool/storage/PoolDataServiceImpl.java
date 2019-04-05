@@ -5,13 +5,13 @@ import com.google.cloud.datastore.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import net.leejjon.blindpool.storage.persistence.Kind;
 import org.hashids.Hashids;
 
 import net.leejjon.blindpool.logic.ScoreGenerator;
 import net.leejjon.blindpool.model.Participant;
 import net.leejjon.blindpool.model.ParticipantScore;
 import net.leejjon.blindpool.model.Pool;
-import net.leejjon.blindpool.storage.persistence.Kind;
 import net.leejjon.blindpool.storage.persistence.PoolProperties;
 
 import java.lang.reflect.Type;

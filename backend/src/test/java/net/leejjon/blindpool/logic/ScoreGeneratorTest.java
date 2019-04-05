@@ -1,9 +1,9 @@
 package net.leejjon.blindpool.logic;
 
-import com.google.gson.Gson;
 import net.leejjon.blindpool.model.Participant;
 import net.leejjon.blindpool.model.ParticipantScore;
 import net.leejjon.blindpool.model.UserType;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
