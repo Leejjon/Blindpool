@@ -1,13 +1,12 @@
 package net.leejjon.blindpool.api;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.gson.Gson;
-import net.leejjon.blindpool.logic.ScoreGenerator;
 import net.leejjon.blindpool.model.Participant;
-import net.leejjon.blindpool.model.ParticipantScore;
 import net.leejjon.blindpool.model.Pool;
 import net.leejjon.blindpool.model.Score;
 import net.leejjon.blindpool.storage.PoolDataServiceImpl;
+import com.google.gson.Gson;
+import net.leejjon.blindpool.logic.ScoreGenerator;
+import net.leejjon.blindpool.model.ParticipantScore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -42,9 +41,9 @@ class PoolApiTest {
     }
 
     @Test
-    void testGetPool_success() throws EntityNotFoundException {
+    void testGetPool_success() {
         Pool poolToReturn = getPoolFourParticipants();
-        when(poolDataService.getPool(any())).thenReturn(poolToReturn);
+        when(poolDataService.getPool(any())).thenReturn(Optional.of(poolToReturn));
 
         poolApi = new PoolApi(poolDataService);
         Response poolResponse = poolApi.getPool("anyPool");
@@ -68,6 +67,6 @@ class PoolApiTest {
                 new ParticipantScore(participant3, score3),
                 new ParticipantScore(participant4, score4));
 
-        return Pool.builder().key("1").participantsAndScores(participantScoreList).createdTimestamp(System.currentTimeMillis()).build();
+        return new Pool("1", participantScoreList, System.currentTimeMillis());
     }
 }

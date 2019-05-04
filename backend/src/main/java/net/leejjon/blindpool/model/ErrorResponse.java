@@ -1,7 +1,7 @@
 package net.leejjon.blindpool.model;
 
-import lombok.Getter;
 import net.leejjon.blindpool.constants.ResourceBundleKeys;
+import lombok.Getter;
 
 public class ErrorResponse {
     @Getter // The field needs a getter to be serialized to json.

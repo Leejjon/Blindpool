@@ -1,26 +1,16 @@
 import React, {Component} from 'react';
 import './App.css';
-import BpAppBar from "./components/bpappbar";
 import 'typeface-roboto';
-import intl from 'react-intl-universal';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import WebFont from 'webfontloader';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+
+import BpAppBar from "./components/bpappbar";
 import ViewCreatePool from "./components/views/createpool";
 import ViewWhatIs from "./components/views/whatis";
 import ViewHome from "./components/views/home";
 
-WebFont.load({
-    google: {
-        families: ['Archivo', 'sans-serif']
-    }
-});
-
-// locale data
-const locales = {
-    "en-US": require('./locales/en-GB.json'),
-    "nl-NL": require('./locales/nl-NL.json'),
-};
+import {BrowserRouter, Route} from "react-router-dom";
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import intl from "react-intl-universal";
+import WebFont from "webfontloader";
 
 const theme = createMuiTheme({
     palette: {
@@ -34,9 +24,15 @@ const theme = createMuiTheme({
         secondary: {
             light: '#0066ff',
             main: '#ffffff',
+
             // dark: will be calculated from palette.secondary.main,
             contrastText: '#ffcc00',
         },
+        background: {
+            paper: '#fafafa',
+            /**/
+            default: '#d6d6d6',
+        }
         // error: will use the default color
     },
     typography: {
@@ -54,7 +50,7 @@ const theme = createMuiTheme({
         },
         body1: {
             color: "rgba(0, 0, 0, 0.87)",
-            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+            fontFamily: "Archivo, Roboto, Helvetica, Arial, sans-serif",
             fontWeight: 400,
             fontSize: "1rem",
             lineHeight: 1.5
@@ -72,8 +68,19 @@ const theme = createMuiTheme({
     }
 });
 
-class App extends Component {
+WebFont.load({
+    google: {
+        families: ['Archivo', 'sans-serif']
+    }
+});
 
+// locale data
+const locales = {
+    "en-US": require('./locales/en-GB.json'),
+    "nl-NL": require('./locales/nl-NL.json'),
+};
+
+class App extends Component {
     constructor(props) {
         super(props);
         this.loadLocales = this.loadLocales.bind(this);
@@ -119,9 +126,9 @@ class App extends Component {
     }
 
     render() {
-       return (
+        return (
             this.state.initDone &&
-            <Router>
+            <BrowserRouter>
                 <div className="App">
                     <MuiThemeProvider theme={theme}>
                         <BpAppBar
@@ -130,10 +137,9 @@ class App extends Component {
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
                         <Route exact path="/whatis" component={ViewWhatIs}/>
-
                     </MuiThemeProvider>
                 </div>
-            </Router>
+            </BrowserRouter>
         );
     }
 }

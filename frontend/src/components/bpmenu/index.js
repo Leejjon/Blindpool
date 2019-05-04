@@ -39,13 +39,21 @@ const styles = {
     linktext: {
         paddingLeft: 0,
         paddingRight: 0,
-        marginTop: '0.13em'
+        marginTop: '0.13em',
     },
     logoImage: {
         width: "150px",
         height: "24px",
         marginTop: "0.4em",
     },
+    linkWithoutDecoration: {
+        textDecoration: 'none'
+    },
+    negativeLinkPadding: {
+       //display: 'none'
+        paddingRight: '0px',
+        marginRight: '-0.5em'
+    }
 };
 
 class BpMenu extends Component {
@@ -68,7 +76,7 @@ class BpMenu extends Component {
                                     onClick={this.props.closeMenu}>
                             <MenuIcon/>
                         </IconButton>
-                        <Link onClick={this.props.closeMenu} to="/" style={{textDecoration: 'none'}}>
+                        <Link onClick={this.props.closeMenu} to="/" className={this.props.classes.linkWithoutDecoration}>
                             <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
                                 <img alt="BLINDPOOL" className={this.props.classes.logoImage}
                                      src={require("../../images/logo2.png")}/>
@@ -77,9 +85,9 @@ class BpMenu extends Component {
                     </Toolbar>
                 </AppBar>
                 <List>
-                    <Link onClick={this.props.closeMenu} to="/create" style={{textDecoration: 'none'}}>
+                    <Link onClick={this.props.closeMenu} to="/create" className={this.props.classes.linkWithoutDecoration}>
                         <ListItem button>
-                            <ListItemIcon>
+                            <ListItemIcon className={this.props.classes.negativeLinkPadding}>
                                 <Icon className={this.props.classes.icon} fontSize="large">
                                     add_circle
                                 </Icon>
@@ -89,9 +97,9 @@ class BpMenu extends Component {
                             </ListItemText>
                         </ListItem>
                     </Link>
-                    <Link onClick={this.props.closeMenu} to="/whatis" style={{textDecoration: 'none'}}>
+                    <Link onClick={this.props.closeMenu} to="/whatis" className={this.props.classes.linkWithoutDecoration}>
                         <ListItem button>
-                            <ListItemIcon>
+                            <ListItemIcon className={this.props.classes.negativeLinkPadding}>
                                 <Icon fontSize="large">
                                     help
                                 </Icon>
