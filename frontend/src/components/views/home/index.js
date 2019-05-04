@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
     root: {
@@ -11,8 +12,8 @@ const styles = theme => ({
 
     },
     paper: {
-        height: 140,
-        width: 100,
+        // height: 140,
+        // width: 100,
 
         textAlign: 'center',
     },
@@ -36,12 +37,13 @@ class ViewHome extends Component {
         const { spacing } = this.state;
         return (
             <Grid container className={classes.root} spacing={16}>
-
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={Number(spacing)}>
                         <Grid key="hoi" item>
                             <Paper className={classes.paper}>
-                                Hoi
+                                <Typography variant="h2" color="enherit">
+                                    Welcome on Blindpool
+                                </Typography>
                             </Paper>
                         </Grid>
                     </Grid>

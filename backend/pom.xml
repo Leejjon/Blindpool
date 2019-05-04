@@ -80,16 +80,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-            <exclusions>
-                <exclusion><!-- Exclude this repackaged javax.inject. -->
-                    <groupId>org.glassfish.hk2.external</groupId>
-                    <artifactId>javax.inject</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.glassfish.jersey.inject</groupId>-->
+<!--            <artifactId>jersey-hk2</artifactId>-->
+<!--            <exclusions>-->
+<!--                <exclusion>&lt;!&ndash; Exclude this repackaged javax.inject. &ndash;&gt;-->
+<!--                    <groupId>org.glassfish.hk2.external</groupId>-->
+<!--                    <artifactId>javax.inject</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-binding</artifactId>
@@ -139,19 +139,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.14.v20181114</version>
-                <!--<configuration>-->
-                    <!--<jvmArgs>&#45;&#45;jpms</jvmArgs>-->
-                <!--</configuration>-->
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.1.1</version>
                 <executions>
@@ -170,30 +157,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
-                <executions>
-                    <execution>
-                        <id>copy-resource-one</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/appengine-staging/cprof</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/appengine</directory>
-                                    <includes>
-                                        <include>profiler_java_agent.so</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>2.0.0-rc5</version>
@@ -203,6 +166,30 @@
                     <!-- This lets my phone reach my webapp that runs local on my PC by going to ip:8080 via wifi. -->
                     <host>0.0.0.0</host>
                     <deploy.projectId>blindepoule</deploy.projectId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-p</argument> <!-- or -p  -->
+                        <!-- automatically creates the modulepath using all project dependencies,
+                             also adding the project build directory -->
+                        <modulepath/>
+                        <argument>-m</argument> <!-- or -m -->
+                        <argument>myModule/com.example.Main</argument>
+                        <argument>localhost</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>
