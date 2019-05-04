@@ -97,7 +97,7 @@ class BpMenu extends Component {
                             </ListItemText>
                         </ListItem>
                     </Link>
-                    <Link onClick={this.props.closeMenu} to="/whatis" className={this.props.classes.linkWithoutDecoration}>
+                    <Link onClick={this.props.closeMenu} to="/howto" className={this.props.classes.linkWithoutDecoration}>
                         <ListItem button>
                             <ListItemIcon className={this.props.classes.negativeLinkPadding}>
                                 <Icon fontSize="large">

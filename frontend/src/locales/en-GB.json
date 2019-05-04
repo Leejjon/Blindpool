@@ -1,6 +1,9 @@
 {
   "TITLE": "Blindpool",
-  "CREATE_POOL": "Create a blind pool",
+  "CREATE_POOL": "Create a pool",
   "HOW_TO_USE_BLINDPOOL": "How does it work?",
+  "LEARN_HOW_TO_USE_BLINDPOOL": "Learn how to make a blindpool.",
+  "BLINDPOOL_DEFINITION_TITLE": "What is a blind pool?",
+  "BLINDPOOL_DEFINITION": "A blind pool is gambling game where each participant gets assigned a random score for a chosen football match. The participant that is assigned the outcome of the match, wins.",
   "HOST_NAME": "Enter the name of the organizer"
 }

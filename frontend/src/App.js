@@ -4,7 +4,7 @@ import 'typeface-roboto';
 
 import BpAppBar from "./components/bpappbar";
 import ViewCreatePool from "./components/views/createpool";
-import ViewWhatIs from "./components/views/whatis";
+import ViewWhatIs from "./components/views/howto";
 import ViewHome from "./components/views/home";
 
 import {BrowserRouter, Route} from "react-router-dom";
@@ -136,7 +136,7 @@ class App extends Component {
                             currentLang={this.state.currentLang}/>
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
-                        <Route exact path="/whatis" component={ViewWhatIs}/>
+                        <Route exact path="/howto" component={ViewWhatIs}/>
                     </MuiThemeProvider>
                 </div>
             </BrowserRouter>
