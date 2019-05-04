@@ -24,11 +24,8 @@ const styles = () => ({
     },
     firstButton: {
         flexGrow: 1,
-        textAlign: "left"
-    },
-
-    title: {
-        fontSize: 24,
+        textAlign: "left",
+        textDecoration: 'none'
     },
 });
 
@@ -46,7 +43,7 @@ class ViewHome extends Component {
                 <Grid key="definition" item>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography variant="h2" className={this.props.classes.title}>
+                            <Typography variant="h2" >
                                 {intl.get("BLINDPOOL_DEFINITION_TITLE")}
                             </Typography>
                             <Typography component="p">
@@ -55,11 +52,10 @@ class ViewHome extends Component {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            {/*<Button size="medium">Create a blindpool</Button>*/}
                             <Link className={classes.firstButton} to="/create">
                                 <Button size="medium">{intl.get("CREATE_POOL")}.</Button>
                             </Link>
-                            <Link to="/howto">
+                            <Link to="/howto" style={{textDecoration: 'none'}}>
                                 <Button size="medium">{intl.get("HOW_TO_USE_BLINDPOOL")}</Button>
                             </Link>
                         </CardActions>

@@ -12,6 +12,7 @@ import {withStyles} from '@material-ui/core/styles';
 import IconButton from "@material-ui/core/IconButton";
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import BpMenu from "../bpmenu";
+import {Link} from "react-router-dom";
 
 const styles = {
     root: {
@@ -116,9 +117,11 @@ class BpAppBar extends Component {
                                          onOpen={this.toggleDrawer('menuOpen', true)}>
                             <BpMenu closeMenu={() => this.closeMenu()} />
                         </SwipeableDrawer>
-                        <Typography variant="h1" color="inherit" className={this.props.classes.grow}>
-                            <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />
-                        </Typography>
+                        <Link to="/" className={this.props.classes.grow}>
+                            <Typography variant="h1" color="inherit">
+                                <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />
+                            </Typography>
+                        </Link>
                         <Button aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>

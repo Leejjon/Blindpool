@@ -48,6 +48,9 @@ const theme = createMuiTheme({
             lineHeight: 1.6,
             letterSpacing: "0.0075em"
         },
+        h2: {
+            fontSize: "1.5rem",
+        },
         body1: {
             color: "rgba(0, 0, 0, 0.87)",
             fontFamily: "Archivo, Roboto, Helvetica, Arial, sans-serif",
