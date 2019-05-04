@@ -1,23 +1,21 @@
 package net.leejjon.blindpool.logic;
 
-import com.google.gson.Gson;
 import net.leejjon.blindpool.model.Participant;
 import net.leejjon.blindpool.model.ParticipantScore;
 import net.leejjon.blindpool.model.UserType;
-import org.junit.Test;
+import com.google.gson.Gson;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class ScoreGeneratorTest {
+class ScoreGeneratorTest {
     @Test
-    public void testGeneratingScores_fiveUsers_Succeed() {
+    void testGeneratingScores_fiveUsers_Succeed() {
         String[] participantNames = {"Leon", "Niels", "Dirk", "Jaimy", "Robert"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
@@ -26,7 +24,7 @@ public class ScoreGeneratorTest {
     }
 
     @Test
-    public void testGeneratingScores_oneUser_fail() {
+    void testGeneratingScores_oneUser_fail() {
         String[] participantNames = {"Leon"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
@@ -35,7 +33,7 @@ public class ScoreGeneratorTest {
     }
 
     @Test
-    public void testGeneratingScores_oneTwoUsers_fail() {
+    void testGeneratingScores_oneTwoUsers_fail() {
         String[] participantNames = {"Leon", "Blabla"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());
@@ -44,7 +42,7 @@ public class ScoreGeneratorTest {
     }
 
     @Test
-    public void testGeneratingScores_sevenUsers_Succeed() {
+    void testGeneratingScores_sevenUsers_Succeed() {
         String[] participantNames = {"Peter", "Leon", "Simone", "Inge", "Yvette", "Yde", "Baby"};
 
         List<Participant> participantList = Arrays.stream(participantNames).map(participantName -> new Participant(participantName, UserType.ANONYMOUS)).collect(Collectors.toList());

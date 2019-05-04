@@ -12,19 +12,23 @@
 # limitations under the License.
 
 # [START app_yaml]
-runtime: nodejs8
+runtime: nodejs10
 
 # Leejjon: I first wanted to call this service "frontend", but having a default service seems to be required.
 # Source: https://stackoverflow.com/questions/42360790/why-do-i-need-to-deploy-a-default-app-before-i-can-deploy-multiple-services-in/42361987#42361987
 service: default
-
-# These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
-#handlers:
 env: standard
 instance_class: F1
+# These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
+#handlers:
 handlers:
-  - url: '/frontend/.*'
+  - url: /googleb39dfeb792153037\.html
+    static_files: build/googleb39dfeb792153037.html
+    upload: build/googleb39dfeb792153037\.html
+    secure: always
+  - url: '.*'
     script: auto
+    secure: always
 automatic_scaling:
   min_idle_instances: automatic
   max_idle_instances: automatic

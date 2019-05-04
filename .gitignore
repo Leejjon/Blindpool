@@ -5,3 +5,4 @@ frontend/build/
 frontend/frontend.iml
 .idea/
 /frontend/node_modules
+*.iml

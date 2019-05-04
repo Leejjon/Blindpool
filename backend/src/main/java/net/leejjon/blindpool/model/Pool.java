@@ -1,8 +1,7 @@
 package net.leejjon.blindpool.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
-import org.hashids.Hashids;
 
 import java.util.List;
 
@@ -22,9 +21,13 @@ import java.util.List;
  *
  * @author Leejjon
  */
+@EqualsAndHashCode
 public class Pool {
-    @Getter @Setter
-    private String key;
+    @Getter
+    private final String key;
+
+    @Getter
+    private final List<ParticipantScore> participantsAndScores;
 
     private final String match;
 
@@ -34,25 +37,22 @@ public class Pool {
 
     private final long createdTimestamp;
 
-    @Getter
-    private final List<ParticipantScore> participantsAndScores;
-
-    public Pool(long key, List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency, long createdTimestamp) {
-        this(participantsAndScores, match, bet, currency, createdTimestamp);
-        this.key = new Hashids().encode(key);
+    public Pool(String key, List<ParticipantScore> participantsAndScores, long createdTimestamp) {
+        this(key, participantsAndScores, createdTimestamp, null, null, null);
     }
 
     /**
      * @param participantsAndScores The participants and the scores that were randomly assigned to them.
      * @param match Id of match that was selected. Can be null.
      */
-    public Pool(List<ParticipantScore> participantsAndScores, String match, String bet, Currency currency, long createdTimestamp) {
-        // TODO: Precondition to count that there is at least five participants.
+    public Pool(String key, List<ParticipantScore> participantsAndScores, long createdTimestamp, String match, String bet, Currency currency) {
+        // TODO: Precondition for length of number of participants?
+        this.key = key;
         this.participantsAndScores = participantsAndScores;
+        this.createdTimestamp = createdTimestamp;
         this.match = match;
         this.bet = bet;
         this.currency = currency;
-        this.createdTimestamp = createdTimestamp;
     }
 
     public String getOwner() {
