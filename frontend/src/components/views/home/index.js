@@ -10,6 +10,7 @@ import intl from "react-intl-universal";
 import List from "@material-ui/core/List";
 import {ListItemText} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
 
 const styles = () => ({
     root: {
@@ -46,6 +47,7 @@ class ViewHome extends Component {
                             <Typography variant="h2" >
                                 {intl.get("BLINDPOOL_DEFINITION_TITLE")}
                             </Typography>
+                            <Divider style={{marginTop: '0.5em'}} />
                             <Typography component="p">
                                 <br />
                                 {intl.get("BLINDPOOL_DEFINITION")}
@@ -53,7 +55,7 @@ class ViewHome extends Component {
                         </CardContent>
                         <CardActions>
                             <Link className={classes.firstButton} to="/create">
-                                <Button size="medium">{intl.get("CREATE_POOL")}.</Button>
+                                <Button size="medium">{intl.get("CREATE_POOL")}</Button>
                             </Link>
                             <Link to="/howto" style={{textDecoration: 'none'}}>
                                 <Button size="medium">{intl.get("HOW_TO_USE_BLINDPOOL")}</Button>
@@ -61,30 +63,30 @@ class ViewHome extends Component {
                         </CardActions>
                     </Card>
                 </Grid>
-                {/*<Grid key="matches" item>*/}
-                {/*    <Card className={classes.card}>*/}
-                {/*        <CardContent>*/}
-                {/*            <Typography variant="h2" className={this.props.classes.title}>*/}
-                {/*                Upcoming matches*/}
-                {/*            </Typography>*/}
-                {/*            <br />*/}
-                {/*            <List component="matches-list">*/}
-                {/*                <ListItemText>Ado Den Haag - Willem II</ListItemText>*/}
-                {/*                <ListItemText>De Graafschap - Ajax</ListItemText>*/}
-                {/*                <ListItemText>Excelsior - AZ</ListItemText>*/}
-                {/*                <ListItemText>FC Emmen - FC Groningen</ListItemText>*/}
-                {/*                <ListItemText>FC Utrecht - SC Heerenveen</ListItemText>*/}
-                {/*                <ListItemText>Fortuna Sittard - Feyenoord</ListItemText>*/}
-                {/*                <ListItemText>Nac Breda - Pec Zwolle</ListItemText>*/}
-                {/*                <ListItemText>PSV - Heracles Almelo</ListItemText>*/}
-                {/*                <ListItemText>VVV Venlo - Vitesse</ListItemText>*/}
-                {/*            </List>*/}
-                {/*        </CardContent>*/}
-                {/*        <CardActions>*/}
-                {/*            <Button size="medium">View all</Button>*/}
-                {/*        </CardActions>*/}
-                {/*    </Card>*/}
-                {/*</Grid>*/}
+                <Grid key="matches" item>
+                    <Card className={classes.card}>
+                        <CardContent>
+                            <Typography variant="h2" className={this.props.classes.title}>
+                                Upcoming matches
+                            </Typography>
+                            <br />
+                            <List component="matches-list">
+                                <ListItemText>Ado Den Haag - Willem II</ListItemText>
+                                <ListItemText>De Graafschap - Ajax</ListItemText>
+                                <ListItemText>Excelsior - AZ</ListItemText>
+                                <ListItemText>FC Emmen - FC Groningen</ListItemText>
+                                <ListItemText>FC Utrecht - SC Heerenveen</ListItemText>
+                                <ListItemText>Fortuna Sittard - Feyenoord</ListItemText>
+                                <ListItemText>Nac Breda - Pec Zwolle</ListItemText>
+                                <ListItemText>PSV - Heracles Almelo</ListItemText>
+                                <ListItemText>VVV Venlo - Vitesse</ListItemText>
+                            </List>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="medium">View all</Button>
+                        </CardActions>
+                    </Card>
+                </Grid>
             </Grid>
         );
     }
