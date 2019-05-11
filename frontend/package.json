@@ -13,6 +13,7 @@
     "@material-ui/core": "^4.0.0-beta.0",
     "@material-ui/icons": "~4.0.0-beta.0",
     "@material-ui/styles": "^4.0.0-beta.0",
+    "core-js": "^3.0.1",
     "express": "4.16.4",
     "react-flag-icon-css": "^1.0.25",
     "react-intl-universal": "^1.15.7",

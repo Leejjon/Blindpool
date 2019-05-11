@@ -1,3 +1,9 @@
+// These two imports will make sure googlebot can render our site...
+// It's the replacement of babel/polyfill from this solution:
+// https://whatibroke.com/2018/12/09/fetch-as-google-error-reactjs/
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
