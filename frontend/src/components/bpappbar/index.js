@@ -117,11 +117,9 @@ class BpAppBar extends Component {
                                          onOpen={this.toggleDrawer('menuOpen', true)}>
                             <BpMenu closeMenu={() => this.closeMenu()} />
                         </SwipeableDrawer>
-                        <Link to="/" className={this.props.classes.grow}>
-                            <Typography variant="h1" color="inherit">
-                                <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />
-                            </Typography>
-                        </Link>
+                        <Typography component={Link} to="/" className={this.props.classes.grow} variant="h1" color="inherit">
+                            <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />
+                        </Typography>
                         <Button aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
@@ -131,10 +129,10 @@ class BpAppBar extends Component {
                         <Menu id="language-menu" anchorEl={languageAnchorEl} open={Boolean(languageAnchorEl)}
                               onClose={this.closeLanguageSelect}>
                             {/* Do something to make sure the current language is selected, and not always the top one. */}
-                            <MenuItem onClick={this.selectLanguage.bind(this, 'en-US')}>
+                            <MenuItem component="li" button onClick={this.selectLanguage.bind(this, 'en-US')}>
                                 <FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English
                             </MenuItem>
-                            <MenuItem onClick={this.selectLanguage.bind(this, 'nl-NL')}>
+                            <MenuItem component="li" button onClick={this.selectLanguage.bind(this, 'nl-NL')}>
                                 <FlagIcon code="nl" size="lg"/>&nbsp;&nbsp;Nederlands
                             </MenuItem>
                         </Menu>

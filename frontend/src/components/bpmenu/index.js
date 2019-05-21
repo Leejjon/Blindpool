@@ -84,31 +84,27 @@ class BpMenu extends Component {
                         </Link>
                     </Toolbar>
                 </AppBar>
-                <List>
-                    <Link onClick={this.props.closeMenu} to="/create" className={this.props.classes.linkWithoutDecoration}>
-                        <ListItem button>
-                            <ListItemIcon className={this.props.classes.negativeLinkPadding}>
-                                <Icon className={this.props.classes.icon} fontSize="large">
-                                    add_circle
-                                </Icon>
-                            </ListItemIcon>
-                            <ListItemText className={this.props.classes.linktext}>
-                                {intl.get("CREATE_POOL")}
-                            </ListItemText>
-                        </ListItem>
-                    </Link>
-                    <Link onClick={this.props.closeMenu} to="/howto" className={this.props.classes.linkWithoutDecoration}>
-                        <ListItem button>
-                            <ListItemIcon className={this.props.classes.negativeLinkPadding}>
-                                <Icon fontSize="large">
-                                    help
-                                </Icon>
-                            </ListItemIcon>
-                            <ListItemText className={this.props.classes.linktext}>
-                                {intl.get("HOW_TO_USE_BLINDPOOL")}
-                            </ListItemText>
-                        </ListItem>
-                    </Link>
+                <List component="ul">
+                    <ListItem button component={Link} onClick={this.props.closeMenu} to="/create" className={this.props.classes.linkWithoutDecoration}>
+                        <ListItemIcon className={this.props.classes.negativeLinkPadding}>
+                            <Icon className={this.props.classes.icon} fontSize="large">
+                                add_circle
+                            </Icon>
+                        </ListItemIcon>
+                        <ListItemText className={this.props.classes.linktext}>
+                            {intl.get("CREATE_POOL")}
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem button component={Link} onClick={this.props.closeMenu} to="/howto" className={this.props.classes.linkWithoutDecoration}>
+                        <ListItemIcon className={this.props.classes.negativeLinkPadding}>
+                            <Icon fontSize="large">
+                                help
+                            </Icon>
+                        </ListItemIcon>
+                        <ListItemText className={this.props.classes.linktext}>
+                            {intl.get("HOW_TO_USE_BLINDPOOL")}
+                        </ListItemText>
+                    </ListItem>
                 </List>
             </div>
         );
