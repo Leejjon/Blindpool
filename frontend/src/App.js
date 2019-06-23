@@ -11,6 +11,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import intl from "react-intl-universal";
 import WebFont from "webfontloader";
+import Helmet from "react-helmet/es/Helmet";
 
 const theme = createMuiTheme({
     palette: {
@@ -95,7 +96,6 @@ class App extends Component {
 
     componentDidMount() {
         this.loadLocales();
-        document.title = intl.get('TITLE');
     }
 
     loadLocales(specificLocale) {
@@ -133,6 +133,11 @@ class App extends Component {
             this.state.initDone &&
             <BrowserRouter>
                 <div className="App">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>{intl.get('TITLE')} - {intl.get('BLINDPOOL_DEFINITION_TITLE')}</title>
+                        <meta name="description" content={intl.get('BLINDPOOL_DEFINITION')} />
+                    </Helmet>
                     <MuiThemeProvider theme={theme}>
                         <BpAppBar
                             setLanguage={this.loadLocales}

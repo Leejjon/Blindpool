@@ -20,7 +20,6 @@ service: default
 env: standard
 instance_class: F1
 # These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
-#handlers:
 handlers:
   - url: /googleb39dfeb792153037\.html
     static_files: build/googleb39dfeb792153037.html
