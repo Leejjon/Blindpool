@@ -1,7 +1,6 @@
 package net.leejjon.blindpool.i18n;
 
 import net.leejjon.blindpool.constants.ResourceBundleKeys;
-import net.leejjon.blindpool.servlets.MessageBundleServlet;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class LanguageTest {
     @Test
     void testIfResourceBundleKeysHaveValuesInFrontend() throws IOException {
-        Properties properties = MessageBundleServlet.getProperties("messages.properties");
-        Properties dutchProperties = MessageBundleServlet.getProperties("messages_nl.properties");
+        Properties properties = ResourceBundleKeys.getProperties("messages.properties");
+        Properties dutchProperties = ResourceBundleKeys.getProperties("messages_nl.properties");
 
         for (ResourceBundleKeys key : ResourceBundleKeys.values()) {
             String property = properties.getProperty(key.getKey());
