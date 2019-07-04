@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@Path("v1/pool")
+@Path("api/v1/pool")
 public class PoolApi {
     private final static Logger log = Logger.getLogger(PoolApi.class.getName());
 

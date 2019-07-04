@@ -8,13 +8,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <appengine.app.version>46</appengine.app.version>
+        <appengine.app.version>5</appengine.app.version>
         <appengine.sdk.version>1.9.70</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <jersey.version>2.28</jersey.version>
-        <lombok.version>1.18.6</lombok.version>
+        <jersey.version>2.29</jersey.version>
+        <lombok.version>1.18.8</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -29,7 +29,7 @@
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>google-cloud-bom</artifactId>
-                <version>0.97.0-alpha</version>
+                <version>0.98.0-alpha</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -60,16 +60,6 @@
                 <!--                </exclusion>-->
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.4.0-b180830.0359</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <version>2.4.0-b180830.0438</version>
-        </dependency>
 
         <!-- Stuff I actually use in the code dependencies -->
         <dependency>
@@ -80,7 +70,9 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-datastore</artifactId>
+            <version>1.81.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -132,34 +124,37 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy</id>
-                        <phase>prepare-package</phase>
+                        <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/appengine-staging
-                            </outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>net.leejjon.blindpool.server.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>2.0.0</version>
                 <configuration>
+                    <!-- Artifact is only needed as long as we use a fat jar. -->
+                    <artifact>${project.build.directory}/blindpool-1.0-SNAPSHOT-jar-with-dependencies.jar</artifact>
                     <version>${appengine.app.version}</version>
                     <promote>false</promote>
-                    <!-- This lets my phone reach my webapp that runs local on my PC by going to ip:8080 via wifi. -->
-                    <host>0.0.0.0</host>
-                    <deploy.projectId>blindepoule</deploy.projectId>
+                    <deploy.projectId>nodejs-static</deploy.projectId>
                 </configuration>
             </plugin>
             <plugin>
@@ -176,43 +171,16 @@
                 <configuration>
                     <executable>java</executable>
                     <arguments>
-                        <argument>-p</argument> <!-- or -p  -->
-                        <!-- automatically creates the modulepath using all project dependencies,
+                        <argument>-classpath</argument>
+                        <!-- automatically creates the classpath using all project dependencies,
                              also adding the project build directory -->
-                        <modulepath/>
-                        <argument>-m</argument> <!-- or -m -->
-                        <argument>blindpool.backend/com.example.Main</argument>
+                        <classpath/>
+                        <argument>net.leejjon.blindpool.server.Main</argument>
                         <argument>localhost</argument>
                     </arguments>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>appengine-maven-plugin</artifactId>
-                        <version>2.0.0</version>
-                        <configuration>
-                            <version>${appengine.app.version}</version>
-                            <promote>false</promote>
-                            <!-- This lets my phone reach my webapp that runs local on my PC by going to ip:8080 via wifi. -->
-                            <host>0.0.0.0</host>
-                            <deploy.projectId>blindepoule</deploy.projectId>
-                            <promote>true</promote>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
 

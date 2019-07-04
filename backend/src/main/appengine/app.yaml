@@ -1,4 +1,5 @@
 runtime: java11
 service: backend
 instance_class: F2
-entrypoint: 'java --illegal-access=permit -agentpath:/srv/cprof/profiler_java_agent.so=--logtostderr -cp * com.google.appengine.demo.jettymain.Main warfile.war'
+# No need for an entrypoint with single fatjar with correct manifest class-path entry.
+#entrypoint: 'java -cp ./ net.leejjon.blindpool.server.Main 0.0.0.0'
