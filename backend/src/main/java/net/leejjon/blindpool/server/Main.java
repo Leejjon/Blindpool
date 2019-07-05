@@ -37,7 +37,7 @@ public class Main {
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        GrizzlyHttpServerFactory.createHttpServer(URI.create(String.format(BASE_URI, base, DEFAULT_PORT)), rc);
+        GrizzlyHttpServerFactory.createHttpServer(URI.create(String.format(BASE_URI, base, port)), rc);
     }
 
     /**
@@ -47,7 +47,7 @@ public class Main {
     public static void main(String[] args) {
         String base = args.length > 0 ? args[0] : DEFAULT_HOST;
         String port = args.length > 1 ? args[1] : DEFAULT_PORT;
-        startServer(base, port);
         System.out.println(String.format("Jersey app started at %s", String.format(BASE_URI, base, port)));
+        startServer(base, port);
     }
 }

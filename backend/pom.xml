@@ -176,7 +176,8 @@
                              also adding the project build directory -->
                         <classpath/>
                         <argument>net.leejjon.blindpool.server.Main</argument>
-<!--                        <argument>localhost</argument>-->
+                        <argument>localhost</argument>
+                        <argument>8080</argument>
                     </arguments>
                 </configuration>
             </plugin>

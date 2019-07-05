@@ -60,11 +60,11 @@ public class ShardedCounter {
     final void increment() {
         int shardNum = generator.nextInt(NUM_SHARDS);
 
+        Transaction tx = DS.newTransaction();
         Key shardKey = DS.newKeyFactory()
                 .setKind(Kind.POOL_COUNTER_SHARD.toString())
                 .newKey(Integer.toString(shardNum));
 
-        Transaction tx = DS.newTransaction();
         Entity currentShard = tx.get(shardKey);
 
         final long count;
@@ -76,7 +76,9 @@ public class ShardedCounter {
             incrementedShard = Entity.newBuilder(shardKey).set(COUNT_ATTRIBUTE, 1L).build();
         }
 
-        tx.update(incrementedShard);
+        // Use a put to insert or update.
+        // https://cloud.google.com/datastore/docs/concepts/entities#datastore-datastore-basic-entity-java
+        tx.put(incrementedShard);
         tx.commit();
     }
 }
