@@ -9,6 +9,10 @@ import net.leejjon.blindpool.api.PoolApi;
 import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 
 import java.net.URI;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class Main {
     private static final String DEFAULT_PORT = System.getenv().get("PORT");
@@ -33,7 +37,10 @@ public class Main {
         rc.register(new HealthApi());
 
         // Disable wadl because I never asked for this.
-        rc.property("jersey.config.server.wadl.disableWadl", true);
+        rc.property("jersey.config.server.wadl.disableWadl", false);
+
+//        rc.property("jersey.config.server.tracing.type", "ALL");
+//        rc.property("jersey.config.server.tracing.threshold", "VERBOSE");
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
@@ -45,7 +52,14 @@ public class Main {
      * @param args Should contain "localhost" or "0.0.0.0".
      */
     public static void main(String[] args) {
+//        Logger rootLogger = LogManager.getLogManager().getLogger("");
+//        rootLogger.setLevel(Level.ALL);
+//        for (Handler h : rootLogger.getHandlers()) {
+//            h.setLevel(Level.ALL);
+//        }
+
         String base = args.length > 0 ? args[0] : DEFAULT_HOST;
+        System.out.println(args[0]);
         String port = args.length > 1 ? args[1] : DEFAULT_PORT;
         System.out.println(String.format("Jersey app started at %s", String.format(BASE_URI, base, port)));
         startServer(base, port);

@@ -8,7 +8,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <appengine.app.version>5</appengine.app.version>
+        <appengine.app.version>7</appengine.app.version>
         <appengine.sdk.version>1.9.70</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
@@ -41,6 +41,12 @@
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-grizzly2-http</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.activation</groupId>
+                    <artifactId>jakarta.activation</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
@@ -67,10 +73,25 @@
             <artifactId>hashids</artifactId>
             <version>1.0.3</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-datastore</artifactId>
             <version>1.81.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.annotation</groupId>
+                    <artifactId>javax.annotation-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -78,6 +99,11 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.3.0.Final</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -124,25 +150,23 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>copy</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/appengine-staging
+                            </outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>net.leejjon.blindpool.server.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -150,8 +174,6 @@
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>2.0.0</version>
                 <configuration>
-                    <!-- Artifact is only needed as long as we use a fat jar. -->
-                    <artifact>${project.build.directory}/blindpool-1.0-SNAPSHOT-jar-with-dependencies.jar</artifact>
                     <version>${appengine.app.version}</version>
                     <promote>false</promote>
                     <deploy.projectId>nodejs-static</deploy.projectId>
@@ -168,14 +190,28 @@
                         </goals>
                     </execution>
                 </executions>
+                <!--                <configuration>-->
+                <!--                    <executable>java</executable>-->
+                <!--                    <arguments>-->
+                <!--                        <argument>-classpath</argument>-->
+                <!--                        &lt;!&ndash; automatically creates the classpath using all project dependencies,-->
+                <!--                             also adding the project build directory &ndash;&gt;-->
+                <!--                        <classpath/>-->
+                <!--                        <argument>net.leejjon.blindpool.server.Main</argument>-->
+                <!--                        <argument>localhost</argument>-->
+                <!--                        <argument>8080</argument>-->
+                <!--                    </arguments>-->
+                <!--                </configuration>-->
                 <configuration>
                     <executable>java</executable>
                     <arguments>
-                        <argument>-classpath</argument>
-                        <!-- automatically creates the classpath using all project dependencies,
+<!--                        <argument>&#45;&#45;illegal-access=warn</argument>-->
+                        <argument>-p</argument> <!-- or -p  -->
+                        <!-- automatically creates the modulepath using all project dependencies,
                              also adding the project build directory -->
-                        <classpath/>
-                        <argument>net.leejjon.blindpool.server.Main</argument>
+                        <modulepath/>
+                        <argument>-m</argument> <!-- or -m -->
+                        <argument>blindpool.backend/net.leejjon.blindpool.server.Main</argument>
                         <argument>localhost</argument>
                         <argument>8080</argument>
                     </arguments>

@@ -1,5 +1,4 @@
 runtime: java11
 service: backend
 instance_class: F2
-# No need for an entrypoint with single fatjar with correct manifest class-path entry.
-#entrypoint: 'java -cp ./ net.leejjon.blindpool.server.Main 0.0.0.0'
+entrypoint: 'java -p ./ -m blindpool.backend/net.leejjon.blindpool.server.Main 0.0.0.0'
