@@ -58,10 +58,6 @@ class BpAppBar extends Component {
         });
     };
 
-    closeMenu() {
-        this.setState({menuOpen: false});
-    }
-
     openLanguageSelect = event => {
         this.setState({languageAnchorEl: event.currentTarget});
     };
@@ -115,7 +111,7 @@ class BpAppBar extends Component {
                         <SwipeableDrawer open={this.state.menuOpen}
                                          onClose={this.toggleDrawer('menuOpen', false)}
                                          onOpen={this.toggleDrawer('menuOpen', true)}>
-                            <BpMenu closeMenu={() => this.closeMenu()} />
+                            <BpMenu closeMenu={this.toggleDrawer('menuOpen', false)} />
                         </SwipeableDrawer>
                         <Typography component={Link} to="/" className={this.props.classes.grow} variant="h1" color="inherit">
                             <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />

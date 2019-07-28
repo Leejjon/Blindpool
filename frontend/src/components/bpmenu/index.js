@@ -50,7 +50,7 @@ const styles = {
         textDecoration: 'none'
     },
     negativeLinkPadding: {
-       //display: 'none'
+        //display: 'none'
         paddingRight: '0px',
         marginRight: '-0.5em'
     }
@@ -69,23 +69,21 @@ class BpMenu extends Component {
     render() {
         return (
             <div className={this.props.classes.list}>
-                <AppBar color="primary" position="static">
+                <AppBar color="primary" position="static" onClick={this.props.closeMenu}>
                     <Toolbar className={this.props.classes.toolBar}>
                         <IconButton className={this.props.classes.menuButton} color="inherit"
-                                    aria-label="Navigation menu" aria-haspopup="true"
-                                    onClick={this.props.handleCloseMenu}>
+                                    aria-label="Navigation menu" aria-haspopup="true">
                             <MenuIcon/>
                         </IconButton>
-                        <Link onClick={this.props.handleCloseMenu} to="/" className={this.props.classes.linkWithoutDecoration}>
-                            <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
-                                <img alt="BLINDPOOL" className={this.props.classes.logoImage}
-                                     src={require("../../images/logo2.png")}/>
-                            </Typography>
-                        </Link>
+                        <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
+                            <img alt="BLINDPOOL" className={this.props.classes.logoImage}
+                                 src={require("../../images/logo2.png")}/>
+                        </Typography>
                     </Toolbar>
                 </AppBar>
                 <List component="ul">
-                    <ListItem button component={Link} onClick={this.props.handleCloseMenu} to="/create" className={this.props.classes.linkWithoutDecoration}>
+                    <ListItem button component={Link} onClick={this.props.closeMenu} to="/create"
+                              className={this.props.classes.linkWithoutDecoration}>
                         <ListItemIcon className={this.props.classes.negativeLinkPadding}>
                             <Icon className={this.props.classes.icon} fontSize="large">
                                 add_circle
@@ -95,7 +93,8 @@ class BpMenu extends Component {
                             {intl.get("CREATE_POOL")}
                         </ListItemText>
                     </ListItem>
-                    <ListItem button component={Link} onClick={this.props.handleCloseMenu} to="/howto" className={this.props.classes.linkWithoutDecoration}>
+                    <ListItem button component={Link} onClick={this.props.closeMenu} to="/howto"
+                              className={this.props.classes.linkWithoutDecoration}>
                         <ListItemIcon className={this.props.classes.negativeLinkPadding}>
                             <Icon fontSize="large">
                                 help

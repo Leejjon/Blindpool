@@ -9,6 +9,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     root: {
@@ -16,6 +17,21 @@ const styles = theme => ({
         textAlign: 'center',
         marginTop: '1em',
 
+    },
+    button: {
+        color: 'white',
+        backgroundColor: '#00cc47',
+        '&:hover': {
+            backgroundColor: '#00cc47',
+        },
+        '&:active': {
+            boxShadow: 'none',
+            backgroundColor: '#73e39a',
+        },
+        border: 0,
+        // borderRadius: 3,
+        fontWeight: 'bolder',
+        fontSize: 15
     },
     card: {
         minWidth: "20em",
@@ -62,6 +78,9 @@ class ViewCreatePool extends Component {
                                     </TableRow>
                                 </TableHead>
                             </Table>
+                            <Button size="large" className={classes.button}>
+                                {intl.get("CREATE_POOL")}
+                            </Button>
                         </CardContent>
                     </Card>
                 </Grid>
