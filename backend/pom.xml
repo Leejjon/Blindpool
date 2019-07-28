@@ -8,7 +8,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <appengine.app.version>7</appengine.app.version>
+        <appengine.app.version>9</appengine.app.version>
         <appengine.sdk.version>1.9.70</appengine.sdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
@@ -212,8 +212,7 @@
                         <modulepath/>
                         <argument>-m</argument> <!-- or -m -->
                         <argument>blindpool.backend/net.leejjon.blindpool.server.Main</argument>
-                        <argument>localhost</argument>
-                        <argument>8080</argument>
+                        <argument>DEV</argument>
                     </arguments>
                 </configuration>
             </plugin>

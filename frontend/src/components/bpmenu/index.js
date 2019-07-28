@@ -32,7 +32,6 @@ const styles = {
         width: 'auto',
     },
     icon: {
-        // margin: theme.spacing.unit * 2,
         color: '#00cc47',
         marginRight: 0,
     },

@@ -39,7 +39,7 @@ const styles = theme => ({
     },
     table: {
         width: '100%',
-        marginTop: theme.spacing.unit * 3,
+        marginTop: theme.spacing(3),
         overflowX: 'auto',
     },
     columnname: {
@@ -78,14 +78,30 @@ class ViewCreatePool extends Component {
                                     </TableRow>
                                 </TableHead>
                             </Table>
-                            <Button size="large" className={classes.button}>
-                                {intl.get("CREATE_POOL")}
+                            <Button onClick={this.sendCreatePoolRequest} size="large" className={classes.button}>
+                                {intl.get("CREATE_POOL").toUpperCase()}
                             </Button>
                         </CardContent>
                     </Card>
                 </Grid>
             </Grid>
         );
+    }
+
+    updateServerStatus = function(someString) {
+        console.log(someString);
+    };
+
+    sendCreatePoolRequest = () => {
+        fetch('http://localhost:8080/api/v1/health')
+            .then(function(response) {
+                return response.text();
+                // return response.json();
+            })
+            .then(function(myJson) {
+                console.log(myJson);
+                // console.log(JSON.stringify(myJson));
+            });
     }
 }
 
