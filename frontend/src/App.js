@@ -6,6 +6,7 @@ import BpAppBar from "./components/bpappbar";
 import ViewCreatePool from "./components/views/createpool";
 import ViewWhatIs from "./components/views/howto";
 import ViewHome from "./components/views/home";
+import ViewPool from "./components/views/viewpool";
 
 import {BrowserRouter, Route} from "react-router-dom";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
@@ -90,8 +91,9 @@ class App extends Component {
         super(props);
         this.loadLocales = this.loadLocales.bind(this);
         this.state = {
-            initDone: false,
+            doneLoadingLanguage: false,
             currentLang: null,
+            currentPool: null
         };
     }
 
@@ -125,13 +127,17 @@ class App extends Component {
             }
         }).then(() => {
             // After loading CLDR locale data, start to render
-            this.setState({initDone: true, currentLang: currentLocale});
+            this.setState({doneLoadingLanguage: true, currentLang: currentLocale});
         });
+    }
+
+    loadPool(poolData) {
+        this.setState({currentPool: poolData});
     }
 
     render() {
         return (
-            this.state.initDone &&
+            this.state.doneLoadingLanguage &&
             <BrowserRouter>
                 <div className="App">
                     <Helmet>
@@ -146,6 +152,8 @@ class App extends Component {
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
                         <Route exact path="/howto" component={ViewWhatIs}/>
+                        <Route path="/pool/:key" /*component={ViewPool}*/
+                               render={(props) => <ViewPool {...props} loadPool={this.loadPool} />} />
                     </MuiThemeProvider>
                 </div>
             </BrowserRouter>

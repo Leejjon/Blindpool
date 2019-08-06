@@ -27,7 +27,7 @@ public class Main {
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      */
-    private static void startServer(boolean developing) {
+    private static void startServer(boolean local) {
         // create a resource config that registers the MyResource JAX-RS resource
         final ResourceConfig rc = new ResourceConfig();
 
@@ -39,7 +39,7 @@ public class Main {
         rc.register(new PoolApi(new PoolDataServiceImpl(DatastoreOptions.getDefaultInstance().getService())));
         rc.register(new HealthApi());
 
-        if (developing) {
+        if (local) {
             final String HEADERS = "Origin, Content-Type, Accept";
             final String ALLOW_ORIGIN = "Access-Control-Allow-Origin";
             final String ALLOW_HEADERS = "Access-Control-Allow-Headers";
@@ -55,16 +55,18 @@ public class Main {
                     responseContext.getHeaders().add(ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS, HEAD");
                 }
             });
+
+            System.out.println("Added cors header.");
         }
 
         // Disable wadl because I never asked for this.
-        rc.property("jersey.config.server.wadl.disableWadl", false);
+        rc.property("jersey.config.server.wadl.disableWadl", true);
 
 //        rc.property("jersey.config.server.tracing.type", "ALL");
 //        rc.property("jersey.config.server.tracing.threshold", "VERBOSE");
 
-        final String base = developing ? LOCAL_HOST : PRODUCTION_HOST;
-        final String port = developing ? LOCAL_PORT : PRODUCTION_PORT;
+        final String base = local ? LOCAL_HOST : PRODUCTION_HOST;
+        final String port = local ? LOCAL_PORT : PRODUCTION_PORT;
 
         System.out.println(String.format("Jersey app started at %s", String.format(BASE_URI, base, port)));
 
@@ -75,7 +77,7 @@ public class Main {
 
     /**
      * Main method.
-     * @param args Should contain "DEV" if you want to run locally.
+     * @param args Should contain "LOCAL" if you want to run locally.
      */
     public static void main(String[] args) {
 //        Logger rootLogger = LogManager.getLogManager().getLogger("");
@@ -84,10 +86,10 @@ public class Main {
 //            h.setLevel(Level.ALL);
 //        }
 
-        boolean developing = false;
-        if (args.length > 0 && args[0].contains("DEV")) {
-            developing = true;
+        boolean local = false;
+        if (args.length > 0 && args[0].contains("LOCAL")) {
+            local = true;
         }
-        startServer(developing);
+        startServer(local);
     }
 }

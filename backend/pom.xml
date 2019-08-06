@@ -212,7 +212,7 @@
                         <modulepath/>
                         <argument>-m</argument> <!-- or -m -->
                         <argument>blindpool.backend/net.leejjon.blindpool.server.Main</argument>
-                        <argument>DEV</argument>
+                        <argument>LOCAL</argument>
                     </arguments>
                 </configuration>
             </plugin>

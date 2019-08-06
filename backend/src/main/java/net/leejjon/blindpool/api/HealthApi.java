@@ -9,12 +9,13 @@ import java.util.logging.Logger;
 
 @Path("api/v1/health")
 public class HealthApi {
+    private static final String CHARSET = "UTF-8";
     private Logger log = Logger.getLogger(HealthApi.class.getName());
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response checkHealth() {
         log.info("Test if we even get here.");
-        return Response.ok().entity("The server at least runs.").build();
+        return Response.ok().entity("The server at least runs.").encoding(CHARSET).build();
     }
 }

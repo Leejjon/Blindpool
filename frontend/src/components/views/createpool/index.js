@@ -53,6 +53,11 @@ const styles = theme => ({
 });
 
 class ViewCreatePool extends Component {
+    constructor(props) {
+        super(props);
+        this.sendCreatePoolRequest = this.sendCreatePoolRequest.bind(this);
+    }
+
     render() {
         const {classes} = this.props;
         return (
@@ -88,21 +93,29 @@ class ViewCreatePool extends Component {
         );
     }
 
-    updateServerStatus = function(someString) {
-        console.log(someString);
-    };
+    sendCreatePoolRequest() {
+        let navigateToCreatePool = function(myJson) {
+            console.log(JSON.stringify(myJson));
+            this.props.history.push(`/pool/${myJson.key}`);
+        };
+        // Make this available in
+        navigateToCreatePool = navigateToCreatePool.bind(this);
 
-    sendCreatePoolRequest = () => {
-        fetch('http://localhost:8080/api/v1/health')
-            .then(function(response) {
-                return response.text();
-                // return response.json();
+        fetch('http://localhost:8080/api/v1/pool',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify([1, 2, 3, 4])
             })
-            .then(function(myJson) {
-                console.log(myJson);
-                // console.log(JSON.stringify(myJson));
-            });
-    }
+            .then(function(response) {
+                // return response.text();
+                return response.json();
+            })
+            .then(navigateToCreatePool);
+    };
 }
 
 export default withStyles(styles)(ViewCreatePool);
