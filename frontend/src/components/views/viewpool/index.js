@@ -1,32 +1,29 @@
 import * as React from "react";
 
+import appState from '../../../state/AppState';
+
 class ViewPool extends React.Component {
+
     constructor(props) {
-        super(props)
-        this.state = {
-            pool: null
-        };
+        super(props);
     }
 
     componentDidMount() {
         const {key} = this.props.match.params;
-        const storePool = this.props.loadPool;
-
-        // if (this.state.pool === null || this.state.pool.key !== key) {
-        //     fetch(`api/v1/pool/${key}`)
-        //         .then(function (poolJsonFromServer) {
-        //             return poolJsonFromServer.json;
-        //         })
-        //         .then(function (poolJson) {
-        //             console.log(JSON.stringify(poolJson));
-        //         });
-        // } else {
-        //     console.log(this.state.pool);
-        // }
+        if (appState.poolData === null || appState.poolData.key !== key) {
+            fetch(`http://localhost:8080/api/v1/pool/${key}`)
+                .then(function (poolJsonFromServer) {
+                    return poolJsonFromServer.json();
+                })
+                .then((poolJson) => {
+                    appState.setPool(poolJson);
+                    this.forceUpdate();
+                });
+        }
     }
 
     render() {
-        return <p>Hoi</p>
+        return <p>{JSON.stringify(appState.poolData)}</p>
     }
 }
 

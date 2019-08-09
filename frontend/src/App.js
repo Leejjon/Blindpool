@@ -93,7 +93,6 @@ class App extends Component {
         this.state = {
             doneLoadingLanguage: false,
             currentLang: null,
-            currentPool: null
         };
     }
 
@@ -132,7 +131,8 @@ class App extends Component {
     }
 
     loadPool(poolData) {
-        this.setState({currentPool: poolData});
+        // this.setState({currentPool: poolData});
+        console.log("Maar hier niet of wel?");
     }
 
     render() {
@@ -152,8 +152,7 @@ class App extends Component {
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
                         <Route exact path="/howto" component={ViewWhatIs}/>
-                        <Route path="/pool/:key" /*component={ViewPool}*/
-                               render={(props) => <ViewPool {...props} loadPool={this.loadPool} />} />
+                        <Route path="/pool/:key" component={ViewPool} />
                     </MuiThemeProvider>
                 </div>
             </BrowserRouter>

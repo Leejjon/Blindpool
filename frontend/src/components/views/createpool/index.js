@@ -11,6 +11,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 
+import appState from '../../../state/AppState';
+
 const styles = theme => ({
     root: {
         flexShrink: 0,
@@ -94,12 +96,12 @@ class ViewCreatePool extends Component {
     }
 
     sendCreatePoolRequest() {
-        let navigateToCreatePool = function(myJson) {
+        let navigateToCreatePool = (myJson) => {
             console.log(JSON.stringify(myJson));
+
+            appState.setPool(myJson);
             this.props.history.push(`/pool/${myJson.key}`);
         };
-        // Make this available in
-        navigateToCreatePool = navigateToCreatePool.bind(this);
 
         fetch('http://localhost:8080/api/v1/pool',
             {
