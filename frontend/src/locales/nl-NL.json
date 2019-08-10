@@ -5,5 +5,6 @@
   "LEARN_HOW_TO_USE_BLINDPOOL": "Leer hoe je een blindepool maakt.",
   "BLINDPOOL_DEFINITION_TITLE": "Wat is een blindepool?",
   "BLINDPOOL_DEFINITION": "Een blindepool is een gokspel waar elke deelnemer een willekeurige uitslag krijgt aangewezen voor een voetbalwedstrijd. De deelnemer met de uitslag die overeenkomt met de uiteindelijke uitslag van de wedstrijd, wint.",
-  "HOST_NAME": "Vul de naam van de organizator in."
+  "HOST_NAME": "Vul de naam van de organizator in.",
+  "POOL_MADE_BY": "Blindepool van {organizer}"
 }

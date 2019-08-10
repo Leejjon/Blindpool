@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 
-import appState from '../../../state/AppState';
+import appState from '../../state/AppState';
 
 const styles = theme => ({
     root: {

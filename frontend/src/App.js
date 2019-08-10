@@ -3,10 +3,10 @@ import './App.css';
 import 'typeface-roboto';
 
 import BpAppBar from "./components/bpappbar";
-import ViewCreatePool from "./components/views/createpool";
-import ViewWhatIs from "./components/views/howto";
-import ViewHome from "./components/views/home";
-import ViewPool from "./components/views/viewpool";
+import ViewCreatePool from "./views/createpool";
+import ViewWhatIs from "./views/howto";
+import ViewHome from "./views/home";
+import ViewPool from "./views/viewpool";
 
 import {BrowserRouter, Route} from "react-router-dom";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
