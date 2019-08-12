@@ -95,6 +95,15 @@ class ViewCreatePool extends Component {
         );
     }
 
+    static getHost() {
+        let host = window.location.protocol + "//" + window.location.hostname;
+
+        if (window.location.hostname === 'localhost') {
+            host += ":8080"
+        }
+        return host;
+    }
+
     sendCreatePoolRequest() {
         let navigateToCreatePool = (myJson) => {
             console.log(JSON.stringify(myJson));
@@ -103,14 +112,14 @@ class ViewCreatePool extends Component {
             this.props.history.push(`/pool/${myJson.key}`);
         };
 
-        fetch('http://localhost:8080/api/v1/pool',
+        fetch(`${ViewCreatePool.getHost()}/api/v1/pool`,
             {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 method: "POST",
-                body: JSON.stringify([1, 2, 3, 4])
+                body: JSON.stringify(["Leon", "Dirk", "Robert", "Niels", "Jaimy", "Joop"])
             })
             .then(function(response) {
                 // return response.text();

@@ -35,8 +35,28 @@ const theme = createMuiTheme({
             paper: '#fafafa',
             /**/
             default: '#d6d6d6',
+        },
+        //
+        text: {
+            disabled: 'black'
         }
         // error: will use the default color
+    },
+    overrides: {
+        MuiOutlinedInput: {
+            root: {
+                // '&'
+                '&$focused': {
+                    color: 'black',
+                    fontWeight: 'bold'
+                },
+                '&$focused $notchedOutline': {
+                    fontWeight: 'bold',
+                    borderColor: 'black',
+                },
+            },
+
+        },
     },
     typography: {
         useNextVariants: true,
