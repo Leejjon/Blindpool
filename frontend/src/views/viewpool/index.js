@@ -79,13 +79,16 @@ class ViewPool extends React.Component {
                     this.setState(
                         {
                             initialized: true,
-                            shareUrl: `${window.location.protocol}//${window.location.host}/?pool=${appState.poolData.key}`
-                        }
-                    );
+                            shareUrl: `${window.location.protocol}//${window.location.host}/pool/${appState.poolData.key}`
+                        });
                     // this.forceUpdate();
                 });
         } else {
-            this.setState({initialized: true});
+            this.setState(
+                {
+                    initialized: true,
+                    shareUrl: `${window.location.protocol}//${window.location.host}/pool/${appState.poolData.key}`
+                });
         }
     }
 
