@@ -38,6 +38,9 @@ const styles = {
     },
     pageHeader: {
         marginTop: "0.5em"
+    },
+    dropDown: {
+        color: 'white'
     }
 };
 
@@ -98,12 +101,13 @@ class BpAppBar extends Component {
 
     render() {
         const {languageAnchorEl} = this.state;
+        const classes = this.props.classes;
         /* https://material-ui.com/demos/app-bar/ */
         return (
             <div>
                 <AppBar color="primary" position="static" style={{marginRight: 0, paddingRight: 0}}>
-                    <Toolbar className={this.props.classes.toolBar}>
-                        <IconButton className={this.props.classes.menuButton} color="inherit"
+                    <Toolbar className={classes.toolBar}>
+                        <IconButton className={classes.menuButton} color="inherit"
                                     aria-label="Navigation menu" aria-haspopup="true"
                                     onClick={this.toggleDrawer("menuOpen", true)}>
                             <MenuIcon/>
@@ -113,14 +117,14 @@ class BpAppBar extends Component {
                                          onOpen={this.toggleDrawer('menuOpen', true)}>
                             <BpMenu closeMenu={this.toggleDrawer('menuOpen', false)} />
                         </SwipeableDrawer>
-                        <Typography component={Link} to="/" className={this.props.classes.grow} variant="h1" color="inherit">
-                            <img alt="BLINDPOOL" className={this.props.classes.logoImage} src={require("../../images/logo2.png")} />
+                        <Typography component={Link} to="/" className={classes.grow} variant="h1" color="inherit">
+                            <img alt="BLINDPOOL" className={classes.logoImage} src={require("../../images/logo2.png")} />
                         </Typography>
                         <Button aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
                                 onClick={this.openLanguageSelect}>
                             {this.currentFlag()}
-                            <Icon color="secondary">arrow_drop_down</Icon>
+                            <Icon className={classes.dropDown}>arrow_drop_down</Icon>
                         </Button>
                         <Menu id="language-menu" anchorEl={languageAnchorEl} open={Boolean(languageAnchorEl)}
                               onClose={this.closeLanguageSelect}>

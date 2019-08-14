@@ -36,26 +36,38 @@ const theme = createMuiTheme({
             /**/
             default: '#d6d6d6',
         },
-        //
-        text: {
-            disabled: 'black'
-        }
+        // Disabled will have the default color.
+        // text: {
+        //     disabled: 'black'
+        // }
         // error: will use the default color
     },
+
+    // This is only overriden for the copy textfield in viewpool. Need to find a way to only apply it there. But JavaScript API's are so hard to use :/
     overrides: {
-        MuiOutlinedInput: {
+        MuiFormLabel: {
             root: {
-                // '&'
+                color: 'black',
+                fontWeight: 'bold',
                 '&$focused': {
                     color: 'black',
                     fontWeight: 'bold'
                 },
+            }
+        },
+        MuiOutlinedInput: {
+            root: {
+                '&$focused': {
+                    color: 'black',
+                    // fontWeight: 'bold'
+                },
                 '&$focused $notchedOutline': {
-                    fontWeight: 'bold',
                     borderColor: 'black',
                 },
             },
-
+            notchedOutline: {
+                borderColor: 'black'
+            }
         },
     },
     typography: {

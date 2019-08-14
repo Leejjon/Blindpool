@@ -16,6 +16,7 @@ import CardActions from "@material-ui/core/CardActions";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
     root: {
@@ -44,41 +45,25 @@ const styles = theme => ({
     shareUrlInput: {
         marginLeft: '0.5em',
         width: '100%',
-
     },
     copyButton: {
         marginTop: '0.5em',
         marginLeft: '0em',
         marginRight: '0.3em'
     },
-    input: {
-        // color: 'red',
-        // userSelect: 'text'
+    progress: {
+        margin: theme.spacing(2),
     },
-    // notchedOutline: {
-    //     // color: "yellow",
-    //     borderColor: "yellow"
-    // },
-    // focused: {
-    //     color: "yellow",
-    //     // borderColor: "yellow",
-    //     "& $notchedOutline": {
-    //         // color: "yellow",
-    //         borderColor: "yellow"
-    //     }
-    // },
-    // '&$focused $notchedOutline': {
-    //     borderColor: 'yellow',
-    //     color: 'yellow'
-    // },
 });
+
+const copyFieldId = "copyTextField";
 
 class ViewPool extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            initialized: false
+            initialized: false,
         };
     }
 
@@ -91,7 +76,12 @@ class ViewPool extends React.Component {
                 })
                 .then((poolJson) => {
                     appState.setPool(poolJson);
-                    this.setState({initialized: true});
+                    this.setState(
+                        {
+                            initialized: true,
+                            shareUrl: `${window.location.protocol}//${window.location.host}/?pool=${appState.poolData.key}`
+                        }
+                    );
                     // this.forceUpdate();
                 });
         } else {
@@ -130,71 +120,81 @@ class ViewPool extends React.Component {
         });
     }
 
-    selectShareUrl() {
-        console.log("Hoi");
+    copy = () => {
+        ViewPool.copyToClipboard(this.state.shareUrl);
+    };
+
+    static copyToClipboard(text){
+        let dummy = document.createElement("input");
+        document.body.appendChild(dummy);
+        dummy.setAttribute('value', text);
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
     }
+
+    handleTextFieldFocus = (event) => {
+        event.target.select();
+    };
 
     render() {
         const {classes} = this.props;
 
-        return (
-            this.state.initialized &&
-            <Grid container justify="center" spacing={2} className={classes.root}
-                  style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
-                <Grid key="definition" item>
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Typography variant="h2">
-                                {intl.get("POOL_MADE_BY", {organizer: ViewPool.getOwner()})}
-                            </Typography>
-                            <Table className={classes.table}>
-                                <TableHead>
-                                    <TableRow align="left">
-                                        {/*<TableCell>&nbsp;</TableCell>*/}
-                                        <TableCell className={classes.namecolumn}>
-                                            <Typography className={classes.columnheader}>
-                                                Name
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography className={classes.columnheader}>
-                                                Score
-                                            </Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {ViewPool.renderTableData()}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                        <CardActions>
-                            <TextField
-                                // disabled
-                                id="outlined-name"
-                                label="Share this pool:"
-                                className={classes.shareUrlInput}
-                                value={`${window.location.protocol}//${window.location.host}/?pool=${appState.poolData.key}`}
-                                margin="normal"
-                                variant="outlined"
-                                InputProps={{
-                                    classes: {
-                                        notchedOutline: classes.notchedOutline,
-                                        root: classes.input,
-                                        focused: classes.focused
-                                    }
-                                }}
-                            />
-                            <IconButton className={classes.copyButton} color="inherit"
-                                        aria-label="Copy" aria-haspopup="true">
-                                <Icon>content_copy</Icon>
-                            </IconButton>
-                        </CardActions>
-                    </Card>
+        if (this.state.initialized) {
+            return (
+                <Grid container justify="center" spacing={2} className={classes.root}
+                      style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+                    <Grid key="definition" item>
+                        <Card className={classes.card}>
+                            <CardContent>
+                                <Typography variant="h2">
+                                    {intl.get("POOL_MADE_BY", {organizer: ViewPool.getOwner()})}
+                                </Typography>
+                                <Table className={classes.table}>
+                                    <TableHead>
+                                        <TableRow align="left">
+                                            {/*<TableCell>&nbsp;</TableCell>*/}
+                                            <TableCell className={classes.namecolumn}>
+                                                <Typography className={classes.columnheader}>
+                                                    Name
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography className={classes.columnheader}>
+                                                    Score
+                                                </Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {ViewPool.renderTableData()}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                            <CardActions>
+                                <TextField
+                                    // disabled
+                                    id={copyFieldId}
+                                    label="Share this pool&nbsp;"
+                                    className={classes.shareUrlInput}
+                                    value={this.state.shareUrl}
+                                    margin="normal"
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={this.handleTextFieldFocus}
+                                />
+                                <IconButton className={classes.copyButton} color="inherit"
+                                            aria-label="Copy" aria-haspopup="true" onClick={this.copy}>
+                                    <Icon>content_copy</Icon>
+                                </IconButton>
+                            </CardActions>
+                        </Card>
+                    </Grid>
                 </Grid>
-            </Grid>
-        );
-
+            );
+        } else {
+            return <CircularProgress className={classes.progress}/>
+        }
     }
 }
 
