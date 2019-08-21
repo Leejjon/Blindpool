@@ -14,6 +14,8 @@ import intl from "react-intl-universal";
 import WebFont from "webfontloader";
 import Helmet from "react-helmet/es/Helmet";
 
+import UpdateDialog from "./components/bpupdatedialog/UpdateDialog";
+
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -162,7 +164,7 @@ class App extends Component {
         });
     }
 
-    loadPool(poolData) {
+    static loadPool(poolData) {
         // this.setState({currentPool: poolData});
         console.log("Maar hier niet of wel?");
     }
@@ -181,6 +183,7 @@ class App extends Component {
                         <BpAppBar
                             setLanguage={this.loadLocales}
                             currentLang={this.state.currentLang}/>
+                        <UpdateDialog />
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
                         <Route exact path="/howto" component={ViewWhatIs}/>

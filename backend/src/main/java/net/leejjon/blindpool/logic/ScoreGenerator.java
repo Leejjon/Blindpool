@@ -11,8 +11,7 @@ public class ScoreGenerator {
 
     public static List<ParticipantScore> assignRandomScores(List<Participant> participants) {
 //        Preconditions.checkArgument();
-        List<Score> randomScoresList = new ArrayList<>();
-        randomScoresList.addAll(generateScores(participants.size()));
+        List<Score> randomScoresList = new ArrayList<>(generateScores(participants.size()));
 
         // Pray this is random enough.
         Collections.shuffle(randomScoresList);

@@ -43,12 +43,13 @@ const styles = theme => ({
         flexGrow: 1
     },
     shareUrlInput: {
+        marginTop: '0.45em',
         marginLeft: '0.5em',
         width: '100%',
     },
     copyButton: {
-        marginTop: '0.5em',
-        marginLeft: '0em',
+        marginTop: '0em',
+        marginLeft: '0.3em',
         marginRight: '0.3em'
     },
     progress: {
@@ -77,11 +78,11 @@ class ViewPool extends React.Component {
                 .then((poolJson) => {
                     appState.setPool(poolJson);
                     this.setState(
-                        {
-                            initialized: true,
-                            shareUrl: `${window.location.protocol}//${window.location.host}/pool/${appState.poolData.key}`
-                        });
-                    // this.forceUpdate();
+                            {
+                                initialized: true,
+                                shareUrl: `${window.location.protocol}//${window.location.host}/pool/${appState.poolData.key}`
+                            }
+                        );
                 });
         } else {
             this.setState(
@@ -109,7 +110,7 @@ class ViewPool extends React.Component {
     static renderTableData() {
         return appState.poolData.participantsAndScores.map((participantAndScore, index) => {
             const participantName = participantAndScore.participant.name;
-            const score = participantAndScore.score.homeClubScore + "-" + participantAndScore.score.awayClubScore;
+            const score = participantAndScore.score.homeClubScore + " - " + participantAndScore.score.awayClubScore;
             return (
                 <TableRow key={participantName}>
                     <TableCell>
