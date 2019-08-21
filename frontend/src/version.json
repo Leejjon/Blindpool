@@ -1,6 +1,6 @@
 {
   "majorVersion": 1,
-  "minorVersion": 0,
-  "shouldClearCache": false,
+  "minorVersion": 2,
+  "shouldClearCache": true,
   "updateMessage": "Dirk, ik weet waar je huis woont."
 }

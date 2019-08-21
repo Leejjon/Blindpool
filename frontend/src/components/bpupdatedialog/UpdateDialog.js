@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
 // Get the current version in code
-import {majorVersion as CURRENT_VERSION} from "../../version.json";
+import {majorVersion as MAJOR_VERSION} from "../../version.json";
+import {minorVersion as MINOR_VERSION} from "../../version.json";
 
 export default class UpdateDialog extends Component {
 
@@ -13,12 +14,9 @@ export default class UpdateDialog extends Component {
     componentDidMount() {
         // Now get the current version from the server
         fetch('/version.json').then((response) => {
-            console.log("Do we get here?");
             return response.json();
         }).then((updateInfo) => {
-            console.log("En hier?");
-            // Only display the update message on a major version change
-            if (updateInfo.majorVersion > CURRENT_VERSION) {
+            if (updateInfo.majorVersion > MAJOR_VERSION || updateInfo.minorVersion > MINOR_VERSION) {
                 this.setState({
                     shouldUpdate: true,
                     shouldClearCache: updateInfo.shouldClearCache,
