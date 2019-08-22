@@ -6,5 +6,7 @@
   "BLINDPOOL_DEFINITION_TITLE": "What is a blind pool?",
   "BLINDPOOL_DEFINITION": "A blind pool is gambling game where each participant gets assigned a random score for a chosen football match. The participant that is assigned the outcome of the match, wins.",
   "HOST_NAME": "Enter the name of the organizer",
-  "POOL_MADE_BY": "{organizer}'s blind pool"
+  "POOL_MADE_BY": "{organizer}'s blind pool",
+  "NEW_VERSION_AVAILABLE": "New version available",
+  "UPDATE_NOW": "Update now"
 }

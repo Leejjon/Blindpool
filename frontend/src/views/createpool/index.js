@@ -55,10 +55,6 @@ const styles = theme => ({
 });
 
 class ViewCreatePool extends Component {
-    constructor(props) {
-        super(props);
-        this.sendCreatePoolRequest = this.sendCreatePoolRequest.bind(this);
-    }
 
     render() {
         const {classes} = this.props;
@@ -71,7 +67,6 @@ class ViewCreatePool extends Component {
                             <Typography variant="h2">
                                 {intl.get("CREATE_POOL")}
                             </Typography>
-                            {/*<Divider style={{marginTop: "0.5em"}} component="hr" />*/}
                             <Table className={classes.table}>
                                 <TableHead>
                                     <TableRow align="left">
@@ -104,7 +99,7 @@ class ViewCreatePool extends Component {
         return host;
     }
 
-    sendCreatePoolRequest() {
+    sendCreatePoolRequest = () => {
         let navigateToCreatePool = (myJson) => {
             console.log(JSON.stringify(myJson));
 
