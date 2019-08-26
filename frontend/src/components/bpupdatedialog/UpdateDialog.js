@@ -70,7 +70,7 @@ class UpdateDialog extends Component {
 
     render() {
         const classes = this.props.classes;
-        return (this.state.shouldUpdate &&
+        return (//this.state.shouldUpdate &&
             <Grid container justify="center" key="definition" item className={classes.root}>
                 <Card className={classes.card}>
                     <CardActions>

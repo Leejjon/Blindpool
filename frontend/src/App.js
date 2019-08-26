@@ -11,7 +11,6 @@ import ViewPool from "./views/viewpool";
 import {BrowserRouter, Route} from "react-router-dom";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import intl from "react-intl-universal";
-import WebFont from "webfontloader";
 import Helmet from "react-helmet/es/Helmet";
 
 import UpdateDialog from "./components/bpupdatedialog/UpdateDialog";
@@ -105,12 +104,6 @@ const theme = createMuiTheme({
             paddingLeft: 0,
             paddingRight: '1em'
         }
-    }
-});
-
-WebFont.load({
-    google: {
-        families: ['Archivo', 'sans-serif']
     }
 });
 

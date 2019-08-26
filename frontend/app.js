@@ -16,6 +16,7 @@
 
 const express = require('express');
 const path = require('path');
+const request = require('request');
 const app = express();
 
 // This code makes sure that every request that matches a static file in the
@@ -32,6 +33,16 @@ app.get('/sitemap.xml', function(req, res) {
             res.sendFile(path.join(__dirname, 'build', 'sitemap-en.xml'));
             break;
     }
+});
+
+app.get('/fonts/material-icons', function(req,res) {
+    let materialIconsUrl = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+    request(materialIconsUrl).pipe(res);
+});
+
+app.get('/fonts/archivo', function(req,res) {
+    let materialIconsUrl = 'https://fonts.googleapis.com/css?family=Archivo';
+    request(materialIconsUrl).pipe(res);
 });
 
 // This code makes sure that any request that does not matches a static file
