@@ -12,6 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 
 import appState from '../../state/AppState';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
     root: {
@@ -51,43 +52,56 @@ const styles = theme => ({
     },
     namecolumn: {
         flexGrow: 1
+    },
+    progress: {
+        margin: theme.spacing(2),
     }
 });
 
 class ViewCreatePool extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+        };
+    }
 
     render() {
         const {classes} = this.props;
-        return (
-            <Grid container justify="center" spacing={2} className={classes.root}
-                  style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
-                <Grid key="definition" item>
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Typography variant="h2">
-                                {intl.get("CREATE_POOL")}
-                            </Typography>
-                            <Table className={classes.table}>
-                                <TableHead>
-                                    <TableRow align="left">
-                                        <TableCell>&nbsp;</TableCell>
-                                        <TableCell align="left" className={classes.namecolumn}>
-                                            <Typography className={classes.columnname}>
-                                                Name
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>&nbsp;</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                            </Table>
-                            <Button onClick={this.sendCreatePoolRequest} size="large" className={classes.button}>
-                                {intl.get("CREATE_POOL").toUpperCase()}
-                            </Button>
-                        </CardContent>
-                    </Card>
+        if (this.state.loading) {
+            return <CircularProgress className={classes.progress}/>
+        } else {
+            return (
+                <Grid container justify="center" spacing={2} className={classes.root}
+                      style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+                    <Grid key="definition" item>
+                        <Card className={classes.card}>
+                            <CardContent>
+                                <Typography variant="h2">
+                                    {intl.get("CREATE_POOL")}
+                                </Typography>
+                                <Table className={classes.table}>
+                                    <TableHead>
+                                        <TableRow align="left">
+                                            <TableCell>&nbsp;</TableCell>
+                                            <TableCell align="left" className={classes.namecolumn}>
+                                                <Typography className={classes.columnname}>
+                                                    Name
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell>&nbsp;</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                </Table>
+                                <Button onClick={this.sendCreatePoolRequest} size="large" className={classes.button}>
+                                    {intl.get("CREATE_POOL").toUpperCase()}
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 </Grid>
-            </Grid>
-        );
+            );
+        }
     }
 
     static getHost() {
@@ -104,9 +118,11 @@ class ViewCreatePool extends Component {
             console.log(JSON.stringify(myJson));
 
             appState.setPool(myJson);
+            this.setState({loading: false});
             this.props.history.push(`/pool/${myJson.key}`);
         };
 
+        this.setState({loading: true});
         fetch(`${ViewCreatePool.getHost()}/api/v1/pool`,
             {
                 headers: {

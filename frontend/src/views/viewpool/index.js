@@ -25,13 +25,16 @@ const styles = theme => ({
         marginTop: '1em',
 
     },
+    header: {
+        marginTop: '1em',
+    },
     card: {
         minWidth: "20em",
         maxWidth: "20em"
     },
     table: {
         width: '100%',
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(2),
         overflowX: 'auto',
     },
     columnheader: {
@@ -44,12 +47,12 @@ const styles = theme => ({
     },
     shareUrlInput: {
         marginTop: '0.45em',
-        marginLeft: '0.5em',
+        marginLeft: '1em',
         width: '100%',
     },
     copyButton: {
         marginTop: '0em',
-        marginLeft: '0.3em',
+        marginLeft: '0em',
         marginRight: '0.3em'
     },
     progress: {
