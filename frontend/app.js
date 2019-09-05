@@ -35,16 +35,6 @@ app.get('/sitemap.xml', function(req, res) {
     }
 });
 
-app.get('/fonts/material-icons', function(req,res) {
-    let materialIconsUrl = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-    request(materialIconsUrl).pipe(res);
-});
-
-app.get('/fonts/archivo', function(req,res) {
-    let materialIconsUrl = 'https://fonts.googleapis.com/css?family=Archivo';
-    request(materialIconsUrl).pipe(res);
-});
-
 // This code makes sure that any request that does not matches a static file
 // in the build folder, will just serve index.html. Client side routing is
 // going to make sure that the correct content will be loaded.

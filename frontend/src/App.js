@@ -157,11 +157,6 @@ class App extends Component {
         });
     }
 
-    static loadPool(poolData) {
-        // this.setState({currentPool: poolData});
-        console.log("Maar hier niet of wel?");
-    }
-
     render() {
         return (
             this.state.doneLoadingLanguage &&
