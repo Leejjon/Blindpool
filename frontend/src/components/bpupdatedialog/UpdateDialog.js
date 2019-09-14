@@ -45,7 +45,7 @@ class UpdateDialog extends Component {
             fetch('/version.json').then((response) => {
                 return response.json();
             }).then((updateInfo) => {
-                if (updateInfo.majorVersion > MAJOR_VERSION || updateInfo.minorVersion > MINOR_VERSION) {
+                if (updateInfo.majorVersion > MAJOR_VERSION || (updateInfo.majorVersion === MAJOR_VERSION && updateInfo.minorVersion > MINOR_VERSION)) {
                     this.setState({
                         shouldUpdate: true,
                         shouldClearCache: updateInfo.shouldClearCache,
