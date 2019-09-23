@@ -8,5 +8,7 @@
   "HOST_NAME": "Enter the name of the organizer",
   "POOL_MADE_BY": "{organizer}'s blind pool",
   "NEW_VERSION_AVAILABLE": "New version available",
-  "UPDATE_NOW": "Update now"
+  "UPDATE_NOW": "Update now",
+  "ADD_PLAYER": "Add another player",
+  "REMOVE_PLAYER_X": "Remove player {name}."
 }

@@ -70,6 +70,13 @@ const theme = createMuiTheme({
                 borderColor: 'black'
             }
         },
+        MuiTableCell: {
+            root: {
+                '&:last-child': {
+                    paddingRight: '0px'
+                }
+            }
+        }
     },
     typography: {
         useNextVariants: true,

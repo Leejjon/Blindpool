@@ -8,5 +8,7 @@
   "HOST_NAME": "Vul de naam van de organizator in.",
   "POOL_MADE_BY": "{organizer}'s Blindepool",
   "NEW_VERSION_AVAILABLE": "Nieuwe versie beschikbaar",
-  "UPDATE_NOW": "Update nu"
+  "UPDATE_NOW": "Update nu",
+  "ADD_PLAYER": "Nog een speler toevoegen",
+  "REMOVE_PLAYER_X": "Verwijder speler {name}."
 }

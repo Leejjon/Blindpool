@@ -66,7 +66,7 @@ class ViewHome extends Component {
                             <Typography variant="h2" className={this.props.classes.title}>
                                 Upcoming matches
                             </Typography>
-                            <br />
+                            <Divider style={{marginTop: '0.5em'}} />
                             <List component="matches-list">
                                 <ListItemText>Ado Den Haag - Willem II</ListItemText>
                                 <ListItemText>De Graafschap - Ajax</ListItemText>
