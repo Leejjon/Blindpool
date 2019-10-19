@@ -113,11 +113,10 @@ class ViewCreatePool extends Component {
         };
     }
 
-
     renderInputFields() {
         return this.state.players.map((player, index) => {
             let first = index <= 0;
-            let valid = this.state.players[index].valid || this.state.players[index].valid === undefined;
+            let invalidMessage = this.state.players[index].valid;
             return (
                 <TableRow className={this.props.classes.row}>
                     <TableCell className={this.props.classes.numberColumn}>
@@ -127,8 +126,8 @@ class ViewCreatePool extends Component {
                     </TableCell>
                     <TableCell className={this.props.classes.nameFields}>
                         <TextField
-                            error={!valid}
-                            helperText={!valid ? 'Zie error jwz' : ''}
+                            error={invalidMessage !== undefined}
+                            helperText={invalidMessage}
                             id="standard-bare"
                             className={this.props.classes.nameInputField}
                             margin="normal"
@@ -155,8 +154,11 @@ class ViewCreatePool extends Component {
         if (nameField.value) {
             const lettersAndNumbersOnly = /^([a-z0-9]{1,})$/;
             let updatedNameStatus = this.state.players;
-            updatedNameStatus[index].valid = lettersAndNumbersOnly.test(nameField.value);
-
+            if (!lettersAndNumbersOnly.test(nameField.value)) {
+                updatedNameStatus[index].valid = "Name contains illegal character(s).";
+            } else {
+                updatedNameStatus[index].valid = undefined;
+            }
             this.setState({players: updatedNameStatus});
         }
     };
