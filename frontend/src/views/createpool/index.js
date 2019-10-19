@@ -50,12 +50,15 @@ const styles = theme => ({
         marginBottom: '1em'
     },
     numberColumn: {
+        verticalAlign: 'text-top',
         padding: '0em',
+        paddingTop: '1.7em',
         margin: '0em'
     },
     buttonColumn: {
+        verticalAlign: 'text-top',
         padding: '0.3em',
-        paddingTop: '0.7em',
+        paddingTop: '0em',
         //paddingRight: '0em'
     },
     columnname: {
@@ -118,7 +121,7 @@ class ViewCreatePool extends Component {
             let first = index <= 0;
             let invalidMessage = this.state.players[index].valid;
             return (
-                <TableRow className={this.props.classes.row}>
+                <TableRow key={index} className={this.props.classes.row}>
                     <TableCell className={this.props.classes.numberColumn}>
                         <Typography className={this.props.classes.columnname}>
                             {index + 1}
@@ -128,7 +131,7 @@ class ViewCreatePool extends Component {
                         <TextField
                             error={invalidMessage !== undefined}
                             helperText={invalidMessage}
-                            id="standard-bare"
+                            id={"nameField" + index}
                             className={this.props.classes.nameInputField}
                             margin="normal"
                             inputProps={{'aria-label': 'Player name ' + (index + 1)}}
@@ -152,13 +155,16 @@ class ViewCreatePool extends Component {
     validateChange = (index, event) => {
         const nameField = event.target;
         if (nameField.value) {
-            const lettersAndNumbersOnly = /^([a-zA-Z0-9]{1,})$/;
+            const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
             let updatedNameStatus = this.state.players;
-            if (!lettersAndNumbersOnly.test(nameField.value)) {
-                updatedNameStatus[index].valid = "Name contains illegal character(s).";
+
+            let name = nameField.value.trim();
+            if (!lettersAndNumbersOnly.test(name)) {
+                updatedNameStatus[index].valid = intl.get("ILLEGAL_CHARACTER_MESSAGE");
             } else {
                 updatedNameStatus[index].valid = undefined;
             }
+            updatedNameStatus[index].name = name;
             this.setState({players: updatedNameStatus});
         }
     };
@@ -168,9 +174,16 @@ class ViewCreatePool extends Component {
         if (!first) {
             let lessPlayers = this.state.players;
             lessPlayers.splice(index, 1);
-            this.setState({players: lessPlayers})
+            this.setState({players: lessPlayers});
+            this.updatePlayers();
         }
     };
+
+    updatePlayers() {
+        this.state.players.forEach((player, index) => {
+            document.getElementById("nameField" + index).value = player.name;
+        });
+    }
 
     render() {
         const {classes} = this.props;
@@ -200,7 +213,7 @@ class ViewCreatePool extends Component {
                                                        align="left">&nbsp;</TableCell>
                                             <TableCell className={classes.nameHeader} align="left">
                                                 <Typography className={classes.columnname}>
-                                                    Name
+                                                    {intl.get("NAME_COLUMN_HEADER")}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell
