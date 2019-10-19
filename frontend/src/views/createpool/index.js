@@ -152,7 +152,7 @@ class ViewCreatePool extends Component {
     validateChange = (index, event) => {
         const nameField = event.target;
         if (nameField.value) {
-            const lettersAndNumbersOnly = /^([a-z0-9]{1,})$/;
+            const lettersAndNumbersOnly = /^([a-zA-Z0-9]{1,})$/;
             let updatedNameStatus = this.state.players;
             if (!lettersAndNumbersOnly.test(nameField.value)) {
                 updatedNameStatus[index].valid = "Name contains illegal character(s).";
