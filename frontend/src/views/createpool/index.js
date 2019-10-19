@@ -14,7 +14,6 @@ import Icon from "@material-ui/core/Icon";
 
 import appState from '../../state/AppState';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Divider from "@material-ui/core/Divider";
 import TableBody from "@material-ui/core/TableBody";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
@@ -104,30 +103,43 @@ class ViewCreatePool extends Component {
         super(props);
         this.state = {
             loading: false,
+            players: [
+                {name: "", valid: undefined},
+                {name: "", valid: undefined},
+                {name: "", valid: undefined},
+                {name: "", valid: undefined},
+                {name: "", valid: undefined}
+            ]
         };
     }
 
+
     renderInputFields() {
-        return ["Leon", "Dirk", "Robbie", "Jaimy", "Joop"].map((playerName, index) => {
+        return this.state.players.map((player, index) => {
             let first = index <= 0;
+            let valid = this.state.players[index].valid || this.state.players[index].valid === undefined;
             return (
                 <TableRow className={this.props.classes.row}>
                     <TableCell className={this.props.classes.numberColumn}>
                         <Typography className={this.props.classes.columnname}>
-                        {++index}
+                            {index + 1}
                         </Typography>
                     </TableCell>
                     <TableCell className={this.props.classes.nameFields}>
                         <TextField
+                            error={!valid}
+                            helperText={!valid ? 'Zie error jwz' : ''}
                             id="standard-bare"
                             className={this.props.classes.nameInputField}
-                            defaultValue={playerName}
                             margin="normal"
-                            inputProps={{ 'aria-label': 'Player name' + ++index }}>
+                            inputProps={{'aria-label': 'Player name ' + (index + 1)}}
+                            onChange={(event) => this.validateChange(index, event)}>
                         </TextField>
                     </TableCell>
                     <TableCell align="right" className={this.props.classes.buttonColumn}>
-                        <IconButton aria-label={intl.get("REMOVE_PLAYER_X", {name: playerName})} className={this.props.classes.icon} disabled={first}>
+                        <IconButton tabIndex="-1" aria-label={intl.get("REMOVE_PLAYER_X", {name: player.name})}
+                                    className={this.props.classes.icon} disabled={first}
+                                    onClick={() => this.removePlayer(index)}>
                             <Icon fontSize="default">
                                 {!first ? "remove_circle_outline" : "person"}
                             </Icon>
@@ -137,6 +149,26 @@ class ViewCreatePool extends Component {
             );
         });
     }
+
+    validateChange = (index, event) => {
+        const nameField = event.target;
+        if (nameField.value) {
+            const lettersAndNumbersOnly = /^([a-z0-9]{1,})$/;
+            let updatedNameStatus = this.state.players;
+            updatedNameStatus[index].valid = lettersAndNumbersOnly.test(nameField.value);
+
+            this.setState({players: updatedNameStatus});
+        }
+    };
+
+    removePlayer = (index) => {
+        let first = index <= 0;
+        if (!first) {
+            let lessPlayers = this.state.players;
+            lessPlayers.splice(index, 1);
+            this.setState({players: lessPlayers})
+        }
+    };
 
     render() {
         const {classes} = this.props;
@@ -152,24 +184,25 @@ class ViewCreatePool extends Component {
                                 <Typography variant="h2">
                                     {intl.get("CREATE_POOL")}
                                 </Typography>
-                                {/*<Divider style={{marginTop: '0.5em'}} />*/}
                                 {/*border={1}*/}
                                 <Table className={classes.table}>
                                     <colgroup>
                                         {/* Seems like a super stupid solution, but it works.*/}
-                                        <col style={{width:'5%'}}/>
-                                        <col style={{width:'85%'}}/>
-                                        <col style={{width:'10%'}}/>
+                                        <col style={{width: '5%'}}/>
+                                        <col style={{width: '85%'}}/>
+                                        <col style={{width: '10%'}}/>
                                     </colgroup>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell className={classes.numberColumn} align="left">&nbsp;</TableCell>
+                                            <TableCell className={classes.numberColumn}
+                                                       align="left">&nbsp;</TableCell>
                                             <TableCell className={classes.nameHeader} align="left">
                                                 <Typography className={classes.columnname}>
                                                     Name
                                                 </Typography>
                                             </TableCell>
-                                            <TableCell  className={this.props.classes.buttonColumn}>&nbsp;</TableCell>
+                                            <TableCell
+                                                className={this.props.classes.buttonColumn}>&nbsp;</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -177,7 +210,7 @@ class ViewCreatePool extends Component {
                                         <TableRow className={this.props.classes.row}>
                                             <TableCell className={this.props.classes.numberColumn}>
                                                 <Typography className={this.props.classes.disabledNumber}>
-                                                    6
+                                                    {this.state.players.length + 1}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell className={this.props.classes.nameFields}>
@@ -187,18 +220,20 @@ class ViewCreatePool extends Component {
                                                     margin="normal"
                                                     disabled={true}
                                                     value={intl.get("ADD_PLAYER")}
-                                                    inputProps={{ 'aria-label': 'Player name'}}>
+                                                    inputProps={{'aria-label': 'Player name'}}>
                                                 </TextField>
                                             </TableCell>
                                             <TableCell className={this.props.classes.buttonColumn}>
-                                                <IconButton aria-label={intl.get("ADD_PLAYER")} className={this.props.classes.icon}>
+                                                <IconButton aria-label={intl.get("ADD_PLAYER")}
+                                                            className={this.props.classes.icon}>
                                                     <Icon fontSize="default">add_circle_outline</Icon>
                                                 </IconButton>
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
-                                <Button onClick={this.sendCreatePoolRequest} size="large" className={classes.button}>
+                                <Button tabIndex="-1" onClick={this.sendCreatePoolRequest} size="large"
+                                        className={classes.button}>
                                     {intl.get("CREATE_POOL").toUpperCase()}
                                 </Button>
                             </CardContent>
@@ -237,7 +272,7 @@ class ViewCreatePool extends Component {
                 method: "POST",
                 body: JSON.stringify(["Leon", "Dirk", "Robert", "Niels", "Jaimy", "Joop"])
             })
-            .then(function(response) {
+            .then(function (response) {
                 // return response.text();
                 return response.json();
             })
