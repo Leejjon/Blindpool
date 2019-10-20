@@ -17,6 +17,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import TableBody from "@material-ui/core/TableBody";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
+import {Helmet} from "react-helmet";
 
 const styles = theme => ({
     root: {
@@ -169,6 +170,18 @@ class ViewCreatePool extends Component {
         }
     };
 
+    checkForDuplicates(name, index) {
+
+    }
+
+    addPlayer = () => {
+        let oneNewPlayerAdded = this.state.players;
+        let numberOfPlayers = oneNewPlayerAdded.push({name: "", valid: undefined});
+        this.setState(oneNewPlayerAdded, () => {
+            document.getElementById("nameField" + (numberOfPlayers - 1)).focus();
+        });
+    };
+
     removePlayer = (index) => {
         let first = index <= 0;
         if (!first) {
@@ -193,6 +206,9 @@ class ViewCreatePool extends Component {
             return (
                 <Grid container justify="center" spacing={2} className={classes.root}
                       style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+                    <Helmet>
+                        <title>{intl.get('TITLE')} - {intl.get('CREATE_POOL')}</title>
+                    </Helmet>
                     <Grid key="definition" item>
                         <Card className={classes.card}>
                             <CardContent>
@@ -240,7 +256,8 @@ class ViewCreatePool extends Component {
                                             </TableCell>
                                             <TableCell className={this.props.classes.buttonColumn}>
                                                 <IconButton aria-label={intl.get("ADD_PLAYER")}
-                                                            className={this.props.classes.icon}>
+                                                            className={this.props.classes.icon}
+                                                            onClick={() => this.addPlayer()}>
                                                     <Icon fontSize="default">add_circle_outline</Icon>
                                                 </IconButton>
                                             </TableCell>
