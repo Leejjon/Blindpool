@@ -164,30 +164,36 @@ class ViewCreatePool extends Component {
         let updatedNameStatus = this.state.players;
         if (nameField.value) {
             updatedNameStatus[index].name = nameField.value.trim();
-            this.validateAndUpdateState(updatedNameStatus);
+            this.validateState(updatedNameStatus);
         } else {
             updatedNameStatus[index].name = "";
             updatedNameStatus[index].valid = undefined;
-            this.validateAndUpdateState(updatedNameStatus);
+            this.validateState(updatedNameStatus);
         }
+        this.setState({players: updatedNameStatus});
     };
 
-    validateAndUpdateState(updatedNameStatus) {
+    validateState(updatedNameStatus) {
+        let allPlayersHaveAValidName = true;
         updatedNameStatus.forEach((player) => {
             const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
             if (player.name) {
                 if (!lettersAndNumbersOnly.test(player.name)) {
+                    allPlayersHaveAValidName = false;
                     player.valid = "ILLEGAL_CHARACTER_MESSAGE";
                 } else {
                     if (this.checkForDuplicates(player.name, updatedNameStatus)) {
                         player.valid = "DUPLICATE_MESSAGE";
+                        allPlayersHaveAValidName = false;
                     } else {
                         player.valid = undefined;
                     }
                 }
+            } else {
+                allPlayersHaveAValidName = false;
             }
         });
-        this.setState({players: updatedNameStatus});
+        return allPlayersHaveAValidName;
     }
 
     checkForDuplicates(name, updatedNameStatus) {
@@ -208,7 +214,8 @@ class ViewCreatePool extends Component {
         if (!first) {
             let lessPlayers = this.state.players;
             lessPlayers.splice(index, 1);
-            this.validateAndUpdateState(lessPlayers);
+            this.validateState(lessPlayers);
+            this.setState({players: lessPlayers});
             this.updatePlayers();
         }
     };
@@ -307,29 +314,27 @@ class ViewCreatePool extends Component {
     }
 
     sendCreatePoolRequest = () => {
-        let navigateToCreatePool = (myJson) => {
-            console.log(JSON.stringify(myJson));
+        if (this.validateState(this.state.players)) {
+            let navigateToCreatePool = (poolJson) => {
+                appState.setPool(poolJson);
+                this.setState({loading: false});
+                this.props.history.push(`/pool/${poolJson.key}`);
+            };
 
-            appState.setPool(myJson);
-            this.setState({loading: false});
-            this.props.history.push(`/pool/${myJson.key}`);
-        };
-
-        this.setState({loading: true});
-        fetch(`${ViewCreatePool.getHost()}/api/v1/pool`,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify(["Leon", "Dirk", "Robert", "Niels", "Jaimy", "Joop"])
-            })
-            .then(function (response) {
-                // return response.text();
-                return response.json();
-            })
-            .then(navigateToCreatePool);
+            this.setState({loading: true});
+            fetch(`${ViewCreatePool.getHost()}/api/v1/pool`,
+                {
+                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                    method: "POST", body: JSON.stringify(this.state.players.map(player => player.name))
+                })
+                .then(function (response) {
+                    // return response.text();
+                    return response.json();
+                })
+                .then(navigateToCreatePool);
+        } else {
+            console.log("Didn't work");
+        }
     };
 }
 
