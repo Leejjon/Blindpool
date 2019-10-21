@@ -163,7 +163,7 @@ class ViewPool extends React.Component {
                                             {/*<TableCell>&nbsp;</TableCell>*/}
                                             <TableCell className={classes.namecolumn}>
                                                 <Typography className={classes.columnheader}>
-                                                    Name
+                                                    {intl.get("NAME_COLUMN_HEADER")}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell>

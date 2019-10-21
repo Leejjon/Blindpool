@@ -12,5 +12,6 @@
   "ADD_PLAYER": "Nog een speler toevoegen",
   "REMOVE_PLAYER_X": "Verwijder speler {name}",
   "ILLEGAL_CHARACTER_MESSAGE": "Gebruik alleen letters, nummers en spaties",
-  "NAME_COLUMN_HEADER": "Naam"
+  "NAME_COLUMN_HEADER": "Naam",
+  "DUPLICATE_MESSAGE": "Kies een unieke naam"
 }

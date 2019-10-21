@@ -102,17 +102,23 @@ const styles = theme => ({
     }
 });
 
+// Create a unique instance of the same empty object.
+const EMPTY_PLAYER = () => {
+    return Object.assign({}, {name: "", valid: undefined});
+};
+
 class ViewCreatePool extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
             players: [
-                {name: "", valid: undefined},
-                {name: "", valid: undefined},
-                {name: "", valid: undefined},
-                {name: "", valid: undefined},
-                {name: "", valid: undefined}
+                EMPTY_PLAYER(),
+                EMPTY_PLAYER(),
+                EMPTY_PLAYER(),
+                EMPTY_PLAYER(),
+                EMPTY_PLAYER()
             ]
         };
     }
@@ -131,12 +137,12 @@ class ViewCreatePool extends Component {
                     <TableCell className={this.props.classes.nameFields}>
                         <TextField
                             error={invalidMessage !== undefined}
-                            helperText={invalidMessage}
+                            helperText={invalidMessage !== undefined ? intl.get(invalidMessage) : undefined}
                             id={"nameField" + index}
                             className={this.props.classes.nameInputField}
                             margin="normal"
                             inputProps={{'aria-label': 'Player name ' + (index + 1)}}
-                            onChange={(event) => this.validateChange(index, event)}>
+                            onChange={(event) => this.onTextFieldChange(index, event)}>
                         </TextField>
                     </TableCell>
                     <TableCell align="right" className={this.props.classes.buttonColumn}>
@@ -153,30 +159,45 @@ class ViewCreatePool extends Component {
         });
     }
 
-    validateChange = (index, event) => {
+    onTextFieldChange = (index, event) => {
         const nameField = event.target;
+        let updatedNameStatus = this.state.players;
         if (nameField.value) {
-            const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
-            let updatedNameStatus = this.state.players;
-
-            let name = nameField.value.trim();
-            if (!lettersAndNumbersOnly.test(name)) {
-                updatedNameStatus[index].valid = intl.get("ILLEGAL_CHARACTER_MESSAGE");
-            } else {
-                updatedNameStatus[index].valid = undefined;
-            }
-            updatedNameStatus[index].name = name;
-            this.setState({players: updatedNameStatus});
+            updatedNameStatus[index].name = nameField.value.trim();
+            this.validateAndUpdateState(updatedNameStatus);
+        } else {
+            updatedNameStatus[index].name = "";
+            updatedNameStatus[index].valid = undefined;
+            this.validateAndUpdateState(updatedNameStatus);
         }
     };
 
-    checkForDuplicates(name, index) {
+    validateAndUpdateState(updatedNameStatus) {
+        updatedNameStatus.forEach((player) => {
+            const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
+            if (player.name) {
+                if (!lettersAndNumbersOnly.test(player.name)) {
+                    player.valid = "ILLEGAL_CHARACTER_MESSAGE";
+                } else {
+                    if (this.checkForDuplicates(player.name, updatedNameStatus)) {
+                        player.valid = "DUPLICATE_MESSAGE";
+                    } else {
+                        player.valid = undefined;
+                    }
+                }
+            }
+        });
+        this.setState({players: updatedNameStatus});
+    }
 
+    checkForDuplicates(name, updatedNameStatus) {
+        const duplicate = updatedNameStatus.filter(player => player.name === name);
+        return duplicate.length > 1;
     }
 
     addPlayer = () => {
         let oneNewPlayerAdded = this.state.players;
-        let numberOfPlayers = oneNewPlayerAdded.push({name: "", valid: undefined});
+        let numberOfPlayers = oneNewPlayerAdded.push(EMPTY_PLAYER());
         this.setState(oneNewPlayerAdded, () => {
             document.getElementById("nameField" + (numberOfPlayers - 1)).focus();
         });
@@ -187,7 +208,7 @@ class ViewCreatePool extends Component {
         if (!first) {
             let lessPlayers = this.state.players;
             lessPlayers.splice(index, 1);
-            this.setState({players: lessPlayers});
+            this.validateAndUpdateState(lessPlayers);
             this.updatePlayers();
         }
     };
