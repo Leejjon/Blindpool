@@ -13,5 +13,14 @@
   "REMOVE_PLAYER_X": "Verwijder speler {name}",
   "ILLEGAL_CHARACTER_MESSAGE": "Gebruik alleen letters, nummers en spaties",
   "NAME_COLUMN_HEADER": "Naam",
-  "DUPLICATE_MESSAGE": "Kies een unieke naam"
+  "DUPLICATE_MESSAGE": "Kies een unieke naam",
+  "HOW_DOES_IT_WORK": "Hoe werkt het?",
+  "BACK": "Terug",
+  "Next": "Volgende",
+  "COMIC1": "Nodig je vrienden uit om een voetbal wedstrijd te kijken.",
+  "COMIC2": "Iedere deelnemer zet het zelfde bedrag in. Bijvoorbeeld twee euro per persoon.",
+  "COMIC3": "De organizator voert de namen van alle deelnemers in de app en maakt de pool.",
+  "COMIC4": "De organizator deelt de link naar de pool met de deelnemers zodat zij hun willekeurig gegenereerde scores kunnen bekijken.",
+  "COMIC5": "Bekijk de wedstrijd en duim ervoor dat de wedstrijd eindigt in jouw willekeurig aangewezen score...",
+  "COMIC6": "De persoon met de correcte uitslag wint alles!"
 }
