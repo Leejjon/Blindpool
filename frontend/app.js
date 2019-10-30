@@ -16,7 +16,6 @@
 
 const express = require('express');
 const path = require('path');
-const request = require('request');
 const app = express();
 
 // This code makes sure that every request that matches a static file in the

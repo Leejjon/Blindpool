@@ -175,7 +175,7 @@
                 <configuration>
                     <version>11</version>
                     <promote>false</promote>
-                    <deploy.projectId>nodejs-static</deploy.projectId>
+                    <deploy.projectId>blindepoule</deploy.projectId>
                 </configuration>
             </plugin>
             <plugin>

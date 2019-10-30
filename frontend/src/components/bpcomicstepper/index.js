@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: '0.5em'
     },
     backNextButtons: {
-        backgroundColor: "white"
+        backgroundColor: "#FAFAFA"
     },
     description: {
         lineHeight: '1.5em'
@@ -33,12 +33,12 @@ const useStyles = makeStyles(theme => ({
 
 const tutorialSteps = (intl) => {
     return [
-        {label: intl.get("COMIC1"), imgPath: require('../../images/comics/blindpool1.png')},
-        {label: intl.get("COMIC2"), imgPath: require('../../images/comics/blindpool2.png')},
-        {label: intl.get("COMIC3"), imgPath: require('../../images/comics/blindpool3.png')},
-        {label: intl.get("COMIC4"), imgPath: require('../../images/comics/blindpool4.png')},
-        {label: intl.get("COMIC5"), imgPath: require('../../images/comics/blindpool5.png')},
-        {label: intl.get("COMIC6"), imgPath: require('../../images/comics/blindpool6.png')},
+        {label: intl.get("COMIC1"), imgPath: require('../../images/comics/blindpool1small.png')},
+        {label: intl.get("COMIC2"), imgPath: require('../../images/comics/blindpool2small.png')},
+        {label: intl.get("COMIC3"), imgPath: require('../../images/comics/blindpool3small.png')},
+        {label: intl.get("COMIC4"), imgPath: require('../../images/comics/blindpool4small.png')},
+        {label: intl.get("COMIC5"), imgPath: require('../../images/comics/blindpool5small.png')},
+        {label: intl.get("COMIC6"), imgPath: require('../../images/comics/blindpool6small.png')},
     ];
 };
 

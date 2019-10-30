@@ -7,6 +7,7 @@ import intl from "react-intl-universal";
 import Typography from "@material-ui/core/Typography";
 import ComicStepper from "../../components/bpcomicstepper";
 import Divider from "@material-ui/core/Divider";
+import {Helmet} from "react-helmet";
 
 const styles = () => ({
     root: {
@@ -36,6 +37,9 @@ class ViewHowTo extends Component {
         return (
             <Grid container justify="center" spacing={2} className={classes.root}
                   style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+                <Helmet>
+                    <title>{intl.get('TITLE')} - {intl.get('HOW_DOES_IT_WORK')}</title>
+                </Helmet>
                 <Grid key="definition" item>
                     <Card className={classes.card}>
                         <CardContent>
