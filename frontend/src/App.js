@@ -36,12 +36,7 @@ const theme = createMuiTheme({
             paper: '#fafafa',
             /**/
             default: '#d6d6d6',
-        },
-        // Disabled will have the default color.
-        // text: {
-        //     disabled: 'black'
-        // }
-        // error: will use the default color
+        }
     },
 
     // This is only overriden for the copy textfield in viewpool. Need to find a way to only apply it there. But JavaScript API's are so hard to use :/
@@ -134,20 +129,9 @@ class App extends Component {
         this.loadLocales();
     }
 
-    loadLocales(specificLocale) {
-        let currentLocale;
-
-        if (specificLocale) {
-            currentLocale = specificLocale;
-        } else {
-            const language = window.navigator.language;
-
-            if (language === "nl" || language === "nl-BE") {
-                currentLocale = "nl-NL";
-            } else {
-                currentLocale = "en-US";
-            }
-        }
+    loadLocales() {
+        let currentLocale = (window.location.hostname === "www.blindepool.nl" ||
+                                window.location.hostname === "blindepool.nl") ? "nl-NL": "en-US";
 
         // init method will load CLDR locale data according to currentLocale
         // react-intl-universal is singleton, so you should init it only once in your app
@@ -170,19 +154,21 @@ class App extends Component {
             <BrowserRouter>
                 <div className="App">
                     <Helmet>
-                        <meta charSet="utf-8" />
-                        <title>{intl.get('TITLE')} - {intl.get('BLINDPOOL_DEFINITION_TITLE')}</title>
+                        <meta charSet="utf-8"/>
+                        <title>{intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}</title>
                         <meta name="description" content={intl.get('BLINDPOOL_DEFINITION')} />
+                        <meta property="og:title" content={intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}/>
+                        <meta property="og:description" content={intl.get('BLINDPOOL_DEFINITION')}/>
                     </Helmet>
                     <MuiThemeProvider theme={theme}>
                         <BpAppBar
-                            setLanguage={this.loadLocales}
+                            // setLanguage={this.loadLocales}
                             currentLang={this.state.currentLang}/>
-                        <UpdateDialog />
+                        <UpdateDialog/>
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
                         <Route exact path="/howto" component={ViewWhatIs}/>
-                        <Route path="/pool/:key" component={ViewPool} />
+                        <Route path="/pool/:key" component={ViewPool}/>
                     </MuiThemeProvider>
                 </div>
             </BrowserRouter>

@@ -41,6 +41,10 @@ const styles = {
     },
     dropDown: {
         color: 'white'
+    },
+    languageUrl: {
+        color: 'inherit',
+        textDecoration: 'none'
     }
 };
 
@@ -68,14 +72,6 @@ class BpAppBar extends Component {
     closeLanguageSelect = () => {
         this.setState({languageAnchorEl: null});
         console.log("Clicked outside of the menu and thus closed language select.");
-    };
-
-    // Probably should replace
-    selectLanguage(lang) {
-        let lastTwoCharacters = BpAppBar.getLangFromLanguageAndCountryNotation(lang);
-
-        this.setState({languageAnchorEl: null, currentLang: lastTwoCharacters});
-        this.props.setLanguage(lang);
     };
 
     static getLangFromLanguageAndCountryNotation(langAndCountry) {
@@ -115,10 +111,10 @@ class BpAppBar extends Component {
                         <SwipeableDrawer open={this.state.menuOpen}
                                          onClose={this.toggleDrawer('menuOpen', false)}
                                          onOpen={this.toggleDrawer('menuOpen', true)}>
-                            <BpMenu closeMenu={this.toggleDrawer('menuOpen', false)} />
+                            <BpMenu closeMenu={this.toggleDrawer('menuOpen', false)}/>
                         </SwipeableDrawer>
                         <Typography component={Link} to="/" className={classes.grow} variant="h1" color="inherit">
-                            <img alt="BLINDPOOL" className={classes.logoImage} src={require("../../images/logo2.png")} />
+                            <img alt="BLINDPOOL" className={classes.logoImage} src={require("../../images/logo2.png")}/>
                         </Typography>
                         <Button aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"
@@ -128,13 +124,16 @@ class BpAppBar extends Component {
                         </Button>
                         <Menu id="language-menu" anchorEl={languageAnchorEl} open={Boolean(languageAnchorEl)}
                               onClose={this.closeLanguageSelect}>
-                            {/* Do something to make sure the current language is selected, and not always the top one. */}
-                            <MenuItem component="li" button onClick={this.selectLanguage.bind(this, 'en-US')}>
-                                <FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English
-                            </MenuItem>
-                            <MenuItem component="li" button onClick={this.selectLanguage.bind(this, 'nl-NL')}>
-                                <FlagIcon code="nl" size="lg"/>&nbsp;&nbsp;Nederlands
-                            </MenuItem>
+                            <a title="Blindpool" className={classes.languageUrl} href="https://www.blindpool.com/">
+                                <MenuItem component="li" button>
+                                    <FlagIcon code="gb" size="lg"/>&nbsp;&nbsp;English
+                                </MenuItem>
+                            </a>
+                            <a title="Blindepool" className={classes.languageUrl} href="https://www.blindepool.nl/">
+                                <MenuItem component="li" button>
+                                    <FlagIcon code="nl" size="lg"/>&nbsp;&nbsp;Nederlands
+                                </MenuItem>
+                            </a>
                         </Menu>
                     </Toolbar>
                 </AppBar>

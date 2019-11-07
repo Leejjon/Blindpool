@@ -7,8 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import intl from "react-intl-universal";
-import List from "@material-ui/core/List";
-import {ListItemText} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 
