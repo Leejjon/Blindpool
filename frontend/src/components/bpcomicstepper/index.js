@@ -33,12 +33,12 @@ const useStyles = makeStyles(theme => ({
 
 const tutorialSteps = (intl) => {
     return [
-        {label: intl.get("COMIC1"), imgPath: require('../../images/comics/blindpool1small.png')},
-        {label: intl.get("COMIC2"), imgPath: require('../../images/comics/blindpool2small.png')},
-        {label: intl.get("COMIC3"), imgPath: require('../../images/comics/blindpool3small.png')},
-        {label: intl.get("COMIC4"), imgPath: require('../../images/comics/blindpool4small.png')},
-        {label: intl.get("COMIC5"), imgPath: require('../../images/comics/blindpool5small.png')},
-        {label: intl.get("COMIC6"), imgPath: require('../../images/comics/blindpool6small.png')},
+        {label: intl.get("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
+        {label: intl.get("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
+        {label: intl.get("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg')},
+        {label: intl.get("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg')},
+        {label: intl.get("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg')},
+        {label: intl.get("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg')},
     ];
 };
 

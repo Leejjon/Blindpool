@@ -235,7 +235,8 @@ class ViewCreatePool extends Component {
                 <Grid container justify="center" spacing={2} className={classes.root}
                       style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
                     <Helmet>
-                        <title>{intl.get('TITLE')} - {intl.get('CREATE_POOL')}</title>
+                        <title>{intl.get('TITLE')} - {intl.get('CREATE_POOL_TITLE')}</title>
+                        <meta name="description" content={intl.get('CREATE_POOL_DESCRIPTION')} />
                     </Helmet>
                     <Grid key="definition" item>
                         <Card className={classes.card}>

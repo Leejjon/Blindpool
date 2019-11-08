@@ -27,8 +27,6 @@ const styles = () => ({
     },
 });
 
-
-
 class ViewHowTo extends Component {
 
     render() {

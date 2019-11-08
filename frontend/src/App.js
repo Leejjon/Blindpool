@@ -156,9 +156,9 @@ class App extends Component {
                     <Helmet>
                         <meta charSet="utf-8"/>
                         <title>{intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}</title>
-                        <meta name="description" content={intl.get('BLINDPOOL_DEFINITION')} />
+                        <meta name="description" content={intl.get('BLINDPOOL_DEFINITION_DESCRIPTION')} />
                         <meta property="og:title" content={intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}/>
-                        <meta property="og:description" content={intl.get('BLINDPOOL_DEFINITION')}/>
+                        <meta property="og:description" content={intl.get('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
                     </Helmet>
                     <MuiThemeProvider theme={theme}>
                         <BpAppBar

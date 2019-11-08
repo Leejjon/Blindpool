@@ -100,7 +100,7 @@ class BpMenu extends Component {
                             </Icon>
                         </ListItemIcon>
                         <ListItemText className={this.props.classes.linktext}>
-                            {intl.get("HOW_TO_USE_BLINDPOOL")}
+                            {intl.get("HOW_TO_USE_BLINDPOOL_TITLE")}
                         </ListItemText>
                     </ListItem>
                 </List>
