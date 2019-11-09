@@ -148,6 +148,15 @@ class App extends Component {
         });
     }
 
+    getAlternateLink() {
+        if (window.location.hostname === "www.blindepool.nl" ||
+            window.location.hostname === "blindepool.nl") {
+            return <link rel="alternate" hrefLang="en" href="http://www.blindpool.com/"/>
+        } else {
+            return <link rel="alternate" hrefLang="nl" href="http://blindepool.nl/"/>
+        }
+    }
+
     render() {
         return (
             this.state.doneLoadingLanguage &&
@@ -159,10 +168,10 @@ class App extends Component {
                         <meta name="description" content={intl.get('BLINDPOOL_DEFINITION_DESCRIPTION')} />
                         <meta property="og:title" content={intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}/>
                         <meta property="og:description" content={intl.get('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                        {this.getAlternateLink()}
                     </Helmet>
                     <MuiThemeProvider theme={theme}>
                         <BpAppBar
-                            // setLanguage={this.loadLocales}
                             currentLang={this.state.currentLang}/>
                         <UpdateDialog/>
                         <Route exact path="/" component={ViewHome}/>
