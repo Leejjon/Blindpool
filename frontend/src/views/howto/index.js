@@ -53,7 +53,7 @@ class ViewHowTo extends Component {
                         </CardContent>
                         <CardActions>
                             <Link className={classes.firstButton} to="/create">
-                                <Button size="medium">{intl.get("THANKS_FOR_EXPLANATION")}</Button>
+                                <Button size="medium">{intl.get("CREATE_POOL")}</Button>
                             </Link>
                         </CardActions>
                     </Card>
