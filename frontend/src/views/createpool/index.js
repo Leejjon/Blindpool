@@ -102,9 +102,11 @@ const styles = theme => ({
     }
 });
 
+const EMPTY_STRING = "";
+
 // Create a unique instance of the same empty object.
 const EMPTY_PLAYER = () => {
-    return Object.assign({}, {name: "", valid: undefined});
+    return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
 class ViewCreatePool extends Component {
@@ -173,7 +175,10 @@ class ViewCreatePool extends Component {
         this.setState({players: updatedNameStatus});
     };
 
-    validateState(updatedNameStatus) {
+    /*
+       This is not a pure function as it modifies state. Should probably improve it.
+    */
+    validateState(updatedNameStatus, complainAboutEmptyFields) {
         let allPlayersHaveAValidName = true;
         updatedNameStatus.forEach((player) => {
             const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
@@ -190,9 +195,15 @@ class ViewCreatePool extends Component {
                     }
                 }
             } else {
+                if (complainAboutEmptyFields) {
+                    player.valid = "EMPTY_MESSAGE";
+                } else {
+                    player.valid = undefined;
+                }
                 allPlayersHaveAValidName = false;
             }
         });
+
         return allPlayersHaveAValidName;
     }
 
@@ -236,7 +247,7 @@ class ViewCreatePool extends Component {
                       style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
                     <Helmet>
                         <title>{intl.get('TITLE')} - {intl.get('CREATE_POOL_TITLE')}</title>
-                        <meta name="description" content={intl.get('CREATE_POOL_DESCRIPTION')} />
+                        <meta name="description" content={intl.get('CREATE_POOL_DESCRIPTION')}/>
                     </Helmet>
                     <Grid key="definition" item>
                         <Card className={classes.card}>
@@ -315,7 +326,10 @@ class ViewCreatePool extends Component {
     }
 
     sendCreatePoolRequest = () => {
-        if (this.validateState(this.state.players)) {
+        let players = this.state.players;
+        const validatedPlayers = this.validateState(players, true);
+        this.setState({players: players});
+        if (validatedPlayers) {
             let navigateToCreatePool = (poolJson) => {
                 appState.setPool(poolJson);
                 this.setState({loading: false});
@@ -323,6 +337,7 @@ class ViewCreatePool extends Component {
             };
 
             this.setState({loading: true});
+
             fetch(`${ViewCreatePool.getHost()}/api/v1/pool`,
                 {
                     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
@@ -333,9 +348,7 @@ class ViewCreatePool extends Component {
                     return response.json();
                 })
                 .then(navigateToCreatePool);
-        } else {
-            console.log("Didn't work");
-        }
+        } // Else it wasn't valid.
     };
 }
 

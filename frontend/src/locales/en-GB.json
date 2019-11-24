@@ -16,6 +16,7 @@
   "ILLEGAL_CHARACTER_MESSAGE": "Please only use letters, numbers and spaces",
   "NAME_COLUMN_HEADER": "Name",
   "DUPLICATE_MESSAGE": "Choose a unique name",
+  "EMPTY_MESSAGE": "Please enter a name or remove the field",
   "HOW_DOES_IT_WORK": "How does it work?",
   "BACK": "Back",
   "NEXT": "Next",
