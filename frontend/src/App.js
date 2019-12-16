@@ -118,7 +118,7 @@ const locales = {
 class App extends Component {
     constructor(props) {
         super(props);
-        this.loadLocales = this.loadLocales.bind(this);
+
         this.state = {
             doneLoadingLanguage: false,
             currentLang: null,
