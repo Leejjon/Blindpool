@@ -102,7 +102,7 @@ class BpAppBar extends Component {
                             <BpMenu closeMenu={this.toggleDrawer('menuOpen', false)}/>
                         </SwipeableDrawer>
                         <Typography component={Link} to="/" className={classes.grow} variant="h1" color="inherit">
-                            <img alt="BLINDPOOL" className={classes.logoImage} src={require("../../images/logo2.png")}/>
+                            <img alt="BLINDPOOL" className={classes.logoImage} src={require("../../images/logosmall.png")}/>
                         </Typography>
                         <Button aria-label="Language menu"
                                 aria-owns={languageAnchorEl ? 'language-menu' : undefined} aria-haspopup="true"

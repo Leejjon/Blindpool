@@ -31,23 +31,25 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const tutorialSteps = (t) => {
+const tutorialSteps = (translation) => {
+    const {t} = translation;
     return [
-        {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
-        {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
-        {label: t("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg')},
-        {label: t("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg')},
-        {label: t("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg')},
-        {label: t("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg')},
+        {label: t("COMIC1")},
+        {label: t("COMIC2")},
+        {label: t("COMIC3")},
+        {label: t("COMIC4")},
+        {label: t("COMIC5")},
+        {label: t("COMIC6")},
     ];
 };
 
 export default (props) => {
     const classes = useStyles();
-    const { t } = useTranslation();
+    const translation = useTranslation();
+    const {t} = translation;
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    const maxSteps = tutorialSteps(t).length;
+    const maxSteps = tutorialSteps(translation).length;
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -70,10 +72,10 @@ export default (props) => {
                 onChangeIndex={handleStepChange}
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}>
                 {
-                    tutorialSteps(props.intl).map((step, index) => {
+                    tutorialSteps(translation).map((step, index) => {
                         return (<div key={step.label}>
                             {Math.abs(activeStep - index) <= 2 ? (
-                                <img className={classes.img} src={step.imgPath} alt={step.label}/>
+                                <img className={classes.img} src={`/images/comics/Blindpool_${activeStep + 1}.svg`} alt={step.label}/>
                             ) : null}
                         </div>);
                     })
@@ -99,7 +101,7 @@ export default (props) => {
                 }
             />
             <Typography className={classes.description}
-                        variant="p">{tutorialSteps(props.intl)[activeStep].label}</Typography>
+                        variant="p">{tutorialSteps(translation)[activeStep].label}</Typography>
         </div>
     );
 };
