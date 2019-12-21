@@ -4,9 +4,9 @@ import React, {Component} from 'react';
 import {majorVersion as MAJOR_VERSION} from "../../version.json";
 import {minorVersion as MINOR_VERSION} from "../../version.json";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { withTranslation } from 'react-i18next';
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
-import intl from "react-intl-universal";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
@@ -69,16 +69,16 @@ class UpdateDialog extends Component {
     };
 
     render() {
-        const classes = this.props.classes;
+        const {classes, t} = this.props;
         return (this.state.shouldUpdate &&
             <Grid container justify="center" key="definition" item className={classes.root}>
                 <Card className={classes.card}>
                     <CardActions>
                         <Typography variant="body1" className={classes.updateMessage}>
-                            {intl.get('NEW_VERSION_AVAILABLE')}
+                            {t('NEW_VERSION_AVAILABLE')}
                         </Typography>
                         <Button size="medium" className={classes.button} onClick={this.handleRefreshApp}>
-                            {intl.get('UPDATE_NOW')}
+                            {t('UPDATE_NOW')}
                         </Button>
                     </CardActions>
                 </Card>
@@ -87,4 +87,4 @@ class UpdateDialog extends Component {
     }
 }
 
-export default withStyles(styles)(UpdateDialog);
+export default withTranslation()(withStyles(styles)(UpdateDialog));

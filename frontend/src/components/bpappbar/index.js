@@ -74,22 +74,10 @@ class BpAppBar extends Component {
         console.log("Clicked outside of the menu and thus closed language select.");
     };
 
-    static getLangFromLanguageAndCountryNotation(langAndCountry) {
-        let lastTwoCharacters = langAndCountry.substr(langAndCountry.length - 2).toLowerCase();
-
-        if (lastTwoCharacters === 'us') {
-            // Nobody in the US watches football, so let's show the GB flag instead.
-            lastTwoCharacters = 'gb';
-        }
-        return lastTwoCharacters;
-    }
-
     currentFlag() {
-        if (this.props.currentLang !== null) {
-            let lastTwoCharacters = BpAppBar.getLangFromLanguageAndCountryNotation(this.props.currentLang);
-            return (
-                <FlagIcon code={lastTwoCharacters} size="lg"/>
-            );
+        if (window.location.hostname === "www.blindepool.nl" ||
+            window.location.hostname === "blindepool.nl") {
+            return <FlagIcon code="nl" size="lg"/>
         } else {
             return <FlagIcon code="gb" size="lg"/>
         }

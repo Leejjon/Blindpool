@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import {CardContent} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import intl from "react-intl-universal";
+import { withTranslation } from 'react-i18next';
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -145,7 +145,7 @@ class ViewPool extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         if (this.state.initialized) {
             return (
@@ -155,7 +155,7 @@ class ViewPool extends React.Component {
                         <Card className={classes.card}>
                             <CardContent>
                                 <Typography variant="h2">
-                                    {intl.get("POOL_MADE_BY", {organizer: ViewPool.getOwner()})}
+                                    {t("POOL_MADE_BY", {organizer: ViewPool.getOwner()})}
                                 </Typography>
                                 <Table className={classes.table}>
                                     <TableHead>
@@ -163,12 +163,12 @@ class ViewPool extends React.Component {
                                             {/*<TableCell>&nbsp;</TableCell>*/}
                                             <TableCell className={classes.namecolumn}>
                                                 <Typography className={classes.columnheader}>
-                                                    {intl.get("NAME_COLUMN_HEADER")}
+                                                    {t("NAME_COLUMN_HEADER")}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.columnheader}>
-                                                    Score
+                                                    {t("NAME_COLUMN_SCORE")}
                                                 </Typography>
                                             </TableCell>
                                         </TableRow>
@@ -205,4 +205,4 @@ class ViewPool extends React.Component {
     }
 }
 
-export default withStyles(styles)(ViewPool);
+export default withTranslation()(withStyles(styles)(ViewPool));

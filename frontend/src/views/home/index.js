@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-import intl from "react-intl-universal";
+import { withTranslation } from 'react-i18next';
 import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -33,7 +33,7 @@ const styles = () => ({
 class ViewHome extends Component {
 
     render() {
-        const { classes } = this.props;
+        const { classes, t } = this.props;
         return (
             <Grid container justify="center" spacing={2} className={classes.root}
                   style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
@@ -42,20 +42,20 @@ class ViewHome extends Component {
                     <Card className={classes.card}>
                         <CardContent>
                             <Typography variant="h2" >
-                                {intl.get("BLINDPOOL_DEFINITION_TITLE")}
+                                {t("BLINDPOOL_DEFINITION_TITLE")}
                             </Typography>
                             <Divider style={{marginTop: '0.5em'}} />
                             <Typography component="p">
                                 <br />
-                                {intl.get("BLINDPOOL_DEFINITION_DESCRIPTION")}
+                                {t("BLINDPOOL_DEFINITION_DESCRIPTION")}
                             </Typography>
                         </CardContent>
                         <CardActions>
                             <Link className={classes.firstButton} to="/create">
-                                <Button size="medium">{intl.get("CREATE_POOL")}</Button>
+                                <Button size="medium">{t("CREATE_POOL")}</Button>
                             </Link>
                             <Link to="/howto" style={{textDecoration: 'none'}}>
-                                <Button size="medium">{intl.get("HOW_TO_USE_BLINDPOOL_TITLE")}</Button>
+                                <Button size="medium">{t("HOW_TO_USE_BLINDPOOL_TITLE")}</Button>
                             </Link>
                         </CardActions>
                     </Card>
@@ -90,4 +90,4 @@ class ViewHome extends Component {
 }
 
 
-export default withStyles(styles)(ViewHome);
+export default withTranslation()(withStyles(styles)(ViewHome));

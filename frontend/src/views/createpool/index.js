@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "@material-ui/core/Card";
 import {CardContent} from "@material-ui/core";
-import intl from "react-intl-universal";
+import { withTranslation } from 'react-i18next';
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -126,6 +126,7 @@ class ViewCreatePool extends Component {
     }
 
     renderInputFields() {
+        const {t} = this.props;
         return this.state.players.map((player, index) => {
             let first = index <= 0;
             let invalidMessage = this.state.players[index].valid;
@@ -139,7 +140,7 @@ class ViewCreatePool extends Component {
                     <TableCell className={this.props.classes.nameFields}>
                         <TextField
                             error={invalidMessage !== undefined}
-                            helperText={invalidMessage !== undefined ? intl.get(invalidMessage) : undefined}
+                            helperText={invalidMessage !== undefined ? t(invalidMessage) : undefined}
                             id={"nameField" + index}
                             className={this.props.classes.nameInputField}
                             margin="normal"
@@ -148,7 +149,7 @@ class ViewCreatePool extends Component {
                         </TextField>
                     </TableCell>
                     <TableCell align="right" className={this.props.classes.buttonColumn}>
-                        <IconButton tabIndex="-1" aria-label={intl.get("REMOVE_PLAYER_X", {name: player.name})}
+                        <IconButton tabIndex="-1" aria-label={t("REMOVE_PLAYER_X", {name: player.name})}
                                     className={this.props.classes.icon} disabled={first}
                                     onClick={() => this.removePlayer(index)}>
                             <Icon fontSize="default">
@@ -238,7 +239,7 @@ class ViewCreatePool extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
         if (this.state.loading) {
             return <CircularProgress className={classes.progress}/>
         } else {
@@ -246,14 +247,14 @@ class ViewCreatePool extends Component {
                 <Grid container justify="center" spacing={2} className={classes.root}
                       style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
                     <Helmet>
-                        <title>{intl.get('TITLE')} - {intl.get('CREATE_POOL_TITLE')}</title>
-                        <meta name="description" content={intl.get('CREATE_POOL_DESCRIPTION')}/>
+                        <title>{t('TITLE')} - {t('CREATE_POOL_TITLE')}</title>
+                        <meta name="description" content={t('CREATE_POOL_DESCRIPTION')}/>
                     </Helmet>
                     <Grid key="definition" item>
                         <Card className={classes.card}>
                             <CardContent>
                                 <Typography variant="h2">
-                                    {intl.get("CREATE_POOL")}
+                                    {t("CREATE_POOL")}
                                 </Typography>
                                 {/*border={1}*/}
                                 <Table className={classes.table}>
@@ -269,7 +270,7 @@ class ViewCreatePool extends Component {
                                                        align="left">&nbsp;</TableCell>
                                             <TableCell className={classes.nameHeader} align="left">
                                                 <Typography className={classes.columnname}>
-                                                    {intl.get("NAME_COLUMN_HEADER")}
+                                                    {t("NAME_COLUMN_HEADER")}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell
@@ -290,12 +291,12 @@ class ViewCreatePool extends Component {
                                                     className={this.props.classes.nameInputField}
                                                     margin="normal"
                                                     disabled={true}
-                                                    value={intl.get("ADD_PLAYER")}
+                                                    value={t("ADD_PLAYER")}
                                                     inputProps={{'aria-label': 'Player name'}}>
                                                 </TextField>
                                             </TableCell>
                                             <TableCell className={this.props.classes.buttonColumn}>
-                                                <IconButton aria-label={intl.get("ADD_PLAYER")}
+                                                <IconButton aria-label={t("ADD_PLAYER")}
                                                             className={this.props.classes.icon}
                                                             onClick={() => this.addPlayer()}>
                                                     <Icon fontSize="default">add_circle_outline</Icon>
@@ -306,7 +307,7 @@ class ViewCreatePool extends Component {
                                 </Table>
                                 <Button tabIndex="-1" onClick={this.sendCreatePoolRequest} size="large"
                                         className={classes.button}>
-                                    {intl.get("CREATE_POOL").toUpperCase()}
+                                    {t("CREATE_POOL").toUpperCase()}
                                 </Button>
                             </CardContent>
                         </Card>
@@ -352,4 +353,4 @@ class ViewCreatePool extends Component {
     };
 }
 
-export default withStyles(styles)(ViewCreatePool);
+export default withTranslation()(withStyles(styles)(ViewCreatePool));

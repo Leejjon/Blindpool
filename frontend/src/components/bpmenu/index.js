@@ -1,7 +1,7 @@
 import {Component} from "react";
 import {withStyles} from '@material-ui/core/styles';
+import {withTranslation} from 'react-i18next';
 import {Link} from "react-router-dom";
-import intl from "react-intl-universal";
 import React from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -66,6 +66,7 @@ class BpMenu extends Component {
     }
 
     render() {
+        const { t } = this.props;
         return (
             <div className={this.props.classes.list}>
                 <AppBar color="primary" position="static" onClick={this.props.closeMenu}>
@@ -76,7 +77,7 @@ class BpMenu extends Component {
                         </IconButton>
                         <Typography variant="body1" color="inherit" className={this.props.classes.grow}>
                             <img alt="BLINDPOOL" className={this.props.classes.logoImage}
-                                 src={require("../../images/logo2.png")}/>
+                                 src={require("../../images/logosmall.png")}/>
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -89,7 +90,7 @@ class BpMenu extends Component {
                             </Icon>
                         </ListItemIcon>
                         <ListItemText className={this.props.classes.linktext}>
-                            {intl.get("CREATE_POOL")}
+                            {t("CREATE_POOL")}
                         </ListItemText>
                     </ListItem>
                     <ListItem button component={Link} onClick={this.props.closeMenu} to="/howto"
@@ -100,7 +101,7 @@ class BpMenu extends Component {
                             </Icon>
                         </ListItemIcon>
                         <ListItemText className={this.props.classes.linktext}>
-                            {intl.get("HOW_TO_USE_BLINDPOOL_TITLE")}
+                            {t("HOW_TO_USE_BLINDPOOL_TITLE")}
                         </ListItemText>
                     </ListItem>
                 </List>
@@ -109,4 +110,4 @@ class BpMenu extends Component {
     }
 }
 
-export default withStyles(styles)(BpMenu);
+export default withTranslation()(withStyles(styles)(BpMenu));

@@ -10,7 +10,7 @@ import ViewPool from "./views/viewpool";
 
 import {BrowserRouter, Route} from "react-router-dom";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import intl from "react-intl-universal";
+import { withTranslation } from 'react-i18next';
 import Helmet from "react-helmet/es/Helmet";
 
 import UpdateDialog from "./components/bpupdatedialog/UpdateDialog";
@@ -109,44 +109,7 @@ const theme = createMuiTheme({
     }
 });
 
-// locale data
-const locales = {
-    "en-US": require('./locales/en-GB.json'),
-    "nl-NL": require('./locales/nl-NL.json'),
-};
-
 class App extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            doneLoadingLanguage: false,
-            currentLang: null,
-        };
-    }
-
-    componentDidMount() {
-        this.loadLocales();
-    }
-
-    loadLocales() {
-        let currentLocale = (window.location.hostname === "www.blindepool.nl" ||
-                                window.location.hostname === "blindepool.nl") ? "nl-NL": "en-US";
-
-        // init method will load CLDR locale data according to currentLocale
-        // react-intl-universal is singleton, so you should init it only once in your app
-        intl.init({
-            currentLocale: currentLocale,
-            locales,
-            commonLocaleDataUrls: {
-                en: "./locales/en.js",
-                nl: "./locales/nl.js",
-            }
-        }).then(() => {
-            // After loading CLDR locale data, start to render
-            this.setState({doneLoadingLanguage: true, currentLang: currentLocale});
-        });
-    }
 
     getAlternateLink() {
         if (window.location.hostname === "www.blindepool.nl" ||
@@ -158,21 +121,21 @@ class App extends Component {
     }
 
     render() {
+        const { t } = this.props;
+        const dutchLanguage = window.location.hostname === "www.blindepool.nl" || window.location.hostname === "blindepool.nl";
         return (
-            this.state.doneLoadingLanguage &&
             <BrowserRouter>
                 <div className="App">
                     <Helmet>
                         <meta charSet="utf-8"/>
-                        <title>{intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}</title>
-                        <meta name="description" content={intl.get('BLINDPOOL_DEFINITION_DESCRIPTION')} />
-                        <meta property="og:title" content={intl.get('TITLE') + " - " + intl.get('BLINDPOOL_DEFINITION_TITLE')}/>
-                        <meta property="og:description" content={intl.get('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                        <title>{t('TITLE') + " - " + t('BLINDPOOL_DEFINITION_TITLE')}</title>
+                        <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')} />
+                        <meta property="og:title" content={t('TITLE') + " - " + t('BLINDPOOL_DEFINITION_TITLE')}/>
+                        <meta property="og:description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
                         {this.getAlternateLink()}
                     </Helmet>
                     <MuiThemeProvider theme={theme}>
-                        <BpAppBar
-                            currentLang={this.state.currentLang}/>
+                        <BpAppBar/>
                         <UpdateDialog/>
                         <Route exact path="/" component={ViewHome}/>
                         <Route exact path="/create" component={ViewCreatePool}/>
@@ -185,4 +148,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withTranslation()(App);

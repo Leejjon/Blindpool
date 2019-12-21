@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import intl from "react-intl-universal";
+import { useTranslation } from 'react-i18next';
 import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles(theme => ({
@@ -31,22 +31,23 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const tutorialSteps = (intl) => {
+const tutorialSteps = (t) => {
     return [
-        {label: intl.get("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
-        {label: intl.get("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
-        {label: intl.get("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg')},
-        {label: intl.get("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg')},
-        {label: intl.get("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg')},
-        {label: intl.get("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg')},
+        {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
+        {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
+        {label: t("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg')},
+        {label: t("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg')},
+        {label: t("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg')},
+        {label: t("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg')},
     ];
 };
 
 export default (props) => {
     const classes = useStyles();
+    const { t } = useTranslation();
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    const maxSteps = tutorialSteps(props.intl).length;
+    const maxSteps = tutorialSteps(t).length;
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -59,6 +60,7 @@ export default (props) => {
     const handleStepChange = step => {
         setActiveStep(step);
     };
+
 
     return (
         <div className={classes.root}>
@@ -85,14 +87,14 @@ export default (props) => {
                 activeStep={activeStep}
                 nextButton={
                     <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-                        {intl.get("NEXT")}
+                        {t("NEXT")}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
                     </Button>
                 }
                 backButton={
                     <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
-                        {intl.get("BACK")}
+                        {t("BACK")}
                     </Button>
                 }
             />
