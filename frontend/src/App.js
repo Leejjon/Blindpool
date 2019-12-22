@@ -122,7 +122,6 @@ class App extends Component {
 
     render() {
         const { t } = this.props;
-        const dutchLanguage = window.location.hostname === "www.blindepool.nl" || window.location.hostname === "blindepool.nl";
         return (
             <BrowserRouter>
                 <div className="App">

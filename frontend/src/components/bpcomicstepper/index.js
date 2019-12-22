@@ -34,12 +34,12 @@ const useStyles = makeStyles(theme => ({
 const tutorialSteps = (translation) => {
     const {t} = translation;
     return [
-        {label: t("COMIC1")},
-        {label: t("COMIC2")},
-        {label: t("COMIC3")},
-        {label: t("COMIC4")},
-        {label: t("COMIC5")},
-        {label: t("COMIC6")},
+        {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
+        {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
+        {label: t("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg')},
+        {label: t("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg')},
+        {label: t("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg')},
+        {label: t("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg')},
     ];
 };
 
@@ -75,7 +75,7 @@ export default (props) => {
                     tutorialSteps(translation).map((step, index) => {
                         return (<div key={step.label}>
                             {Math.abs(activeStep - index) <= 2 ? (
-                                <img className={classes.img} src={`/images/comics/Blindpool_${activeStep + 1}.svg`} alt={step.label}/>
+                                <img className={classes.img} src={step.imgPath} alt={step.label}/>
                             ) : null}
                         </div>);
                     })
