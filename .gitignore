@@ -3,6 +3,9 @@ backend/target/
 backend/blindpool.iml
 frontend/build/
 frontend/frontend.iml
+frontend/node_modules
+frontend2/build/
+frontend2/frontend.iml
+frontend2/node_modules
 .idea/
-/frontend/node_modules
 *.iml

@@ -71,7 +71,7 @@ const resources = {
     }
 };
 
-const locale = window.location.hostname === '127.0.0.1' ? 'nl' : 'en';
+const locale = window.location.hostname.endsWith('blindepool.nl') ? 'nl' : 'en';
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
