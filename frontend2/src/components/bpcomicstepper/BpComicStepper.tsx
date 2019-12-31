@@ -1,14 +1,12 @@
-import React from 'react';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import { useTranslation } from 'react-i18next';
-import SwipeableViews from 'react-swipeable-views';
+import React from "react";
+import {Button, makeStyles, MobileStepper, Typography} from "@material-ui/core";
+import {useTranslation} from "react-i18next";
+import SwipeableViews from "react-swipeable-views";
+import {TFunction} from "i18next";
+import {useTheme} from "@material-ui/core";
+import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     root: {
         maxWidth: 400,
         flexGrow: 1,
@@ -29,10 +27,9 @@ const useStyles = makeStyles(theme => ({
     description: {
         lineHeight: '1.5em'
     }
-}));
+});
 
-const tutorialSteps = (translation) => {
-    const {t} = translation;
+const tutorialSteps = (t: TFunction) => {
     return [
         {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
         {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
@@ -43,13 +40,12 @@ const tutorialSteps = (translation) => {
     ];
 };
 
-export default (props) => {
+const BpComicStepper: React.FC = () => {
     const classes = useStyles();
-    const translation = useTranslation();
-    const {t} = translation;
+    const {t} = useTranslation();
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    const maxSteps = tutorialSteps(translation).length;
+    const maxSteps = tutorialSteps(t).length;
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -59,7 +55,7 @@ export default (props) => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
-    const handleStepChange = step => {
+    const handleStepChange = (step: number) => {
         setActiveStep(step);
     };
 
@@ -71,7 +67,7 @@ export default (props) => {
                 onChangeIndex={handleStepChange}
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}>
                 {
-                    tutorialSteps(translation).map((step, index) => {
+                    tutorialSteps(t).map((step, index) => {
                         return (<div key={step.label}>
                             {Math.abs(activeStep - index) <= 2 ? (
                                 <img className={classes.img} src={step.imgPath} alt={step.label}/>
@@ -100,8 +96,9 @@ export default (props) => {
                 }
             />
             <Typography className={classes.description}
-                        variant="p">{tutorialSteps(translation)[activeStep].label}</Typography>
+                        variant="body1">{tutorialSteps(t)[activeStep].label}</Typography>
         </div>
     );
 };
 
+export default BpComicStepper;

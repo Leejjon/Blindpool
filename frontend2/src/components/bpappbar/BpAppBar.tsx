@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/styles';
 import FlagIcon from "../../locales/FlagIcon";
 import {Button, SwipeableDrawer, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom";
-import BpMenu from "../bpmenu";
+import BpMenu from "../bpmenu/BpMenu";
 
 const useStyles = makeStyles({
     root: {

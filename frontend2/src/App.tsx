@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-import BpAppBar from "./components/bpappbar";
+import BpAppBar from "./components/bpappbar/BpAppBar";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {BrowserRouter, Route} from "react-router-dom";
-import ViewHome from "./views/home";
+import Home from "./views/home/Home";
+import HowTo from "./views/howto/HowTo";
 
 const theme = createMuiTheme({
     palette: {
@@ -104,12 +105,11 @@ const App: React.FC = () => {
             <div className="App">
                 <MuiThemeProvider theme={theme}>
                     <BpAppBar/>
-                </MuiThemeProvider>
-                
-                <Route exact path="/" component={ViewHome}/>
+                <Route exact path="/" component={Home}/>
                 {/*<Route exact path="/create" component={ViewCreatePool}/>*/}
-                {/*<Route exact path="/howto" component={ViewWhatIs}/>*/}
+                <Route exact path="/howto" component={HowTo}/>
                 {/*<Route path="/pool/:key" component={/ViewPool}/>*/}
+                </MuiThemeProvider>
             </div>
         </BrowserRouter>
     );
