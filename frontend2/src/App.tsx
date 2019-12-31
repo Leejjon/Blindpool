@@ -1,26 +1,118 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import BpAppBar from "./components/bpappbar";
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {BrowserRouter, Route} from "react-router-dom";
+import ViewHome from "./views/home";
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            // light: will be calculated from palette.primary.main,
+            main: '#00cc47',
+            contrastText: '#ffffff',
+
+            // dark: will be calculated from palette.primary.main,
+            // contrastText: will be calculated to contrast with palette.primary.main
+        },
+        secondary: {
+            light: '#0066ff',
+            main: '#ffffff',
+
+            // dark: will be calculated from palette.secondary.main,
+            contrastText: '#ffcc00',
+        },
+        background: {
+            paper: '#fafafa',
+            /**/
+            default: '#d6d6d6',
+        }
+    },
+
+    // This is only overriden for the copy textfield in viewpool. Need to find a way to only apply it there. But JavaScript API's are so hard to use :/
+    overrides: {
+        MuiFormLabel: {
+            root: {
+                color: 'black',
+                fontWeight: 'bold',
+                '&$focused': {
+                    color: 'black',
+                    fontWeight: 'bold'
+                },
+            }
+        },
+        MuiOutlinedInput: {
+            root: {
+                '&$focused': {
+                    color: 'black',
+                    // fontWeight: 'bold'
+                },
+                '&$focused $notchedOutline': {
+                    borderColor: 'black',
+                },
+            },
+            notchedOutline: {
+                borderColor: 'black'
+            }
+        },
+        MuiTableCell: {
+            root: {
+                '&:last-child': {
+                    paddingRight: '0px'
+                }
+            }
+        }
+    },
+    typography: {
+        fontFamily: "\"Archivo\", \"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+        fontSize: 12,
+        fontWeightLight: 300,
+        fontWeightRegular: 400,
+        fontWeightMedium: 500,
+        h1: {
+            fontWeight: 500,
+            fontSize: "1.1rem",
+            lineHeight: 1.6,
+            letterSpacing: "0.0075em"
+        },
+        h2: {
+            fontSize: "1.5rem",
+        },
+        body1: {
+            color: "rgba(0, 0, 0, 0.87)",
+            fontFamily: "Archivo, Roboto, Helvetica, Arial, sans-serif",
+            fontWeight: 400,
+            fontSize: "1rem",
+            lineHeight: 1.5
+        },
+
+        button: {
+            textTransform: 'none'
+        }
+    },
+    mixins: {
+        toolbar: {
+            paddingLeft: 0,
+            paddingRight: '1em'
+        }
+    }
+});
 
 const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    return (
+        <BrowserRouter>
+            <div className="App">
+                <MuiThemeProvider theme={theme}>
+                    <BpAppBar/>
+                </MuiThemeProvider>
+                
+                <Route exact path="/" component={ViewHome}/>
+                {/*<Route exact path="/create" component={ViewCreatePool}/>*/}
+                {/*<Route exact path="/howto" component={ViewWhatIs}/>*/}
+                {/*<Route path="/pool/:key" component={/ViewPool}/>*/}
+            </div>
+        </BrowserRouter>
+    );
+};
 
 export default App;
