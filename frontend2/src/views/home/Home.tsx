@@ -23,6 +23,7 @@ const useStyles = makeStyles({
 
 const Home: React.FC = () => {
     const classes = useStyles();
+
     const { t } = useTranslation();
 
     return (

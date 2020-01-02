@@ -5,6 +5,7 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./views/home/Home";
 import HowTo from "./views/howto/HowTo";
+import CreatePool from "./views/createpool/CreatePool";
 
 const theme = createMuiTheme({
     palette: {
@@ -106,7 +107,7 @@ const App: React.FC = () => {
                 <MuiThemeProvider theme={theme}>
                     <BpAppBar/>
                 <Route exact path="/" component={Home}/>
-                {/*<Route exact path="/create" component={ViewCreatePool}/>*/}
+                <Route exact path="/create" component={CreatePool}/>
                 <Route exact path="/howto" component={HowTo}/>
                 {/*<Route path="/pool/:key" component={/ViewPool}/>*/}
                 </MuiThemeProvider>
