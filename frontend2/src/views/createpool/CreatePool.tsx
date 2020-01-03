@@ -111,7 +111,7 @@ const getHost = () => {
 
 interface Player {
     name: string,
-    valid?: string
+    valid?: string | undefined
 }
 
 const EMPTY_STRING = "";
@@ -125,17 +125,22 @@ const CreatePool: React.FC = () => {
     const classes = useStyles();
     const {t} = useTranslation();
     let history = useHistory();
+    const [justAddedPlayer, setJustAddedPlayer] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [players, setPlayers] = useState([
+    const [players, setPlayers] = useState<Player[]>([
         EMPTY_PLAYER(),
         EMPTY_PLAYER(),
         EMPTY_PLAYER(),
         EMPTY_PLAYER(),
         EMPTY_PLAYER()
     ]);
+
     useEffect(() => {
-        document.getElementById(`nameField${players.length - 1}`)!.focus();
-    }, [players]);
+        if (justAddedPlayer) {
+            document.getElementById(`nameField${players.length - 1}`)!.focus();
+            setJustAddedPlayer(false);
+        }
+    }, [players, justAddedPlayer]);
 
     const renderInputFields = () => {
         return players.map((player, index) => {
@@ -175,31 +180,30 @@ const CreatePool: React.FC = () => {
 
     const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
         const nameField = event.target;
-        let updatedNameStatus = players;
         if (nameField.value) {
-            updatedNameStatus[index].name = nameField.value.trim();
-            validateState(updatedNameStatus);
+            players[index].name = nameField.value.trim();
+            validateState();
         } else {
-            updatedNameStatus[index].name = "";
-            updatedNameStatus[index].valid = undefined;
-            validateState(updatedNameStatus);
+            players[index].name = "";
+            players[index].valid = undefined;
+            validateState();
         }
-        setPlayers([...updatedNameStatus]);
+        setPlayers([...players]);
     };
 
     /*
        This is not a pure function as it modifies state. Should probably improve it.
     */
-    const validateState = (updatedNameStatus: Array<Player>, complainAboutEmptyFields?: boolean) => {
+    const validateState = (complainAboutEmptyFields?: boolean): boolean => {
         let allPlayersHaveAValidName = true;
-        updatedNameStatus.forEach((player) => {
+        players.forEach((player) => {
             const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
             if (player.name) {
                 if (!lettersAndNumbersOnly.test(player.name)) {
                     allPlayersHaveAValidName = false;
                     player.valid = "ILLEGAL_CHARACTER_MESSAGE";
                 } else {
-                    if (checkForDuplicates(player.name, updatedNameStatus)) {
+                    if (checkForDuplicates(player.name)) {
                         player.valid = "DUPLICATE_MESSAGE";
                         allPlayersHaveAValidName = false;
                     } else {
@@ -219,15 +223,14 @@ const CreatePool: React.FC = () => {
         return allPlayersHaveAValidName;
     };
 
-    const checkForDuplicates = (name: string, updatedNameStatus: Array<Player>) => {
-        const duplicate = updatedNameStatus.filter(player => player.name === name);
+    const checkForDuplicates = (name: string) => {
+        const duplicate = players.filter(player => player.name === name);
         return duplicate.length > 1;
     };
 
     const addPlayer = () => {
         setPlayers([...players, EMPTY_PLAYER()]);
-        // Should be covered by the useEffect hook
-        // document.getElementById('nameField' + players.length - 1);
+        setJustAddedPlayer(true);
     };
 
     const removePlayer = (index: number) => {
@@ -235,7 +238,7 @@ const CreatePool: React.FC = () => {
         if (!first) {
             let lessPlayers = players;
             lessPlayers.splice(index, 1);
-            validateState(lessPlayers);
+            validateState();
             setPlayers([...lessPlayers]);
             updatePlayers();
         }
@@ -249,7 +252,7 @@ const CreatePool: React.FC = () => {
     };
 
     const sendCreatePoolRequest = () => {
-        const validatedPlayers = validateState(players, true);
+        const validatedPlayers = validateState(true);
         if (validatedPlayers) {
             let navigateToCreatePool = (poolJson: Blindpool) => {
                 appState.setPool(poolJson);
@@ -288,7 +291,6 @@ const CreatePool: React.FC = () => {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            {'Hello ' + players.length}
                             {/*border={1}*/}
                             <Table className={classes.table}>
                                 <colgroup>
