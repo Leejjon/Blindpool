@@ -188,12 +188,8 @@ const CreatePool: React.FC = () => {
             players[index].valid = undefined;
             validateState();
         }
-        setPlayers([...players]);
     };
 
-    /*
-       This is not a pure function as it modifies state. Should probably improve it.
-    */
     const validateState = (complainAboutEmptyFields?: boolean): boolean => {
         let allPlayersHaveAValidName = true;
         players.forEach((player) => {
@@ -220,6 +216,8 @@ const CreatePool: React.FC = () => {
             }
         });
 
+        setPlayers([...players]);
+
         return allPlayersHaveAValidName;
     };
 
@@ -236,10 +234,8 @@ const CreatePool: React.FC = () => {
     const removePlayer = (index: number) => {
         let first = index <= 0;
         if (!first) {
-            let lessPlayers = players;
-            lessPlayers.splice(index, 1);
+            players.splice(index, 1);
             validateState();
-            setPlayers([...lessPlayers]);
             updatePlayers();
         }
     };
