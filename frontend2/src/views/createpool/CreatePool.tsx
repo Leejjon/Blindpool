@@ -44,7 +44,6 @@ const useStyles = makeStyles({
     },
     table: {
         width: '100%',
-        // marginTop: theme.spacing(3),
         overflowX: 'auto',
         marginBottom: '1em'
     },
@@ -268,7 +267,8 @@ const CreatePool: React.FC = () => {
                     return response.json();
                 })
                 .then(navigateToCreatePool);
-        } // Else it wasn't valid.
+            // Add try catch.
+        }
     };
 
     if (loading) {

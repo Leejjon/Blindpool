@@ -51,6 +51,7 @@ const theme = createMuiTheme({
                 },
             }
         },
+
         MuiOutlinedInput: {
             root: {
                 '&$focused': {

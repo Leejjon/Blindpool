@@ -6,6 +6,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Home from "./views/home/Home";
 import HowTo from "./views/howto/HowTo";
 import CreatePool from "./views/createpool/CreatePool";
+import ViewPool from "./views/viewpool/ViewPool";
 
 const theme = createMuiTheme({
     palette: {
@@ -43,11 +44,13 @@ const theme = createMuiTheme({
                 },
             }
         },
+
         MuiOutlinedInput: {
             root: {
                 '&$focused': {
                     color: 'black',
                     // fontWeight: 'bold'
+                    borderColor: 'black',
                 },
                 '&$focused $notchedOutline': {
                     borderColor: 'black',
@@ -106,10 +109,10 @@ const App: React.FC = () => {
             <div className="App">
                 <MuiThemeProvider theme={theme}>
                     <BpAppBar/>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/create" component={CreatePool}/>
-                <Route exact path="/howto" component={HowTo}/>
-                {/*<Route path="/pool/:key" component={/ViewPool}/>*/}
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/create" component={CreatePool}/>
+                    <Route exact path="/howto" component={HowTo}/>
+                    <Route path="/pool/:key" component={ViewPool}/>
                 </MuiThemeProvider>
             </div>
         </BrowserRouter>
