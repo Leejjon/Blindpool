@@ -73,7 +73,7 @@ const ViewPool: React.FC = () => {
         return host;
     };
 
-    const [shareUrl, setShareUrl] = useState<string>("");
+    const [shareUrl, setShareUrl] = useState("");
     if (loading) {
         if (appState.poolData === undefined || appState.poolData!.key !== key) {
             fetch(`${getHost()}/api/v1/pool/${key}`)

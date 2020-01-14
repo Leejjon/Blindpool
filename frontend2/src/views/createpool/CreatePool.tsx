@@ -179,19 +179,20 @@ const CreatePool: React.FC = () => {
 
     const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
         const nameField = event.target;
+
+        const playersUpdate = [...players];
         if (nameField.value) {
-            players[index].name = nameField.value.trim();
-            validateState();
+            playersUpdate[index].name = nameField.value.trim();
         } else {
-            players[index].name = "";
-            players[index].valid = undefined;
-            validateState();
+            playersUpdate[index].name = "";
+            playersUpdate[index].valid = undefined;
         }
+        validateState(playersUpdate);
     };
 
-    const validateState = (complainAboutEmptyFields?: boolean): boolean => {
+    const validateState = (playersToValidate: Array<Player>, complainAboutEmptyFields?: boolean): boolean => {
         let allPlayersHaveAValidName = true;
-        players.forEach((player) => {
+        playersToValidate.forEach((player) => {
             const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
             if (player.name) {
                 if (!lettersAndNumbersOnly.test(player.name)) {
@@ -215,7 +216,7 @@ const CreatePool: React.FC = () => {
             }
         });
 
-        setPlayers([...players]);
+        setPlayers([...playersToValidate]);
 
         return allPlayersHaveAValidName;
     };
@@ -233,21 +234,21 @@ const CreatePool: React.FC = () => {
     const removePlayer = (index: number) => {
         let first = index <= 0;
         if (!first) {
-            players.splice(index, 1);
-            validateState();
-            updatePlayers();
+            const playersUpdate = [...players];
+            playersUpdate.splice(index, 1);
+            validateState(playersUpdate);
+
+            // Update names
+            setPlayers(players.map((player, index) => {
+                const playerInputField = document.getElementById("nameField" + index) as unknown as HTMLInputElement;
+                playerInputField.value = player.name;
+                return player;
+            }));
         }
     };
 
-    const updatePlayers = () => {
-        players.forEach((player, index) => {
-            const playerInputField = document.getElementById("nameField" + index) as unknown as HTMLInputElement;
-            playerInputField.value = player.name;
-        });
-    };
-
     const sendCreatePoolRequest = () => {
-        const validatedPlayers = validateState(true);
+        const validatedPlayers = validateState([...players],true);
         if (validatedPlayers) {
             let navigateToCreatePool = (poolJson: Blindpool) => {
                 appState.setPool(poolJson);
