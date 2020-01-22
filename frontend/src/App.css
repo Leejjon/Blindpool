@@ -1,81 +1,52 @@
 .App {
-    text-align: center;
+  text-align: center;
 }
 
-.App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 80px;
-}
-
-.App-header {
-    background-color: #222;
-    height: 150px;
-    padding: 20px;
-    color: white;
-}
-
-.App-title {
-    font-size: 1.5em;
-}
-
-.App-intro {
-    font-size: large;
-}
-
-@keyframes App-logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* fallback */
 @font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: url(./fonts/material-icons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./fonts/material-icons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
 }
 
 .material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -moz-font-feature-settings: 'liga';
-    -moz-osx-font-smoothing: grayscale;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
 }
+
 
 /* vietnamese */
 @font-face {
-    font-family: 'Archivo';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Archivo Regular'), local('Archivo-Regular'), url(./fonts/archivo/k3kQo8UDI-1M0wlSfdboLnnA.woff2) format('woff2');
-    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Archivo Regular'), local('Archivo-Regular'), url(./fonts/archivo/k3kQo8UDI-1M0wlSfdboLnnA.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
 }
 /* latin-ext */
 @font-face {
-    font-family: 'Archivo';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Archivo Regular'), local('Archivo-Regular'), url('./fonts/archivo/k3kQo8UDI-1M0wlSfdfoLnnA.woff2') format('woff2');
-    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Archivo Regular'), local('Archivo-Regular'), url('./fonts/archivo/k3kQo8UDI-1M0wlSfdfoLnnA.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
 @font-face {
-    font-family: 'Archivo';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Archivo Regular'), local('Archivo-Regular'), url(./fonts/archivo/k3kQo8UDI-1M0wlSfdnoLg.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-.MuiOutlinedInput-colorSecondary.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: #000000;
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Archivo Regular'), local('Archivo-Regular'), url(./fonts/archivo/k3kQo8UDI-1M0wlSfdnoLg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
