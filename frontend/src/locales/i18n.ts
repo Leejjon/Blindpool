@@ -59,7 +59,7 @@ const resources = {
             "DUPLICATE_MESSAGE": "Kies een unieke naam",
             "HOW_DOES_IT_WORK": "Hoe werkt het?",
             "BACK": "Terug",
-            "Next": "Volgende",
+            "NEXT": "Volgende",
             "COMIC1": "Nodig je vrienden uit om een voetbal wedstrijd te kijken.",
             "COMIC2": "Iedereen zet het zelfde bedrag in. Bijvoorbeeld twee euro per persoon.",
             "COMIC3": "Voer de namen van je vrienden in de app en maak de pool.",
