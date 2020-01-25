@@ -159,7 +159,7 @@ const CreatePool: React.FC = () => {
                             id={"nameField" + index}
                             className={classes.nameInputField}
                             margin="normal"
-                            inputProps={{'aria-label': 'Player name ' + (index + 1)}}
+                            inputProps={{'aria-label': 'Player name ' + (index + 1), 'data-testid': 'nameInput' + index}}
                             onChange={(event) => onTextFieldChange(index, event)}>
                         </TextField>
                     </TableCell>

@@ -5,6 +5,10 @@ import i18next from "i18next";
 import './locales/i18n';
 
 describe('Test home page in English', () => {
+    beforeAll(() => {
+        i18next.changeLanguage('en');
+    });
+
     test('Verify page title', () => {
         const {getByText} = render(<App/>);
         const cardTitle = getByText('What is a blind pool?');
@@ -23,5 +27,28 @@ describe('Test home page in Dutch', () => {
         const cardTitle = getByText('Wat is een blindepool?');
         expect(cardTitle).toBeInTheDocument();
         expect(cardTitle.tagName).toMatch('H2');
+    });
+});
+
+describe('Test navigation', () => {
+    beforeAll(() => {
+        i18next.changeLanguage('en');
+    });
+
+    beforeEach(() => {
+        delete window.location;
+        //@ts-ignore
+        window.location = new URL('https://localhost');
+    });
+
+    test('Navigate to create page', async () => {
+        const {getByText} = render(<App/>);
+        const createButton: HTMLSpanElement = getByText('Create pool');
+        expect(createButton).toBeInTheDocument();
+
+        fireEvent.click(createButton);
+        const createPoolTitle = await waitForElement(() => getByText('Create pool'));
+        expect(createPoolTitle).toBeInTheDocument();
+        expect(createPoolTitle.tagName).toMatch('H2');
     });
 });
