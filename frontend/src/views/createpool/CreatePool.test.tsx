@@ -1,6 +1,7 @@
 import {fireEvent, render, waitForElement} from "@testing-library/react";
 import React from "react";
 import CreatePool from "./CreatePool";
+// Wrap our components with MemoryRouter, otherwise the tests complain about the useHistory hook
 import { MemoryRouter } from 'react-router-dom';
 
 import './../../locales/i18n';
@@ -33,6 +34,8 @@ describe('Test CreatePool view', () => {
         }
 
         // TODO: Verify the outgoing http requests.
-        // fireEvent.click(createPoolButton);
+        fireEvent.click(createPoolButton);
+
+        // await waitForElement(() => getByText('blabla'));
     });
 });

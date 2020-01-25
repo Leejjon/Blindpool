@@ -35,12 +35,6 @@ describe('Test navigation', () => {
         i18next.changeLanguage('en');
     });
 
-    beforeEach(() => {
-        delete window.location;
-        //@ts-ignore
-        window.location = new URL('https://localhost');
-    });
-
     test('Navigate to create page', async () => {
         const {getByText} = render(<App/>);
         const createButton: HTMLSpanElement = getByText('Create pool');
