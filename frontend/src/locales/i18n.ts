@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 
 // the translations
 // (tip move them in a JSON file and import them)
-const resources = {
+export const resources = {
     en: {
         translation: {
             "TITLE": "Blindpool",
@@ -24,7 +24,7 @@ const resources = {
             "NAME_COLUMN_HEADER": "Name",
             "NAME_COLUMN_SCORE": "Score",
             "DUPLICATE_MESSAGE": "Choose a unique name",
-            "EMPTY_MESSAGE": "Please enter a name or remove the field",
+            "EMPTY_MESSAGE": "Please enter a name or remove this field",
             "HOW_DOES_IT_WORK": "How does it work?",
             "BACK": "Back",
             "NEXT": "Next",
@@ -57,6 +57,7 @@ const resources = {
             "NAME_COLUMN_HEADER": "Naam",
             "NAME_COLUMN_SCORE": "Score",
             "DUPLICATE_MESSAGE": "Kies een unieke naam",
+            "EMPTY_MESSAGE": "Vul een geldige naam in of verwijder dit veld",
             "HOW_DOES_IT_WORK": "Hoe werkt het?",
             "BACK": "Terug",
             "NEXT": "Volgende",

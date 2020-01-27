@@ -22,6 +22,18 @@ const app = express();
 // build folder, it serves that file.
 app.use(express.static(path.join(__dirname, 'build')));
 
+app.get('/sitemap.xml', function(req, res) {
+    switch (String(req.get('host'))) {
+        case "blindepool.nl":
+        case "www.blindepool.nl":
+            res.sendFile(path.join(__dirname, 'build', 'sitemap-nl.xml'));
+            break;
+        default:
+            res.sendFile(path.join(__dirname, 'build', 'sitemap-en.xml'));
+            break;
+    }
+});
+
 // This code makes sure that any request that does not matches a static file
 // in the build folder, will just serve index.html. Client side routing is
 // going to make sure that the correct content will be loaded.

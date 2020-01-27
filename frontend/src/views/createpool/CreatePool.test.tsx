@@ -31,6 +31,7 @@ describe('Test CreatePool view', () => {
 
         for (const name of names) {
             await waitForElement(() => getByDisplayValue(name));
+            // TODO: Verify that the error label is empty.
         }
 
         // TODO: Verify the outgoing http requests.
