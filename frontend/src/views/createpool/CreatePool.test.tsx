@@ -13,7 +13,7 @@ describe('Test CreatePool view', () => {
         expect(createPoolButton).toBeInTheDocument();
         fireEvent.click(createPoolButton);
 
-        const emptyFieldMessages = await waitForElement(() => getAllByText('Please enter a name or remove the field'));
+        const emptyFieldMessages = await waitForElement(() => getAllByText('Please enter a name or remove this field'));
         expect(emptyFieldMessages.length).toBe(5);
     });
 

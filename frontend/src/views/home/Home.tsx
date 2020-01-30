@@ -2,6 +2,7 @@ import React from "react";
 import {Button, Card, CardActions, CardContent, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import Helmet from "react-helmet";
 
 const useStyles = makeStyles({
     root: {
@@ -29,6 +30,12 @@ const Home: React.FC = () => {
     return (
         <Grid container justify="center" spacing={2} className={classes.root}
               style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+            <Helmet>
+                <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
+                <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                <meta property="og:title" content={t('TITLE') + " - " + t('BLINDPOOL_DEFINITION_TITLE')}/>
+                <meta property="og:description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+            </Helmet>
             {/* The insane style correction makes sure there is no horizontal scrollbar and it's centered on mobile */}
             <Grid key="definition" item>
                 <Card className={classes.card}>

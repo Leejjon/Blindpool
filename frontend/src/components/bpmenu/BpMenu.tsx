@@ -56,7 +56,7 @@ const useStyles = makeStyles({
     }
 });
 
-type BpMenuProps = {
+interface BpMenuProps {
     closeMenu: () => void
 }
 

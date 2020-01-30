@@ -281,6 +281,8 @@ const CreatePool: React.FC = () => {
                 <Helmet>
                     <title>{t('TITLE')} - {t('CREATE_POOL_TITLE')}</title>
                     <meta name="description" content={t('CREATE_POOL_DESCRIPTION')}/>
+                    <meta property="og:title" content={t('TITLE') + " - " + t('CREATE_POOL_TITLE')}/>
+                    <meta property="og:description" content={t('CREATE_POOL_DESCRIPTION')}/>
                 </Helmet>
                 <Grid key="definition" item>
                     <Card className={classes.card}>

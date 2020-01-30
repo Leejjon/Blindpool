@@ -30,13 +30,16 @@ const HowTo: React.FC = () => {
         <Grid container justify="center" spacing={2} className={classes.root}
               style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
             <Helmet>
-                <title>{t('TITLE')} - {t('HOW_DOES_IT_WORK')}</title>
+                <title>{t('TITLE')} - {t('HOW_DOES_IT_WORK_TITLE')}</title>
+                <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                <meta property="og:title" content={t('TITLE') + " - " + t('HOW_DOES_IT_WORK_TITLE')}/>
+                <meta property="og:description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
             </Helmet>
             <Grid key="definition" item>
                 <Card className={classes.card}>
                     <CardContent>
                         <Typography variant="h2" >
-                            {t("HOW_DOES_IT_WORK")}
+                            {t("HOW_DOES_IT_WORK_TITLE")}
                         </Typography>
                         <Divider style={{margin: '0.5em'}} />
                         <BpComicStepper />
