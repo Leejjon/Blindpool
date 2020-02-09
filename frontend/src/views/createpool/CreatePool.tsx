@@ -263,7 +263,7 @@ const CreatePool: React.FC = () => {
                     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
                     method: "POST", body: JSON.stringify(players.map(player => player.name))
                 })
-                .then(function (response) {
+                .then(function (response: Response) {
                     // return response.text();
                     return response.json();
                 })
@@ -273,7 +273,7 @@ const CreatePool: React.FC = () => {
     };
 
     if (loading) {
-        return <CircularProgress className={classes.progress}/>
+        return <CircularProgress className={classes.progress} />
     } else {
         return (
             <Grid container justify="center" spacing={2} className={classes.root}

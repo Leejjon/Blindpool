@@ -38,6 +38,7 @@ class PoolApiTest {
         String jsonString = new Gson().toJson(poolResponse.getEntity());
         Pool poolFromJsonString = new Gson().fromJson(jsonString, Pool.class);
         assertEquals(poolToReturn, poolFromJsonString);
+        System.out.println(jsonString);
     }
 
     @Test
