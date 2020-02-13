@@ -156,15 +156,15 @@ const CreatePool: React.FC = () => {
                         <TextField
                             error={invalidMessage !== undefined}
                             helperText={invalidMessage !== undefined ? t(invalidMessage) : undefined}
-                            id={"nameField" + index}
+                            id={'nameField' + index}
                             className={classes.nameInputField}
                             margin="normal"
-                            inputProps={{'aria-label': 'Player name ' + (index + 1), 'data-testid': 'nameInput' + index}}
+                            inputProps={{'aria-label': 'Player name ' + (index + 1)}}
                             onChange={(event) => onTextFieldChange(index, event)}>
                         </TextField>
                     </TableCell>
                     <TableCell align="right" className={classes.buttonColumn}>
-                        <IconButton tabIndex={-1} aria-label={t("REMOVE_PLAYER_X", {name: player.name})}
+                        <IconButton tabIndex={-1} aria-label={t("REMOVE_PLAYER_X", {index: index + 1})}
                                     className={classes.icon} disabled={first}
                                     onClick={() => removePlayer(index)}>
                             <Icon fontSize="default">
@@ -236,10 +236,9 @@ const CreatePool: React.FC = () => {
         if (!first) {
             const playersUpdate = [...players];
             playersUpdate.splice(index, 1);
-            validateState(playersUpdate);
 
             // Update names
-            setPlayers(players.map((player, index) => {
+            setPlayers(playersUpdate.map((player, index) => {
                 const playerInputField = document.getElementById("nameField" + index) as unknown as HTMLInputElement;
                 playerInputField.value = player.name;
                 return player;

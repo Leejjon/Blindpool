@@ -19,7 +19,7 @@ export const resources = {
             "NEW_VERSION_AVAILABLE": "New version available",
             "UPDATE_NOW": "Update now",
             "ADD_PLAYER": "Add another player",
-            "REMOVE_PLAYER_X": "Remove player {{name}}",
+            "REMOVE_PLAYER_X": "Remove player {{index}}",
             "ILLEGAL_CHARACTER_MESSAGE": "Please only use letters, numbers and spaces",
             "NAME_COLUMN_HEADER": "Name",
             "NAME_COLUMN_SCORE": "Score",
