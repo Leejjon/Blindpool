@@ -87,8 +87,10 @@ describe('Test CreatePool view', () => {
             await waitForElement(() => getByDisplayValue(name));
         }
 
-        // TODO: Verify that the error label is empty.
-        
+        // Verify if any error labels appeared, there should be none.
+        for (let i = 0; i < names.length; i++) {
+            expect(container.querySelector(`#nameField${i}-helper-text`)).toBeNull();
+        }
 
         fireEvent.click(createPoolButton);
 
