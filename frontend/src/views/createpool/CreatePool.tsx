@@ -7,7 +7,7 @@ import {
     CardContent,
     CircularProgress,
     Grid, Icon, IconButton,
-    makeStyles,
+    makeStyles, Snackbar,
     Table, TableBody,
     TableCell,
     TableHead, TableRow, TextField,
@@ -16,6 +16,9 @@ import {
 import Helmet from "react-helmet";
 import appState from "../../state/AppState";
 import Blindpool from "../../model/Blindpool";
+import Player from "../../model/Player";
+import NameField from "./NameField";
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles({
     root: {
@@ -96,6 +99,9 @@ const useStyles = makeStyles({
     },
     disabledNumber: {
         color: 'gray'
+    },
+    errorMessage: {
+        color: 'white'
     }
 });
 
@@ -108,11 +114,6 @@ const getHost = () => {
     return host;
 };
 
-interface Player {
-    name: string,
-    valid?: string | undefined
-}
-
 const EMPTY_STRING = "";
 
 // Create a unique instance of the same empty object.
@@ -124,6 +125,7 @@ const CreatePool: React.FC = () => {
     const classes = useStyles();
     const {t} = useTranslation();
     let history = useHistory();
+    const [message, setMessage] = useState<string | undefined>(undefined);
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState<Player[]>([
@@ -140,42 +142,6 @@ const CreatePool: React.FC = () => {
             setJustAddedPlayer(false);
         }
     }, [players, justAddedPlayer]);
-
-    const renderInputFields = () => {
-        return players.map((player, index) => {
-            let first = index <= 0;
-            let invalidMessage = players[index].valid;
-            return (
-                <TableRow key={index}>
-                    <TableCell className={classes.numberColumn}>
-                        <Typography className={classes.columnname}>
-                            {index + 1}
-                        </Typography>
-                    </TableCell>
-                    <TableCell className={classes.nameFields}>
-                        <TextField
-                            error={invalidMessage !== undefined}
-                            helperText={invalidMessage !== undefined ? t(invalidMessage) : undefined}
-                            id={'nameField' + index}
-                            className={classes.nameInputField}
-                            margin="normal"
-                            inputProps={{'aria-label': 'Player name ' + (index + 1)}}
-                            onChange={(event) => onTextFieldChange(index, event)}>
-                        </TextField>
-                    </TableCell>
-                    <TableCell align="right" className={classes.buttonColumn}>
-                        <IconButton tabIndex={-1} aria-label={t("REMOVE_PLAYER_X", {index: index + 1})}
-                                    className={classes.icon} disabled={first}
-                                    onClick={() => removePlayer(index)}>
-                            <Icon fontSize="default">
-                                {!first ? "remove_circle_outline" : "person"}
-                            </Icon>
-                        </IconButton>
-                    </TableCell>
-                </TableRow>
-            );
-        });
-    };
 
     const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
         const nameField = event.target;
@@ -246,33 +212,39 @@ const CreatePool: React.FC = () => {
         }
     };
 
-    const sendCreatePoolRequest = () => {
+    const sendCreatePoolRequest = async () => {
         const validatedPlayers = validateState([...players],true);
         if (validatedPlayers) {
-            let navigateToCreatePool = (poolJson: Blindpool) => {
+            setLoading(true);
+            try {
+                const response: Response = await fetch(`${getHost()}/api/v1/pool`,
+                    {
+                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                        method: "POST", body: JSON.stringify(players.map(player => player.name))
+                    }
+                );
+                const poolJson: Blindpool = await response.json();
                 appState.setPool(poolJson);
                 setLoading(false);
                 history.push(`/pool/${poolJson.key}`);
-            };
-
-            setLoading(true);
-
-            fetch(`${getHost()}/api/v1/pool`,
-                {
-                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                    method: "POST", body: JSON.stringify(players.map(player => player.name))
-                })
-                .then(function (response: Response) {
-                    // return response.text();
-                    return response.json();
-                })
-                .then(navigateToCreatePool);
-            // Add try catch.
+            } catch (error) {
+                setLoading(false);
+                setMessage('BACKEND_UNREACHABLE');
+            }
         }
     };
 
+    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setMessage(undefined);
+    };
+
     if (loading) {
-        return <CircularProgress className={classes.progress} />
+        return (
+            <CircularProgress className={classes.progress} />
+        );
     } else {
         return (
             <Grid container justify="center" spacing={2} className={classes.root}
@@ -311,7 +283,11 @@ const CreatePool: React.FC = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {renderInputFields()}
+                                    {players.map((player, index) => {
+                                        return (
+                                            <NameField key={index} player={player} index={index} onTextFieldChange={onTextFieldChange} removePlayer={removePlayer} />
+                                        );
+                                    })}
                                     <TableRow>
                                         <TableCell className={classes.numberColumn}>
                                             <Typography className={classes.disabledNumber}>
@@ -341,6 +317,19 @@ const CreatePool: React.FC = () => {
                             <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" className={classes.button}>
                                 {t("CREATE_POOL").toUpperCase()}
                             </Button>
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                open={message !== undefined}
+                                autoHideDuration={6000}
+                                onClose={handleClose}
+                                message={message}>
+                                <MuiAlert elevation={1} variant="filled" severity="warning" className="warningAlert">
+                                    <Typography variant="body1" component="p" className={classes.errorMessage}>{message !== undefined ? t(message) : null}</Typography>
+                                </MuiAlert>
+                            </Snackbar>
                         </CardContent>
                     </Card>
                 </Grid>

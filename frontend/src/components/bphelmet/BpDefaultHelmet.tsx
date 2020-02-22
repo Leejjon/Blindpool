@@ -10,7 +10,7 @@ const BpDefaultHelmet: React.FC<RouteComponentProps<any>> = (props) => {
     return (
         <Helmet>
             <meta charSet="utf-8"/>
-            <link rel="alternate" href={hostname + props.location.pathname} hrefLang={locale}  />
+            <link rel="alternate" href={hostname + props.location.pathname} hrefLang={locale} />
         </Helmet>
     );
 };

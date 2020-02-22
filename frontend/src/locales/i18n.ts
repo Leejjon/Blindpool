@@ -35,7 +35,8 @@ export const resources = {
             "COMIC4": "Share the link to the pool with all friends so they can view their randomly assigned score.",
             "COMIC5": "Watch the match and pray that your random assigned score will be the final score of the game...",
             "COMIC6": "The person that has the correct final score wins it all!",
-            "THANKS_FOR_EXPLANATION": "Let me create a pool now"
+            "THANKS_FOR_EXPLANATION": "Let me create a pool now",
+            "BACKEND_UNREACHABLE": "Could not reach the server, please check your internet connection and try again."
         }
     },
     nl: {
@@ -69,7 +70,8 @@ export const resources = {
             "COMIC4": "Deel de link naar de pool met je vrienden zodat zij hun willekeurig gegenereerde scores kunnen bekijken.",
             "COMIC5": "Bekijk de wedstrijd en duim ervoor dat de wedstrijd eindigt in jouw willekeurig aangewezen score...",
             "COMIC6": "De persoon met de correcte uitslag wint alles!",
-            "THANKS_FOR_EXPLANATION": "Laat me nu een pool maken"
+            "THANKS_FOR_EXPLANATION": "Laat me nu een pool maken",
+            "BACKEND_UNREACHABLE": "Kon de server niet bereiken, controleer je internet verbinding en probeer het nog een keer."
         }
     }
 };
