@@ -115,7 +115,7 @@ describe('Test CreatePool view', () => {
             Promise.reject('NetworkError when attempting to fetch resource.')
         );
 
-        const {getByText, getAllByLabelText, getByDisplayValue, container} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
+        const {getByText, getAllByLabelText, container} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
         const names = ['Leon', 'Dirk', 'Billy', 'Barry', 'Joop'];
         const createPoolButton = getByText('CREATE POOL');
         const nameFields = getAllByLabelText(/^Player name /i);
@@ -124,12 +124,32 @@ describe('Test CreatePool view', () => {
         });
 
         // Leaving lots of validation out as it's already happening in the happy flow test.
-
         fireEvent.click(createPoolButton);
-
         await waitForDomChange({container});
 
         const errorSnackbar = getByText('Could not reach the server, please check your internet connection and try again.');
+        expect(errorSnackbar).toBeInTheDocument();
+    });
+
+    test('Create a pool - No internet', async () => {
+        fetchMock.mock(
+            'http://localhost:8080/api/v1/pool',
+            {status: 500}
+        );
+
+        const {getByText, getAllByLabelText, container} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
+        const names = ['Leon', 'Dirk', 'Billy', 'Barry', 'Joop'];
+        const createPoolButton = getByText('CREATE POOL');
+        const nameFields = getAllByLabelText(/^Player name /i);
+        nameFields.forEach((item, index) => {
+            fireEvent.change(item,{ target: { value: names[index] } });
+        });
+
+        // Leaving lots of validation out as it's already happening in the happy flow test.
+        fireEvent.click(createPoolButton);
+        await waitForDomChange({container});
+
+        const errorSnackbar = getByText('Our server is not responding as it should. Sorry for the inconvenience.');
         expect(errorSnackbar).toBeInTheDocument();
     });
 });

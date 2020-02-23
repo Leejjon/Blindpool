@@ -62,6 +62,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                     id={'nameField' + index}
                     className={classes.nameInputField}
                     margin="normal"
+                    value={player.name}
                     inputProps={{'aria-label': 'Player name ' + (index + 1)}}
                     onChange={(event) => onTextFieldChange(index, event)}>
                 </TextField>

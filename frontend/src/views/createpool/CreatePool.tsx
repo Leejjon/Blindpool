@@ -223,10 +223,14 @@ const CreatePool: React.FC = () => {
                         method: "POST", body: JSON.stringify(players.map(player => player.name))
                     }
                 );
-                const poolJson: Blindpool = await response.json();
-                appState.setPool(poolJson);
-                setLoading(false);
-                history.push(`/pool/${poolJson.key}`);
+                if (response.status === 200) {
+                    const poolJson: Blindpool = await response.json();
+                    appState.setPool(poolJson);
+                    setLoading(false);
+                    history.push(`/pool/${poolJson.key}`);
+                } else {
+                    setMessage('BACKEND_OFFLINE');
+                }
             } catch (error) {
                 setLoading(false);
                 setMessage('BACKEND_UNREACHABLE');

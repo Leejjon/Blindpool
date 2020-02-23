@@ -36,7 +36,8 @@ export const resources = {
             "COMIC5": "Watch the match and pray that your random assigned score will be the final score of the game...",
             "COMIC6": "The person that has the correct final score wins it all!",
             "THANKS_FOR_EXPLANATION": "Let me create a pool now",
-            "BACKEND_UNREACHABLE": "Could not reach the server, please check your internet connection and try again."
+            "BACKEND_UNREACHABLE": "Could not reach the server. Check your internet connection.",
+            "BACKEND_OFFLINE": "Our server is not responding as it should. Sorry for the inconvenience."
         }
     },
     nl: {
@@ -71,7 +72,8 @@ export const resources = {
             "COMIC5": "Bekijk de wedstrijd en duim ervoor dat de wedstrijd eindigt in jouw willekeurig aangewezen score...",
             "COMIC6": "De persoon met de correcte uitslag wint alles!",
             "THANKS_FOR_EXPLANATION": "Laat me nu een pool maken",
-            "BACKEND_UNREACHABLE": "Kon de server niet bereiken, controleer je internet verbinding en probeer het nog een keer."
+            "BACKEND_UNREACHABLE": "Kon de server niet bereiken. Controleer je internet verbinding.",
+            "BACKEND_OFFLINE": "Onze server reageert niet zoals het hoort, excuses voor het ongemak."
         }
     }
 };
