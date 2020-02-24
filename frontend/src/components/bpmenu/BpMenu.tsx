@@ -47,13 +47,24 @@ const useStyles = makeStyles({
         marginTop: "0.4em",
     },
     linkWithoutDecoration: {
-        textDecoration: 'none'
+        textDecoration: 'none',
+        color: "rgba(0, 0, 0, 0.87)",
     },
     negativeLinkPadding: {
         //display: 'none'
         paddingRight: '0px',
         marginRight: '-0.5em'
-    }
+    },
+    bluffPokerPadding: {
+        paddingRight: '0px',
+        paddingLeft: '2px',
+        paddingBottom: '2px',
+        marginRight: '-0.5em'
+    },
+    bottomLinks: {
+        textDecoration: 'none',
+        marginBottom: '0px'
+    },
 });
 
 interface BpMenuProps {
@@ -98,6 +109,29 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                     </ListItemIcon>
                     <ListItemText className={classes.linktext}>
                         {t("HOW_TO_USE_BLINDPOOL_TITLE")}
+                    </ListItemText>
+                </ListItem>
+            </List>
+            <List>
+                <ListItem button className={classes.linkWithoutDecoration}>
+                    <ListItemText className={classes.bottomLinks}>
+                        <strong>Other apps</strong>
+                    </ListItemText>
+                </ListItem>
+                <ListItem button className={classes.linkWithoutDecoration}>
+                    <ListItemIcon className={classes.bluffPokerPadding}>
+                        <img src={require("../bpmenu/bluffpoker-icon.png")} alt="Bluff Poker Icon" />
+                    </ListItemIcon>
+                    <ListItemText className={classes.linktext}>
+                        <a className={classes.linkWithoutDecoration} href="https://bluffpoker.app" target="new">Bluff Poker</a>
+                    </ListItemText>
+                </ListItem>
+                <ListItem button className={classes.linkWithoutDecoration}>
+                    <ListItemIcon className={classes.bluffPokerPadding}>
+                        <img src={require("../bpmenu/toffeeshare-icon.png")} alt="ToffeeShare Icon" />
+                    </ListItemIcon>
+                    <ListItemText className={classes.linktext}>
+                        <a className={classes.linkWithoutDecoration} href="https://toffeeshare.com" target="new">ToffeeShare</a>
                     </ListItemText>
                 </ListItem>
             </List>
