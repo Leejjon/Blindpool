@@ -9,7 +9,8 @@ const useStyles = makeStyles({
         flexGrow: 1,
         textAlign: 'center',
         marginTop: '1em',
-        marginBottom: '0em'
+        marginBottom: '0em',
+        marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"
     },
     card: {
         minWidth: "20em",
@@ -24,12 +25,10 @@ const useStyles = makeStyles({
 
 const Home: React.FC = () => {
     const classes = useStyles();
-
     const { t } = useTranslation();
 
     return (
-        <Grid container justify="center" spacing={2} className={classes.root}
-              style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+        <Grid container justify="center" spacing={2} className={classes.root}>
             <Helmet>
                 <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
                 <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>

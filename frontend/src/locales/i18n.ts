@@ -6,6 +6,7 @@ import { initReactI18next } from "react-i18next";
 export const resources = {
     en: {
         translation: {
+            "ABOUT_BLINDPOOL_TITLE": "About Blindpool",
             "TITLE": "Blindpool",
             "CREATE_POOL": "Create pool",
             "CREATE_POOL_TITLE": "Create a blind pool",
@@ -42,6 +43,7 @@ export const resources = {
     },
     nl: {
         translation: {
+            "ABOUT_BLINDPOOL_TITLE": "Over Blindpool",
             "TITLE": "Blindepool",
             "CREATE_POOL": "Maak een pool",
             "CREATE_POOL_TITLE": "Maak een blindepool",
@@ -73,7 +75,7 @@ export const resources = {
             "COMIC6": "De persoon met de correcte uitslag wint alles!",
             "THANKS_FOR_EXPLANATION": "Laat me nu een pool maken",
             "BACKEND_UNREACHABLE": "Kon de server niet bereiken. Controleer je internet verbinding.",
-            "BACKEND_OFFLINE": "Onze server reageert niet zoals het hoort, excuses voor het ongemak."
+            "BACKEND_OFFLINE": "Onze server reageert niet zoals het hoort, excuses voor het ongemak.",
         }
     }
 };

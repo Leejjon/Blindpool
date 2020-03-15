@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import {Link} from "react-router-dom";
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 
 const useStyles = makeStyles({
     root: {
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
         paddingRight: '0px',
         marginRight: '-0.5em'
     },
-    bluffPokerPadding: {
+    otherAppsPadding: {
         paddingRight: '0px',
         paddingLeft: '2px',
         paddingBottom: '2px',
@@ -111,6 +112,15 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         {t("HOW_TO_USE_BLINDPOOL_TITLE")}
                     </ListItemText>
                 </ListItem>
+                <ListItem button component={Link} onClick={closeMenu} to="/about"
+                          className={classes.linkWithoutDecoration}>
+                    <ListItemIcon className={classes.negativeLinkPadding}>
+                        <SupervisedUserCircleIcon fontSize="large"/>
+                    </ListItemIcon>
+                    <ListItemText className={classes.linktext}>
+                        {t('ABOUT_BLINDPOOL')}
+                    </ListItemText>
+                </ListItem>
             </List>
             <List>
                 <ListItem button className={classes.linkWithoutDecoration}>
@@ -119,7 +129,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                     </ListItemText>
                 </ListItem>
                 <ListItem button className={classes.linkWithoutDecoration}>
-                    <ListItemIcon className={classes.bluffPokerPadding}>
+                    <ListItemIcon className={classes.otherAppsPadding}>
                         <img src={require("../bpmenu/bluffpoker-icon.png")} alt="Bluff Poker Icon" />
                     </ListItemIcon>
                     <ListItemText className={classes.linktext}>
@@ -127,7 +137,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                     </ListItemText>
                 </ListItem>
                 <ListItem button className={classes.linkWithoutDecoration}>
-                    <ListItemIcon className={classes.bluffPokerPadding}>
+                    <ListItemIcon className={classes.otherAppsPadding}>
                         <img src={require("../bpmenu/toffeeshare-icon.png")} alt="ToffeeShare Icon" />
                     </ListItemIcon>
                     <ListItemText className={classes.linktext}>

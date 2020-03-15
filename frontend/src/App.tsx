@@ -9,6 +9,7 @@ import CreatePool from "./views/createpool/CreatePool";
 import ViewPool from "./views/viewpool/ViewPool";
 import BpUpdateDialog from "./components/bpupdatedialog/BpUpdateDialog";
 import BpHelmet from "./components/bphelmet/BpDefaultHelmet";
+import About from "./views/about/About";
 
 const theme = createMuiTheme({
     palette: {
@@ -116,6 +117,7 @@ const App: React.FC = () => {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/create" component={CreatePool}/>
                     <Route exact path="/howto" component={HowTo}/>
+                    <Route exact path="/about" component={About}/>
                     <Route path="/pool/:key" component={ViewPool}/>
                 </MuiThemeProvider>
             </div>
