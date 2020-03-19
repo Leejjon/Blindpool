@@ -148,6 +148,22 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                        <configuration>
+                            <finalName>unwanted</finalName>
+                            <classifier>unwanted</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -161,7 +177,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/appengine-staging
+                                ${project.build.directory}/
                             </outputDirectory>
                         </configuration>
                     </execution>
@@ -204,7 +220,7 @@
                 <configuration>
                     <executable>java</executable>
                     <arguments>
-<!--                        <argument>&#45;&#45;illegal-access=warn</argument>-->
+                        <!--                        <argument>&#45;&#45;illegal-access=warn</argument>-->
                         <argument>-p</argument> <!-- or -p  -->
                         <!-- automatically creates the modulepath using all project dependencies,
                              also adding the project build directory -->
@@ -218,4 +234,3 @@
         </plugins>
     </build>
 </project>
-
