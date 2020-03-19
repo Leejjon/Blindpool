@@ -58,24 +58,14 @@ const Home: React.FC = () => {
                     </CardActions>
                 </Card>
             </Grid>
-            {/*<Grid key="matches" item>*/}
+            {/*<Grid key="faq" item>*/}
             {/*    <Card className={classes.card}>*/}
             {/*        <CardContent>*/}
-            {/*            <Typography variant="h2" className={this.props.classes.title}>*/}
+            {/*            <Typography variant="h2">*/}
             {/*                Upcoming matches*/}
             {/*            </Typography>*/}
             {/*            <Divider style={{marginTop: '0.5em'}} />*/}
-            {/*            <List component="matches-list">*/}
-            {/*                <ListItemText>Ado Den Haag - Willem II</ListItemText>*/}
-            {/*                <ListItemText>De Graafschap - Ajax</ListItemText>*/}
-            {/*                <ListItemText>Excelsior - AZ</ListItemText>*/}
-            {/*                <ListItemText>FC Emmen - FC Groningen</ListItemText>*/}
-            {/*                <ListItemText>FC Utrecht - SC Heerenveen</ListItemText>*/}
-            {/*                <ListItemText>Fortuna Sittard - Feyenoord</ListItemText>*/}
-            {/*                <ListItemText>Nac Breda - Pec Zwolle</ListItemText>*/}
-            {/*                <ListItemText>PSV - Heracles Almelo</ListItemText>*/}
-            {/*                <ListItemText>VVV Venlo - Vitesse</ListItemText>*/}
-            {/*            </List>*/}
+            {/*            <Typography variant="body1"></Typography>*/}
             {/*        </CardContent>*/}
             {/*        <CardActions>*/}
             {/*            <Button size="medium">View all</Button>*/}
