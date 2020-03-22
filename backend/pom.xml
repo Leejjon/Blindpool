@@ -149,6 +149,8 @@
                 </configuration>
             </plugin>
 
+            <!-- This is to prevent the jar from being created. The class files are in the target/classes folder
+                 anyway. If I keep both the java command will complain about duplicate modules. -->
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
