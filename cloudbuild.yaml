@@ -1,6 +1,6 @@
 steps:
   - name: maven:3.6.3-jdk-11
-    folder: backend
+    dir: backend
     entrypoint: mvn
     args: ['--version']
 #  - name: 'gcr.io/cloud-builders/gcloud'
