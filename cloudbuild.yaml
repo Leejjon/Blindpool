@@ -1,5 +1,5 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['config set project blindepoule']
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['beta app deploy pom.xml --no-promote']
+  - name: maven:3.6.3-jdk-11
+    args: ['clean package appengine:deploy']
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args: ['beta app deploy ./backend/pom.xml --no-promote --project blindepoule']

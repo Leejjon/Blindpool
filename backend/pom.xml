@@ -149,23 +149,6 @@
                 </configuration>
             </plugin>
 
-            <!-- This is to prevent the jar from being created. The class files are in the target/classes folder
-                 anyway. If I keep both the java command will complain about duplicate modules. -->
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <phase>none</phase>
-                        <configuration>
-                            <finalName>unwanted</finalName>
-                            <classifier>unwanted</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -179,7 +162,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/
+                                ${project.build.directory}/appengine-staging
                             </outputDirectory>
                         </configuration>
                     </execution>
