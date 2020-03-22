@@ -1,6 +1,7 @@
 steps:
   - name: maven:3.6.3-jdk-11
+    folder: backend
     entrypoint: mvn
-    args: ['clean --version']
+    args: ['--version']
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    args: ['beta app deploy ./backend/pom.xml --no-promote --project blindepoule']
