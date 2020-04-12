@@ -1,0 +1,33 @@
+{
+  "name": "pool-api",
+  "version": "1.0.0",
+  "description": "Pool API that can be used to create and read blind pools.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index",
+    "build": "webpack --mode production",
+    "webpack": "webpack --config webpackdev.config.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leejjon/Blindpool.git"
+  },
+  "author": "Leon Liefting",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Leejjon/Blindpool/issues"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node": "^13.9.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
