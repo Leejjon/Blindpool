@@ -4,6 +4,7 @@ backend/blindpool.iml
 frontend/build/
 frontend/frontend.iml
 frontend/node_modules
+blindpool-api/dist
 blindpool-api/node_modules
 .idea/
 *.iml
