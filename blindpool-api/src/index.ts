@@ -1,21 +1,16 @@
 import express from "express";
-import { blindpoolApi } from "./api/BlindpoolApi";
+import {getBlindpoolByKey} from "./api/BlindpoolApi";
 
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
+
+const router = express.Router();
+router.get('/:key', getBlindpoolByKey);
 
 const app = express();
+app.use('/api/v2/pool', router);
 
-
-// app.get('/', (req, res) => res.send('Hello World2!'));
-// app.use((req, res) => {
-//     console.log(req.url);
-//     res.send('Hello World2!');
-// });
-
-app.use('/api/v2/pool', blindpoolApi);
-
-const server = app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+const server = app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
 });
 
 type ModuleId = string | number;
