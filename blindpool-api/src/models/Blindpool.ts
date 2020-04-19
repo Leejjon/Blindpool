@@ -16,5 +16,5 @@ interface ParticipantAndScore {
 export interface Blindpool {
     key: string,
     participantsAndScores: Array<ParticipantAndScore>,
-    // createdTimestamp: bigint
+    createdTimestamp: bigint
 }

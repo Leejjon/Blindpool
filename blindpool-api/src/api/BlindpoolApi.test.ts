@@ -5,23 +5,19 @@ import { Response, Request } from 'express';
 
 import { getBlindpoolByKey } from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
+import * as BlindpoolStorageService from "../services/BlindpoolStorageService";
 
 describe('Blindpool API', () => {
-    let sandbox: any = null;
-
-    beforeEach(() => {
-        sandbox = sinon.createSandbox();
-    })
-
-    afterEach(() => {
-        sandbox.restore()
-    })
-
     const testPool: Blindpool = {
         key: '123',
         participantsAndScores: [{participant: {name: 'Hoi', userType: 1}, score: {homeClubScore: '1', awayClubScore: '0'}}],
-        // createdTimestamp: BigInt(101)
+        createdTimestamp: BigInt(101)
     };
+
+    let stub: sinon.SinonStub<any[], any>;
+    beforeEach(() => {
+        stub = sinon.stub(BlindpoolStorageService, 'find').returns(Promise.resolve(testPool));
+    });
 
     it('Retrieve a blindpool', async() => {
         let req: Partial<Request> = { params: { key: '123' } };

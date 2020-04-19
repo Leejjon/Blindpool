@@ -7,6 +7,7 @@ import net.leejjon.blindpool.storage.PoolDataServiceImpl;
 import com.google.gson.Gson;
 import net.leejjon.blindpool.logic.ScoreGenerator;
 import net.leejjon.blindpool.model.ParticipantScore;
+import org.hashids.Hashids;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -69,5 +70,12 @@ class PoolApiTest {
                 new ParticipantScore(participant4, score4));
 
         return new Pool("1", participantScoreList, System.currentTimeMillis());
+    }
+
+    public static void main(String[] args) {
+        Hashids ids = new Hashids();
+
+        String s = new Hashids().encode(109);
+        System.out.println(s);
     }
 }
