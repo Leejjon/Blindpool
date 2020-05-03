@@ -75,7 +75,7 @@ class PoolApiTest {
     public static void main(String[] args) {
         Hashids ids = new Hashids();
 
-        String s = new Hashids().encode(109);
+        String s = new Hashids().encode(99999);
         System.out.println(s);
     }
 }
