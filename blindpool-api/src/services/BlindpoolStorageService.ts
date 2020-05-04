@@ -3,6 +3,11 @@ import { ok, err, Result } from 'neverthrow';
 import {Datastore, Query} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
 
+const POOL_KIND = 'pool';
+const COUNT_KIND = 'count';
+
+const NUMBER_OF_SHARDS = 10;
+
 export enum ErrorScenarios {
     NOT_FOUND,
     INTERNAL_ERROR
@@ -11,8 +16,8 @@ export enum ErrorScenarios {
 export const find = async (key: number): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
-        const query: Query = datastore.createQuery('pool')
-            .filter('__key__', '=', datastore.key(['pool', key]));
+        const query: Query = datastore.createQuery(POOL_KIND)
+            .filter('__key__', '=', datastore.key([POOL_KIND, key]));
         const [entities] = await datastore.runQuery(query);
         const poolEntity = entities[0];
 
@@ -42,8 +47,13 @@ export const find = async (key: number): Promise<Result<Blindpool, ErrorScenario
 };
 
 export const count = async (): Promise<Result<Number, ErrorScenarios>> => {
-    const datastore = getDatastoreInstance();
-    return ok(5);
+    try {
+        const datastore = getDatastoreInstance();
+        return ok(5);
+    } catch (e) {
+        console.error(e.toString());
+        return err(ErrorScenarios.INTERNAL_ERROR);
+    }
 };
 
 // const getPools = () => {

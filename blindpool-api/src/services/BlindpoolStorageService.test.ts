@@ -27,16 +27,12 @@ describe('BlindpoolStorageService tests', () => {
 
         const queryStub = createSinonStubInstance(Query);
         const datastoreStub = createSinonStubInstance(Datastore);
-
         datastoreStub.createQuery.returns(queryStub);
         datastoreStub.runQuery.resolves(queryResponseStubArray);
-
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
         const result: Result<Blindpool, ErrorScenarios> = await find(109);
-
         expect(result.isOk()).to.be.true;
-
         result.map((blindpool) => {
             const key = blindpool.key;
             expect(key).to.equal('109');
@@ -76,7 +72,6 @@ describe('BlindpoolStorageService tests', () => {
 
         const queryStub = createSinonStubInstance(Query);
         const datastoreStub = createSinonStubInstance(Datastore);
-
         datastoreStub.createQuery.returns(queryStub);
         datastoreStub.runQuery.resolves(queryResponseStubArray);
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
@@ -89,8 +84,12 @@ describe('BlindpoolStorageService tests', () => {
     });
 
     it('Retrieve blindpool but could not load default credentials - INTERNAL ERROR', async () => {
-        // By  not stubbing anything, the code will try to load default credentials which aren't there.
-        // The result is an error, which is a nice test case!
+        const queryStub = createSinonStubInstance(Query);
+        const datastoreStub = createSinonStubInstance(Datastore);
+        datastoreStub.createQuery.returns(queryStub);
+        datastoreStub.runQuery.throws(new Error('Stubbed error to occur on createQuery'));
+        sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
+
         const result: Result<Blindpool, ErrorScenarios> = await find(109);
         expect(result.isOk()).to.be.false;
         result.mapErr((errorScenario) => {
