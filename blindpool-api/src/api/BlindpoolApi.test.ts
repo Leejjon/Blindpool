@@ -2,7 +2,6 @@ import 'mocha';
 import * as sinon from 'sinon';
 import { Response, Request } from 'express';
 import {err, ok, Result} from "neverthrow";
-
 import { getBlindpoolByKey } from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
 import * as BlindpoolStorageService from "../services/BlindpoolStorageService";

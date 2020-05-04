@@ -2,9 +2,6 @@ import { Blindpool } from '../models/Blindpool';
 import { ok, err, Result } from 'neverthrow';
 import {Datastore, Query} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
-import {Entities} from "@google-cloud/datastore/build/src/entity";
-import {google} from "@google-cloud/datastore/build/protos/protos";
-import RunQueryResponse = google.datastore.v1.RunQueryResponse;
 
 export enum ErrorScenarios {
     NOT_FOUND,
@@ -16,10 +13,12 @@ export const find = async (key: number): Promise<Result<Blindpool, ErrorScenario
         const datastore = getDatastoreInstance();
         const query: Query = datastore.createQuery('pool')
             .filter('__key__', '=', datastore.key(['pool', key]));
-        const response = await datastore.runQuery(query);
-        const [entities]: Entities = response;
+        const [entities] = await datastore.runQuery(query);
         const poolEntity = entities[0];
 
+        if (poolEntity === undefined) {
+            return err(ErrorScenarios.NOT_FOUND);
+        }
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
         const poolKey = poolEntity[Datastore.KEY].id as string;
         const participantsAndScores = JSON.parse(poolEntity.PARTICIPANTS_AND_SCORES);
@@ -29,16 +28,18 @@ export const find = async (key: number): Promise<Result<Blindpool, ErrorScenario
             participantsAndScores: participantsAndScores,
             createdTimestamp: createdTimestamp
         };
+
         if (key === parseInt(poolKey)) {
             return ok(pool);
+        } else {
+            console.warn(`Expected the retrieved pool id ${parseInt(poolKey)} to match the key parameter ${key}`);
+            return err(ErrorScenarios.INTERNAL_ERROR);
         }
-        return err(ErrorScenarios.NOT_FOUND);
     } catch (e) {
-        console.log(e.toString());
+        console.error(e.toString());
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 };
-
 
 // const getPools = () => {
 //     const query = datastore

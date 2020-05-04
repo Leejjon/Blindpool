@@ -9,11 +9,12 @@ import {Datastore, Query} from "@google-cloud/datastore/build/src";
 import {Entities} from "@google-cloud/datastore/build/src/entity";
 
 describe('BlindpoolStorageService tests', () => {
+    const NONE_EXISTING_POOL_KEY = 0;
     const TEST_POOL_KEY = '109';
     const TEST_PARTICIPANT_AND_SCORES = '[{\"participant\":{\"name\":\"Leejjon\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"1\"}},{\"participant\":{\"name\":\"Stofkat\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"X\",\"awayClubScore\":\"X\"}},{\"participant\":{\"name\":\"Barry\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"0\"}},{\"participant\":{\"name\":\"Billy\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"1\",\"awayClubScore\":\"0\"}}]';
 
     afterEach(() => {
-        sinon.restore;
+        sinon.restore();
     });
 
     it('Retrieve a blindpool - SUCCESS', async () => {
@@ -25,16 +26,17 @@ describe('BlindpoolStorageService tests', () => {
         ];
 
         const queryStub = createSinonStubInstance(Query);
-        queryStub.filter.returns(queryStub); // Filter to do nothing.
-
         const datastoreStub = createSinonStubInstance(Datastore);
+
         datastoreStub.createQuery.returns(queryStub);
         datastoreStub.runQuery.resolves(queryResponseStubArray);
+
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
-        const result: Result<Blindpool, ErrorScenarios> = await find(0);
+        const result: Result<Blindpool, ErrorScenarios> = await find(109);
 
-        expect(result.isOk());
+        expect(result.isOk()).to.be.true;
+
         result.map((blindpool) => {
             const key = blindpool.key;
             expect(key).to.equal('109');
@@ -46,6 +48,53 @@ describe('BlindpoolStorageService tests', () => {
             expect(second.participant.name).to.equal('Stofkat');
             expect(second.score.homeClubScore).to.equal('X');
             expect(second.score.awayClubScore).to.equal('X');
+        });
+    });
+
+    it('Retrieve a blindpool - NOT FOUND', async () => {
+        const queryResponseStubArray: Entities = [[undefined]];
+        const queryStub = createSinonStubInstance(Query);
+        const datastoreStub = createSinonStubInstance(Datastore);
+        datastoreStub.createQuery.returns(queryStub);
+        datastoreStub.runQuery.resolves(queryResponseStubArray);
+        sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
+
+        const result: Result<Blindpool, ErrorScenarios> = await find(0);
+        expect(result.isOk()).to.be.false;
+        result.mapErr((errorScenario) => {
+            expect(errorScenario).to.equal(ErrorScenarios.NOT_FOUND);
+        });
+    });
+
+    it('Retrieve a blindpool but received incorrect data from database - INTERNAL ERROR', async () => {
+        const queryResponseStubArray: Entities = [
+            [
+                {PARTICIPANTS_AND_SCORES: TEST_PARTICIPANT_AND_SCORES,
+                    [Datastore.KEY]: {namespace: undefined, id: NONE_EXISTING_POOL_KEY, kind: 'pool'}}
+            ]
+        ];
+
+        const queryStub = createSinonStubInstance(Query);
+        const datastoreStub = createSinonStubInstance(Datastore);
+
+        datastoreStub.createQuery.returns(queryStub);
+        datastoreStub.runQuery.resolves(queryResponseStubArray);
+        sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
+
+        const result: Result<Blindpool, ErrorScenarios> = await find(109);
+        expect(result.isOk()).to.be.false;
+        result.mapErr((errorScenario) => {
+            expect(errorScenario).to.equal(ErrorScenarios.INTERNAL_ERROR);
+        });
+    });
+
+    it('Retrieve blindpool but could not load default credentials - INTERNAL ERROR', async () => {
+        // By  not stubbing anything, the code will try to load default credentials which aren't there.
+        // The result is an error, which is a nice test case!
+        const result: Result<Blindpool, ErrorScenarios> = await find(109);
+        expect(result.isOk()).to.be.false;
+        result.mapErr((errorScenario) => {
+            expect(errorScenario).to.equal(ErrorScenarios.INTERNAL_ERROR);
         });
     });
 });
