@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import Helmet from "react-helmet";
+import {Helmet} from "react-helmet";
 import {RouteComponentProps} from "react-router";
 
 const BpDefaultHelmet: React.FC<RouteComponentProps<any>> = (props) => {

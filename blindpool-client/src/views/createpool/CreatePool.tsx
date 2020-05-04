@@ -13,7 +13,7 @@ import {
     TableHead, TableRow, TextField,
     Typography
 } from "@material-ui/core";
-import Helmet from "react-helmet";
+import {Helmet} from "react-helmet";
 import appState from "../../state/AppState";
 import Blindpool from "../../model/Blindpool";
 import Player from "../../model/Player";

@@ -1,7 +1,7 @@
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {Button, Card, CardActions, CardContent, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
-import Helmet from "react-helmet";
+import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";
 import BpComicStepper from "../../components/bpcomicstepper/BpComicStepper";
 

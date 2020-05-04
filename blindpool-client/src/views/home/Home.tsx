@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Card, CardActions, CardContent, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
-import Helmet from "react-helmet";
+import {Helmet} from "react-helmet";
 
 const useStyles = makeStyles({
     root: {
