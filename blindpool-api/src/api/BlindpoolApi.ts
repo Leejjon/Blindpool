@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { Blindpool } from "../models/Blindpool";
+import { BlindpoolStatistics } from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
-import {find, ErrorScenarios} from "../services/BlindpoolStorageService";
+import {find, ErrorScenarios, count} from "../services/BlindpoolStorageService";
 
 // Switch to import to get code completion...
 // import Hashids from 'hashids'
@@ -27,7 +28,19 @@ export const getBlindpoolByKey = async (req: Request, res: Response) => {
         });
 };
 
-const mapSuccess = (res: Response, blindpool: Blindpool) => {
+export const getBlindpoolStatistics = async (req: Request, res: Response) => {
+    const countResult: Result<Number, ErrorScenarios> = await count();
+
+    countResult
+        .map((poolCount) => {
+            mapSuccess(res, {count: poolCount} as BlindpoolStatistics);
+        })
+        .mapErr((errorScenario) => {
+            mapError(res, errorScenario);
+        });
+}
+
+const mapSuccess = (res: Response, blindpool: Blindpool | BlindpoolStatistics) => {
     res.contentType('application/json');
     res.status(200);
     res.send(blindpool);

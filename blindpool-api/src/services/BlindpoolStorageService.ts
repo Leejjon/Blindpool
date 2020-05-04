@@ -41,6 +41,11 @@ export const find = async (key: number): Promise<Result<Blindpool, ErrorScenario
     }
 };
 
+export const count = async (): Promise<Result<Number, ErrorScenarios>> => {
+    const datastore = getDatastoreInstance();
+    return ok(5);
+};
+
 // const getPools = () => {
 //     const query = datastore
 //         .createQuery('pool')
