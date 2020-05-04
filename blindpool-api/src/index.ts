@@ -4,8 +4,8 @@ import {getBlindpoolByKey, getBlindpoolStatistics} from "./api/BlindpoolApi";
 const port = process.env.PORT || 8080;
 
 const router = express.Router();
+router.get('/pool/stats', getBlindpoolStatistics);
 router.get('/pool/:key', getBlindpoolByKey);
-router.get('/stats/', getBlindpoolStatistics);
 
 const app = express();
 app.use('/api/v2/', router);
