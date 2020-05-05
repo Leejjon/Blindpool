@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { Blindpool } from "../models/Blindpool";
-import { BlindpoolStatistics } from "../models/BlindpoolStatistics";
+import {Request, Response} from "express";
+import {Blindpool} from "../models/Blindpool";
+import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
 import {find, ErrorScenarios, count} from "../services/BlindpoolStorageService";
 
@@ -17,7 +17,7 @@ export const getBlindpoolByKey = async (req: Request, res: Response) => {
         return;
     }
 
-    const blindpoolResult: Result<Blindpool,ErrorScenarios> = await find(keyAsNumber);
+    const blindpoolResult: Result<Blindpool, ErrorScenarios> = await find(keyAsNumber);
 
     blindpoolResult
         .map((blindpool) => {
