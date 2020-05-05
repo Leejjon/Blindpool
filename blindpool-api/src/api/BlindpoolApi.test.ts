@@ -1,7 +1,7 @@
 import 'mocha';
 import * as sinon from 'sinon';
 import { Response, Request } from 'express';
-import {err, ok, Result} from "neverthrow";
+import {err, ok} from "neverthrow";
 import {getBlindpoolByKey, getBlindpoolStatistics} from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
 import * as BlindpoolStorageService from "../services/BlindpoolStorageService";
@@ -26,7 +26,7 @@ describe('Blindpool API', () => {
     });
 
     it('Retrieve blindpool - SUCCESS', async() => {
-        stub = sinon.stub(BlindpoolStorageService, 'find')
+        stub = sinon.stub(BlindpoolStorageService, 'findBlindpoolByKey')
             .resolves(ok(testPool));
         let validRequest: Partial<Request> = { params: { key: 'r06' } };
         let res: Partial<Response> = {
@@ -41,7 +41,7 @@ describe('Blindpool API', () => {
     });
 
     it('Retrieve blindpool - NOT FOUND', async() => {
-        stub = sinon.stub(BlindpoolStorageService, 'find')
+        stub = sinon.stub(BlindpoolStorageService, 'findBlindpoolByKey')
             .resolves(err(ErrorScenarios.NOT_FOUND));
         let requestWithValidKeyButNotExistingPool: Partial<Request> = { params: { key: 'wprD1' } };
 
@@ -54,7 +54,7 @@ describe('Blindpool API', () => {
         const expectedCount = 5;
         let emptyRequest: Partial<Request> = {};
 
-        stub = sinon.stub(BlindpoolStorageService, 'count')
+        stub = sinon.stub(BlindpoolStorageService, 'calculateBlindpoolCount')
             .resolves(ok(expectedCount));
 
         await getBlindpoolStatistics(<Request> emptyRequest, <Response> res);
@@ -66,7 +66,7 @@ describe('Blindpool API', () => {
     it('Retrieve blindpool statistics - INTERNAL ERROR', async () => {
         let emptyRequest: Partial<Request> = {};
 
-        stub = sinon.stub(BlindpoolStorageService, 'count')
+        stub = sinon.stub(BlindpoolStorageService, 'calculateBlindpoolCount')
             .resolves(err(ErrorScenarios.INTERNAL_ERROR));
 
         await getBlindpoolStatistics(<Request> emptyRequest, <Response> res);

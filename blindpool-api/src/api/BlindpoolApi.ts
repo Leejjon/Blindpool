@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {Blindpool} from "../models/Blindpool";
 import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
-import {find, ErrorScenarios, count} from "../services/BlindpoolStorageService";
+import {findBlindpoolByKey, ErrorScenarios, calculateBlindpoolCount} from "../services/BlindpoolStorageService";
 
 // Switch to import to get code completion...
 // import Hashids from 'hashids'
@@ -17,7 +17,7 @@ export const getBlindpoolByKey = async (req: Request, res: Response) => {
         return;
     }
 
-    const blindpoolResult: Result<Blindpool, ErrorScenarios> = await find(keyAsNumber);
+    const blindpoolResult: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(keyAsNumber);
 
     blindpoolResult
         .map((blindpool) => {
@@ -29,7 +29,7 @@ export const getBlindpoolByKey = async (req: Request, res: Response) => {
 };
 
 export const getBlindpoolStatistics = async (req: Request, res: Response) => {
-    const countResult: Result<Number, ErrorScenarios> = await count();
+    const countResult: Result<Number, ErrorScenarios> = await calculateBlindpoolCount();
 
     countResult
         .map((poolCount) => {

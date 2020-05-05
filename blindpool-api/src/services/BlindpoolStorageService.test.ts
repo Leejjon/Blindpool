@@ -1,41 +1,40 @@
 import 'mocha'
 import {expect} from 'chai';
-import {ErrorScenarios, find} from "./BlindpoolStorageService";
+import {ErrorScenarios, findBlindpoolByKey, Kinds} from "./BlindpoolStorageService";
 import {Result} from "neverthrow";
 import {Blindpool} from "../models/Blindpool";
 import * as sinon from "sinon";
 import * as DatastoreService from "./DatastoreService";
-import {Datastore, Query} from "@google-cloud/datastore/build/src";
+import {Datastore} from "@google-cloud/datastore/build/src";
 import {Entities} from "@google-cloud/datastore/build/src/entity";
 
 describe('BlindpoolStorageService tests', () => {
     const NONE_EXISTING_POOL_KEY = 0;
-    const TEST_POOL_KEY = '109';
+    const TEST_POOL_KEY = 109;
     const TEST_PARTICIPANT_AND_SCORES = '[{\"participant\":{\"name\":\"Leejjon\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"1\"}},{\"participant\":{\"name\":\"Stofkat\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"X\",\"awayClubScore\":\"X\"}},{\"participant\":{\"name\":\"Barry\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"0\"}},{\"participant\":{\"name\":\"Billy\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"1\",\"awayClubScore\":\"0\"}}]';
 
     afterEach(() => {
         sinon.restore();
     });
 
-    it('Retrieve a blindpool - SUCCESS', async () => {
+    it('Retrieve blindpool - SUCCESS', async () => {
         const queryResponseStubArray: Entities = [
-            [
-                {PARTICIPANTS_AND_SCORES: TEST_PARTICIPANT_AND_SCORES,
-                [Datastore.KEY]: {namespace: undefined, id: TEST_POOL_KEY, kind: 'pool'}}
-            ]
+            {
+                PARTICIPANTS_AND_SCORES: TEST_PARTICIPANT_AND_SCORES,
+                [Datastore.KEY]: {namespace: undefined, id: TEST_POOL_KEY, kind: Kinds.POOL_KIND}
+            }
         ];
 
-        const queryStub = createSinonStubInstance(Query);
         const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.createQuery.returns(queryStub);
-        datastoreStub.runQuery.resolves(queryResponseStubArray);
+        datastoreStub.key.returns((new Datastore()).key([Kinds.POOL_KIND, TEST_POOL_KEY]));
+        datastoreStub.get.resolves(queryResponseStubArray);
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
-        const result: Result<Blindpool, ErrorScenarios> = await find(109);
+        const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(TEST_POOL_KEY);
         expect(result.isOk()).to.be.true;
         result.map((blindpool) => {
             const key = blindpool.key;
-            expect(key).to.equal('109');
+            expect(key).to.equal(109);
             const participantsAndScores = blindpool.participantsAndScores;
             const [first, second] = participantsAndScores;
             expect(first.participant.name).to.equal('Leejjon');
@@ -47,50 +46,27 @@ describe('BlindpoolStorageService tests', () => {
         });
     });
 
-    it('Retrieve a blindpool - NOT FOUND', async () => {
-        const queryResponseStubArray: Entities = [[undefined]];
-        const queryStub = createSinonStubInstance(Query);
+    it('Retrieve blindpool - NOT FOUND', async () => {
+        const queryResponseStubArray: Entities = [undefined];
         const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.createQuery.returns(queryStub);
-        datastoreStub.runQuery.resolves(queryResponseStubArray);
+        datastoreStub.key.returns((new Datastore()).key([Kinds.POOL_KIND, NONE_EXISTING_POOL_KEY]));
+        datastoreStub.get.resolves(queryResponseStubArray);
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
-        const result: Result<Blindpool, ErrorScenarios> = await find(0);
+        const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(0);
         expect(result.isOk()).to.be.false;
         result.mapErr((errorScenario) => {
             expect(errorScenario).to.equal(ErrorScenarios.NOT_FOUND);
         });
     });
 
-    it('Retrieve a blindpool but received incorrect data from database - INTERNAL ERROR', async () => {
-        const queryResponseStubArray: Entities = [
-            [
-                {PARTICIPANTS_AND_SCORES: TEST_PARTICIPANT_AND_SCORES,
-                    [Datastore.KEY]: {namespace: undefined, id: NONE_EXISTING_POOL_KEY, kind: 'pool'}}
-            ]
-        ];
-
-        const queryStub = createSinonStubInstance(Query);
-        const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.createQuery.returns(queryStub);
-        datastoreStub.runQuery.resolves(queryResponseStubArray);
-        sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
-
-        const result: Result<Blindpool, ErrorScenarios> = await find(109);
-        expect(result.isOk()).to.be.false;
-        result.mapErr((errorScenario) => {
-            expect(errorScenario).to.equal(ErrorScenarios.INTERNAL_ERROR);
-        });
-    });
-
     it('Retrieve blindpool but could not load default credentials - INTERNAL ERROR', async () => {
-        const queryStub = createSinonStubInstance(Query);
         const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.createQuery.returns(queryStub);
-        datastoreStub.runQuery.throws(new Error('Stubbed error to occur on createQuery'));
+        datastoreStub.key.returns((new Datastore()).key([Kinds.POOL_KIND, TEST_POOL_KEY]));
+        datastoreStub.get.throws(new Error('Stubbed error to occur on Datastore.get()'));
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
-        const result: Result<Blindpool, ErrorScenarios> = await find(109);
+        const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(109);
         expect(result.isOk()).to.be.false;
         result.mapErr((errorScenario) => {
             expect(errorScenario).to.equal(ErrorScenarios.INTERNAL_ERROR);

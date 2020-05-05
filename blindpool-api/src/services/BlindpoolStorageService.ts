@@ -1,11 +1,9 @@
 import {Blindpool} from '../models/Blindpool';
 import {ok, err, Result} from 'neverthrow';
-import {Datastore, Query, Transaction} from "@google-cloud/datastore/build/src";
+import {Transaction} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
-import {google} from "@google-cloud/datastore/build/proto/datastore";
-import Entity = google.datastore.v1.Entity;
 
-enum Kinds {
+export enum Kinds {
     POOL_KIND = 'pool',
     COUNT_KIND = 'poolCounter'
 }
@@ -17,43 +15,37 @@ export enum ErrorScenarios {
     INTERNAL_ERROR
 }
 
-export const find = async (key: number): Promise<Result<Blindpool, ErrorScenarios>> => {
+export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
-        const query: Query = datastore.createQuery(Kinds.POOL_KIND)
-            .filter('__key__', '=', datastore.key([Kinds.POOL_KIND, key]));
-        const [entities] = await datastore.runQuery(query);
-        const poolEntity = entities[0];
+        const blindPoolKey = datastore.key([Kinds.POOL_KIND, key]);
+        const [poolEntity] = await datastore.get(blindPoolKey);
 
         if (poolEntity === undefined) {
             return err(ErrorScenarios.NOT_FOUND);
         }
 
-        console.log(poolEntity[Datastore.KEY].path);
-
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
-        const poolKey = poolEntity[Datastore.KEY].id as string;
         const participantsAndScores = JSON.parse(poolEntity.PARTICIPANTS_AND_SCORES);
         const createdTimestamp = poolEntity.CREATED_TIMESTAMP;
         const pool: Blindpool = {
-            key: poolKey,
+            key: blindPoolKey.id as string,
             participantsAndScores: participantsAndScores,
             createdTimestamp: createdTimestamp
         };
 
-        if (key === parseInt(poolKey)) {
-            return ok(pool);
-        } else {
-            console.warn(`Expected the retrieved pool id ${parseInt(poolKey)} to match the key parameter ${key}`);
-            return err(ErrorScenarios.INTERNAL_ERROR);
-        }
+        return ok(pool);
     } catch (e) {
         console.error(e.toString());
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 };
 
-export const count = async (): Promise<Result<Number, ErrorScenarios>> => {
+export const insertNewBlindpool = async (participants: String[]): Promise<Result<Blindpool, ErrorScenarios>> => {
+    return err(ErrorScenarios.INTERNAL_ERROR);
+}
+
+export const calculateBlindpoolCount = async (): Promise<Result<Number, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
 
@@ -72,13 +64,13 @@ export const count = async (): Promise<Result<Number, ErrorScenarios>> => {
     }
 };
 
-const increment = async () => {
+const incrementBlindpoolCount = async () => {
     // Pick a random shard id (possibilities are 0-9)
-    const shardNumber = Math.floor(Math.random() * 10);
+    const shardNumber = Math.floor(Math.random() * NUMBER_OF_SHARDS);
     let transaction: Transaction | undefined = undefined;
     try {
         const datastore = getDatastoreInstance();
-        const key = datastore.key(['poolCounter', shardNumber.toString()]);
+        const key = datastore.key([Kinds.COUNT_KIND, shardNumber.toString()]);
         transaction = datastore.transaction();
         await transaction.run();
 
@@ -95,10 +87,7 @@ const increment = async () => {
                 key: key, data: {count: 1},
             }]);
 
-            console.warn(
-                `Somehow could not find shard. Was the shard size increased? 
-                Created new shard for shardnumber: ${shardNumber}`
-            );
+            console.warn(`Could not find shard. Was the shard size increased? Created new shard for shardnumber: ${shardNumber}`);
         }
         await transaction.commit();
     } catch (e) {
