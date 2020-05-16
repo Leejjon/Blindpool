@@ -2,13 +2,24 @@ import {Request, Response} from "express";
 import {Blindpool} from "../models/Blindpool";
 import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
-import {findBlindpoolByKey, ErrorScenarios, calculateBlindpoolCount} from "../services/BlindpoolStorageService";
+import {calculateBlindpoolCount, ErrorScenarios, findBlindpoolByKey} from "../services/BlindpoolStorageService";
 
-// Switch to import to get code completion...
+// Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
 const Hashids = require('hashids/cjs');
 
 const hashids = new Hashids();
+
+export const postCreateBlindpool = async (req: Request, res: Response) => {
+    try {
+        const names: Array<string> = JSON.parse(req.body);
+        // const participantsAndScores = assignRandomScores();
+        names.forEach((item) => console.log(item));
+        res.send('Boe');
+    } catch (e) {
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+    }
+};
 
 export const getBlindpoolByKey = async (req: Request, res: Response) => {
     const keyAsNumber = hashids.decode(req.params.key)[0] as number;
@@ -38,7 +49,7 @@ export const getBlindpoolStatistics = async (req: Request, res: Response) => {
         .mapErr((errorScenario) => {
             mapError(res, errorScenario);
         });
-}
+};
 
 const mapSuccess = (res: Response, blindpool: Blindpool | BlindpoolStatistics) => {
     res.contentType('application/json');
@@ -53,6 +64,9 @@ const mapError = (res: Response, error: ErrorScenarios) => {
             break;
         case ErrorScenarios.INTERNAL_ERROR:
             respond(res, 500, 'An error occurred on our side, sorry!');
+            break;
+        case ErrorScenarios.INVALID_INPUT:
+            respond(res, 401, 'Invalid input.');
             break;
     }
 }

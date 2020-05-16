@@ -3,12 +3,18 @@ interface Participant {
     userType: number
 }
 
-interface Score {
+export enum UserType {
+    ANONYMOUS,
+    FACEBOOK,
+    GOOGLE
+}
+
+export interface Score {
     homeClubScore: string,
     awayClubScore: string
 }
 
-interface ParticipantAndScore {
+export interface ParticipantAndScore {
     participant: Participant,
     score: Score
 }

@@ -1,10 +1,11 @@
 import express from "express";
-import {getBlindpoolByKey, getBlindpoolStatistics} from "./api/BlindpoolApi";
+import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./api/BlindpoolApi";
 
 const port = process.env.PORT || 8080;
 
 const router = express.Router();
 router.get('/pool/stats', getBlindpoolStatistics);
+router.post('/pool/', postCreateBlindpool);
 router.get('/pool/:key', getBlindpoolByKey);
 
 const app = express();

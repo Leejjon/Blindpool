@@ -1,7 +1,8 @@
-import {Blindpool} from '../models/Blindpool';
+import {Blindpool, ParticipantAndScore} from '../models/Blindpool';
 import {ok, err, Result} from 'neverthrow';
 import {Transaction} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
+import {assignRandomScores} from "../logic/ScoreGenerator";
 
 export enum Kinds {
     POOL_KIND = 'pool',
@@ -12,14 +13,15 @@ const NUMBER_OF_SHARDS = 10;
 
 export enum ErrorScenarios {
     NOT_FOUND,
-    INTERNAL_ERROR
+    INTERNAL_ERROR,
+    INVALID_INPUT
 }
 
 export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
-        const blindPoolKey = datastore.key([Kinds.POOL_KIND, key]);
-        const [poolEntity] = await datastore.get(blindPoolKey);
+        const blindpoolKey = datastore.key([Kinds.POOL_KIND, key]);
+        const [poolEntity] = await datastore.get(blindpoolKey);
 
         if (poolEntity === undefined) {
             return err(ErrorScenarios.NOT_FOUND);
@@ -28,20 +30,41 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
         const participantsAndScores = JSON.parse(poolEntity.PARTICIPANTS_AND_SCORES);
         const createdTimestamp = poolEntity.CREATED_TIMESTAMP;
-        const pool: Blindpool = {
-            key: blindPoolKey.id as string,
+        const blindpool: Blindpool = {
+            key: blindpoolKey.id as string,
             participantsAndScores: participantsAndScores,
             createdTimestamp: createdTimestamp
         };
 
-        return ok(pool);
+        return ok(blindpool);
     } catch (e) {
         console.error(e.toString());
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 };
 
-export const insertNewBlindpool = async (participants: String[]): Promise<Result<Blindpool, ErrorScenarios>> => {
+export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>): Promise<Result<Blindpool, ErrorScenarios>> => {
+    try {
+        const datastore = getDatastoreInstance();
+        const blindpoolKey = datastore.key(Kinds.POOL_KIND);
+
+        const blindpool: Blindpool = {
+            key: blindpoolKey.id as string,
+            participantsAndScores: participantsAndScores,
+            createdTimestamp: BigInt(Date.now())
+        };
+
+        const entity = {
+            key: blindpoolKey,
+            data: blindpool,
+        };
+
+        await datastore.upsert(entity);
+    } catch (e) {
+        console.error(e.toString());
+        return err(ErrorScenarios.INTERNAL_ERROR);
+    }
+
     return err(ErrorScenarios.INTERNAL_ERROR);
 }
 

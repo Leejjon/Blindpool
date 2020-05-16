@@ -24,13 +24,13 @@ public class ScoreGenerator {
         return participantScores;
     }
 
+
+
     private static Set<Score> generateScores(int participantNameSize) {
         Set<Score> possibleScores = new HashSet<>();
 
         // Add the wildcard score.
         possibleScores.add(new Score(WILDCARD_CHARACTER, WILDCARD_CHARACTER));
-
-        final int numberOfScoresThatWeNeedToGenerated = participantNameSize - 1;
 
         int x;
         int y;
