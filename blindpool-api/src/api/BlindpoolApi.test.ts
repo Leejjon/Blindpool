@@ -11,7 +11,7 @@ describe('Blindpool API', () => {
     const testPool: Blindpool = {
         key: '123',
         participantsAndScores: [{participant: {name: 'Hoi', userType: 1}, score: {homeClubScore: '1', awayClubScore: '0'}}],
-        createdTimestamp: BigInt(101)
+        createdTimestamp: 101
     };
 
     let res: Partial<Response> = {

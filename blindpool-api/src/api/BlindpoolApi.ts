@@ -2,7 +2,13 @@ import {Request, Response} from "express";
 import {Blindpool} from "../models/Blindpool";
 import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
-import {calculateBlindpoolCount, ErrorScenarios, findBlindpoolByKey} from "../services/BlindpoolStorageService";
+import {
+    calculateBlindpoolCount,
+    ErrorScenarios,
+    findBlindpoolByKey,
+    insertNewBlindpool
+} from "../services/BlindpoolStorageService";
+import {assignRandomScores} from "../logic/ScoreGenerator";
 
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
@@ -12,10 +18,16 @@ const hashids = new Hashids();
 
 export const postCreateBlindpool = async (req: Request, res: Response) => {
     try {
-        const names: Array<string> = JSON.parse(req.body);
-        // const participantsAndScores = assignRandomScores();
-        names.forEach((item) => console.log(item));
-        res.send('Boe');
+        const names: Array<string> = req.body;
+        const participantsAndScores = assignRandomScores(names);
+        const result = await insertNewBlindpool(participantsAndScores);
+        result
+            .map((blindpool: Blindpool) => {
+                mapSuccess(res, blindpool);
+            })
+            .mapErr((errorScenario: ErrorScenarios) => {
+                mapError(res, errorScenario);
+            });
     } catch (e) {
         mapError(res, ErrorScenarios.INVALID_INPUT);
     }
