@@ -16,8 +16,8 @@ interface ParticipantAndScore {
 
 interface Blindpool {
     key: string,
-    participantsAndScores: Array<ParticipantAndScore>,
-    createdTimestamp: bigint
+    PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>,
+    CREATED_TIMESTAMP: Date
 }
 
 export default Blindpool;

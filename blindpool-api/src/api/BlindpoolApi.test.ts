@@ -10,8 +10,8 @@ import {ErrorScenarios} from "../services/BlindpoolStorageService";
 describe('Blindpool API', () => {
     const testPool: Blindpool = {
         key: '123',
-        participantsAndScores: [{participant: {name: 'Hoi', userType: 1}, score: {homeClubScore: '1', awayClubScore: '0'}}],
-        createdTimestamp: 101
+        PARTICIPANTS_AND_SCORES: [{participant: {name: 'Hoi', userType: 1}, score: {homeClubScore: '1', awayClubScore: '0'}}],
+        CREATED_TIMESTAMP: new Date()
     };
 
     let res: Partial<Response> = {

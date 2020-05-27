@@ -20,7 +20,7 @@ describe('BlindpoolStorageService tests', () => {
     it('Retrieve blindpool - SUCCESS', async () => {
         const queryResponseStubArray: Entities = [
             {
-                PARTICIPANTS_AND_SCORES: TEST_PARTICIPANT_AND_SCORES,
+                PARTICIPANTS_AND_SCORES: JSON.parse(TEST_PARTICIPANT_AND_SCORES),
                 [Datastore.KEY]: {namespace: undefined, id: TEST_POOL_KEY, kind: Kinds.POOL_KIND}
             }
         ];
@@ -35,7 +35,9 @@ describe('BlindpoolStorageService tests', () => {
         result.map((blindpool) => {
             const key = blindpool.key;
             expect(key).to.equal(109);
-            const participantsAndScores = blindpool.participantsAndScores;
+            console.log(blindpool);
+            const participantsAndScores = blindpool.PARTICIPANTS_AND_SCORES;
+            console.log(participantsAndScores);
             const [first, second] = participantsAndScores;
             expect(first.participant.name).to.equal('Leejjon');
             expect(first.score.homeClubScore).to.equal('0');

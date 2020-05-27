@@ -33,12 +33,18 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
         }
 
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
-        const participantsAndScores = JSON.parse(poolEntity.PARTICIPANTS_AND_SCORES);
+        const participantsAndScores = poolEntity.PARTICIPANTS_AND_SCORES;
+
+        console.log(poolEntity);
+
         const createdTimestamp = poolEntity.CREATED_TIMESTAMP;
+
+        console.log(createdTimestamp);
+
         const blindpool: Blindpool = {
             key: blindpoolKey.id as string,
-            participantsAndScores: participantsAndScores,
-            createdTimestamp: createdTimestamp
+            PARTICIPANTS_AND_SCORES: participantsAndScores,
+            CREATED_TIMESTAMP: createdTimestamp
         };
 
         return ok(blindpool);
@@ -52,10 +58,10 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
     try {
         const datastore = getDatastoreInstance();
         const blindpoolKeyToInsert = datastore.key(Kinds.POOL_KIND);
-        const createdTimestamp = Date.now();
+        const createdTimestamp = new Date();
         const blindpoolToInsert: Blindpool = {
-            participantsAndScores: participantsAndScores,
-            createdTimestamp: createdTimestamp
+            PARTICIPANTS_AND_SCORES: participantsAndScores,
+            CREATED_TIMESTAMP: createdTimestamp
         };
 
         const entityToInsert = {
@@ -75,8 +81,8 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
 
         const blindpoolToReturn: Blindpool = {
             key: hashids.encode(poolId),
-            participantsAndScores: participantsAndScores,
-            createdTimestamp: createdTimestamp
+            PARTICIPANTS_AND_SCORES: participantsAndScores,
+            CREATED_TIMESTAMP: createdTimestamp
         }
         return ok(blindpoolToReturn);
     } catch (e) {

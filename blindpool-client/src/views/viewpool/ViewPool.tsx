@@ -76,7 +76,7 @@ const ViewPool: React.FC = () => {
     const [shareUrl, setShareUrl] = useState("");
     if (loading) {
         if (appState.poolData === undefined || appState.poolData!.key !== key) {
-            fetch(`${getHost()}/api/v1/pool/${key}`)
+            fetch(`${getHost()}/api/v2/pool/${key}`)
                 .then(function (poolJsonFromServer) {
                     return poolJsonFromServer.json();
                 })
@@ -92,7 +92,7 @@ const ViewPool: React.FC = () => {
     }
 
     const getOwner = () => {
-        let participantsAndScores = appState.poolData!.participantsAndScores;
+        let participantsAndScores = appState.poolData!.PARTICIPANTS_AND_SCORES;
         return participantsAndScores[0].participant.name;
     };
 
@@ -106,7 +106,7 @@ const ViewPool: React.FC = () => {
     };
 
     const renderTableData = () => {
-        return appState.poolData!.participantsAndScores.map((participantAndScore, index) => {
+        return appState.poolData!.PARTICIPANTS_AND_SCORES.map((participantAndScore, index) => {
             const participantName = participantAndScore.participant.name;
             const score = participantAndScore.score.homeClubScore + " - " + participantAndScore.score.awayClubScore;
             return (

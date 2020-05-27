@@ -217,7 +217,7 @@ const CreatePool: React.FC = () => {
         if (validatedPlayers) {
             setLoading(true);
             try {
-                const response: Response = await fetch(`${getHost()}/api/v1/pool`,
+                const response: Response = await fetch(`${getHost()}/api/v2/pool`,
                     {
                         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
                         method: "POST", body: JSON.stringify(players.map(player => player.name))
@@ -305,6 +305,7 @@ const CreatePool: React.FC = () => {
                                                 margin="normal"
                                                 disabled={true}
                                                 value={t("ADD_PLAYER")}
+                                                data-testid='playerNameField'
                                                 inputProps={{'aria-label': 'Player name'}}>
                                             </TextField>
                                         </TableCell>
@@ -318,7 +319,7 @@ const CreatePool: React.FC = () => {
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" className={classes.button}>
+                            <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" className={classes.button} data-testid="createPoolButton">
                                 {t("CREATE_POOL").toUpperCase()}
                             </Button>
                             <Snackbar

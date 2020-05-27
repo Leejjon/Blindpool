@@ -21,6 +21,6 @@ export interface ParticipantAndScore {
 
 export interface Blindpool {
     key?: string, // When creating the pool the key isn't known yet. That's why its optional at first
-    participantsAndScores: Array<ParticipantAndScore>,
-    createdTimestamp: number,
+    PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>,
+    CREATED_TIMESTAMP: Date,
 }
