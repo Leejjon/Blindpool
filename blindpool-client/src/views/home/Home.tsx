@@ -1,5 +1,14 @@
 import React from "react";
-import {Button, Card, CardActions, CardContent, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Divider,
+    Grid,
+    makeStyles,
+    Typography
+} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet";
@@ -58,20 +67,39 @@ const Home: React.FC = () => {
                     </CardActions>
                 </Card>
             </Grid>
-            {/*<Grid key="faq" item>*/}
-            {/*    <Card className={classes.card}>*/}
-            {/*        <CardContent>*/}
-            {/*            <Typography variant="h2">*/}
-            {/*                Upcoming matches*/}
-            {/*            </Typography>*/}
-            {/*            <Divider style={{marginTop: '0.5em'}} />*/}
-            {/*            <Typography variant="body1"></Typography>*/}
-            {/*        </CardContent>*/}
-            {/*        <CardActions>*/}
-            {/*            <Button size="medium">View all</Button>*/}
-            {/*        </CardActions>*/}
-            {/*    </Card>*/}
-            {/*</Grid>*/}
+            <Grid key="faq" item>
+                <Card className={classes.card}>
+                    <CardContent>
+                        <Typography variant="h2">
+                            {t("BEHIND_BLINDPOOL")}
+                        </Typography>
+                        <Divider style={{marginTop: '0.5em'}} />
+                        <Typography component="p">
+                            <br />{t('MY_DESCRIPTION')}
+                        </Typography>
+                            <br />
+                        <img alt="Leon Liefting" style={{width: '100%', height: "auto"}} src="/leon.png"></img>
+                        <Typography component="p">
+                            <br />
+                            {t('REACH_OUT')}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new" className={classes.firstButton} >
+                            <Button size="medium">LinkedIn</Button>
+                        </a>
+                        <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
+                            <Button size="medium">Github</Button>
+                        </a>
+                        <a href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', padding: '0.5em'}}>
+                            <Button size="medium">DCN</Button>
+                        </a>
+                        <a href="https://twitter.com/Leejjon_net" style={{textDecoration: 'none'}}>
+                            <Button size="medium">Twitter</Button>
+                        </a>
+                    </CardActions>
+                </Card>
+            </Grid>
         </Grid>
     );
 };

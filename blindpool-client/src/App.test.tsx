@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, waitForElement} from '@testing-library/react';
+import {fireEvent, render, waitFor} from '@testing-library/react';
 import App from './App';
 import i18next from "i18next";
 import './locales/i18n';
@@ -41,8 +41,10 @@ describe('Test navigation', () => {
         expect(createButton).toBeInTheDocument();
 
         fireEvent.click(createButton);
-        const createPoolTitle = await waitForElement(() => getByText('Create pool'));
-        expect(createPoolTitle).toBeInTheDocument();
-        expect(createPoolTitle.tagName).toMatch('H2');
+        await waitFor(() => {
+            const createPoolTitle = getByText('Create pool');
+            expect(createPoolTitle).toBeInTheDocument();
+            expect(createPoolTitle.tagName).toMatch('H2');
+        });
     });
 });

@@ -38,7 +38,10 @@ export const resources = {
             "COMIC6": "The person that has the correct final score wins it all!",
             "THANKS_FOR_EXPLANATION": "Let me create a pool now",
             "BACKEND_UNREACHABLE": "Could not reach the server. Check your internet connection.",
-            "BACKEND_OFFLINE": "Our server is not responding as it should. Sorry for the inconvenience."
+            "BACKEND_OFFLINE": "Our server is not responding as it should. Sorry for the inconvenience.",
+            "BEHIND_BLINDPOOL": "Behind Blindpool",
+            "MY_DESCRIPTION": "My name is Leon Liefting and I'm a full stack developer (freelance) from the Netherlands that likes to be involved in all phases of software development.",
+            "REACH_OUT": "If like how Blindpool works and need a freelance developer to help build your next cool app or website, feel free to reach out.",
         }
     },
     nl: {
@@ -76,6 +79,9 @@ export const resources = {
             "THANKS_FOR_EXPLANATION": "Laat me nu een pool maken",
             "BACKEND_UNREACHABLE": "Kon de server niet bereiken. Controleer je internet verbinding.",
             "BACKEND_OFFLINE": "Onze server reageert niet zoals het hoort, excuses voor het ongemak.",
+            "BEHIND_BLINDPOOL": "Achter Blindpool",
+            "MY_DESCRIPTION": "Mijn naam is Leon Liefting en ik ben een full stack developer (freelance). Ik ben graag betrokken in alle fases van software ontwikkeling.",
+            "REACH_OUT": "Als je Blindpool een toffe app vind en een freelance developer nodig hebt om jouw volgende app of website te bouwen, neem dan contact met me op.",
         }
     }
 };
