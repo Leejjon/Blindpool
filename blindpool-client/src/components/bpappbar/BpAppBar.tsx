@@ -74,9 +74,10 @@ const BpAppBar: React.FC = () => {
         <div>
             <AppBar color="primary" position="static" style={{marginRight: 0, paddingRight: 0}}>
                 <Toolbar className={classes.toolBar}>
-                    <IconButton component={MenuIcon} className={classes.menuButton} color="inherit"
+                    <IconButton className={classes.menuButton} color="inherit"
                                 aria-label="Navigation menu" aria-haspopup="true"
                                 onClick={() => setMenuOpen(true)}>
+                        <MenuIcon/>
                     </IconButton>
                     <SwipeableDrawer open={menuOpen}
                                      onClose={() => setMenuOpen(false)}

@@ -27,7 +27,7 @@ public class Pool {
     private final String key;
 
     @Getter
-    private final List<ParticipantScore> participantsAndScores;
+    private final List<ParticipantScore> PARTICIPANTS_AND_SCORES;
 
     private final String match;
 
@@ -35,27 +35,23 @@ public class Pool {
 
     private final Currency currency;
 
-    private final long createdTimestamp;
+    private final long CREATED_TIMESTAMP;
 
-    public Pool(String key, List<ParticipantScore> participantsAndScores, long createdTimestamp) {
-        this(key, participantsAndScores, createdTimestamp, null, null, null);
+    public Pool(String key, List<ParticipantScore> PARTICIPANTS_AND_SCORES, long CREATED_TIMESTAMP) {
+        this(key, PARTICIPANTS_AND_SCORES, CREATED_TIMESTAMP, null, null, null);
     }
 
     /**
-     * @param participantsAndScores The participants and the scores that were randomly assigned to them.
+     * @param PARTICIPANTS_AND_SCORES The participants and the scores that were randomly assigned to them.
      * @param match Id of match that was selected. Can be null.
      */
-    public Pool(String key, List<ParticipantScore> participantsAndScores, long createdTimestamp, String match, String bet, Currency currency) {
+    public Pool(String key, List<ParticipantScore> PARTICIPANTS_AND_SCORES, long CREATED_TIMESTAMP, String match, String bet, Currency currency) {
         // TODO: Precondition for length of number of participants?
         this.key = key;
-        this.participantsAndScores = participantsAndScores;
-        this.createdTimestamp = createdTimestamp;
+        this.PARTICIPANTS_AND_SCORES = PARTICIPANTS_AND_SCORES;
+        this.CREATED_TIMESTAMP = CREATED_TIMESTAMP;
         this.match = match;
         this.bet = bet;
         this.currency = currency;
-    }
-
-    public String getOwner() {
-        return participantsAndScores.get(0).getParticipant().getName();
     }
 }

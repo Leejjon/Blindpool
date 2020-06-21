@@ -1,18 +1,24 @@
 import express from "express";
 import bodyParser from "body-parser";
 import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./api/BlindpoolApi";
+import cors from "cors";
 
 const port = process.env.PORT || 8080;
 
 const router = express.Router();
+
+// Only allow cors when running locally
+if (process.argv[2] === 'local') {
+    router.use(cors());
+    router.options('*', cors());
+}
+
 router.get('/pool/stats', getBlindpoolStatistics);
 router.post('/pool/', postCreateBlindpool);
 router.get('/pool/:key', getBlindpoolByKey);
 
 const app = express();
-// app.use(bodyParser.urlencoded({
-//     extended: true
-// }));
+
 app.use(bodyParser.json());
 app.use('/api/v2/', router);
 
