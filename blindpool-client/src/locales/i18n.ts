@@ -17,8 +17,6 @@ export const resources = {
             "BLINDPOOL_DEFINITION_DESCRIPTION": "A blind pool is a gambling game where all participants are assigned a random score for a football match. The player with the correct final score wins!",
             "HOST_NAME": "Enter the name of the organizer",
             "POOL_MADE_BY": "{{organizer}}'s blind pool",
-            "NEW_VERSION_AVAILABLE": "New version available",
-            "UPDATE_NOW": "Update now",
             "ADD_PLAYER": "Add another player",
             "REMOVE_PLAYER_X": "Remove player {{index}}",
             "ILLEGAL_CHARACTER_MESSAGE": "Please only use letters, numbers and spaces",
@@ -41,7 +39,7 @@ export const resources = {
             "BACKEND_OFFLINE": "Our server is not responding as it should. Sorry for the inconvenience.",
             "BEHIND_BLINDPOOL": "Behind Blindpool",
             "MY_DESCRIPTION": "My name is Leon Liefting and I'm a full stack developer (freelance) from the Netherlands that likes to be involved in all phases of software development.",
-            "REACH_OUT": "If like how Blindpool works and need a freelance developer to help build your next cool app or website, feel free to reach out.",
+            "REACH_OUT": "If you like how Blindpool works and need a freelance developer to help build your next cool app or website, reach out via one of the platforms below.",
         }
     },
     nl: {
@@ -57,8 +55,6 @@ export const resources = {
             "BLINDPOOL_DEFINITION_DESCRIPTION": "Een blindepool is een gokspel waar elke deelnemer een willekeurige voetbal uitslag krijgt. De deelnemer met de uitslag van de wedstrijd, wint.",
             "HOST_NAME": "Vul de naam van de organizator in.",
             "POOL_MADE_BY": "{{organizer}}'s Blindepool",
-            "NEW_VERSION_AVAILABLE": "Nieuwe versie beschikbaar",
-            "UPDATE_NOW": "Update nu",
             "ADD_PLAYER": "Nog een speler toevoegen",
             "REMOVE_PLAYER_X": "Verwijder speler {{name}}",
             "ILLEGAL_CHARACTER_MESSAGE": "Gebruik alleen letters, nummers en spaties",

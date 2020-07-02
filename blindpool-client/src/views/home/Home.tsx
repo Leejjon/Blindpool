@@ -89,12 +89,12 @@ const Home: React.FC = () => {
                             <Button size="medium">LinkedIn</Button>
                         </a>
                         <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">Github</Button>
+                            <Button size="medium">GitHub</Button>
                         </a>
                         <a href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', padding: '0.5em'}}>
                             <Button size="medium">DCN</Button>
                         </a>
-                        <a href="https://twitter.com/Leejjon_net" style={{textDecoration: 'none'}}>
+                        <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none'}}>
                             <Button size="medium">Twitter</Button>
                         </a>
                     </CardActions>
