@@ -42,7 +42,7 @@ export const assignRandomScores = (participantNames: Array<string>) => {
 
     const assignedParticipantsAndScores: Array<ParticipantAndScore> = participantNames.map((name, index) => {
         const participantAndScore: ParticipantAndScore = {
-            participant: {name: name, userType: UserType.ANONYMOUS}, score: generatedScores[index]
+            participant: {name: name.trim(), userType: UserType.ANONYMOUS}, score: generatedScores[index]
         };
         return participantAndScore;
     });

@@ -19,6 +19,26 @@ const hashids = new Hashids();
 export const postCreateBlindpool = async (req: Request, res: Response) => {
     try {
         const names: Array<string> = req.body;
+
+        if (names.length < 1) {
+            mapError(res, ErrorScenarios.INVALID_INPUT);
+            return;
+        }
+
+        const checkForDuplicates = (nameToCheck: string) => {
+            const duplicate = names.filter(name => name === nameToCheck);
+            return duplicate.length > 1;
+        };
+
+        const regex = /^([a-zA-Z0-9 _]+)$/;
+        for (const name of names) {
+            const validName = name && regex.test(name) && !checkForDuplicates(name);
+            if (!validName) {
+                mapError(res, ErrorScenarios.INVALID_INPUT);
+                return;
+            }
+        }
+
         const participantsAndScores = assignRandomScores(names);
         const result = await insertNewBlindpool(participantsAndScores);
         result
@@ -29,6 +49,7 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
                 mapError(res, errorScenario);
             });
     } catch (e) {
+        console.log('Something went wrong with creating a blindpool that wasnt handled by our default validations: ', e);
         mapError(res, ErrorScenarios.INVALID_INPUT);
     }
 };
@@ -43,10 +64,10 @@ export const getBlindpoolByKey = async (req: Request, res: Response) => {
     const blindpoolResult: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(keyAsNumber);
 
     blindpoolResult
-        .map((blindpool) => {
+        .map((blindpool: Blindpool) => {
             mapSuccess(res, blindpool);
         })
-        .mapErr((error) => {
+        .mapErr((error: ErrorScenarios) => {
             mapError(res, error);
         });
 };
@@ -55,10 +76,10 @@ export const getBlindpoolStatistics = async (req: Request, res: Response) => {
     const countResult: Result<Number, ErrorScenarios> = await calculateBlindpoolCount();
 
     countResult
-        .map((poolCount) => {
+        .map((poolCount: Number) => {
             mapSuccess(res, {count: poolCount} as BlindpoolStatistics);
         })
-        .mapErr((errorScenario) => {
+        .mapErr((errorScenario: ErrorScenarios) => {
             mapError(res, errorScenario);
         });
 };
@@ -78,7 +99,7 @@ const mapError = (res: Response, error: ErrorScenarios) => {
             respond(res, 500, 'An error occurred on our side, sorry!');
             break;
         case ErrorScenarios.INVALID_INPUT:
-            respond(res, 401, 'Invalid input.');
+            respond(res, 400, 'Invalid input.');
             break;
     }
 }

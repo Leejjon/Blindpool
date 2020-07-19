@@ -2,8 +2,11 @@
 # Put specific cases at the top.
 dispatch:
 # Route the urls that point to the backend in node-js (typescript)
-  - url: "*/api/v2/*"
+  - url: "*/api/v2/pool/*"
     service: pool-api
+# Route the urls that point to the backend in node-js (typescript)
+  - url: "*/api/v2/match/*"
+    service: matches-api
 # Route all other urls to the React.js frontend
   - url: "*/*"
     service: default

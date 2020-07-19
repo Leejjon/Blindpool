@@ -32,12 +32,10 @@ describe('BlindpoolStorageService tests', () => {
 
         const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(TEST_POOL_KEY);
         expect(result.isOk()).to.be.true;
-        result.map((blindpool) => {
+        result.map((blindpool: Blindpool) => {
             const key = blindpool.key;
             expect(key).to.equal(109);
-            console.log(blindpool);
             const participantsAndScores = blindpool.PARTICIPANTS_AND_SCORES;
-            console.log(participantsAndScores);
             const [first, second] = participantsAndScores;
             expect(first.participant.name).to.equal('Leejjon');
             expect(first.score.homeClubScore).to.equal('0');
@@ -57,7 +55,7 @@ describe('BlindpoolStorageService tests', () => {
 
         const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(0);
         expect(result.isOk()).to.be.false;
-        result.mapErr((errorScenario) => {
+        result.mapErr((errorScenario: ErrorScenarios) => {
             expect(errorScenario).to.equal(ErrorScenarios.NOT_FOUND);
         });
     });
@@ -70,7 +68,7 @@ describe('BlindpoolStorageService tests', () => {
 
         const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(109);
         expect(result.isOk()).to.be.false;
-        result.mapErr((errorScenario) => {
+        result.mapErr((errorScenario: ErrorScenarios) => {
             expect(errorScenario).to.equal(ErrorScenarios.INTERNAL_ERROR);
         });
     });
