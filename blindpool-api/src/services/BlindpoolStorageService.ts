@@ -2,7 +2,6 @@ import {Blindpool, ParticipantAndScore} from '../models/Blindpool';
 import {ok, err, Result} from 'neverthrow';
 import {Transaction} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
-import {assignRandomScores} from "../logic/ScoreGenerator";
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
 const Hashids = require('hashids/cjs');
