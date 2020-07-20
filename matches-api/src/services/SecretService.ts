@@ -5,9 +5,10 @@ import * as SecretManager from '@google-cloud/secret-manager';
 // Instantiates a client
 const client = new SecretManager.SecretManagerServiceClient();
 
-export const accessSecretVersion = async () => {
+export const accessSecretVersion = async (projectId: String) => {
     const [version] = await client.accessSecretVersion({
-        name: 'projects/321048342584/secrets/football-data-api-key/versions/latest',
+        //321048342584
+        name: `projects/${projectId}/secrets/football-data-api-key/versions/latest`,
     });
 
     // Extract the payload as a string.
