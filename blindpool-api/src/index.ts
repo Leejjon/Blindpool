@@ -4,11 +4,11 @@ import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./
 import cors from "cors";
 
 const port = process.env.PORT || 8080;
-
+const environment = process.env.NODE_ENV || 'development';
 const router = express.Router();
 
 // Only allow cors when running locally
-if (process.argv[2] === 'local') {
+if (environment === 'development') {
     router.use(cors());
     router.options('*', cors());
 }

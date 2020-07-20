@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index",
-    "startlocal": "node dist/index local",
     "test": "mocha -r ts-node/register src/**/*test.ts",
     "build": "webpack",
     "webpack": "webpack --config webpackdev.config.ts"
