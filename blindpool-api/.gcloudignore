@@ -14,5 +14,6 @@ node_modules/
 # Don't upload the src files as they are compiled to javascript anyway
 src/
 tsconfig.json
+set_vars.cmd
 webpack.config.ts
 webpackdev.config.ts

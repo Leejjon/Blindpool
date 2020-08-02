@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./api/BlindpoolApi";
 import cors from "cors";
 
@@ -19,7 +18,7 @@ router.get('/pool/:key', getBlindpoolByKey);
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use('/api/v2/', router);
 
 const server = app.listen(port, () => {
