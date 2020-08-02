@@ -12,10 +12,6 @@ To get the correct environment variables (Windows)
 
 ```gcloud beta emulators datastore env-init > set_vars.cmd && set_vars.cmd```
 
-To run the back end:
-
-```mvn clean install exec:exec```
-
 To run the back end (node):
 
 ```
