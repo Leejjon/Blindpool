@@ -2,8 +2,6 @@ import express from "express";
 
 import { getScheduledMatches } from "./actions/getScheduledMatches";
 
-
-
 const PORT = 8080;
 const app = express();
 const router = express.Router();

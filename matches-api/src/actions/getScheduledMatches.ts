@@ -5,25 +5,19 @@ import axios from "axios";
 import { API_FOOTBAL_DATA_URL, API_FOOTBAL_DATA_KEY } from "../constants";
 
 export const getScheduledMatches = async (req: Request, res: Response) => {
-
     const datastore = new Datastore();
-    
+
     const matchKind = "match";
     const matchSource = "match-source";
 
     try {
+
         const matchesResponse = await axios.get(
-            `${API_FOOTBAL_DATA_URL}/matches/?status=SCHEDULED`,
+            `${API_FOOTBAL_DATA_URL}/matches/?status=CANCELED`,
             { headers: { "X-Auth-Token": API_FOOTBAL_DATA_KEY } }
         );
 
-        matchesResponse.data.matches.map(async (match: any) => {
-            // The Cloud Datastore key for the new entity
-            const matchKey = datastore.key(matchKind);
-            const sourceId = `football-data-${match.id}`;
-
-            await datastore.update(entity);
-
+        matchesResponse.data?.matches?.map(async (match: any) => {
             const result = {
                 date: match.utcDate,
                 competitionName: match.competition.name,
@@ -37,12 +31,35 @@ export const getScheduledMatches = async (req: Request, res: Response) => {
                 }
             } as Match;
 
-            const matchData = {
-                key: matchKey,
-                data: result,
-            }
+            const sourceId = datastore.key([matchSource, `football-data-${match.id}`]);
+            const resultKey = await datastore.get(sourceId);
 
-            await datastore.save(matchData);
+            if (resultKey?.length > 0 && resultKey[0]) {
+                console.log("Found the key", resultKey)
+                // const matchData = {
+                //     key: storedResult.key,
+                //     data: storedResult.data,
+                // }
+                // await datastore.update(matchData);
+            } else {
+                console.log("Not found");
+                // The Cloud Datastore key for the new entity
+                const matchKey = datastore.key(matchKind);
+                const matchData = {
+                    key: matchKey,
+                    data: result,
+                };
+                await datastore.save(matchData);
+                console.log("saved match", matchData);
+                const sourceIdData = {
+                    key: sourceId,
+                    data: { id: matchKey.id },
+                }
+                console.log("sourceIdData", sourceIdData);
+
+                await datastore.save(sourceIdData);
+
+            }
 
         });
 
@@ -51,6 +68,7 @@ export const getScheduledMatches = async (req: Request, res: Response) => {
         res.send({ success: true });
 
     } catch (error) {
+        console.log("error", error);
         res.status(500);
         res.send({ success: false, error });
     }
