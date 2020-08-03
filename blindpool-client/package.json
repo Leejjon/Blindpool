@@ -3,35 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "4.9.12",
+    "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
-    "@material-ui/lab": "4.0.0-alpha.51",
-    "@material-ui/styles": "4.9.10",
-    "@testing-library/jest-dom": "5.5.0",
-    "@testing-library/react": "10.0.4",
-    "@testing-library/user-event": "10.1.0",
+    "@material-ui/lab": "4.0.0-alpha.56",
+    "@material-ui/styles": "4.10.0",
+    "@testing-library/jest-dom": "5.11.2",
+    "@testing-library/react": "10.4.7",
+    "@testing-library/user-event": "12.1.0",
     "@types/fetch-mock": "7.3.2",
-    "@types/jest": "25.2.1",
-    "@types/node": "13.13.4",
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.7",
-    "@types/react-flag-icon-css": "1.0.2",
-    "@types/react-helmet": "5.0.15",
+    "@types/jest": "26.0.8",
+    "@types/node": "14.0.27",
+    "@types/react": "16.9.44",
+    "@types/react-dom": "16.9.8",
+    "@types/react-flag-icon-css": "1.0.4",
+    "@types/react-helmet": "6.1.0",
     "@types/react-router-dom": "5.1.5",
     "@types/react-swipeable-views": "0.13.0",
-    "fetch-mock": "9.4.0",
-    "i18next": "19.4.4",
-    "node-fetch": "^2.6.0",
+    "fetch-mock": "9.10.6",
+    "i18next": "19.6.3",
+    "node-fetch": "2.6.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-flag-icon-css": "1.0.25",
-    "react-helmet": "6.0.0",
-    "react-i18next": "11.4.0",
-    "react-router-dom": "5.1.2",
+    "react-helmet": "6.1.0",
+    "react-i18next": "11.7.0",
+    "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
     "react-swipeable-views": "0.13.9",
     "react-swipeable-views-utils": "0.13.9",
-    "typescript": "3.8.3"
+    "typescript": "3.9.7"
   },
   "scripts": {
     "start": "node app.js",
@@ -56,6 +56,6 @@
     ]
   },
   "devDependencies": {
-    "jest-environment-jsdom-sixteen": "^1.0.3"
+    "jest-environment-jsdom-sixteen": "1.0.3"
   }
 }
