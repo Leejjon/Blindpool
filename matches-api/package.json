@@ -1,0 +1,35 @@
+{
+  "name": "matches-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "lint": "tslint --project tslint.json",
+  "scripts": {
+    "start": "node dist/index",
+    "local": "$(gcloud beta emulators datastore env-init) && npm start",
+    "webpack": "webpack --config webpackdev.config.ts",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "emulator-linux": "export DATASTORE_DATASET=nodejs-static && export DATASTORE_EMULATOR_HOST=localhost:8081 && export DATASTORE_EMULATOR_HOST_PATH=localhost:8081/datastore && export DATASTORE_HOST=http://localhost:8081 && export DATASTORE_PROJECT_ID=nodejs-static"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/datastore": "6.1.0",
+    "@google-cloud/secret-manager": "3.1.0",
+    "axios": "0.19.2",
+    "dotenv": "8.2.0",
+    "express": "4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.7",
+    "@types/node": "14.0.23",
+    "copy-webpack-plugin": "6.0.3",
+    "ts-loader": "8.0.1",
+    "typescript": "3.9.7",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.12",
+    "webpack-node-externals": "2.5.0"
+  }
+}

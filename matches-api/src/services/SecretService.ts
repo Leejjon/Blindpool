@@ -1,21 +1,23 @@
 // Imports the Secret Manager library
 // const SecretManager = require('@google-cloud/secret-manager');
 import * as SecretManager from '@google-cloud/secret-manager';
+import fs from "fs";
 
 // Instantiates a client
 const client = new SecretManager.SecretManagerServiceClient();
 
-export const accessSecretVersion = async (projectId: String) => {
-    const [version] = await client.accessSecretVersion({
-        //321048342584
-        name: `projects/${projectId}/secrets/football-data-api-key/versions/latest`,
-    });
+const environment = process.env.NODE_ENV || 'development';
 
-    // Extract the payload as a string.
-    const payload = version?.payload?.data?.toString();
+export const fetchSecret = async (): Promise<string> => {
+    if (environment === 'production') {
+        const [version] = await client.accessSecretVersion({
+            //321048342584
+            name: `projects/${process.env.GOOGLE_CLOUD_PROJECT}/secrets/football-data-api-key/versions/latest`,
+        });
 
-    // WARNING: Do not print the secret in a production environment - this
-    // snippet is showing how to access the secret material.
-    console.info(`Payload: ${payload}`);
-    return payload;
+        // Extract the payload as a string.
+        return version?.payload?.data?.toString() as string;
+    } else {
+        return fs.readFileSync('local.key', 'utf8');
+    }
 };

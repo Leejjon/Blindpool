@@ -6,5 +6,9 @@ frontend/frontend.iml
 frontend/node_modules
 blindpool-api/dist
 blindpool-api/node_modules
+matches-api/dist
+matches-api/node_modules
+matches-api/local.key
+
 .idea/
 *.iml
