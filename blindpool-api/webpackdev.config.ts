@@ -8,7 +8,7 @@ module.exports = {
     target: "node",
     externals: [
         nodeExternalsDev({
-            whitelist: ["webpack/hot/poll?100"]
+            allowlist: ["webpack/hot/poll?100"]
         })
     ],
     module: {

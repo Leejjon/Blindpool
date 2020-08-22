@@ -12,6 +12,12 @@ To get the correct environment variables (Windows)
 
 ```gcloud beta emulators datastore env-init > set_vars.cmd && set_vars.cmd```
 
+On Linux:
+https://cloud.google.com/sdk/docs/quickstart-debian-ubuntu
+
+To install the emulator on Linux:
+```sudo apt-get install google-cloud-sdk-datastore-emulator```
+
 To run the back end (node):
 
 ```
