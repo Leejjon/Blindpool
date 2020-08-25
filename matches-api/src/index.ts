@@ -1,8 +1,6 @@
 import express from "express";
 
-
-import { getScheduledMatches } from "./api/getScheduledMatches";
-import { findAndCacheClubIcons } from "./api/IconApi";
+import { getScheduledMatches } from "./api/MatchesApi";
 
 const PORT = 8082;
 const app = express();
@@ -12,9 +10,7 @@ const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
 
-router.get('/match/scheduled', getScheduledMatches);
-router.get('/match/finished', getScheduledMatches);
-router.get('/icons/refresh', findAndCacheClubIcons);
+router.get('/matches/update', getScheduledMatches);
 
 app.use('/api/v2', router);
 
