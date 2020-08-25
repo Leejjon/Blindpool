@@ -1,7 +1,7 @@
 import { Datastore } from "@google-cloud/datastore";
-import { Match } from "../objects/Match";
+import { Match } from "../model/Match";
 import { Request, Response } from "express";
-import { API_FOOTBAL_DATA_URL } from "../constants";
+import { API_FOOTBAL_DATA_URL, EREDIVISIE } from "../constants";
 import axios from "axios";
 import {fetchSecret} from "../services/SecretService";
 
@@ -13,7 +13,7 @@ export const getScheduledMatches = async (req: Request, res: Response) => {
 
     try {
         const matchesResponse = await axios.get(
-            `${API_FOOTBAL_DATA_URL}/matches/?status=CANCELED`,
+            `${API_FOOTBAL_DATA_URL}/competitions/${EREDIVISIE}/matches/`,
             { headers: { "X-Auth-Token": await fetchSecret()} }
         );
 
@@ -30,6 +30,8 @@ export const getScheduledMatches = async (req: Request, res: Response) => {
                     score: match.score.fullTime.awayTeam
                 }
             } as Match;
+
+            console.log(`${JSON.stringify(result)}`);
 
             const sourceId = datastore.key([matchSource, `football-data-${match.id}`]);
             const resultKey = await datastore.get(sourceId);
