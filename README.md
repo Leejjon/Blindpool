@@ -18,9 +18,13 @@ https://cloud.google.com/sdk/docs/quickstart-debian-ubuntu
 To install the emulator on Linux:
 ```sudo apt-get install google-cloud-sdk-datastore-emulator```
 
+To run the emulator:
+```gcloud beta emulators datastore start```
+
 To run the back end (node):
 
 ```
+$(gcloud beta emulators datastore env-init)
 npm run webpack
 npm run start
 ```

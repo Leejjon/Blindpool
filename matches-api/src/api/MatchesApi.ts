@@ -24,7 +24,7 @@ export const getScheduledMatches = async (req: Request, res: Response) => {
             try {
                 const result = {
                     date: match.utcDate,
-                    competitionName: match.competitionName,
+                    competitionName: EREDIVISIE_NAME,
                     homeTeam: {
                         name: match.homeTeam.name,
                         score: match.score.fullTime.homeTeam
