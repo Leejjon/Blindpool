@@ -1,6 +1,6 @@
 export interface Match {
     sourceId: number;
-    date: Date,
+    startTimestamp: Date,
     // TODO: make this competition ID in the future?
     competitionName: string,
     homeTeam: Score,

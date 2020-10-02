@@ -1,8 +1,8 @@
 import express from "express";
 
-import { getScheduledMatches } from "./api/MatchesApi";
+import { fetchAndSaveScheduledMatches, getTenScheduledMatches } from "./api/MatchesApi";
 
-const PORT = 8082;
+const PORT = process.env.PORT || 8082;
 const app = express();
 const router = express.Router();
 
@@ -10,9 +10,10 @@ const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
 
-router.get('/matches/update', getScheduledMatches);
+router.get('/matches/update', fetchAndSaveScheduledMatches);
+router.get('/matches/upcoming', getTenScheduledMatches);
 
-app.use('/api/v2', router);
+app.use('/api/v2/', router);
 
 /**
  * Webpack HMR Activation
