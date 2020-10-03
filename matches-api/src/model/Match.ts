@@ -1,13 +1,16 @@
 export interface Match {
-    sourceId: number;
     startTimestamp: Date,
-    // TODO: make this competition ID in the future?
     competitionName: string,
-    homeTeam: Score,
-    awayTeam: Score,
-};
+    currentScore: Score,
+    homeTeam: Team
+}
+
+export interface Team {
+    name: string,
+    iconUrl: string
+}
 
 export interface Score {
-    name: string,
-    score: number,
-};
+    home: number
+    away: number
+}
