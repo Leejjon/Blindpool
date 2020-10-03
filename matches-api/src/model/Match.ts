@@ -1,13 +1,12 @@
 export interface Match {
+    id?: string
     startTimestamp: Date,
     competitionName: string,
     currentScore: Score,
-    homeTeam: Team
-}
-
-export interface Team {
-    name: string,
-    iconUrl: string
+    homeTeam: string,
+    homeTeamID: string,
+    awayTeam: string,
+    awayTeamID: string
 }
 
 export interface Score {

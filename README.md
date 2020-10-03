@@ -21,6 +21,10 @@ To install the emulator on Linux:
 To run the emulator:
 ```gcloud beta emulators datastore start```
 
+To delete all data in the datastore emulator:
+```cd ~/.config/gcloud/emulators/datastore/WEB-INF/appengine-generate```
+```rm -rf local_db.bin```
+
 To run the back end (node):
 
 ```
