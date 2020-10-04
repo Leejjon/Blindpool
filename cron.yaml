@@ -1,1 +1,4 @@
 cron:
+  - description: do something
+    url: /api/v2/matches/update
+    schedule: every 60 minutes
