@@ -22,15 +22,15 @@ To run the emulator:
 ```gcloud beta emulators datastore start```
 
 To delete all data in the datastore emulator:
-```cd ~/.config/gcloud/emulators/datastore/WEB-INF/appengine-generate```
+```cd ~/.config/gcloud/emulators/datastore/WEB-INF/appengine-generated/```
 ```rm -rf local_db.bin```
 
 To run the back end (node):
 
 ```
-$(gcloud beta emulators datastore env-init)
 npm run webpack
-npm run start
+$(gcloud beta emulators datastore env-init)
+npm start
 ```
 
 To run the front end:

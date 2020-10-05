@@ -6,7 +6,7 @@ import {
     FootballDataApiMatch,
     getMatchesFromFootballDataApi
 } from "../services/footballdata-api/FootballDataApi";
-import {insertOrUpdateMatch, selectTenUpcomingMatches} from "../services/DatastoreService";
+import {upsertMatches, selectTenUpcomingMatches} from "../services/DatastoreService";
 
 export const getTenScheduledMatches = async (req: Request, res: Response) => {
     let tenUpcomingMatchesResult = await selectTenUpcomingMatches();
@@ -26,9 +26,7 @@ export const getTenScheduledMatches = async (req: Request, res: Response) => {
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {
     let matches = await getMatchesFromFootballDataApi();
     matches.map((matches: Array<FootballDataApiMatch>) => {
-        matches.forEach((match) => {
-            insertOrUpdateMatch(match);
-        });
+        upsertMatches(matches);
     }); // No need to do anything with errors because we're not waiting with responding.
 
     res.contentType('application/json');

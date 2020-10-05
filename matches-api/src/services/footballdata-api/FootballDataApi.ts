@@ -1,4 +1,4 @@
-import {ok, err, Result, Err} from "neverthrow";
+import {ok, err, Result} from "neverthrow";
 import axios from "axios";
 import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE} from "./constants";
 import {fetchSecret} from "../SecretService";

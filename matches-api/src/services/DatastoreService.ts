@@ -3,6 +3,8 @@ import {Match, Score} from "../model/Match";
 import {EREDIVISIE_NAME} from "./footballdata-api/constants";
 import {err, ok, Result} from "neverthrow";
 import {ErrorScenarios, FootballDataApiMatch} from "./footballdata-api/FootballDataApi";
+import {google} from "@google-cloud/datastore/build/protos/protos";
+
 
 export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, ErrorScenarios>> => {
     try {
@@ -28,68 +30,52 @@ export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, E
     }
 };
 
-export const insertOrUpdateMatch = async (match: FootballDataApiMatch) => {
+export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
     try {
         const matchKind = "match";
         const datastore = new Datastore();
-        const startTimestamp = new Date(match.utcDate);
 
-        const isMatchFinished = function () {
-            return match.score.fullTime.homeTeam != null && match.score.fullTime.awayTeam != null;
-        }
+        const matchEntities = matches.map((match) => {
+            const startTimestamp = new Date(match.utcDate);
 
-        const createScoreObject = (): Score => {
-            if (match.score.fullTime.homeTeam != null && match.score.fullTime.awayTeam != null) {
-                return {
-                    home: match.score.fullTime.homeTeam,
-                    away: match.score.fullTime.awayTeam,
-                } as Score;
-            } else {
-                return {
-                    home: 0,
-                    away: 0
-                } as Score
+            const isMatchFinished = function () {
+                return match.score.fullTime.homeTeam != null && match.score.fullTime.awayTeam != null;
             }
-        }
 
-        const matchIndexes = [
-            { name: 'startTimestamp', value: startTimestamp.toJSON() },
-            { name: 'competitionName', value: EREDIVISIE_NAME },
-            { name: 'homeTeam', value: match.homeTeam.name },
-            { name: 'homeTeamID', value: match.homeTeam.id },
-            { name: 'awayTeam', value: match.awayTeam.name },
-            { name: 'awayTeamID', value: match.awayTeam.id },
-            { name: 'score', value: createScoreObject() },
-            { name: 'finished', value: isMatchFinished() }
-        ];
-
-        const existingMatchKey = datastore.key([matchKind, `football-data-${match.id}`]);
-        const [existingMatch] = await datastore.get(existingMatchKey);
-
-        if (existingMatch) {
-            const externalHomeTeamScore = match.score.fullTime.homeTeam;
-            const externalAwayTeamScore = match.score.fullTime.awayTeam;
-            if ((externalHomeTeamScore !== null && externalAwayTeamScore !== null)
-                && (externalHomeTeamScore !== existingMatch.score.homeScore || externalAwayTeamScore !== existingMatch.score.awayScore)) {
-                console.log(`Updated score for ${match.homeTeam.name}-${match.awayTeam.name} that started at ${match.utcDate} to ${match.score.fullTime.homeTeam}-${match.score.fullTime.awayTeam}`);
-
-                const updatedMatch = {
-                    key: existingMatchKey,
-                    data: matchIndexes
-                };
-                await datastore.update(updatedMatch);
+            const createScoreObject = (): Score => {
+                if (match.score.fullTime.homeTeam != null && match.score.fullTime.awayTeam != null) {
+                    return {
+                        home: match.score.fullTime.homeTeam,
+                        away: match.score.fullTime.awayTeam,
+                    } as Score;
+                } else {
+                    return {
+                        home: 0,
+                        away: 0
+                    } as Score
+                }
             }
-        } else {
-            console.log(`Storing new match ${match.homeTeam.name}-${match.awayTeam.name} at ${match.utcDate}`);
 
-            const matchKey = datastore.key([matchKind, `football-data-${match.id}`]);
-            const matchData = {
-                key: matchKey,
-                data: matchIndexes,
+            const matchIndexes = [
+                { name: 'startTimestamp', value: startTimestamp.toJSON() },
+                { name: 'competitionName', value: EREDIVISIE_NAME },
+                { name: 'homeTeam', value: match.homeTeam.name },
+                { name: 'homeTeamID', value: match.homeTeam.id },
+                { name: 'awayTeam', value: match.awayTeam.name },
+                { name: 'awayTeamID', value: match.awayTeam.id },
+                { name: 'score', value: createScoreObject() },
+                { name: 'finished', value: isMatchFinished() }
+            ];
+
+            const existingMatchKey = datastore.key([matchKind, `football-data-${match.id}`]);
+            return {
+                key: existingMatchKey,
+                data: matchIndexes
             };
-            await datastore.save(matchData);
-        }
+        });
+
+        await datastore.upsert(matchEntities);
     } catch (error) {
-        console.error(`Something went wrong with storing the match ${JSON.stringify(match)} in Google Datastore, error: ${error}`);
+        console.error(`Something went wrong with storing the matches in Google Datastore, error: ${error}`);
     }
 };
