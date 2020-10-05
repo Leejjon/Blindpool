@@ -3,8 +3,6 @@ import {Match, Score} from "../model/Match";
 import {EREDIVISIE_NAME} from "./footballdata-api/constants";
 import {err, ok, Result} from "neverthrow";
 import {ErrorScenarios, FootballDataApiMatch} from "./footballdata-api/FootballDataApi";
-import {google} from "@google-cloud/datastore/build/protos/protos";
-
 
 export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, ErrorScenarios>> => {
     try {

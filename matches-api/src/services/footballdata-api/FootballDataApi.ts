@@ -54,9 +54,10 @@ export interface FootballDataApiTeam {
 export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {
     let response;
     try {
+        const secret = await fetchSecret();
         response = await axios.get(
             `${API_FOOTBAL_DATA_URL}/competitions/${EREDIVISIE_CODE}/matches/`,
-            {headers: {"X-Auth-Token": await fetchSecret()}}
+            {headers: {"X-Auth-Token": secret}}
         );
 
         if (response.status === 200) {

@@ -1,5 +1,4 @@
-import {Datastore} from "@google-cloud/datastore";
-import {Match, Score} from "../model/Match";
+import {Match} from "../model/Match";
 import {Request, Response} from "express";
 import {
     ErrorScenarios,
