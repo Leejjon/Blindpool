@@ -1,4 +1,4 @@
 cron:
-  - description: do something
+  - description: Sync latest matches
     url: /api/v2/matches/update
     schedule: every 60 minutes

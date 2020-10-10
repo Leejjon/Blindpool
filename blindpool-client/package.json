@@ -21,7 +21,7 @@
     "@types/react-swipeable-views": "0.13.0",
     "fetch-mock": "9.10.6",
     "i18next": "19.6.3",
-    "node-fetch": "2.6.0",
+    "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-flag-icon-css": "1.0.25",
