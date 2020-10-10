@@ -80,7 +80,7 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
         }
         return ok(blindpoolToReturn);
     } catch (e) {
-        console.error(e.toString());
+        console.error(`Failed to insert pool: ${e.toString()}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }

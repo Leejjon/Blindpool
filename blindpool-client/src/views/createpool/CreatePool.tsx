@@ -229,6 +229,7 @@ const CreatePool: React.FC = () => {
                     setLoading(false);
                     history.push(`/pool/${poolJson.key}`);
                 } else {
+                    setLoading(false);
                     setMessage('BACKEND_OFFLINE');
                 }
             } catch (error) {
