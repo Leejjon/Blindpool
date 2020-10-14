@@ -3,17 +3,30 @@ import {fireEvent, render, waitFor} from '@testing-library/react';
 import App from './App';
 import i18next from "i18next";
 import './locales/i18n';
+import fetchMock from "fetch-mock";
+import {act} from "react-dom/test-utils";
 
 describe('Test home page in English', () => {
     beforeAll(() => {
         i18next.changeLanguage('en');
     });
 
-    test('Verify page title', () => {
-        const {getByText} = render(<App/>);
-        const cardTitle = getByText('What is a blind pool?');
-        expect(cardTitle).toBeInTheDocument();
-        expect(cardTitle.tagName).toMatch('H2');
+    afterEach(() => {
+        fetchMock.restore();
+    });
+
+    test('Verify page title', async() => {
+        fetchMock.mock('http://localhost:8080/api/v2/matches/upcoming', {
+            body: [],
+            status: 200
+        });
+
+        await act(async () => {
+            const {getByText} = render(<App/>);
+            const cardTitle = getByText('What is a blind pool?');
+            expect(cardTitle).toBeInTheDocument();
+            expect(cardTitle.tagName).toMatch('H2');
+        });
     });
 });
 
@@ -22,11 +35,22 @@ describe('Test home page in Dutch', () => {
         i18next.changeLanguage('nl');
     });
 
+    afterEach(() => {
+        fetchMock.restore();
+    });
+
     test('Verify home page content', async () => {
-        const {getByText} = render(<App/>);
-        const cardTitle = getByText('Wat is een blindepool?');
-        expect(cardTitle).toBeInTheDocument();
-        expect(cardTitle.tagName).toMatch('H2');
+        fetchMock.mock('http://localhost:8080/api/v2/matches/upcoming', {
+            body: [],
+            status: 200
+        });
+
+        await act(async () => {
+            const {getByText} = render(<App/>);
+            const cardTitle = getByText('Wat is een blindepool?');
+            expect(cardTitle).toBeInTheDocument();
+            expect(cardTitle.tagName).toMatch('H2');
+        });
     });
 });
 

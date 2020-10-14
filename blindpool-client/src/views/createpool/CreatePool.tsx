@@ -19,6 +19,7 @@ import Blindpool from "../../model/Blindpool";
 import Player from "../../model/Player";
 import NameField from "./NameField";
 import MuiAlert from '@material-ui/lab/Alert';
+import {getHost} from "../../utils/Network";
 
 const useStyles = makeStyles({
     root: {
@@ -104,15 +105,6 @@ const useStyles = makeStyles({
         color: 'white'
     }
 });
-
-const getHost = () => {
-    let host = window.location.protocol + "//" + window.location.hostname;
-
-    if (window.location.hostname === 'localhost') {
-        host += ":8080"
-    }
-    return host;
-};
 
 const EMPTY_STRING = "";
 

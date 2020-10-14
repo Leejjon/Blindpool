@@ -40,6 +40,7 @@ export const resources = {
             "BEHIND_BLINDPOOL": "Behind Blindpool",
             "MY_DESCRIPTION": "My name is Leon Liefting and I'm a full stack developer (freelance) from the Netherlands that likes to be involved in all phases of software development.",
             "REACH_OUT": "If you like how Blindpool works and need a freelance developer to help build your next cool app or website, reach out via one of the platforms below.",
+            "OTHER_APPS": "Other Apps",
         }
     },
     nl: {
@@ -78,6 +79,7 @@ export const resources = {
             "BEHIND_BLINDPOOL": "Achter Blindpool",
             "MY_DESCRIPTION": "Mijn naam is Leon Liefting en ik ben een full stack developer (freelance). Ik ben graag betrokken in alle fases van software ontwikkeling.",
             "REACH_OUT": "Als je Blindpool een toffe app vind en een freelance developer nodig hebt om jouw volgende app of website te bouwen, neem dan contact met me op.",
+            "OTHER_APPS": "Andere Apps",
         }
     }
 };

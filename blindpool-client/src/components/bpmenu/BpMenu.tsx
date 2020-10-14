@@ -112,7 +112,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         {t("HOW_TO_USE_BLINDPOOL_TITLE")}
                     </ListItemText>
                 </ListItem>
-                <ListItem button component={Link} onClick={closeMenu} to="/"
+                <ListItem button component={Link} onClick={closeMenu} to="/About"
                           className={classes.linkWithoutDecoration}>
                     <ListItemIcon className={classes.negativeLinkPadding}>
                         <SupervisedUserCircleIcon fontSize="large"/>
@@ -125,7 +125,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
             <List>
                 <ListItem button className={classes.linkWithoutDecoration}>
                     <ListItemText className={classes.bottomLinks}>
-                        <strong>Other apps</strong>
+                        <strong>{t('OTHER_APPS')}</strong>
                     </ListItemText>
                 </ListItem>
                 <ListItem button className={classes.linkWithoutDecoration}>

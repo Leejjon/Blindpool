@@ -5,13 +5,14 @@ import {
     CardActions,
     CardContent,
     Divider,
-    Grid,
+    Grid, List, ListItemText,
     makeStyles,
     Typography
 } from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet";
+import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 
 const useStyles = makeStyles({
     root: {
@@ -67,37 +68,13 @@ const Home: React.FC = () => {
                     </CardActions>
                 </Card>
             </Grid>
-            <Grid key="faq" item>
+            <Grid key="matchers" item>
                 <Card className={classes.card}>
                     <CardContent>
-                        <Typography variant="h2">
-                            {t("BEHIND_BLINDPOOL")}
-                        </Typography>
+                        <Typography variant="h2">Upcoming Matches</Typography>
                         <Divider style={{marginTop: '0.5em'}} />
-                        <Typography component="p">
-                            <br />{t('MY_DESCRIPTION')}
-                        </Typography>
-                            <br />
-                        <img alt="Leon Liefting" style={{width: '100%', height: "auto"}} src="/leon.png"></img>
-                        <Typography component="p">
-                            <br />
-                            {t('REACH_OUT')}
-                        </Typography>
+                        <BpUpcomingMatches />
                     </CardContent>
-                    <CardActions>
-                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new" className={classes.firstButton} >
-                            <Button size="medium">LinkedIn</Button>
-                        </a>
-                        <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">GitHub</Button>
-                        </a>
-                        <a href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', padding: '0.5em'}}>
-                            <Button size="medium">DCN</Button>
-                        </a>
-                        <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">Twitter</Button>
-                        </a>
-                    </CardActions>
                 </Card>
             </Grid>
         </Grid>

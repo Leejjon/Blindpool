@@ -13,13 +13,13 @@ import {
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import appState from "../../state/AppState";
+import {getHost} from "../../utils/Network";
 
 const useStyles = makeStyles({
     root: {
         flexShrink: 0,
         textAlign: 'center',
         marginTop: '1em',
-
     },
     header: {
         marginTop: '1em',
@@ -58,28 +58,22 @@ const useStyles = makeStyles({
 
 const copyFieldId = "copyTextField";
 
+interface KeyInParams {
+    key: string
+}
+
 const ViewPool: React.FC = () => {
-    let { key } = useParams();
+    let { key } = useParams<KeyInParams>();
     const classes = useStyles();
     const {t} = useTranslation();
     const [loading, setLoading] = useState(true);
-
-    const getHost = () => {
-        let host = window.location.protocol + "//" + window.location.hostname;
-
-        if (window.location.hostname === 'localhost') {
-            host += ":8080"
-        }
-        return host;
-    };
-
     const [shareUrl, setShareUrl] = useState("");
+
     if (loading) {
         if (appState.poolData === undefined || appState.poolData!.key !== key) {
+            // TODO:  Need to add a catch mechanism.
             fetch(`${getHost()}/api/v2/pool/${key}`)
-                .then(function (poolJsonFromServer) {
-                    return poolJsonFromServer.json();
-                })
+                .then(poolJsonFromServer => poolJsonFromServer.json())
                 .then((poolJson) => {
                     appState.setPool(poolJson);
                     setLoading(false);
