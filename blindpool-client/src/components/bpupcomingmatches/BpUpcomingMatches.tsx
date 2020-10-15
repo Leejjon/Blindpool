@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {CircularProgress, makeStyles, Snackbar, Typography} from "@material-ui/core";
+import {CircularProgress, List, ListItem, makeStyles, Snackbar, Typography} from "@material-ui/core";
 import appState, {Match} from "../../state/AppState";
 import {Api, getHost} from "../../utils/Network";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -52,13 +52,27 @@ const BpUpcomingMatches: React.FC = () => {
     } else {
         if (appState.upcomingMatches) {
             return (
-                <div>
+                <List component="ul">
+                    <br/>
                     {appState.upcomingMatches?.map((match: Match) => {
+                        const homeTeamIconUrl = `https://crests.football-data.org/${match.homeTeamID}.svg`;
+                        const awayTeamIconUrl = `https://crests.football-data.org/${match.awayTeamID}.svg`;
+
+                        const clubIconStyle = {
+                            width: '3em', height: '3em', marginLeft: '1em', marginRight: '1em'
+                        };
+
+                        const startTimestamp: Date = new Date(match.startTimestamp);
                         return (
-                            <div key={match.id}>{match.homeTeam}-{match.awayTeam}</div>
+                            <ListItem key={`matchListItem${match.id}`}>
+                                <div><img  style={clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} /></div>
+                                /
+                                <div><img style={clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} /></div>
+                                hallo
+                            </ListItem>
                         );
                     })}
-                </div>
+                </List>
             );
         } else {
             return (

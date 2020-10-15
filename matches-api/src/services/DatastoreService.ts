@@ -11,7 +11,7 @@ export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, E
         const query = datastore.createQuery('match')
             .order('startTimestamp', {descending: false})
             .filter('startTimestamp', '>', currentTimestamp.toJSON())
-            .limit(10);
+            .limit(5);
 
         let [upcomingTenMatches] = await datastore.runQuery(query);
 

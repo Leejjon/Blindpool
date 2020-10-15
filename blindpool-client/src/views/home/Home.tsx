@@ -71,7 +71,7 @@ const Home: React.FC = () => {
             <Grid key="matchers" item>
                 <Card className={classes.card}>
                     <CardContent>
-                        <Typography variant="h2">Upcoming Matches</Typography>
+                        <Typography variant="h2">Upcoming matches</Typography>
                         <Divider style={{marginTop: '0.5em'}} />
                         <BpUpcomingMatches />
                     </CardContent>
