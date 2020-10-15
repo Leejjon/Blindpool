@@ -1,19 +1,28 @@
 import express from "express";
+import cors from "cors";
 
 import { fetchAndSaveScheduledMatches, getTenScheduledMatches } from "./api/MatchesApi";
 
 const PORT = process.env.PORT || 8082;
-const app = express();
+const environment = process.env.NODE_ENV || 'development';
 const router = express.Router();
 
-const server = app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
+// Only allow cors when running locally
+if (environment === 'development') {
+    router.use(cors());
+    router.options('*', cors());
+}
 
 router.get('/matches/update', fetchAndSaveScheduledMatches);
 router.get('/matches/upcoming', getTenScheduledMatches);
 
+const app = express();
+
 app.use('/api/v2/', router);
+
+const server = app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+});
 
 /**
  * Webpack HMR Activation

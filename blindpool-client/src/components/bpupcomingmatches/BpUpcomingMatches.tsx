@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {CircularProgress, makeStyles, Snackbar, Typography} from "@material-ui/core";
 import appState, {Match} from "../../state/AppState";
-import {getHost} from "../../utils/Network";
+import {Api, getHost} from "../../utils/Network";
 import MuiAlert from "@material-ui/lab/Alert";
 import {useTranslation} from "react-i18next";
 
@@ -22,10 +22,14 @@ const BpUpcomingMatches: React.FC = () => {
 
     useEffect(() => {
         if (!appState.upcomingMatches) {
-            fetch(`${getHost()}/api/v2/matches/upcoming`)
+            fetch(`${getHost(Api.matches)}/api/v2/matches/upcoming`)
                 .then(async upcomingMatchesResponse => {
-                    let upcomingMatches = await upcomingMatchesResponse.json();
-                    appState.setUpcomingMatches(upcomingMatches);
+                    if (upcomingMatchesResponse.status === 200) {
+                        let upcomingMatches = await upcomingMatchesResponse.json();
+                        appState.setUpcomingMatches(upcomingMatches);
+                    } else {
+                        setMessage('BACKEND_OFFLINE');
+                    }
                     setLoading(false);
                 })
                 .catch(result => {
@@ -49,12 +53,17 @@ const BpUpcomingMatches: React.FC = () => {
         if (appState.upcomingMatches) {
             return (
                 <div>
-                    <h1>title</h1>
-                    {appState.upcomingMatches?.map((match) => {
+                    {appState.upcomingMatches?.map((match: Match) => {
                         return (
-                            <div>{match.homeTeam}-{match.awayTeam}</div>
+                            <div key={match.id}>{match.homeTeam}-{match.awayTeam}</div>
                         );
                     })}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <br/><p>Something went wrong with loading the matches</p>
                     <Snackbar
                         anchorOrigin={{
                             vertical: 'bottom',
@@ -69,10 +78,6 @@ const BpUpcomingMatches: React.FC = () => {
                         </MuiAlert>
                     </Snackbar>
                 </div>
-            );
-        } else {
-            return (
-                <div><br/>Something went wrong with loading the matches</div>
             );
         }
     }

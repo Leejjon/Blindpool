@@ -13,7 +13,7 @@ import {
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import appState from "../../state/AppState";
-import {getHost} from "../../utils/Network";
+import {Api, getHost} from "../../utils/Network";
 
 const useStyles = makeStyles({
     root: {
@@ -72,7 +72,7 @@ const ViewPool: React.FC = () => {
     if (loading) {
         if (appState.poolData === undefined || appState.poolData!.key !== key) {
             // TODO:  Need to add a catch mechanism.
-            fetch(`${getHost()}/api/v2/pool/${key}`)
+            fetch(`${getHost(Api.pool)}/api/v2/pool/${key}`)
                 .then(poolJsonFromServer => poolJsonFromServer.json())
                 .then((poolJson) => {
                     appState.setPool(poolJson);

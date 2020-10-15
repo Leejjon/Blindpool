@@ -18,7 +18,9 @@
   "dependencies": {
     "@google-cloud/datastore": "6.1.0",
     "@google-cloud/secret-manager": "3.1.0",
+    "@types/cors": "^2.8.8",
     "axios": "0.19.2",
+    "cors": "^2.8.5",
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "neverthrow": "^2.7.1"

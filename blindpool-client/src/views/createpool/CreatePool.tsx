@@ -19,7 +19,7 @@ import Blindpool from "../../model/Blindpool";
 import Player from "../../model/Player";
 import NameField from "./NameField";
 import MuiAlert from '@material-ui/lab/Alert';
-import {getHost} from "../../utils/Network";
+import {Api, getHost} from "../../utils/Network";
 
 const useStyles = makeStyles({
     root: {
@@ -209,7 +209,7 @@ const CreatePool: React.FC = () => {
         if (validatedPlayers) {
             setLoading(true);
             try {
-                const response: Response = await fetch(`${getHost()}/api/v2/pool`,
+                const response: Response = await fetch(`${getHost(Api.pool)}/api/v2/pool`,
                     {
                         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
                         method: "POST", body: JSON.stringify(players.map(player => player.name))
