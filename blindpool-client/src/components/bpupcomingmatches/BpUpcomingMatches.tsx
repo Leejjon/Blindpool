@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {CircularProgress, List, ListItem, makeStyles, Snackbar, Typography} from "@material-ui/core";
+import {
+    CircularProgress,
+    List,
+    ListItem,
+    makeStyles,
+    Snackbar,
+    Table,
+    TableBody, TableCell,
+    TableRow,
+    Typography
+} from "@material-ui/core";
 import appState, {Match} from "../../state/AppState";
 import {Api, getHost} from "../../utils/Network";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -11,6 +21,17 @@ const useStyles = makeStyles({
     },
     errorMessage: {
         color: 'white'
+    },
+    table: {
+        width: '100%',
+        overflowX: 'auto',
+        border: '1px',
+        borderColor: '444444'
+    },
+    clubIconTableCell: {
+        // backgroundColor: 'RED',
+        width: '50%',
+        textAlign: 'center'
     }
 });
 
@@ -52,27 +73,35 @@ const BpUpcomingMatches: React.FC = () => {
     } else {
         if (appState.upcomingMatches) {
             return (
-                <List component="ul">
-                    <br/>
-                    {appState.upcomingMatches?.map((match: Match) => {
-                        const homeTeamIconUrl = `https://crests.football-data.org/${match.homeTeamID}.svg`;
-                        const awayTeamIconUrl = `https://crests.football-data.org/${match.awayTeamID}.svg`;
+                <Table className={classes.table}>
+                    <TableBody>
+                        {appState.upcomingMatches?.map((match: Match) => {
+                            const homeTeamIconUrl = `https://crests.football-data.org/${match.homeTeamID}.svg`;
+                            const awayTeamIconUrl = `https://crests.football-data.org/${match.awayTeamID}.svg`;
 
-                        const clubIconStyle = {
-                            width: '3em', height: '3em', marginLeft: '1em', marginRight: '1em'
-                        };
+                            const clubIconStyle = {
+                                width: '3em', height: '3em', display: 'block', marginLeft: 'auto', marginRight: 'auto'
+                            };
 
-                        const startTimestamp: Date = new Date(match.startTimestamp);
-                        return (
-                            <ListItem key={`matchListItem${match.id}`}>
-                                <div><img  style={clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} /></div>
-                                /
-                                <div><img style={clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} /></div>
-                                hallo
-                            </ListItem>
-                        );
-                    })}
-                </List>
+                            const startTimestamp: Date = new Date(match.startTimestamp);
+                            return (
+                                <div>
+                                    <TableRow key={`matchListItem${match.id}`}>
+                                        <TableCell className={classes.clubIconTableCell}>
+                                            <img style={clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} />
+                                            <p>{match.homeTeam}</p>
+                                        </TableCell>
+                                        <TableCell><div>/</div></TableCell>
+                                        <TableCell className={classes.clubIconTableCell}>
+                                            <img style={clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} />
+                                            <p>{match.awayTeam}</p>
+                                        </TableCell>
+                                    </TableRow>
+                                </div>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
             );
         } else {
             return (
