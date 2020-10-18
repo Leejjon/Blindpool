@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
+    Button,
+    CardActions,
     CircularProgress,
     List,
     ListItem,
@@ -25,13 +27,9 @@ const useStyles = makeStyles({
     table: {
         width: '100%',
         overflowX: 'auto',
-        border: '1px',
-        borderColor: '444444'
     },
-    clubIconTableCell: {
-        // backgroundColor: 'RED',
-        width: '50%',
-        textAlign: 'center'
+    tableRowContainer: {
+        display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center', backgroundColor: 'pink'
     }
 });
 
@@ -83,21 +81,31 @@ const BpUpcomingMatches: React.FC = () => {
                                 width: '3em', height: '3em', display: 'block', marginLeft: 'auto', marginRight: 'auto'
                             };
 
+                            // TODO: Move this logic to a util folder.
                             const startTimestamp: Date = new Date(match.startTimestamp);
+                            const minutes: string = '' + startTimestamp.getMinutes();
+                            const minutesToDisplay: string = minutes.padStart(2, minutes);
+                            const dateString: string = startTimestamp.toLocaleDateString();
                             return (
-                                <div>
-                                    <TableRow key={`matchListItem${match.id}`}>
-                                        <TableCell className={classes.clubIconTableCell}>
-                                            <img style={clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} />
-                                            <p>{match.homeTeam}</p>
-                                        </TableCell>
-                                        <TableCell><div>/</div></TableCell>
-                                        <TableCell className={classes.clubIconTableCell}>
-                                            <img style={clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} />
-                                            <p>{match.awayTeam}</p>
-                                        </TableCell>
-                                    </TableRow>
-                                </div>
+                                <TableRow key={`matchListItem${match.id}`}>
+                                    <TableCell>
+                                        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center'}}>
+                                            <div style={{width: '10em', textAlign: 'center'}} >
+                                                <img style={clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} />
+                                                <p>{match.homeTeam}</p>
+                                            </div>
+                                            <div><p>/</p></div>
+                                            <div style={{width: '10em', textAlign: 'center'}}>
+                                                <img style={clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} />
+                                                <p>{match.awayTeam}</p>
+                                            </div>
+                                        </div>
+                                        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-evenly'}}>
+                                            <div style={{}}><p>{startTimestamp.getHours()}:{minutesToDisplay} {dateString}</p></div>
+                                            {/*<div style={{textDecoration: 'none'}}><Button style={{marginTop: '0.3em'}} size="medium">Create pool</Button></div>*/}
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
                             );
                         })}
                     </TableBody>
