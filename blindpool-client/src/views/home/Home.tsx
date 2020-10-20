@@ -73,6 +73,9 @@ const Home: React.FC = () => {
                     <CardContent>
                         <Typography variant="h2">Upcoming matches</Typography>
                         <Divider style={{marginTop: '0.5em'}} />
+                        <br />
+                        <Typography variant="body1" style={{marginBottom: '0.5em'}} >Click on a match below to start a pool</Typography>
+                        {/*<Divider style={{marginTop: '1em'}} />*/}
                         <BpUpcomingMatches />
                     </CardContent>
                 </Card>

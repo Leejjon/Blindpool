@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {
     Button,
     CardActions,
-    CircularProgress,
+    CircularProgress, Icon,
     List,
     ListItem,
     makeStyles,
@@ -27,9 +27,13 @@ const useStyles = makeStyles({
     table: {
         width: '100%',
         overflowX: 'auto',
+        // backgroundColor: 'pink',
     },
-    tableRowContainer: {
-        display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center', backgroundColor: 'pink'
+    tableRowContainerForClubIcons: {
+        display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center'
+    },
+    clubIconStyle: {
+        width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
     }
 });
 
@@ -77,10 +81,6 @@ const BpUpcomingMatches: React.FC = () => {
                             const homeTeamIconUrl = `https://crests.football-data.org/${match.homeTeamID}.svg`;
                             const awayTeamIconUrl = `https://crests.football-data.org/${match.awayTeamID}.svg`;
 
-                            const clubIconStyle = {
-                                width: '3em', height: '3em', display: 'block', marginLeft: 'auto', marginRight: 'auto'
-                            };
-
                             // TODO: Move this logic to a util folder.
                             const startTimestamp: Date = new Date(match.startTimestamp);
                             const minutes: string = '' + startTimestamp.getMinutes();
@@ -88,21 +88,28 @@ const BpUpcomingMatches: React.FC = () => {
                             const dateString: string = startTimestamp.toLocaleDateString();
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
-                                    <TableCell>
-                                        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center'}}>
-                                            <div style={{width: '10em', textAlign: 'center'}} >
-                                                <img style={clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} />
-                                                <p>{match.homeTeam}</p>
-                                            </div>
-                                            <div><p>/</p></div>
-                                            <div style={{width: '10em', textAlign: 'center'}}>
-                                                <img style={clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} />
-                                                <p>{match.awayTeam}</p>
-                                            </div>
+                                    <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em'}}>
+                                        <div className={classes.tableRowContainerForClubIcons}>
+                                            <Button size="medium">
+                                                <div style={{width: '10em', textAlign: 'center'}} >
+                                                    <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} />
+                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeam}</Typography>
+                                                </div>
+                                                <div><Typography variant="body1">/</Typography></div>
+                                                <div style={{width: '10em', textAlign: 'center'}}>
+                                                    <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} />
+                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.awayTeam}</Typography>
+                                                </div>
+                                                <div style={{textAlign: 'right', height: '100%', verticalAlign: 'middle'}}>
+                                                    <Icon fontSize="large">
+                                                        navigate_next
+                                                    </Icon>
+                                                </div><br/>
+                                            </Button>
                                         </div>
-                                        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-evenly'}}>
-                                            <div style={{}}><p>{startTimestamp.getHours()}:{minutesToDisplay} {dateString}</p></div>
-                                            {/*<div style={{textDecoration: 'none'}}><Button style={{marginTop: '0.3em'}} size="medium">Create pool</Button></div>*/}
+                                        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap',
+                                            justifyContent: 'space-evenly', margin: '0.5em', paddingRight: '3em'}}>
+                                            <Typography variant="body1">{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                                         </div>
                                     </TableCell>
                                 </TableRow>
