@@ -84,8 +84,13 @@ const BpUpcomingMatches: React.FC = () => {
                 <Table className={classes.table}>
                     <TableBody>
                         {appState.upcomingMatches?.map((match: Match) => {
-                            const homeTeamIconUrl = `https://crests.football-data.org/${match.homeTeamID}.svg`;
-                            const awayTeamIconUrl = `https://crests.football-data.org/${match.awayTeamID}.svg`;
+                            const port = window.location.port;
+                            let hostnameWithPortIfLocal = window.location.hostname;
+                            if (port !== '') {
+                                hostnameWithPortIfLocal += `:${port}`
+                            }
+                            const homeTeamIconUrl = `${window.location.protocol}//${hostnameWithPortIfLocal}/clubicons/${match.homeTeamID}.png`;
+                            const awayTeamIconUrl = `${window.location.protocol}//${hostnameWithPortIfLocal}/clubicons/${match.awayTeamID}.png`;
 
                             // TODO: Move this logic to a util folder.
                             const startTimestamp: Date = new Date(match.startTimestamp);
