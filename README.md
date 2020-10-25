@@ -25,7 +25,7 @@ To delete all data in the datastore emulator:
 ```cd ~/.config/gcloud/emulators/datastore/WEB-INF/appengine-generated/```
 ```rm -rf local_db.bin```
 
-To run the back end (node):
+To run the back ends (node):
 
 ```
 npm run webpack

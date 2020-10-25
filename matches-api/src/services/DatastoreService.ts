@@ -3,6 +3,7 @@ import {Match, Score} from "../model/Match";
 import {EREDIVISIE_NAME} from "./footballdata-api/constants";
 import {err, ok, Result} from "neverthrow";
 import {ErrorScenarios, FootballDataApiMatch} from "./footballdata-api/FootballDataApi";
+import {getTeamName} from "../constants/Teams";
 
 export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, ErrorScenarios>> => {
     try {
@@ -17,7 +18,7 @@ export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, E
 
         return ok(upcomingTenMatches.map((upcomingMatch) => {
             console.log(`Upcoming match: ${JSON.stringify(upcomingMatch)}`);
-            const startTimestamp: Date = new Date(upcomingMatch.startTimestamp);
+            // const startTimestamp: Date = new Date(upcomingMatch.startTimestamp);
             const key = upcomingMatch[datastore.KEY];
             let match: Match = { id: key.name, ...upcomingMatch};
             return match;
@@ -57,9 +58,9 @@ export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
             const matchIndexes = [
                 { name: 'startTimestamp', value: startTimestamp.toJSON() },
                 { name: 'competitionName', value: EREDIVISIE_NAME },
-                { name: 'homeTeam', value: match.homeTeam.name },
+                { name: 'homeTeamName', value: getTeamName(match.homeTeam.id) },
                 { name: 'homeTeamID', value: match.homeTeam.id },
-                { name: 'awayTeam', value: match.awayTeam.name },
+                { name: 'awayTeamName', value: getTeamName(match.awayTeam.id)},
                 { name: 'awayTeamID', value: match.awayTeam.id },
                 { name: 'score', value: createScoreObject() },
                 { name: 'finished', value: isMatchFinished() }

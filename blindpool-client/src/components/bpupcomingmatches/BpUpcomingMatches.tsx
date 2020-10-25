@@ -92,13 +92,13 @@ const BpUpcomingMatches: React.FC = () => {
                                         <div className={classes.tableRowContainerForClubIcons}>
                                             <Button size="medium">
                                                 <div style={{width: '10em', textAlign: 'center'}} >
-                                                    <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeam} />
-                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeam}</Typography>
+                                                    <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
+                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
                                                 </div>
                                                 <div><Typography variant="body1">/</Typography></div>
                                                 <div style={{width: '10em', textAlign: 'center'}}>
-                                                    <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeam} />
-                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.awayTeam}</Typography>
+                                                    <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
+                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.awayTeamName}</Typography>
                                                 </div>
                                                 <div style={{textAlign: 'right', height: '100%', verticalAlign: 'middle'}}>
                                                     <Icon fontSize="large">
