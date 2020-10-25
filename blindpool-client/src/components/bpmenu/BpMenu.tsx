@@ -112,7 +112,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         {t("HOW_TO_USE_BLINDPOOL_TITLE")}
                     </ListItemText>
                 </ListItem>
-                <ListItem button component={Link} onClick={closeMenu} to="/About"
+                <ListItem button component={Link} onClick={closeMenu} to="/about"
                           className={classes.linkWithoutDecoration}>
                     <ListItemIcon className={classes.negativeLinkPadding}>
                         <SupervisedUserCircleIcon fontSize="large"/>

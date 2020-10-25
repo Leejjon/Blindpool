@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
     Button,
-    CardActions,
-    CircularProgress, Icon,
-    List,
-    ListItem,
+    CircularProgress,
     makeStyles,
     Snackbar,
     Table,
@@ -18,8 +15,8 @@ import MuiAlert from "@material-ui/lab/Alert";
 import {useTranslation} from "react-i18next";
 
 const useStyles = makeStyles({
-    progress: {
-        margin: '1em',
+    margin1em: {
+        margin: '0.5em',
     },
     errorMessage: {
         color: 'white'
@@ -30,10 +27,19 @@ const useStyles = makeStyles({
         // backgroundColor: 'pink',
     },
     tableRowContainerForClubIcons: {
-        display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center'
+        display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', width: '100%'
     },
     clubIconStyle: {
         width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
+    },
+    clubIconAndTextDiv: {
+        width: '10em', textAlign: 'center', whiteSpace: 'nowrap'
+    },
+    slashIcon: {
+        marginTop: '2em', marginBottom: '2em'
+    },
+    width100percent: {
+        width: '100%'
     }
 });
 
@@ -71,7 +77,7 @@ const BpUpcomingMatches: React.FC = () => {
     };
 
     if (loading) {
-        return <CircularProgress className={classes.progress}/>
+        return <CircularProgress className={classes.margin1em}/>
     } else {
         if (appState.upcomingMatches) {
             return (
@@ -88,29 +94,23 @@ const BpUpcomingMatches: React.FC = () => {
                             const dateString: string = startTimestamp.toLocaleDateString();
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
-                                    <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em'}}>
-                                        <div className={classes.tableRowContainerForClubIcons}>
-                                            <Button size="medium">
-                                                <div style={{width: '10em', textAlign: 'center'}} >
-                                                    <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
-                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
+                                    <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
+                                        <Button size="medium" className={classes.width100percent}>
+                                            <div className={classes.width100percent}>
+                                                <div className={classes.tableRowContainerForClubIcons}>
+                                                    <div className={classes.clubIconAndTextDiv}>
+                                                        <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
+                                                        <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
+                                                    </div>
+                                                    <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
+                                                    <div className={classes.clubIconAndTextDiv}>
+                                                        <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
+                                                        <Typography variant="body1">{match.awayTeamName}</Typography>
+                                                    </div>
                                                 </div>
-                                                <div><Typography variant="body1">/</Typography></div>
-                                                <div style={{width: '10em', textAlign: 'center'}}>
-                                                    <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
-                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{match.awayTeamName}</Typography>
-                                                </div>
-                                                <div style={{textAlign: 'right', height: '100%', verticalAlign: 'middle'}}>
-                                                    <Icon fontSize="large">
-                                                        navigate_next
-                                                    </Icon>
-                                                </div><br/>
-                                            </Button>
-                                        </div>
-                                        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap',
-                                            justifyContent: 'space-evenly', margin: '0.5em', paddingRight: '3em'}}>
-                                            <Typography variant="body1">{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
-                                        </div>
+                                                <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                                            </div>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             );

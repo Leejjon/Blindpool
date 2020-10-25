@@ -5,7 +5,7 @@ import {
     CardActions,
     CardContent,
     Divider,
-    Grid, List, ListItemText,
+    Grid,
     makeStyles,
     Typography
 } from "@material-ui/core";
@@ -71,11 +71,9 @@ const Home: React.FC = () => {
             <Grid key="matchers" item>
                 <Card className={classes.card}>
                     <CardContent>
-                        <Typography variant="h2">Upcoming matches</Typography>
+                        <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider style={{marginTop: '0.5em'}} />
-                        <br />
-                        <Typography variant="body1" style={{marginBottom: '0.5em'}} >Click on a match below to start a pool</Typography>
-                        {/*<Divider style={{marginTop: '1em'}} />*/}
+                        <Typography component="p" style={{marginBottom: '0.5em'}} ><br/>{t('CLICK_ON_MATCH')}</Typography>
                         <BpUpcomingMatches />
                     </CardContent>
                 </Card>

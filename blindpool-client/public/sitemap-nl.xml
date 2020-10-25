@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>http://www.blindepool.nl/</loc>
-        <lastmod>2019-10-30</lastmod>
+        <lastmod>2020-10-25</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.5</priority>
     </url>
@@ -16,6 +16,12 @@
         <loc>http://www.blindepool.nl/create</loc>
         <lastmod>2019-10-30</lastmod>
         <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>http://www.blindpool.com/about</loc>
+        <lastmod>2020-10-25</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
 </urlset>
