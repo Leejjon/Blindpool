@@ -13,6 +13,7 @@ import appState, {Match} from "../../state/AppState";
 import {Api, getHost} from "../../utils/Network";
 import MuiAlert from "@material-ui/lab/Alert";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles({
     margin1em: {
@@ -66,6 +67,8 @@ const BpUpcomingMatches: React.FC = () => {
                     setLoading(false);
                     setMessage('BACKEND_UNREACHABLE');
                 });
+        } else {
+            setLoading(false);
         }
     }, []);
 
@@ -100,7 +103,7 @@ const BpUpcomingMatches: React.FC = () => {
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
                                     <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Button size="medium" className={classes.width100percent}>
+                                        <Link className={classes.width100percent} to="/create" component={Button}>
                                             <div className={classes.width100percent}>
                                                 <div className={classes.tableRowContainerForClubIcons}>
                                                     <div className={classes.clubIconAndTextDiv}>
@@ -115,7 +118,7 @@ const BpUpcomingMatches: React.FC = () => {
                                                 </div>
                                                 <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                                             </div>
-                                        </Button>
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             );
