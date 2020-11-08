@@ -103,21 +103,23 @@ const BpUpcomingMatches: React.FC = () => {
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
                                     <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Link className={classes.width100percent} to="/create" component={Button}>
-                                            <div className={classes.width100percent}>
-                                                <div className={classes.tableRowContainerForClubIcons}>
-                                                    <div className={classes.clubIconAndTextDiv}>
-                                                        <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
-                                                        <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
+                                        <Link to="/create" >
+                                            <Button size="medium" className={classes.width100percent}>
+                                                <div className={classes.width100percent}>
+                                                    <div className={classes.tableRowContainerForClubIcons}>
+                                                        <div className={classes.clubIconAndTextDiv}>
+                                                            <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
+                                                            <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
+                                                        </div>
+                                                        <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
+                                                        <div className={classes.clubIconAndTextDiv}>
+                                                            <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
+                                                            <Typography variant="body1">{match.awayTeamName}</Typography>
+                                                        </div>
                                                     </div>
-                                                    <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
-                                                    <div className={classes.clubIconAndTextDiv}>
-                                                        <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
-                                                        <Typography variant="body1">{match.awayTeamName}</Typography>
-                                                    </div>
+                                                    <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                                                 </div>
-                                                <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
-                                            </div>
+                                            </Button>
                                         </Link>
                                     </TableCell>
                                 </TableRow>
