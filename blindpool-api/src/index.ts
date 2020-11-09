@@ -1,6 +1,14 @@
-import express, {NextFunction, Request, Response} from "express";
-import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./api/BlindpoolApi";
+import express, {NextFunction, Request, RequestHandler, Response} from "express";
+import {
+    getBlindpoolByKey,
+    getBlindpoolStatistics,
+    postCreateBlindpool,
+    postCreateBlindpoolV2
+} from "./api/BlindpoolApi";
+import {validate} from "class-validator";
 import cors from "cors";
+import {plainToClass} from "class-transformer";
+import {CreateBlindpoolRequest} from "./models/Blindpool";
 
 const port = process.env.PORT || '8080';
 const environment = process.env.NODE_ENV || 'development';
@@ -12,9 +20,35 @@ if (environment === 'development') {
     router.options('*', cors());
 }
 
-router.get('/pool/stats', getBlindpoolStatistics);
-router.post('/pool/', postCreateBlindpool);
-router.get('/pool/:key', getBlindpoolByKey);
+function validationMiddleware<T>(type: any): RequestHandler {
+    return async (req, res, next) => {
+        // For some reason the class-transformer and class-validator don't see arrays as a validation error.
+        const requestBody: string = JSON.stringify(req.body);
+        if (!(requestBody.startsWith('{') && requestBody.endsWith('}'))) {
+            console.error(`Somebody tried to do a request with invalid json: ${requestBody}`);
+            res.status(400);
+            res.send("Invalid request.");
+            return;
+        }
+
+        let validationErrors = await validate(plainToClass(type, req.body));
+
+        if (validationErrors.length > 0) {
+            validationErrors.forEach((validationError) => {
+                console.log(validationError);
+            });
+            res.status(400);
+            res.send("Invalid request.");
+        } else {
+            next();
+        }
+    };
+}
+
+router.get('/v2/pool/stats', getBlindpoolStatistics);
+router.post('/v2/pool/', postCreateBlindpool);
+router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), postCreateBlindpoolV2);
+router.get('/v2/pool/:key', getBlindpoolByKey);
 
 const app = express();
 
@@ -26,7 +60,7 @@ interface SyntaxErrorWithStatusAndBody extends SyntaxError {
 }
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    // This check makes sure this is a JSON parsing issue, but it might be
+    // Check if this is a JSON parsing issue, but it might be
     // coming from any middleware, not just body-parser:
     if ((err as SyntaxErrorWithStatusAndBody).status === 400 && 'body' in err) {
         const bodyWithInvalidJson = (err as SyntaxErrorWithStatusAndBody).body;
@@ -37,7 +71,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use('/api/v2/', router);
+app.use('/api/', router);
 
 export const server = app.listen(port, () => {
     console.log(`Listening on port ${port}`);

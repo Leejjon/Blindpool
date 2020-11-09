@@ -151,7 +151,7 @@ const CreatePool: React.FC = () => {
     const validateState = (playersToValidate: Array<Player>, complainAboutEmptyFields?: boolean): boolean => {
         let allPlayersHaveAValidName = true;
         playersToValidate.forEach((player) => {
-            const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]+)$/;
+            const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]{1,20})$/;
             if (player.name) {
                 if (!lettersAndNumbersOnly.test(player.name)) {
                     allPlayersHaveAValidName = false;

@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@google-cloud/datastore": "6.1.0",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
     "cors": "2.8.5",
     "deep-equal": "2.0.3",
     "express": "4.17.1",

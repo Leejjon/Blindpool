@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {Blindpool} from "../models/Blindpool";
+import {Blindpool, CreateBlindpoolRequest} from "../models/Blindpool";
 import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
 import {
@@ -9,6 +9,7 @@ import {
     insertNewBlindpool
 } from "../services/BlindpoolStorageService";
 import {assignRandomScores} from "../logic/ScoreGenerator";
+import {plainToClass} from "class-transformer";
 
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
@@ -30,7 +31,7 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
             return duplicate.length > 1;
         };
 
-        const regex = /^([a-zA-Z0-9 _]+)$/;
+        const regex = /^([a-zA-Z0-9 _]{1,20})$/;
         for (const name of names) {
             const validName = name && regex.test(name) && !checkForDuplicates(name);
             if (!validName) {
@@ -51,6 +52,18 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
     } catch (e) {
         console.log('Something went wrong with creating a blindpool that wasnt handled by our default validations: ', e);
         mapError(res, ErrorScenarios.INVALID_INPUT);
+    }
+};
+
+export const postCreateBlindpoolV2 = async (req: Request, res: Response) => {
+    try {
+        let createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+
+        console.log(`In the controller: ${JSON.stringify(createBlindpoolRequest)}`);
+        res.status(200);
+        res.send(JSON.stringify(createBlindpoolRequest));
+    } catch (error) {
+        console.log(`Error: ${error}`);
     }
 };
 
