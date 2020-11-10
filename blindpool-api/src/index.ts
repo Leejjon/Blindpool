@@ -48,26 +48,6 @@ function validationMiddleware<T>(type: any): RequestHandler {
 router.get('/v2/pool/stats', getBlindpoolStatistics);
 router.post('/v2/pool/', postCreateBlindpool);
 router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), postCreateBlindpoolV2);
-
-// router.post('/v3/test/', validationMiddleware(CreateBlindpoolRequest), async (req: Request, res: Response) => {
-//     const bar = new Match(undefined, undefined, undefined, 'hoi', 'doei');
-//     try {
-//         const foo = plainToClass(CreateBlindpoolRequest, req.body);
-//         const foo2 = new CreateBlindpoolRequest(['Leon', "Sylvia"], bar);
-//         let validationErrors = await validate(foo);
-//         let validationErrors2 = await validate(foo2);
-//         console.log(`Foo : ${JSON.stringify(foo)} Errors when validating: ${validationErrors.length}`);
-//         console.log(`Foo2: ${JSON.stringify(foo2)} Errors when validating: ${validationErrors2.length}`);
-//
-//         res.status(200);
-//         res.send('Ok');
-//     } catch (error) {
-//         console.log(error);
-//         res.status(400);
-//         res.send('Too bad');
-//     }
-// });
-
 router.get('/v2/pool/:key', getBlindpoolByKey);
 
 const app = express();
