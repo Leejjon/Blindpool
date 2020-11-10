@@ -80,6 +80,7 @@ export const postCreateBlindpoolV2 = async (req: Request, res: Response) => {
         }
 
         const participantsAndScores = assignRandomScores(names);
+        // TODO: Verify if the match is a legitimate.
         const result = await insertNewBlindpool(participantsAndScores, createBlindpoolRequest.selectedMatch);
         result
             .map((blindpool: Blindpool) => {
