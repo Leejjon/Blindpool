@@ -34,12 +34,17 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
         const participantsAndScores = poolEntity.PARTICIPANTS_AND_SCORES;
         const createdTimestamp = poolEntity.CREATED_TIMESTAMP;
+        const match = poolEntity.MATCH;
 
-        const blindpool: Blindpool = {
+        let blindpool: Blindpool = {
             key: blindpoolKey.id as string,
             PARTICIPANTS_AND_SCORES: participantsAndScores,
             CREATED_TIMESTAMP: createdTimestamp
         };
+
+        if (match) {
+            blindpool.MATCH = match;
+        }
 
         return ok(blindpool);
     } catch (e) {
