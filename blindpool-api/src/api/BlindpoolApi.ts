@@ -57,13 +57,40 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
 
 export const postCreateBlindpoolV2 = async (req: Request, res: Response) => {
     try {
-        let createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+        const createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+        const names = createBlindpoolRequest.participants;
 
-        console.log(`In the controller: ${JSON.stringify(createBlindpoolRequest)}`);
-        res.status(200);
-        res.send(JSON.stringify(createBlindpoolRequest));
+        if (names.length < 1) {
+            mapError(res, ErrorScenarios.INVALID_INPUT);
+            return;
+        }
+
+        const checkForDuplicates = (nameToCheck: string) => {
+            const duplicate = names.filter(name => name === nameToCheck);
+            return duplicate.length > 1;
+        };
+
+        const regex = /^([a-zA-Z0-9 _]{1,20})$/;
+        for (const name of names) {
+            const validName = name && regex.test(name) && !checkForDuplicates(name);
+            if (!validName) {
+                mapError(res, ErrorScenarios.INVALID_INPUT);
+                return;
+            }
+        }
+
+        const participantsAndScores = assignRandomScores(names);
+        const result = await insertNewBlindpool(participantsAndScores, createBlindpoolRequest.selectedMatch);
+        result
+            .map((blindpool: Blindpool) => {
+                mapSuccess(res, blindpool);
+            })
+            .mapErr((errorScenario: ErrorScenarios) => {
+                mapError(res, errorScenario);
+            });
     } catch (error) {
-        console.log(`Error: ${error}`);
+        console.log('Something went wrong with creating a blindpool that wasnt handled by our default validations: ', error);
+        mapError(res, ErrorScenarios.INVALID_INPUT);
     }
 };
 

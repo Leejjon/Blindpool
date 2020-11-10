@@ -1,4 +1,4 @@
-import {Blindpool, ParticipantAndScore} from '../models/Blindpool';
+import {Blindpool, ParticipantAndScore, Match} from '../models/Blindpool';
 import {ok, err, Result} from 'neverthrow';
 import {Transaction} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
@@ -48,22 +48,25 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
     }
 };
 
-export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>): Promise<Result<Blindpool, ErrorScenarios>> => {
+export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>, match?: Match): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
         const blindpoolKeyToInsert = datastore.key(Kinds.POOL_KIND);
         const createdTimestamp = new Date();
-        const blindpoolToInsert: Blindpool = {
+        let blindpoolToInsert: Blindpool = {
             PARTICIPANTS_AND_SCORES: participantsAndScores,
             CREATED_TIMESTAMP: createdTimestamp
         };
+
+        if (match) {
+            blindpoolToInsert.MATCH = match;
+        }
 
         const entityToInsert = {
             key: blindpoolKeyToInsert,
             data: blindpoolToInsert,
         };
 
-        // const result = await datastore.upsert(entity);
         const result = await datastore.upsert(entityToInsert);
 
         // This is how to get the id (not pretty):
@@ -73,11 +76,16 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
         // Don't await for this, if it fails it will log something.
         incrementBlindpoolCount();
 
-        const blindpoolToReturn: Blindpool = {
+        let blindpoolToReturn: Blindpool = {
             key: hashids.encode(poolId),
             PARTICIPANTS_AND_SCORES: participantsAndScores,
             CREATED_TIMESTAMP: createdTimestamp
         }
+
+        if (match) {
+            blindpoolToReturn.MATCH = match;
+        }
+
         return ok(blindpoolToReturn);
     } catch (e) {
         console.error(`Failed to insert pool: ${e.toString()}`);

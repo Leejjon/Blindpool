@@ -26,7 +26,8 @@
     "deep-equal": "2.0.3",
     "express": "4.17.1",
     "hashids": "2.2.1",
-    "neverthrow": "2.7.1"
+    "neverthrow": "2.7.1",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/chai": "4.2.12",
