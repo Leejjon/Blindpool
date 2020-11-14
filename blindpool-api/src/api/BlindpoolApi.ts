@@ -4,12 +4,13 @@ import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
 import {
     calculateBlindpoolCount,
-    ErrorScenarios,
     findBlindpoolByKey,
     insertNewBlindpool
-} from "../services/BlindpoolStorageService";
+} from "../services/BlindpoolService";
 import {assignRandomScores} from "../logic/ScoreGenerator";
 import {plainToClass} from "class-transformer";
+import {ErrorScenarios} from "../models/ErrorScenarios";
+import {doesThisMatchExists} from "../services/MatchService";
 
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
@@ -80,8 +81,16 @@ export const postCreateBlindpoolV2 = async (req: Request, res: Response) => {
         }
 
         const participantsAndScores = assignRandomScores(names);
-        // TODO: Verify if the match is a legitimate.
-        const result = await insertNewBlindpool(participantsAndScores, createBlindpoolRequest.selectedMatch);
+        let selectedMatch = createBlindpoolRequest.selectedMatch;
+
+        if (selectedMatch && selectedMatch.id) {
+            const result = await doesThisMatchExists(selectedMatch.id);
+            if (result.isErr()) {
+                selectedMatch.id = undefined;
+            }
+        }
+
+        const result = await insertNewBlindpool(participantsAndScores, selectedMatch);
         result
             .map((blindpool: Blindpool) => {
                 mapSuccess(res, blindpool);

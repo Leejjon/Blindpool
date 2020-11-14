@@ -1,12 +1,13 @@
 import 'mocha'
 import {expect} from 'chai';
-import {ErrorScenarios, findBlindpoolByKey, Kinds} from "./BlindpoolStorageService";
+import {findBlindpoolByKey, Kinds} from "./BlindpoolService";
 import {Result} from "neverthrow";
 import {Blindpool} from "../models/Blindpool";
 import * as sinon from "sinon";
 import * as DatastoreService from "./DatastoreService";
 import {Datastore} from "@google-cloud/datastore/build/src";
 import {Entities} from "@google-cloud/datastore/build/src/entity";
+import {ErrorScenarios} from "../models/ErrorScenarios";
 
 describe('BlindpoolStorageService tests', () => {
     const NONE_EXISTING_POOL_KEY = 0;

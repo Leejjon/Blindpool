@@ -4,8 +4,8 @@ import {Response, Request} from 'express';
 import {err, ok} from "neverthrow";
 import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
-import * as BlindpoolStorageService from "../services/BlindpoolStorageService";
-import {ErrorScenarios} from "../services/BlindpoolStorageService";
+import * as BlindpoolStorageService from "../services/BlindpoolService";
+import {ErrorScenarios} from "../models/ErrorScenarios";
 
 describe('Blindpool API', () => {
     const testPool: Blindpool = {

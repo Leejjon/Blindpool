@@ -2,6 +2,7 @@ import {Blindpool, ParticipantAndScore, Match} from '../models/Blindpool';
 import {ok, err, Result} from 'neverthrow';
 import {Transaction} from "@google-cloud/datastore/build/src";
 import {getDatastoreInstance} from "./DatastoreService";
+import {ErrorScenarios} from "../models/ErrorScenarios";
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
 const Hashids = require('hashids/cjs');
@@ -10,16 +11,11 @@ const hashids = new Hashids();
 
 export enum Kinds {
     POOL_KIND = 'pool',
-    COUNT_KIND = 'poolCounter'
+    COUNT_KIND = 'poolCounter',
+    MATCH_KIND = 'match'
 }
 
 const NUMBER_OF_SHARDS = 10;
-
-export enum ErrorScenarios {
-    NOT_FOUND,
-    INTERNAL_ERROR,
-    INVALID_INPUT
-}
 
 export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {

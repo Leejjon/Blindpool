@@ -9,7 +9,6 @@ import {upsertMatches, selectTenUpcomingMatches} from "../services/DatastoreServ
 
 export const getTenScheduledMatches = async (req: Request, res: Response) => {
     let tenUpcomingMatchesResult = await selectTenUpcomingMatches();
-
     res.contentType('application/json');
 
     tenUpcomingMatchesResult.map((matches: Array<Match>) => {
@@ -20,7 +19,6 @@ export const getTenScheduledMatches = async (req: Request, res: Response) => {
         res.send({success: false});
     });
 }
-
 
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {
     let matches = await getMatchesFromFootballDataApi();

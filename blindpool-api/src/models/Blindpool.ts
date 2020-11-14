@@ -58,7 +58,7 @@ export class CreateBlindpoolRequest {
 
 export class Match {
     @IsOptional() @IsNumber()
-    id?: number | undefined;
+    id?: string | undefined;
 
     @IsOptional() @IsNumber()
     homeTeamID?: number | undefined;
@@ -72,7 +72,7 @@ export class Match {
     @IsString() @Matches(/^[a-zA-Z0-9 ]{2,25}$/)
     awayTeamName: string;
 
-    constructor(id: number | undefined, homeTeamID: number | undefined, awayTeamID: number | undefined, homeTeamName: string, awayTeamName: string) {
+    constructor(id: string | undefined, homeTeamID: number | undefined, awayTeamID: number | undefined, homeTeamName: string, awayTeamName: string) {
         this.id = id;
         this.homeTeamID = homeTeamID;
         this.awayTeamID = awayTeamID;
