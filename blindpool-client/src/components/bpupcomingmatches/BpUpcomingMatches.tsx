@@ -25,7 +25,6 @@ const useStyles = makeStyles({
     table: {
         width: '100%',
         overflowX: 'auto',
-        // backgroundColor: 'pink',
     },
     tableRowContainerForClubIcons: {
         display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', width: '100%'
@@ -98,7 +97,7 @@ const BpUpcomingMatches: React.FC = () => {
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
                                     <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Link to="/create" >
+                                        <Link to="/create" style={{textDecoration: 'none'}} >
                                             <Button size="medium" className={classes.width100percent}>
                                                 <div className={classes.width100percent}>
                                                     <div className={classes.tableRowContainerForClubIcons}>

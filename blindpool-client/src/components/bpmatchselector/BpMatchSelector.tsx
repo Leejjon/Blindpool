@@ -1,8 +1,8 @@
-import React, {ChangeEvent} from "react";
+import React, {useEffect, useState} from "react";
 import {Divider, makeStyles, TextField, Typography} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
-import appState, {Match, Score} from "../../state/AppState";
-import {getHostnameWithPortIfLocal} from "../../utils/Network";
+import appState, {Match} from "../../state/AppState";
+import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 
 const useStyles = makeStyles({
     bpMatchSelector: {
@@ -31,16 +31,31 @@ const useStyles = makeStyles({
 
 const BpMatchSelector: React.FC = () => {
     const classes = useStyles();
+    // TODO: Pass error to snackbar in createpool page.
+    const [message, setMessage] = useState<string | undefined>(undefined);
+    const [matches, setMatches] = useState<Array<Match>>([]);
 
-    let upcomingMatches: Match[];
+    useEffect(() => {
+        if (appState.upcomingMatches) {
+        } else {
+            fetch(`${getHost(Api.matches)}/api/v2/matches/upcoming`)
+                .then(async upcomingMatchesResponse => {
+                    if (upcomingMatchesResponse.status === 200) {
+                        let upcomingMatches = await upcomingMatchesResponse.json();
+                        appState.setUpcomingMatches(upcomingMatches);
+                        setMatches(upcomingMatches);
+                    } else {
+                        setMessage('BACKEND_OFFLINE');
+                    }
+                })
+                .catch(result => {
+                    console.log(`Something went wrong with fetching upcoming matches ${result}`);
+                    setMessage('BACKEND_UNREACHABLE');
+                });
+        }
+    }, []);
 
-    if (appState.upcomingMatches) {
-        upcomingMatches = appState.upcomingMatches
-    } else {
-        upcomingMatches = [];
-    }
-
-    const [value, setValue] = React.useState<Match | undefined>(undefined);
+    const [value, setValue] = React.useState<Match | string | undefined>(undefined);
     const [inputValue, setInputValue] = React.useState('');
 
     return (
@@ -53,11 +68,11 @@ const BpMatchSelector: React.FC = () => {
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
             }}
-            id="bpMatchSelector"
+            id="bpMatchSelector" freeSolo
             getOptionLabel={(upcomingMatch) => {
                 return `${upcomingMatch.homeTeamName} vs ${upcomingMatch.awayTeamName}`;
             }}
-            options={upcomingMatches as Match[]}
+            options={matches as Match[]}
             renderOption={(upcomingMatch: Match) => {
                 const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.homeTeamID}.png`;
                 const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.awayTeamID}.png`;
@@ -72,25 +87,32 @@ const BpMatchSelector: React.FC = () => {
                     <div className={classes.justCenter}>
                         <div className={classes.tableRowContainerForClubIcons}>
                             <div className={classes.clubIconAndTextDiv}>
-                                <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={upcomingMatch.homeTeamName} />
-                                <Typography className={classes.marginHalfEm}>{upcomingMatch.homeTeamName}</Typography>
+                                <img className={classes.clubIconStyle} src={homeTeamIconUrl}
+                                     alt={upcomingMatch.homeTeamName}/>
+                                <Typography
+                                    className={classes.marginHalfEm}>{upcomingMatch.homeTeamName}</Typography>
                             </div>
                             <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
                             <div className={classes.clubIconAndTextDiv}>
-                                <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={upcomingMatch.awayTeamName} />
-                                <Typography className={classes.marginHalfEm}>{upcomingMatch.awayTeamName}</Typography>
+                                <img className={classes.clubIconStyle} src={awayTeamIconUrl}
+                                     alt={upcomingMatch.awayTeamName}/>
+                                <Typography
+                                    className={classes.marginHalfEm}>{upcomingMatch.awayTeamName}</Typography>
                             </div>
                         </div>
-                        <Typography className={classes.marginHalfEm}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                        <Typography
+                            className={classes.marginHalfEm}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                         <Divider/>
                     </div>
                 );
             }}
+            ListboxProps={{ style: { minHeight: '42em' } }}
             style={{ width: '100%' }}
-            renderInput={(params) => <TextField {...params} label="Select match" variant="outlined"
+            renderInput={(params) => <TextField {...params} label="Select match (optional)"
                 inputProps={{
                     ...params.inputProps,
                     autoComplete: 'new-password', // disable autocomplete and autofill
+                    style: {fontSize: 'large'}
                 }}
             />}
         />
