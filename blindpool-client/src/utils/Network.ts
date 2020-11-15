@@ -11,3 +11,12 @@ export const getHost = (api: Api) => {
     }
     return host;
 };
+
+export const getHostnameWithPortIfLocal = () => {
+    const port = window.location.port;
+    let hostnameWithPortIfLocal = window.location.hostname;
+    if (port !== '') {
+        hostnameWithPortIfLocal += `:${port}`
+    }
+    return hostnameWithPortIfLocal;
+}

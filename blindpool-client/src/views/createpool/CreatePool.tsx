@@ -20,6 +20,10 @@ import Player from "../../model/Player";
 import NameField from "./NameField";
 import MuiAlert from '@material-ui/lab/Alert';
 import {Api, getHost} from "../../utils/Network";
+import MenuItem from "@material-ui/core/MenuItem";
+import FlagIcon from "../../locales/FlagIcon";
+import Menu from "@material-ui/core/Menu/Menu";
+import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
 
 const useStyles = makeStyles({
     root: {
@@ -49,6 +53,7 @@ const useStyles = makeStyles({
     table: {
         width: '100%',
         overflowX: 'auto',
+        marginTop: '0px',
         marginBottom: '1em'
     },
     numberColumn: {
@@ -258,6 +263,8 @@ const CreatePool: React.FC = () => {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
+                            <br/>
+                            <BpMatchSelector />
                             {/*border={1}*/}
                             <Table className={classes.table}>
                                 <colgroup>

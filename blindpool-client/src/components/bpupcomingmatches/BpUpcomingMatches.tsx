@@ -10,7 +10,7 @@ import {
     Typography
 } from "@material-ui/core";
 import appState, {Match} from "../../state/AppState";
-import {Api, getHost} from "../../utils/Network";
+import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import MuiAlert from "@material-ui/lab/Alert";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
@@ -87,13 +87,8 @@ const BpUpcomingMatches: React.FC = () => {
                 <Table className={classes.table}>
                     <TableBody>
                         {appState.upcomingMatches?.map((match: Match) => {
-                            const port = window.location.port;
-                            let hostnameWithPortIfLocal = window.location.hostname;
-                            if (port !== '') {
-                                hostnameWithPortIfLocal += `:${port}`
-                            }
-                            const homeTeamIconUrl = `${window.location.protocol}//${hostnameWithPortIfLocal}/clubicons/${match.homeTeamID}.png`;
-                            const awayTeamIconUrl = `${window.location.protocol}//${hostnameWithPortIfLocal}/clubicons/${match.awayTeamID}.png`;
+                            const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.png`;
+                            const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.png`;
 
                             // TODO: Move this logic to a util folder.
                             const startTimestamp: Date = new Date(match.startTimestamp);
