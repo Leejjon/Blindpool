@@ -13,7 +13,7 @@ import appState, {Match} from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import MuiAlert from "@material-ui/lab/Alert";
 import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles({
     margin1em: {
@@ -48,6 +48,7 @@ const BpUpcomingMatches: React.FC = () => {
     const {t} = useTranslation();
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState<string | undefined>(undefined);
+    let history = useHistory();
 
     useEffect(() => {
         if (!appState.upcomingMatches) {
@@ -78,6 +79,10 @@ const BpUpcomingMatches: React.FC = () => {
         setMessage(undefined);
     };
 
+    function createPoolForMatch (id: string) {
+        history.push(`/create?${id}`);
+    }
+
     if (loading) {
         return <CircularProgress className={classes.margin1em}/>
     } else {
@@ -97,8 +102,8 @@ const BpUpcomingMatches: React.FC = () => {
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
                                     <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Link to="/create" style={{textDecoration: 'none'}} >
-                                            <Button size="medium" className={classes.width100percent}>
+                                        {/*<Link to="/create" style={{textDecoration: 'none'}} >*/}
+                                            <Button size="medium" className={classes.width100percent} onClick={(event) => createPoolForMatch(match.id as string)}>
                                                 <div className={classes.width100percent}>
                                                     <div className={classes.tableRowContainerForClubIcons}>
                                                         <div className={classes.clubIconAndTextDiv}>
@@ -114,7 +119,7 @@ const BpUpcomingMatches: React.FC = () => {
                                                     <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                                                 </div>
                                             </Button>
-                                        </Link>
+                                        {/*</Link>*/}
                                     </TableCell>
                                 </TableRow>
                             );

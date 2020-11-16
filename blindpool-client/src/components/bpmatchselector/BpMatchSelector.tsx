@@ -37,6 +37,7 @@ const BpMatchSelector: React.FC = () => {
 
     useEffect(() => {
         if (appState.upcomingMatches) {
+            setMatches(appState.upcomingMatches);
         } else {
             fetch(`${getHost(Api.matches)}/api/v2/matches/upcoming`)
                 .then(async upcomingMatchesResponse => {
@@ -106,7 +107,7 @@ const BpMatchSelector: React.FC = () => {
                     </div>
                 );
             }}
-            ListboxProps={{ style: { minHeight: '42em' } }}
+            ListboxProps={{ style: { minHeight: '28em' } }}
             style={{ width: '100%' }}
             renderInput={(params) => <TextField {...params} label="Select match (optional)"
                 inputProps={{

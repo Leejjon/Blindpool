@@ -80,7 +80,7 @@ export const resources = {
             "BACKEND_OFFLINE": "Onze server reageert niet zoals het hoort, excuses voor het ongemak.",
             "BEHIND_BLINDPOOL": "Achter Blindpool",
             "MY_DESCRIPTION": "Mijn naam is Leon Liefting en ik ben een full stack developer (freelance). Ik ben graag betrokken in alle fases van software ontwikkeling.",
-            "REACH_OUT": "Als je Blindpool een toffe app vind en een freelance developer nodig hebt om jouw volgende app of website te bouwen, neem dan contact met me op.",
+            "REACH_OUT": "Als je Blindpool een toffe app vindt en een freelance developer nodig hebt om jouw volgende app of website te bouwen, neem dan contact met me op.",
             "OTHER_APPS": "Andere Apps",
             "UPCOMING_MATCHES": "Aankomende wedstrijden",
             "CLICK_ON_MATCH": "Klik op een wedstrijd om er een blindepool voor te maken"
