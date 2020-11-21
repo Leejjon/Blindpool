@@ -41,6 +41,9 @@ app.get('/*', function (req, res) {
     if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
         res.status(404).send('Not found');
     } else {
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+        res.header('Expires', '-1');
+        res.header('Pragma', 'no-cache');
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
     }
 });

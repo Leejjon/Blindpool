@@ -5,6 +5,7 @@ runtime: nodejs12
 service: default
 env: standard
 instance_class: F1
+
 # These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
 handlers:
   - url: '.*'
