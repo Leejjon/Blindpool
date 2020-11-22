@@ -42,7 +42,8 @@ export const resources = {
             "REACH_OUT": "If you like how Blindpool works and need a freelance developer to help build your next cool app or website, reach out via one of the platforms below.",
             "OTHER_APPS": "Other Apps",
             "UPCOMING_MATCHES": "Upcoming matches",
-            "CLICK_ON_MATCH": "Click on a match below to start a pool"
+            "CLICK_ON_MATCH": "Click on a match below to start a pool",
+            "SELECT_MATCH": "Select match (optional)"
         }
     },
     nl: {
@@ -83,7 +84,8 @@ export const resources = {
             "REACH_OUT": "Als je Blindpool een toffe app vindt en een freelance developer nodig hebt om jouw volgende app of website te bouwen, neem dan contact met me op.",
             "OTHER_APPS": "Andere Apps",
             "UPCOMING_MATCHES": "Aankomende wedstrijden",
-            "CLICK_ON_MATCH": "Klik op een wedstrijd om er een blindepool voor te maken"
+            "CLICK_ON_MATCH": "Klik op een wedstrijd om er een blindepool voor te maken",
+            "SELECT_MATCH": "Selecteer wedstrijd (optioneel)"
         }
     }
 };

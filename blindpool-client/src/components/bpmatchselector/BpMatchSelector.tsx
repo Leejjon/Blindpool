@@ -3,6 +3,7 @@ import {Divider, makeStyles, TextField, Typography} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
 import appState, {Match} from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
+import {useTranslation} from "react-i18next";
 
 const useStyles = makeStyles({
     bpMatchSelector: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
 
 const BpMatchSelector: React.FC = () => {
     const classes = useStyles();
+    const { t } = useTranslation();
     // TODO: Pass error to snackbar in createpool page.
     const [message, setMessage] = useState<string | undefined>(undefined);
     const [matches, setMatches] = useState<Array<Match>>([]);
@@ -75,8 +77,8 @@ const BpMatchSelector: React.FC = () => {
             }}
             options={matches as Match[]}
             renderOption={(upcomingMatch: Match) => {
-                const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.homeTeamID}.png`;
-                const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.awayTeamID}.png`;
+                const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.homeTeamID}.svg`;
+                const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.awayTeamID}.svg`;
 
                 // TODO: Move this logic to a util folder.
                 const startTimestamp: Date = new Date(upcomingMatch.startTimestamp);
@@ -109,7 +111,7 @@ const BpMatchSelector: React.FC = () => {
             }}
             ListboxProps={{ style: { minHeight: '28em' } }}
             style={{ width: '100%' }}
-            renderInput={(params) => <TextField {...params} label="Select match (optional)"
+            renderInput={(params) => <TextField {...params} label={t('SELECT_MATCH')}
                 inputProps={{
                     ...params.inputProps,
                     autoComplete: 'new-password', // disable autocomplete and autofill

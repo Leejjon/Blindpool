@@ -47,7 +47,7 @@ const About: React.FC = () => {
                     <CardActions>
                         <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new"
                            className={classes.firstButton}>
-                            <Button size="medium">LinkedIn</Button>
+                            <Button size="medium">LinkedIN</Button>
                         </a>
                         <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
                             <Button size="medium">GitHub</Button>

@@ -91,8 +91,8 @@ const BpUpcomingMatches: React.FC = () => {
                 <Table className={classes.table}>
                     <TableBody>
                         {appState.upcomingMatches?.map((match: Match) => {
-                            const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.png`;
-                            const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.png`;
+                            const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;
+                            const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.svg`;
 
                             // TODO: Move this logic to a util folder.
                             const startTimestamp: Date = new Date(match.startTimestamp);
