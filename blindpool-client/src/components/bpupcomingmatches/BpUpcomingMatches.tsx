@@ -3,7 +3,6 @@ import {
     Button,
     CircularProgress,
     makeStyles,
-    Snackbar,
     Table,
     TableBody, TableCell,
     TableRow,
@@ -11,9 +10,8 @@ import {
 } from "@material-ui/core";
 import appState, {Match} from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
-import MuiAlert from "@material-ui/lab/Alert";
-import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
+import {BpSnackbarMessage} from "../../App";
 
 const useStyles = makeStyles({
     margin1em: {
@@ -43,15 +41,13 @@ const useStyles = makeStyles({
     }
 });
 
-const BpUpcomingMatches: React.FC = () => {
+const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const classes = useStyles();
-    const {t} = useTranslation();
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState<string | undefined>(undefined);
     let history = useHistory();
 
     useEffect(() => {
-        if (!appState.upcomingMatches) {
+        if (!appState.upcomingMatches && loading) {
             fetch(`${getHost(Api.matches)}/api/v2/matches/upcoming`)
                 .then(async upcomingMatchesResponse => {
                     if (upcomingMatchesResponse.status === 200) {
@@ -70,14 +66,7 @@ const BpUpcomingMatches: React.FC = () => {
         } else {
             setLoading(false);
         }
-    }, []);
-
-    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setMessage(undefined);
-    };
+    }, [loading, setMessage]);
 
     function createPoolForMatch (id: string) {
         history.push(`/create?${id}`);
@@ -102,24 +91,22 @@ const BpUpcomingMatches: React.FC = () => {
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
                                     <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        {/*<Link to="/create" style={{textDecoration: 'none'}} >*/}
-                                            <Button size="medium" className={classes.width100percent} onClick={(event) => createPoolForMatch(match.id as string)}>
-                                                <div className={classes.width100percent}>
-                                                    <div className={classes.tableRowContainerForClubIcons}>
-                                                        <div className={classes.clubIconAndTextDiv}>
-                                                            <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
-                                                            <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
-                                                        </div>
-                                                        <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
-                                                        <div className={classes.clubIconAndTextDiv}>
-                                                            <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
-                                                            <Typography variant="body1">{match.awayTeamName}</Typography>
-                                                        </div>
+                                        <Button size="medium" className={classes.width100percent} onClick={(event) => createPoolForMatch(match.id as string)}>
+                                            <div className={classes.width100percent}>
+                                                <div className={classes.tableRowContainerForClubIcons}>
+                                                    <div className={classes.clubIconAndTextDiv}>
+                                                        <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
+                                                        <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
                                                     </div>
-                                                    <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                                                    <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
+                                                    <div className={classes.clubIconAndTextDiv}>
+                                                        <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
+                                                        <Typography variant="body1">{match.awayTeamName}</Typography>
+                                                    </div>
                                                 </div>
-                                            </Button>
-                                        {/*</Link>*/}
+                                                <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                                            </div>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             );
@@ -131,19 +118,6 @@ const BpUpcomingMatches: React.FC = () => {
             return (
                 <div>
                     <br/><p>Something went wrong with loading the matches</p>
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        }}
-                        open={message !== undefined}
-                        autoHideDuration={6000}
-                        onClose={handleClose}
-                        message={message}>
-                        <MuiAlert elevation={1} variant="filled" severity="warning" className="warningAlert">
-                            <Typography variant="body1" component="p" className={classes.errorMessage}>{message !== undefined ? t(message) : null}</Typography>
-                        </MuiAlert>
-                    </Snackbar>
                 </div>
             );
         }

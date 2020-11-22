@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import BpAppBar from "./components/bpappbar/BpAppBar";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
@@ -9,6 +9,9 @@ import CreatePool from "./views/createpool/CreatePool";
 import ViewPool from "./views/viewpool/ViewPool";
 import BpHelmet from "./components/bphelmet/BpDefaultHelmet";
 import About from "./views/about/About";
+import MuiAlert from "@material-ui/lab/Alert";
+import {makeStyles, Snackbar, Typography} from "@material-ui/core";
+import {useTranslation} from "react-i18next";
 
 const theme = createMuiTheme({
     palette: {
@@ -105,18 +108,58 @@ const theme = createMuiTheme({
     }
 });
 
+const useStyles = makeStyles({
+    errorMessage: {
+        color: 'white'
+    }
+});
+
+export interface BpSnackbarMessage {
+    message: string | undefined
+    setMessage: (message: string | undefined) => void
+}
+
 const App: React.FC = () => {
+    const classes = useStyles();
+    const {t} = useTranslation();
+    const [message, setMessage] = useState<string | undefined>(undefined);
+
+    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setMessage(undefined);
+    };
+
     return (
         <BrowserRouter>
             <div className="App">
-                <BpHelmet />
+                <BpHelmet/>
                 <MuiThemeProvider theme={theme}>
                     <BpAppBar/>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/create" component={CreatePool}/>
+                    <Route exact path="/" render={(props) => (
+                        <Home {...props} message={message} setMessage={(message) => setMessage(message)} />
+                    )}/>
+                    <Route exact path="/create" render={(props) => (
+                        <CreatePool message={message} setMessage={setMessage} />
+                    )} />
                     <Route exact path="/howto" component={HowTo}/>
                     <Route exact path="/about" component={About}/>
                     <Route path="/pool/:key" component={ViewPool}/>
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        open={message !== undefined}
+                        autoHideDuration={6000}
+                        onClose={handleClose}
+                        message={message}>
+                        <MuiAlert elevation={1} variant="filled" severity="warning" className="warningAlert">
+                            <Typography variant="body1" component="p"
+                                        className={classes.errorMessage}>{message !== undefined ? t(message) : null}</Typography>
+                        </MuiAlert>
+                    </Snackbar>
                 </MuiThemeProvider>
             </div>
         </BrowserRouter>

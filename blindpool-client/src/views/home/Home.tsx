@@ -13,6 +13,7 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
+import {BpSnackbarMessage} from "../../App";
 
 const useStyles = makeStyles({
     root: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Home: React.FC = () => {
+const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const classes = useStyles();
     const { t } = useTranslation();
 
@@ -74,7 +75,7 @@ const Home: React.FC = () => {
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider style={{marginTop: '0.5em'}} />
                         <Typography component="p" style={{marginBottom: '0.5em'}} ><br/>{t('CLICK_ON_MATCH')}</Typography>
-                        <BpUpcomingMatches />
+                        <BpUpcomingMatches message={message} setMessage={setMessage} />
                     </CardContent>
                 </Card>
             </Grid>

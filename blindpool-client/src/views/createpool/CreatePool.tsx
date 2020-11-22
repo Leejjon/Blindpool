@@ -7,7 +7,7 @@ import {
     CardContent,
     CircularProgress,
     Grid, Icon, IconButton,
-    makeStyles, Snackbar,
+    makeStyles,
     Table, TableBody,
     TableCell,
     TableHead, TableRow, TextField,
@@ -18,9 +18,9 @@ import appState from "../../state/AppState";
 import Blindpool from "../../model/Blindpool";
 import Player from "../../model/Player";
 import NameField from "./NameField";
-import MuiAlert from '@material-ui/lab/Alert';
 import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
+import {BpSnackbarMessage} from "../../App";
 
 const useStyles = makeStyles({
     root: {
@@ -102,9 +102,6 @@ const useStyles = makeStyles({
     },
     disabledNumber: {
         color: 'gray'
-    },
-    errorMessage: {
-        color: 'white'
     }
 });
 
@@ -115,11 +112,10 @@ const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
-const CreatePool: React.FC = () => {
+const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const classes = useStyles();
     const {t} = useTranslation();
     let history = useHistory();
-    const [message, setMessage] = useState<string | undefined>(undefined);
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState<Player[]>([
@@ -233,13 +229,6 @@ const CreatePool: React.FC = () => {
         }
     };
 
-    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setMessage(undefined);
-    };
-
     if (loading) {
         return (
             <CircularProgress className={classes.progress} />
@@ -260,7 +249,7 @@ const CreatePool: React.FC = () => {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <BpMatchSelector />
+                            <BpMatchSelector message={message} setMessage={setMessage} />
                             {/*border={1}*/}
                             <Table className={classes.table}>
                                 <colgroup>
@@ -318,19 +307,6 @@ const CreatePool: React.FC = () => {
                             <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" className={classes.button} data-testid="createPoolButton">
                                 {t("CREATE_POOL").toUpperCase()}
                             </Button>
-                            <Snackbar
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                open={message !== undefined}
-                                autoHideDuration={6000}
-                                onClose={handleClose}
-                                message={message}>
-                                <MuiAlert elevation={1} variant="filled" severity="warning" className="warningAlert">
-                                    <Typography variant="body1" component="p" className={classes.errorMessage}>{message !== undefined ? t(message) : null}</Typography>
-                                </MuiAlert>
-                            </Snackbar>
                         </CardContent>
                     </Card>
                 </Grid>

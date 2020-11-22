@@ -4,6 +4,7 @@ import {Autocomplete} from "@material-ui/lab";
 import appState, {Match} from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
+import {BpSnackbarMessage} from "../../App";
 
 const useStyles = makeStyles({
     bpMatchSelector: {
@@ -30,11 +31,10 @@ const useStyles = makeStyles({
     }
 });
 
-const BpMatchSelector: React.FC = () => {
+const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
     const classes = useStyles();
     const { t } = useTranslation();
     // TODO: Pass error to snackbar in createpool page.
-    const [message, setMessage] = useState<string | undefined>(undefined);
     const [matches, setMatches] = useState<Array<Match>>([]);
 
     useEffect(() => {
@@ -56,13 +56,14 @@ const BpMatchSelector: React.FC = () => {
                     setMessage('BACKEND_UNREACHABLE');
                 });
         }
-    }, []);
+    }, [setMessage]);
 
     const [value, setValue] = React.useState<Match | string | undefined>(undefined);
     const [inputValue, setInputValue] = React.useState('');
 
     return (
         <Autocomplete
+            disabled={matches.length < 1}
             className={classes.bpMatchSelector}
             onChange={(event, newValue) => {
                 setValue(newValue ? newValue : undefined);
