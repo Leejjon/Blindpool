@@ -68,8 +68,9 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
         }
     }, [loading, setMessage]);
 
-    function createPoolForMatch (id: string) {
-        history.push(`/create?${id}`);
+    function createPoolForMatch (match: Match) {
+        appState.setSelectedMatch(match);
+        history.push('/create');
     }
 
     if (loading) {
@@ -91,7 +92,7 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
                                     <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Button size="medium" className={classes.width100percent} onClick={(event) => createPoolForMatch(match.id as string)}>
+                                        <Button size="medium" className={classes.width100percent} onClick={(event) => createPoolForMatch(match)}>
                                             <div className={classes.width100percent}>
                                                 <div className={classes.tableRowContainerForClubIcons}>
                                                     <div className={classes.clubIconAndTextDiv}>

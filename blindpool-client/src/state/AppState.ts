@@ -3,6 +3,7 @@ import Blindpool from "../model/Blindpool";
 class AppState {
     poolData: undefined | Blindpool = undefined;
     upcomingMatches: undefined | Match[] = undefined;
+    selectedMatch: undefined | string | Match = undefined;
 
     setPool(poolData: Blindpool) {
         this.poolData = poolData;
@@ -10,6 +11,10 @@ class AppState {
 
     setUpcomingMatches(upcomingMatches: Match[]) {
         this.upcomingMatches = upcomingMatches;
+    }
+
+    setSelectedMatch(selectedMatch: Match) {
+        this.selectedMatch = selectedMatch;
     }
 }
 

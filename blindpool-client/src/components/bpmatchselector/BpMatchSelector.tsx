@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {Divider, makeStyles, TextField, Typography} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
 import appState, {Match} from "../../state/AppState";
@@ -34,7 +34,6 @@ const useStyles = makeStyles({
 const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
     const classes = useStyles();
     const { t } = useTranslation();
-    // TODO: Pass error to snackbar in createpool page.
     const [matches, setMatches] = useState<Array<Match>>([]);
 
     useEffect(() => {
@@ -58,19 +57,33 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
         }
     }, [setMessage]);
 
-    const [value, setValue] = React.useState<Match | string | undefined>(undefined);
     const [inputValue, setInputValue] = React.useState('');
+    const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
+        console.log(`onChange ${new Date().getTime()}`);
+        const supportedMatch = selectedMatch as Match;
+        const freeFormatMatch = selectedMatch as string;
+        if (supportedMatch && supportedMatch.id) {
+            console.log(`Match: ${supportedMatch.id}`);
+        } else if (freeFormatMatch) {
+            console.log(`Match: ${freeFormatMatch}`);
+        } else {
+            console.log(`Not a match ${selectedMatch}`);
+        }
+    };
 
     return (
         <Autocomplete
             disabled={matches.length < 1}
             className={classes.bpMatchSelector}
-            onChange={(event, newValue) => {
-                setValue(newValue ? newValue : undefined);
-            }}
+            onChange={updateSelectedMatch}
             inputValue={inputValue}
-            onInputChange={(event, newInputValue) => {
-                setInputValue(newInputValue);
+            onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
+                console.log(`Event type: ${event.type}`)
+                console.log(`onInputChange ${new Date().getTime()} newSupportedMatch=${newSupportedMatch}`);
+                setInputValue(newSupportedMatch);
+                if (event.type === 'change') {
+                    updateSelectedMatch(null, newSupportedMatch);
+                }
             }}
             id="bpMatchSelector" freeSolo
             getOptionLabel={(upcomingMatch) => {
@@ -110,7 +123,7 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
                     </div>
                 );
             }}
-            ListboxProps={{ style: { minHeight: '28em' } }}
+            ListboxProps={{ style: { maxHeight: '24em' } }}
             style={{ width: '100%' }}
             renderInput={(params) => <TextField {...params} label={t('SELECT_MATCH')}
                 inputProps={{
