@@ -21,8 +21,10 @@ export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, E
             // const startTimestamp: Date = new Date(upcomingMatch.startTimestamp);
             const key = upcomingMatch[datastore.KEY];
 
-
-            let match: Match = { id: key.name, ...upcomingMatch};
+            let match: Match = { id: key.name, startTimestamp: upcomingMatch.startTimestamp, competitionName: upcomingMatch.competitionName,
+                awayTeamName: upcomingMatch.awayTeamName, awayTeamID: upcomingMatch.awayTeamID,
+                homeTeamName: upcomingMatch.homeTeamName, homeTeamID: upcomingMatch.homeTeamID
+            };
             return match;
         }));
     } catch (error) {

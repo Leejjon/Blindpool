@@ -2,10 +2,10 @@ export interface Match {
     id?: string
     startTimestamp: Date,
     competitionName: string,
-    currentScore: Score,
-    homeTeam: string,
+    currentScore?: Score,
+    homeTeamName: string,
     homeTeamID: string,
-    awayTeam: string,
+    awayTeamName: string,
     awayTeamID: string
 }
 
