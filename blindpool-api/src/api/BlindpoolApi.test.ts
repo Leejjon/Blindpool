@@ -92,7 +92,7 @@ describe('Blindpool API', () => {
 
     it('Retrieve blindpool - NOT FOUND', async () => {
         stub = sinon.stub(BlindpoolStorageService, 'findBlindpoolByKey')
-            .resolves(err(ErrorScenarios.NOT_FOUND));
+            .resolves(err(ErrorScenarios.POOL_NOT_FOUND));
         let requestWithValidKeyButNotExistingPool: Partial<Request> = {params: {key: 'wprD1'}};
 
         await getBlindpoolByKey(<Request>requestWithValidKeyButNotExistingPool, <Response>res);

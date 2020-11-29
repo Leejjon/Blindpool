@@ -1,14 +1,16 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {Divider, makeStyles, TextField, Typography} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
-import appState, {Match} from "../../state/AppState";
+import appState from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
 import {BpSnackbarMessage} from "../../App";
+import {Match} from "../../model/Match";
 
 const useStyles = makeStyles({
     bpMatchSelector: {
         margin: 'auto',
+        marginTop: '0.8em',
     },
     clubIconStyle: {
         width: '3em', height: '3em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
@@ -35,6 +37,7 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
     const classes = useStyles();
     const { t } = useTranslation();
     const [matches, setMatches] = useState<Array<Match>>([]);
+    const [inputValue, setInputValue] = React.useState('');
 
     useEffect(() => {
         if (appState.upcomingMatches) {
@@ -57,17 +60,34 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
         }
     }, [setMessage]);
 
-    const [inputValue, setInputValue] = React.useState('');
+    const displayMatchInDropdown = (upcomingMatch: Match): string => {
+        return `${upcomingMatch.homeTeamName} vs ${upcomingMatch.awayTeamName}`;
+    };
+
+    useEffect(() =>{
+        const supportedMatch = appState.selectedMatch as Match;
+        const freeFormatMatch = appState.selectedMatch as string;
+
+        let matchToSelectInDropdown: string = '';
+        if (supportedMatch && supportedMatch.id) {
+            matchToSelectInDropdown = displayMatchInDropdown(supportedMatch);
+        } else if (freeFormatMatch) {
+            matchToSelectInDropdown = freeFormatMatch;
+        }
+
+        setInputValue(matchToSelectInDropdown);
+    }, [setInputValue]);
+
     const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
         console.log(`onChange ${new Date().getTime()}`);
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
         if (supportedMatch && supportedMatch.id) {
-            console.log(`Match: ${supportedMatch.id}`);
+            appState.setSelectedMatch(supportedMatch)
         } else if (freeFormatMatch) {
-            console.log(`Match: ${freeFormatMatch}`);
+            appState.setSelectedMatch(freeFormatMatch);
         } else {
-            console.log(`Not a match ${selectedMatch}`);
+            appState.setSelectedMatch(undefined);
         }
     };
 
@@ -78,17 +98,14 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
             onChange={updateSelectedMatch}
             inputValue={inputValue}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
-                console.log(`Event type: ${event.type}`)
                 console.log(`onInputChange ${new Date().getTime()} newSupportedMatch=${newSupportedMatch}`);
                 setInputValue(newSupportedMatch);
-                if (event.type === 'change') {
+                if (event && event.type === 'change') {
                     updateSelectedMatch(null, newSupportedMatch);
                 }
             }}
             id="bpMatchSelector" freeSolo
-            getOptionLabel={(upcomingMatch) => {
-                return `${upcomingMatch.homeTeamName} vs ${upcomingMatch.awayTeamName}`;
-            }}
+            getOptionLabel={displayMatchInDropdown}
             options={matches as Match[]}
             renderOption={(upcomingMatch: Match) => {
                 const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.homeTeamID}.svg`;

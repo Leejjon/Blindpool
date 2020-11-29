@@ -57,7 +57,7 @@ describe('BlindpoolStorageService tests', () => {
         const result: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(0);
         expect(result.isOk()).to.be.false;
         result.mapErr((errorScenario: ErrorScenarios) => {
-            expect(errorScenario).to.equal(ErrorScenarios.NOT_FOUND);
+            expect(errorScenario).to.equal(ErrorScenarios.POOL_NOT_FOUND);
         });
     });
 

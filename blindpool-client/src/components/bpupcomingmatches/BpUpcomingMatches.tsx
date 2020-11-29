@@ -8,10 +8,11 @@ import {
     TableRow,
     Typography
 } from "@material-ui/core";
-import appState, {Match} from "../../state/AppState";
+import appState from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useHistory} from "react-router-dom";
 import {BpSnackbarMessage} from "../../App";
+import {Match} from "../../model/Match";
 
 const useStyles = makeStyles({
     margin1em: {

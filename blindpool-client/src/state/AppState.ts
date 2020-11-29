@@ -1,4 +1,5 @@
 import Blindpool from "../model/Blindpool";
+import {Match} from "../model/Match";
 
 class AppState {
     poolData: undefined | Blindpool = undefined;
@@ -13,27 +14,11 @@ class AppState {
         this.upcomingMatches = upcomingMatches;
     }
 
-    setSelectedMatch(selectedMatch: Match) {
+    setSelectedMatch(selectedMatch: Match | string| undefined) {
         this.selectedMatch = selectedMatch;
     }
 }
 
 let appState = new AppState();
-
-export interface Match {
-    id?: string
-    startTimestamp: Date,
-    competitionName: string,
-    currentScore: Score,
-    homeTeamName: string,
-    homeTeamID: string,
-    awayTeamName: string,
-    awayTeamID: string
-}
-
-export interface Score {
-    home: number
-    away: number
-}
 
 export default appState;

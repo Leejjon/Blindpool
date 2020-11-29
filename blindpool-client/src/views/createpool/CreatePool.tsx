@@ -15,12 +15,13 @@ import {
 } from "@material-ui/core";
 import {Helmet} from "react-helmet";
 import appState from "../../state/AppState";
-import Blindpool from "../../model/Blindpool";
+import Blindpool, {CreateBlindpoolRequest} from "../../model/Blindpool";
 import Player from "../../model/Player";
 import NameField from "./NameField";
 import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
 import {BpSnackbarMessage} from "../../App";
+import {Match} from "../../model/Match";
 
 const useStyles = makeStyles({
     root: {
@@ -78,7 +79,7 @@ const useStyles = makeStyles({
     },
     nameHeader: {
         // margin: '0px',
-        paddingTop: '2em',
+        paddingTop: '1.5em',
         paddingLeft: '1em',
         paddingBottom: '1em'
     },
@@ -207,10 +208,22 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
         if (validatedPlayers) {
             setLoading(true);
             try {
-                const response: Response = await fetch(`${getHost(Api.pool)}/api/v2/pool`,
+                let requestBody = {
+                    participants: players.map(player => player.name)
+                } as CreateBlindpoolRequest;
+
+                const selectedMatch = appState.selectedMatch as Match;
+                const freeFormatMatch = appState.selectedMatch as string;
+                if (selectedMatch && selectedMatch.id) {
+                    requestBody.selectedMatchID = selectedMatch.id;
+                } else if (freeFormatMatch && freeFormatMatch.trim().length >= 0) {
+                    requestBody.freeFormatMatch = freeFormatMatch.trim();
+                }
+
+                const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
                     {
                         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                        method: "POST", body: JSON.stringify(players.map(player => player.name))
+                        method: "POST", body: JSON.stringify(requestBody)
                     }
                 );
                 if (response.status === 200) {

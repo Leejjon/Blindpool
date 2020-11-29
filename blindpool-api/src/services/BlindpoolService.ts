@@ -24,13 +24,14 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
         const [poolEntity] = await datastore.get(blindpoolKey);
 
         if (poolEntity === undefined) {
-            return err(ErrorScenarios.NOT_FOUND);
+            return err(ErrorScenarios.POOL_NOT_FOUND);
         }
 
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
         const participantsAndScores = poolEntity.PARTICIPANTS_AND_SCORES;
         const createdTimestamp = poolEntity.CREATED_TIMESTAMP;
         const match = poolEntity.MATCH;
+        const freeFormatMatch = poolEntity.FREE_FORMAT_MATCH;
 
         let blindpool: Blindpool = {
             key: blindpoolKey.id as string,
@@ -40,6 +41,8 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
 
         if (match) {
             blindpool.MATCH = match;
+        } else if (freeFormatMatch) {
+            blindpool.FREE_FORMAT_MATCH = freeFormatMatch;
         }
 
         return ok(blindpool);
@@ -49,7 +52,7 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
     }
 };
 
-export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>, match?: Match): Promise<Result<Blindpool, ErrorScenarios>> => {
+export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>, match?: Match | undefined, freeFormatMatch?: string | undefined): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
         const blindpoolKeyToInsert = datastore.key(Kinds.POOL_KIND);
@@ -61,6 +64,8 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
 
         if (match) {
             blindpoolToInsert.MATCH = match;
+        } else if (freeFormatMatch) {
+            blindpoolToInsert.FREE_FORMAT_MATCH = freeFormatMatch;
         }
 
         const entityToInsert = {
@@ -85,6 +90,8 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
 
         if (match) {
             blindpoolToReturn.MATCH = match;
+        } else if (freeFormatMatch) {
+            blindpoolToReturn.FREE_FORMAT_MATCH = freeFormatMatch;
         }
 
         return ok(blindpoolToReturn);

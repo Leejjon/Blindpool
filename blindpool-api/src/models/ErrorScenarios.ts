@@ -1,5 +1,6 @@
 export enum ErrorScenarios {
-    NOT_FOUND,
+    POOL_NOT_FOUND,
+    MATCH_NOT_FOUND,
     INTERNAL_ERROR,
     INVALID_INPUT
 }

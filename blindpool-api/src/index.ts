@@ -2,8 +2,7 @@ import express, {NextFunction, Request, RequestHandler, Response} from "express"
 import {
     getBlindpoolByKey,
     getBlindpoolStatistics,
-    postCreateBlindpool,
-    postCreateBlindpoolV2
+    postCreateBlindpool
 } from "./api/BlindpoolApi";
 import {validate} from "class-validator";
 import cors from "cors";
@@ -46,8 +45,7 @@ function validationMiddleware<T>(type: any): RequestHandler {
 }
 
 router.get('/v2/pool/stats', getBlindpoolStatistics);
-router.post('/v2/pool/', postCreateBlindpool);
-router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), postCreateBlindpoolV2);
+router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), postCreateBlindpool);
 router.get('/v2/pool/:key', getBlindpoolByKey);
 
 const app = express();

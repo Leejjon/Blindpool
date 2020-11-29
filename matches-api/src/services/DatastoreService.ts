@@ -20,6 +20,8 @@ export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, E
             console.log(`Upcoming match: ${JSON.stringify(upcomingMatch)}`);
             // const startTimestamp: Date = new Date(upcomingMatch.startTimestamp);
             const key = upcomingMatch[datastore.KEY];
+
+
             let match: Match = { id: key.name, ...upcomingMatch};
             return match;
         }));

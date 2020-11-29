@@ -3,7 +3,7 @@ import {
     IsNumber,
     IsOptional,
     IsString,
-    Matches, ValidateNested,
+    Matches, MaxLength, ValidateNested,
 } from "class-validator";
 import {Type} from "class-transformer";
 
@@ -33,11 +33,13 @@ export class Blindpool {
     PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>;
     CREATED_TIMESTAMP: Date;
     MATCH?: Match;
+    FREE_FORMAT_MATCH?: string;
 
-    constructor(PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>, CREATED_TIMESTAMP: Date, MATCH?: Match) {
+    constructor(PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>, CREATED_TIMESTAMP: Date, MATCH?: Match, FREE_FORMAT_MATCH?: string) {
         this.PARTICIPANTS_AND_SCORES = PARTICIPANTS_AND_SCORES;
         this.CREATED_TIMESTAMP = CREATED_TIMESTAMP;
         this.MATCH = MATCH;
+        this.FREE_FORMAT_MATCH = FREE_FORMAT_MATCH;
     }
 }
 
@@ -46,25 +48,31 @@ export class CreateBlindpoolRequest {
     @Matches(/^([a-zA-Z0-9 _]{1,20})$/, {each: true})
     participants: string[];
 
-    @ValidateNested()
-    @Type(() => Match) // See https://github.com/typestack/class-transformer#working-with-nested-objects
-    selectedMatch: Match
+    @IsOptional()
+    @IsString()
+    selectedMatchID?: string
 
-    constructor(participants: string[], selectedMatch: Match) {
+    @IsOptional()
+    @IsString()
+    @Matches(/^([a-zA-Z0-9 ]{5,50})$/)
+    freeFormatMatch?: string;
+
+    constructor(participants: string[], selectedMatch?: string, freeFormatMatch?: string) {
         this.participants = participants;
-        this.selectedMatch = selectedMatch;
+        this.selectedMatchID = selectedMatch;
+        this.freeFormatMatch = freeFormatMatch
     }
 }
 
 export class Match {
-    @IsOptional() @IsNumber()
-    id?: string | undefined;
+    @IsString()
+    id: string;
 
-    @IsOptional() @IsNumber()
-    homeTeamID?: number | undefined;
+    @IsNumber()
+    homeTeamID: number;
 
-    @IsOptional() @IsNumber()
-    awayTeamID?: number | undefined;
+    @IsNumber()
+    awayTeamID: number;
 
     @IsString() @Matches(/^[a-zA-Z0-9 ]{2,25}$/)
     homeTeamName: string;
@@ -72,7 +80,7 @@ export class Match {
     @IsString() @Matches(/^[a-zA-Z0-9 ]{2,25}$/)
     awayTeamName: string;
 
-    constructor(id: string | undefined, homeTeamID: number | undefined, awayTeamID: number | undefined, homeTeamName: string, awayTeamName: string) {
+    constructor(id: string, homeTeamID: number, awayTeamID: number, homeTeamName: string, awayTeamName: string) {
         this.id = id;
         this.homeTeamID = homeTeamID;
         this.awayTeamID = awayTeamID;
