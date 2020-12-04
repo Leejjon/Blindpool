@@ -24,7 +24,6 @@ const useStyles = makeStyles({
     slashIcon: {
         marginTop: '2em', marginBottom: '2em'
     },
-
     marginHalfEm: {
         margin: '0.5em', fontSize: 'small',
     },
@@ -140,7 +139,7 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
                     </div>
                 );
             }}
-            ListboxProps={{ style: { maxHeight: '24em' } }}
+            ListboxProps={{ style: { /* This position absolute is key. */ position: 'absolute', backgroundColor: '#fafafa', maxHeight: '24em' } }}
             style={{ width: '100%' }}
             renderInput={(params) => <TextField {...params} label={t('SELECT_MATCH')}
                 inputProps={{
