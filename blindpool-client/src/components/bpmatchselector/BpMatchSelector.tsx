@@ -74,11 +74,13 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
             matchToSelectInDropdown = freeFormatMatch;
         }
 
+        console.log(`2 SupportedMatch ${supportedMatch} FreeFormatMatch ${freeFormatMatch}`);
+
         setInputValue(matchToSelectInDropdown);
     }, [setInputValue]);
 
     const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
-        console.log(`onChange ${new Date().getTime()}`);
+        console.log(`3 onChange ${new Date().getTime()} selectedMatch ${selectedMatch}`);
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
         if (supportedMatch && supportedMatch.id) {
@@ -97,7 +99,13 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
             onChange={updateSelectedMatch}
             inputValue={inputValue}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
-                console.log(`onInputChange ${new Date().getTime()} newSupportedMatch=${newSupportedMatch}`);
+                if (newSupportedMatch === 'undefined vs undefined') {
+                    // Somehow if you press enter while typing a freeformat match, it will throw an input change event
+                    // with 'undefined vs undefined' in the newSupportedMatch string.
+                    return;
+                }
+
+                console.log(`1 onInputChange ${new Date().getTime()} newSupportedMatch=${newSupportedMatch}`);
                 setInputValue(newSupportedMatch);
                 if (event && event.type === 'change') {
                     updateSelectedMatch(null, newSupportedMatch);
