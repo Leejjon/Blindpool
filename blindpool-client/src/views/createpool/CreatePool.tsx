@@ -126,6 +126,7 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
         EMPTY_PLAYER(),
         EMPTY_PLAYER()
     ]);
+    const [invalidMatchMessage, setInvalidMatchMessage] = React.useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (justAddedPlayer) {
@@ -144,11 +145,13 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
             playersUpdate[index].name = "";
             playersUpdate[index].valid = undefined;
         }
-        validateState(playersUpdate);
+        validateState(playersUpdate, false);
     };
 
-    const validateState = (playersToValidate: Array<Player>, complainAboutEmptyFields?: boolean): boolean => {
-        let allPlayersHaveAValidName = true;
+    const validateState = (playersToValidate: Array<Player>, complainAboutEmptyFields: boolean): boolean => {
+        let matchIsValid: boolean = true;
+
+        let allPlayersHaveAValidName: boolean = true;
         playersToValidate.forEach((player) => {
             const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]{1,20})$/;
             if (player.name) {
@@ -175,7 +178,7 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
 
         setPlayers([...playersToValidate]);
 
-        return allPlayersHaveAValidName;
+        return allPlayersHaveAValidName && matchIsValid;
     };
 
     const checkForDuplicates = (name: string) => {
@@ -204,16 +207,15 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     };
 
     const sendCreatePoolRequest = async () => {
-        const validatedPlayers = validateState([...players],true);
-        if (validatedPlayers) {
+        const selectedMatch = appState.selectedMatch as Match;
+        const freeFormatMatch = appState.selectedMatch as string;
+        if (validateState([...players],true)) {
             setLoading(true);
             try {
                 let requestBody = {
                     participants: players.map(player => player.name)
                 } as CreateBlindpoolRequest;
 
-                const selectedMatch = appState.selectedMatch as Match;
-                const freeFormatMatch = appState.selectedMatch as string;
                 if (selectedMatch && selectedMatch.id) {
                     requestBody.selectedMatchID = selectedMatch.id;
                 } else if (freeFormatMatch && freeFormatMatch.trim().length >= 0) {
@@ -262,7 +264,9 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <BpMatchSelector message={message} setMessage={setMessage} />
+                            <BpMatchSelector message={message} setMessage={setMessage}
+                                 invalidMatchMessage={invalidMatchMessage}
+                                 setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}/>
                             {/*border={1}*/}
                             <Table className={classes.table}>
                                 <colgroup>

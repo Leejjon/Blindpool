@@ -16,10 +16,15 @@ const useStyles = makeStyles({
         width: '3em', height: '3em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
     },
     tableRowContainerForClubIcons: {
-        display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', width: '100%', margin: '0px'
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        justifyContent: 'space-between',
+        width: '100%',
+        margin: '0px'
     },
     clubIconAndTextDiv: {
-        width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap', fontSize: '30'
+        width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap'
     },
     slashIcon: {
         marginTop: '2em', marginBottom: '2em'
@@ -32,9 +37,16 @@ const useStyles = makeStyles({
     }
 });
 
-const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
+export interface MatchValidationProp {
+    invalidMatchMessage: string | undefined;
+    setInvalidMatchMessage: (message: string | undefined) => void;
+}
+
+export interface BpMatchSelectorProps extends BpSnackbarMessage, MatchValidationProp {}
+
+const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMatchMessage, setInvalidMatchMessage}) => {
     const classes = useStyles();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [matches, setMatches] = useState<Array<Match>>([]);
     const [inputValue, setInputValue] = React.useState('');
 
@@ -63,7 +75,7 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
         return `${upcomingMatch.homeTeamName} vs ${upcomingMatch.awayTeamName}`;
     };
 
-    useEffect(() =>{
+    useEffect(() => {
         const supportedMatch = appState.selectedMatch as Match;
         const freeFormatMatch = appState.selectedMatch as string;
 
@@ -74,17 +86,18 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
             matchToSelectInDropdown = freeFormatMatch;
         }
 
-        console.log(`2 SupportedMatch ${supportedMatch} FreeFormatMatch ${freeFormatMatch}`);
-
         setInputValue(matchToSelectInDropdown);
     }, [setInputValue]);
 
     const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
-        console.log(`3 onChange ${new Date().getTime()} selectedMatch ${selectedMatch}`);
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
         if (supportedMatch && supportedMatch.id) {
-            appState.setSelectedMatch(supportedMatch)
+            if (supportedMatch.startTimestamp < new Date()) {
+                setInvalidMatchMessage('MATCH_ALREADY_STARTED');
+            } else {
+                appState.setSelectedMatch(supportedMatch);
+            }
         } else if (freeFormatMatch) {
             appState.setSelectedMatch(freeFormatMatch);
         } else {
@@ -99,13 +112,13 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
             onChange={updateSelectedMatch}
             inputValue={inputValue}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
+                setInvalidMatchMessage(undefined);
                 if (newSupportedMatch === 'undefined vs undefined') {
                     // Somehow if you press enter while typing a freeformat match, it will throw an input change event
                     // with 'undefined vs undefined' in the newSupportedMatch string.
                     return;
                 }
 
-                console.log(`1 onInputChange ${new Date().getTime()} newSupportedMatch=${newSupportedMatch}`);
                 setInputValue(newSupportedMatch);
                 if (event && event.type === 'change') {
                     updateSelectedMatch(null, newSupportedMatch);
@@ -147,15 +160,26 @@ const BpMatchSelector: React.FC<BpSnackbarMessage> = ({setMessage}) => {
                     </div>
                 );
             }}
-            ListboxProps={{ style: { /* This position absolute is key. */ position: 'absolute', backgroundColor: '#fafafa', maxHeight: '24em' } }}
-            style={{ width: '100%' }}
-            renderInput={(params) => <TextField {...params} label={t('SELECT_MATCH')}
-                inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'new-password', // disable autocomplete and autofill
-                    style: {fontSize: 'large'}
-                }}
-            />}
+            ListboxProps={{
+                style: { /* This position absolute is key. */
+                    position: 'absolute',
+                    backgroundColor: '#fafafa',
+                    maxHeight: '24em'
+                }
+            }}
+            style={{width: '100%'}}
+            renderInput={(params) =>
+                <TextField {...params}
+                       error={invalidMatchMessage !== undefined}
+                       helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
+                       label={t('SELECT_MATCH')}
+                       inputProps={{
+                           ...params.inputProps,
+                           autoComplete: 'new-password', // disable autocomplete and autofill
+                           style: {fontSize: 'large'}
+                       }}
+                />
+            }
         />
     );
 }

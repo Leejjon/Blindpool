@@ -1,7 +1,7 @@
 const eredivisieTeams: {[key: number]: string} = {
     666: 'FC Twente',
     668: 'VVV Venlo',
-    671: 'Heracles Almelo',
+    671: 'Heracles',
     672: 'Willem II',
     673: 'SC Heerenveen',
     674: 'PSV',
@@ -16,7 +16,7 @@ const eredivisieTeams: {[key: number]: string} = {
     684: 'PEC Zwolle',
     1914: 'FC Emmen',
     1920: 'Fortuna Sittard',
-    6806: 'Sparta Rotterdam'
+    6806: 'Sparta'
 }
 
 export const getTeamName = (key: number): string => {

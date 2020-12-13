@@ -1,5 +1,6 @@
 import 'reflect-metadata'; // This import is needed for: https://github.com/typestack/class-transformer#working-with-nested-objects
 import {
+    IsDate,
     IsNumber,
     IsOptional,
     IsString,
@@ -80,11 +81,15 @@ export class Match {
     @IsString() @Matches(/^[a-zA-Z0-9 ]{2,25}$/)
     awayTeamName: string;
 
-    constructor(id: string, homeTeamID: number, awayTeamID: number, homeTeamName: string, awayTeamName: string) {
+    @IsDate()
+    startTimestamp: Date;
+
+    constructor(id: string, homeTeamID: number, awayTeamID: number, homeTeamName: string, awayTeamName: string, startTimestamp: Date) {
         this.id = id;
         this.homeTeamID = homeTeamID;
         this.awayTeamID = awayTeamID;
         this.homeTeamName = homeTeamName;
         this.awayTeamName= awayTeamName;
+        this.startTimestamp = startTimestamp;
     }
 }

@@ -15,7 +15,12 @@ export const doesThisMatchExists = async (key: string): Promise<Result<Match, Er
         return err(ErrorScenarios.MATCH_NOT_FOUND);
     } else {
         let match: Match = {
-            awayTeamID: matchEntity.awayTeamID, awayTeamName: matchEntity.awayTeamName, homeTeamID: matchEntity.homeTeamID, homeTeamName: matchEntity.homeTeamName, id: key
+            startTimestamp: matchEntity.startTimestamp,
+            awayTeamID: matchEntity.awayTeamID,
+            awayTeamName: matchEntity.awayTeamName,
+            homeTeamID: matchEntity.homeTeamID,
+            homeTeamName: matchEntity.homeTeamName,
+            id: key
         };
         return ok(match);
     }

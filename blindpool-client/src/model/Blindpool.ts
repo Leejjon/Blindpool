@@ -18,13 +18,15 @@ interface ParticipantAndScore {
 interface Blindpool {
     key: string,
     PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>,
-    CREATED_TIMESTAMP: Date
+    CREATED_TIMESTAMP: Date,
+    MATCH?: Match,
+    FREE_FORMAT_MATCH?: string
 }
 
 export interface CreateBlindpoolRequest {
     participants: string[],
     selectedMatchID?: string,
-    freeFormatMatch?: string;
+    freeFormatMatch?: string
 }
 
 export default Blindpool;

@@ -15,6 +15,8 @@ export const resources = {
             "HOW_TO_USE_BLINDPOOL_DESCRIPTION": "Learn how to make a blind pool.",
             "BLINDPOOL_DEFINITION_TITLE": "What is a blind pool?",
             "BLINDPOOL_DEFINITION_DESCRIPTION": "A blind pool is a gambling game where all participants are assigned a random score for a football match. The player with the correct final score wins!",
+            "BLINDPOOL_VIEW_TITLE": "{{organizer}}'s blindpool",
+            "BLINDPOOL_VIEW_DESCRIPTION": "This blindpool is created by {{organizer}} for free.",
             "HOST_NAME": "Enter the name of the organizer",
             "POOL_MADE_BY": "{{organizer}}'s blind pool",
             "ADD_PLAYER": "Add another player",
@@ -43,7 +45,9 @@ export const resources = {
             "OTHER_APPS": "Other Apps",
             "UPCOMING_MATCHES": "Upcoming matches",
             "CLICK_ON_MATCH": "Click on a match below to start a pool",
-            "SELECT_MATCH": "Select match (optional)"
+            "SELECT_MATCH": "Select match (optional)",
+            "MATCH_ALREADY_STARTED": "Warning: This match has already started.",
+            "FREE_FORMAT_MATCH_PREFIX": "Match: "
         }
     },
     nl: {
@@ -57,6 +61,8 @@ export const resources = {
             "HOW_TO_USE_BLINDPOOL_DESCRIPTION": "Leer hoe je een blindepool maakt.",
             "BLINDPOOL_DEFINITION_TITLE": "Wat is een blindepool?",
             "BLINDPOOL_DEFINITION_DESCRIPTION": "Een blindepool is een gokspel waar elke deelnemer een willekeurige voetbal uitslag krijgt. De deelnemer met de uitslag van de wedstrijd, wint.",
+            "BLINDPOOL_VIEW_TITLE": "Blindepool van {{organizer}}",
+            "BLINDPOOL_VIEW_DESCRIPTION": "Deze blindepool is gratis gemaakt door {{organizer}}",
             "HOST_NAME": "Vul de naam van de organizator in.",
             "POOL_MADE_BY": "{{organizer}}'s Blindepool",
             "ADD_PLAYER": "Nog een speler toevoegen",
@@ -85,7 +91,9 @@ export const resources = {
             "OTHER_APPS": "Andere Apps",
             "UPCOMING_MATCHES": "Aankomende wedstrijden",
             "CLICK_ON_MATCH": "Klik op een wedstrijd om er een blindepool voor te maken",
-            "SELECT_MATCH": "Selecteer wedstrijd (optioneel)"
+            "SELECT_MATCH": "Selecteer wedstrijd (optioneel)",
+            "MATCH_ALREADY_STARTED": "Waarschuwing: Deze wedstrijd is al begonnen.",
+            "FREE_FORMAT_MATCH_PREFIX": "Wedstrijd: ",
         }
     }
 };
