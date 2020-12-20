@@ -1,24 +1,30 @@
 import {Match} from "../model/Match";
 import {Request, Response} from "express";
-import {
-    ErrorScenarios,
-    FootballDataApiMatch,
-    getMatchesFromFootballDataApi
-} from "../services/footballdata-api/FootballDataApi";
-import {upsertMatches, selectTenUpcomingMatches} from "../services/DatastoreService";
+import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApi";
+import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/DatastoreService";
+import {ErrorScenarios} from "../model/ErrorScenarios";
+
+export const getMatchByKey = async (req: Request, res: Response) => {
+    const key = req.params.key;
+    const matchNumber = parseInt(key.substr(14));
+    const isKeyParamValid = key && key.startsWith('football-data-') && key.length <= 30 && matchNumber;
+    if (isKeyParamValid) {
+        const matchResult = await selectMatchByKey("football-data-302110");
+        matchResult
+            .map((match: Match) => mapSuccess(res, match))
+            .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
+    } else {
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+    }
+};
 
 export const getTenScheduledMatches = async (req: Request, res: Response) => {
     let tenUpcomingMatchesResult = await selectTenUpcomingMatches();
-    res.contentType('application/json');
 
-    tenUpcomingMatchesResult.map((matches: Array<Match>) => {
-        res.status(200);
-        res.send(matches);
-    }).mapErr((errorScenario: ErrorScenarios) => {
-        res.status(500);
-        res.send({success: false});
-    });
-}
+    tenUpcomingMatchesResult
+        .map((matches: Array<Match>) => mapSuccess(res, matches))
+        .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
+};
 
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {
     let matches = await getMatchesFromFootballDataApi();
@@ -29,4 +35,29 @@ export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) 
     res.contentType('application/json');
     res.status(200);
     res.send({success: true});
+};
+
+const respond = (res: Response, status: number, message: string) => {
+    res.status(status);
+    res.send(message);
+}
+
+const mapSuccess = (res: Response, responseEntity: any) => {
+    res.contentType('application/json');
+    res.status(200);
+    res.send(responseEntity);
+}
+
+const mapError = (res: Response, error: ErrorScenarios) => {
+    switch (error) {
+        case ErrorScenarios.MATCH_NOT_FOUND:
+            respond(res, 404, "We can't find the match you've selected, sorry!");
+            break;
+        case ErrorScenarios.INTERNAL_ERROR:
+            respond(res, 500, 'An error occurred on our side, sorry!');
+            break;
+        case ErrorScenarios.INVALID_INPUT:
+            respond(res, 400, 'Invalid input.');
+            break;
+    }
 }

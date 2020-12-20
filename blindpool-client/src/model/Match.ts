@@ -1,3 +1,5 @@
+import {Score} from "./Score";
+
 export interface Match {
     id: string
     startTimestamp: Date,
@@ -5,5 +7,7 @@ export interface Match {
     homeTeamName: string,
     homeTeamID: string,
     awayTeamName: string,
-    awayTeamID: string
+    awayTeamID: string,
+    finished: boolean,
+    score: Score
 }

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import { fetchAndSaveScheduledMatches, getTenScheduledMatches } from "./api/MatchesApi";
+import {fetchAndSaveScheduledMatches, getMatchByKey, getTenScheduledMatches} from "./api/MatchesApi";
 
 const PORT = process.env.PORT || 8082;
 const environment = process.env.NODE_ENV || 'development';
@@ -15,6 +15,7 @@ if (environment === 'development') {
 
 router.get('/matches/update', fetchAndSaveScheduledMatches);
 router.get('/matches/upcoming', getTenScheduledMatches);
+router.get('/matches/:key', getMatchByKey);
 
 const app = express();
 

@@ -2,12 +2,7 @@ import {ok, err, Result} from "neverthrow";
 import axios from "axios";
 import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE} from "./constants";
 import {fetchSecret} from "../SecretService";
-
-export enum ErrorScenarios {
-    FOOTBALL_DATA_API_UNREACHABLE,
-    FOOTBALL_DATA_PARSING_ERROR,
-    DATASTORE_ERROR
-}
+import {ErrorScenarios} from "../../model/ErrorScenarios";
 
 // Make all fields we don't use optional
 export interface FootballDataApiMatch {
@@ -65,10 +60,10 @@ export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<Foot
             return ok(matches);
         } else {
             console.error(`Response object: ${JSON.stringify(response.data)}`);
-            return err(ErrorScenarios.FOOTBALL_DATA_API_UNREACHABLE);
+            return err(ErrorScenarios.INTERNAL_ERROR);
         }
     } catch (error) {
         console.error(`Something went wrong with retrieving ${JSON.stringify(response)}`);
-        return err(ErrorScenarios.FOOTBALL_DATA_PARSING_ERROR);
+        return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }

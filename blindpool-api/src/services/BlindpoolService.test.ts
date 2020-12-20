@@ -12,7 +12,7 @@ import {ErrorScenarios} from "../models/ErrorScenarios";
 describe('BlindpoolStorageService tests', () => {
     const NONE_EXISTING_POOL_KEY = 0;
     const TEST_POOL_KEY = 109;
-    const TEST_PARTICIPANT_AND_SCORES = '[{\"participant\":{\"name\":\"Leejjon\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"1\"}},{\"participant\":{\"name\":\"Stofkat\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"X\",\"awayClubScore\":\"X\"}},{\"participant\":{\"name\":\"Barry\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"0\"}},{\"participant\":{\"name\":\"Billy\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"1\",\"awayClubScore\":\"0\"}}]';
+    const TEST_PARTICIPANT_AND_SCORES = '[{\"participant\":{\"name\":\"Leejjon\",\"userType\":\"0\"},\"score\":{\"home\":\"0\",\"away\":\"1\"}},{\"participant\":{\"name\":\"Stofkat\",\"userType\":\"0\"},\"score\":{\"home\":\"X\",\"away\":\"X\"}},{\"participant\":{\"name\":\"Barry\",\"userType\":\"0\"},\"score\":{\"homeClubScore\":\"0\",\"awayClubScore\":\"0\"}},{\"participant\":{\"name\":\"Billy\",\"userType\":\"0\"},\"score\":{\"home\":\"1\",\"away\":\"0\"}}]';
 
     afterEach(() => {
         sinon.restore();
@@ -39,11 +39,11 @@ describe('BlindpoolStorageService tests', () => {
             const participantsAndScores = blindpool.PARTICIPANTS_AND_SCORES;
             const [first, second] = participantsAndScores;
             expect(first.participant.name).to.equal('Leejjon');
-            expect(first.score.homeClubScore).to.equal('0');
-            expect(first.score.awayClubScore).to.equal('1');
+            expect(first.score.home).to.equal('0');
+            expect(first.score.away).to.equal('1');
             expect(second.participant.name).to.equal('Stofkat');
-            expect(second.score.homeClubScore).to.equal('X');
-            expect(second.score.awayClubScore).to.equal('X');
+            expect(second.score.home).to.equal('X');
+            expect(second.score.away).to.equal('X');
         });
     });
 

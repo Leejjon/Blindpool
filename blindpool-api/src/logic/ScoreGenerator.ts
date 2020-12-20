@@ -2,7 +2,7 @@ import {ParticipantAndScore, Score, UserType} from "../models/Blindpool";
 import deepEqual from "deep-equal";
 
 const wildcardCharacter = 'X';
-const wildcardScore: Score = {homeClubScore: wildcardCharacter, awayClubScore: wildcardCharacter};
+const wildcardScore: Score = {home: wildcardCharacter, away: wildcardCharacter};
 
 const generateScores = (numberOfParticipants: number) => {
     let x: number;
@@ -12,8 +12,8 @@ const generateScores = (numberOfParticipants: number) => {
 
     for (x = 0; scores.length < numberOfParticipants; x++) {
         for (y = 0; y <= x && scores.length < numberOfParticipants; y++) {
-            const xyscore: Score = {homeClubScore: x.toString(), awayClubScore: y.toString()};
-            const yxscore: Score = {homeClubScore: y.toString(), awayClubScore: x.toString()};
+            const xyscore: Score = {home: x.toString(), away: y.toString()};
+            const yxscore: Score = {home: y.toString(), away: x.toString()};
 
             scores.push(xyscore); // First combination (ie 1-0)
 

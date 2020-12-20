@@ -1,13 +1,9 @@
 import {Match} from "./Match";
+import {Score} from "./Score";
 
 interface Participant {
     name: string,
     userType: number
-}
-
-interface Score {
-    homeClubScore: string,
-    awayClubScore: string
 }
 
 interface ParticipantAndScore {

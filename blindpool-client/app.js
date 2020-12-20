@@ -34,7 +34,6 @@ app.get('/sitemap.xml', function(req, res) {
 // in the build folder, will just serve index.html. Client side routing is
 // going to make sure that the correct content will be loaded.
 app.use(function(req, res){
-    console.log('Is the handler handling it.');
     if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
         res.status(404).send('Not found');
     } else {

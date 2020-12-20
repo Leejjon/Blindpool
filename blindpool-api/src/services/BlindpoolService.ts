@@ -34,7 +34,7 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
         const freeFormatMatch = poolEntity.FREE_FORMAT_MATCH;
 
         let blindpool: Blindpool = {
-            key: blindpoolKey.id as string,
+            key: hashids.encode(blindpoolKey.id) as string,
             PARTICIPANTS_AND_SCORES: participantsAndScores,
             CREATED_TIMESTAMP: createdTimestamp
         };

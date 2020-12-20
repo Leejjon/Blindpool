@@ -2,8 +2,26 @@ import {Datastore} from "@google-cloud/datastore";
 import {Match, Score} from "../model/Match";
 import {EREDIVISIE_NAME} from "./footballdata-api/constants";
 import {err, ok, Result} from "neverthrow";
-import {ErrorScenarios, FootballDataApiMatch} from "./footballdata-api/FootballDataApi";
+import {FootballDataApiMatch} from "./footballdata-api/FootballDataApi";
 import {getTeamName} from "../constants/Teams";
+import {ErrorScenarios} from "../model/ErrorScenarios";
+
+export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
+    try {
+        const datastore = new Datastore();
+        const matchKey = datastore.key(['match', key]);
+        const [matchEntity] = await datastore.get(matchKey);
+
+        if (matchEntity) {
+            return ok(matchEntity);
+        } else {
+            return err(ErrorScenarios.MATCH_NOT_FOUND);
+        }
+    } catch (error) {
+        console.error(`Something went wrong with retrieving ${error}`);
+        return err(ErrorScenarios.DATASTORE_ERROR);
+    }
+};
 
 export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, ErrorScenarios>> => {
     try {
@@ -17,19 +35,14 @@ export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, E
         let [upcomingTenMatches] = await datastore.runQuery(query);
 
         return ok(upcomingTenMatches.map((upcomingMatch) => {
-            console.log(`Upcoming match: ${JSON.stringify(upcomingMatch)}`);
-            // const startTimestamp: Date = new Date(upcomingMatch.startTimestamp);
             const key = upcomingMatch[datastore.KEY];
-
-            let match: Match = { id: key.name, startTimestamp: upcomingMatch.startTimestamp,
-                awayTeamName: upcomingMatch.awayTeamName, awayTeamID: upcomingMatch.awayTeamID,
-                homeTeamName: upcomingMatch.homeTeamName, homeTeamID: upcomingMatch.homeTeamID
-            };
+            let match = upcomingMatch;
+            match.id = key.name;
             return match;
         }));
     } catch (error) {
         console.error(`Something went wrong with retrieving ${error}`);
-        return err(ErrorScenarios.DATASTORE_ERROR);
+        return err(ErrorScenarios.INTERNAL_ERROR);
     }
 };
 

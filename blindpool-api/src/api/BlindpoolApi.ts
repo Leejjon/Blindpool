@@ -65,12 +65,8 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
 const handleInsertNewBlindpool = async (res: Response, participantsAndScores: Array<ParticipantAndScore>, selectedMatch?: Match, freeFormatMatch?: string) => {
     const result = await insertNewBlindpool(participantsAndScores, selectedMatch, freeFormatMatch);
     result
-        .map((blindpool: Blindpool) => {
-            mapSuccess(res, blindpool);
-        })
-        .mapErr((errorScenario: ErrorScenarios) => {
-            mapError(res, errorScenario);
-        });
+        .map((blindpool: Blindpool) => mapSuccess(res, blindpool))
+        .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
 }
 
 export const getBlindpoolByKey = async (req: Request, res: Response) => {
@@ -83,24 +79,16 @@ export const getBlindpoolByKey = async (req: Request, res: Response) => {
     const blindpoolResult: Result<Blindpool, ErrorScenarios> = await findBlindpoolByKey(keyAsNumber);
 
     blindpoolResult
-        .map((blindpool: Blindpool) => {
-            mapSuccess(res, blindpool);
-        })
-        .mapErr((error: ErrorScenarios) => {
-            mapError(res, error);
-        });
+        .map((blindpool: Blindpool) => mapSuccess(res, blindpool))
+        .mapErr((error: ErrorScenarios) => mapError(res, error));
 };
 
 export const getBlindpoolStatistics = async (req: Request, res: Response) => {
     const countResult: Result<Number, ErrorScenarios> = await calculateBlindpoolCount();
 
     countResult
-        .map((poolCount: Number) => {
-            mapSuccess(res, {count: poolCount} as BlindpoolStatistics);
-        })
-        .mapErr((errorScenario: ErrorScenarios) => {
-            mapError(res, errorScenario);
-        });
+        .map((poolCount: Number) => mapSuccess(res, {count: poolCount} as BlindpoolStatistics))
+        .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
 };
 
 const mapSuccess = (res: Response, blindpool: Blindpool | BlindpoolStatistics) => {
