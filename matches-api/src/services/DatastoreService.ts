@@ -68,7 +68,7 @@ export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
                     return {
                         home: 0,
                         away: 0
-                    } as Score
+                    } as Score;
                 }
             }
 

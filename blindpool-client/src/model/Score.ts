@@ -1,4 +1,4 @@
 export interface Score {
     home: number,
-    away: string
+    away: number
 }

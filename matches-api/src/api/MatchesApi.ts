@@ -9,7 +9,7 @@ export const getMatchByKey = async (req: Request, res: Response) => {
     const matchNumber = parseInt(key.substr(14));
     const isKeyParamValid = key && key.startsWith('football-data-') && key.length <= 30 && matchNumber;
     if (isKeyParamValid) {
-        const matchResult = await selectMatchByKey("football-data-302110");
+        const matchResult = await selectMatchByKey(key);
         matchResult
             .map((match: Match) => mapSuccess(res, match))
             .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));

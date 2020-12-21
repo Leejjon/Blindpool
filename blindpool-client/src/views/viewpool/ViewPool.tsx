@@ -13,7 +13,7 @@ import {
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import appState from "../../state/AppState";
-import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
+import {Api, getHost} from "../../utils/Network";
 import {Helmet} from "react-helmet";
 import {Match} from "../../model/Match";
 import Blindpool from "../../model/Blindpool";
@@ -74,7 +74,6 @@ const ViewPool: React.FC = () => {
     const classes = useStyles();
     const {t} = useTranslation();
     const [loading, setLoading] = useState(true);
-    const [loadingScore, setLoadingScore] = useState(false);
     const [fullMatchInfo, setFullMatchInfo] = useState<Match | undefined>(undefined);
     const [shareUrl, setShareUrl] = useState("");
 
@@ -89,12 +88,9 @@ const ViewPool: React.FC = () => {
                     setShareUrl(`${window.location.protocol}//${window.location.host}/pool/${appState.poolData!.key}`);
 
                     if (poolJson.MATCH /*&& poolJson.MATCH.startTimestamp < new Date()*/) {
-                        setLoadingScore(true);
-
                         fetch(`${getHost(Api.matches)}/api/v2/matches/${poolJson.MATCH.id}`)
                             .then(matchJsonFromServer => matchJsonFromServer.json())
                             .then((matchJson: Match) => {
-                                setLoadingScore(false);
                                 setFullMatchInfo(matchJson);
                             });
                     }
@@ -102,6 +98,14 @@ const ViewPool: React.FC = () => {
         } else {
             setLoading(false);
             setShareUrl(`${window.location.protocol}//${window.location.host}/pool/${appState.poolData!.key}`);
+            if (appState.selectedMatch && typeof appState.selectedMatch !== 'string') {
+                const actualMatch = appState.selectedMatch as Match;
+                fetch(`${getHost(Api.matches)}/api/v2/matches/${actualMatch.id}`)
+                    .then(matchJsonFromServer => matchJsonFromServer.json())
+                    .then((matchJson: Match) => {
+                        setFullMatchInfo(matchJson);
+                    });
+            }
         }
     }
 
@@ -146,7 +150,9 @@ const ViewPool: React.FC = () => {
         matchInfo = <MatchInfoWithScore fullMatchInfo={fullMatchInfo} />;
     } else if (!loading && appState.poolData!.FREE_FORMAT_MATCH) {
         matchInfo = <Typography className={classes.freeFormatMatch} variant="body1"><b>Match:</b> {appState.poolData!.FREE_FORMAT_MATCH as string}</Typography>;
-    }
+    } /*else {
+        matchInfo = <Typography variant="h2">{t("POOL_MADE_BY", {organizer: getOwner()})}</Typography>;
+    }*/
 
     if (loading) {
         return <CircularProgress className={classes.progress}/>
@@ -163,9 +169,6 @@ const ViewPool: React.FC = () => {
                 <Grid key="definition" item>
                     <Card className={classes.card}>
                         <CardContent>
-                            {/*<Typography variant="h2">*/}
-                            {/*    {t("POOL_MADE_BY", {organizer: getOwner()})}*/}
-                            {/*</Typography>*/}
                             {matchInfo}
                             <Table className={classes.table}>
                                 <TableHead>

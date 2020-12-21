@@ -54,25 +54,22 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
     // TODO: Move this logic to a util folder.
     let startTimestamp: Date = new Date(match.startTimestamp);
 
-    let oldDateString = '1968-11-16T00:00:00';
-    startTimestamp = new Date(oldDateString);
-
     const minutes: string = '' + startTimestamp.getMinutes();
     const minutesToDisplay: string = minutes.padStart(2, minutes);
     const dateString: string = startTimestamp.toLocaleDateString();
 
     // TODO: Turn this into a component.
-    let startTimeOrLive: string;
-    if (startTimestamp < new Date()) {
-        startTimeOrLive = 'LIVE NOW';
-    } else {
-        startTimeOrLive = `${dateString} ${startTimestamp.getHours()}:${minutesToDisplay}`;
-    }
-
     const scoreView = () => {
-        if (fullMatchInfo && startTimestamp < new Date()) {
+        if (fullMatchInfo) {
+            let startTimeOrLive: string;
+            if (fullMatchInfo?.finished) {
+                startTimeOrLive = 'FINISHED';
+            } else if (startTimestamp < new Date()) {
+                startTimeOrLive = 'LIVE NOW';
+            } else {
+                startTimeOrLive = `${dateString} ${startTimestamp.getHours()}:${minutesToDisplay}`;
+            }
             const fullMatch = fullMatchInfo as Match;
-            console.log(`${JSON.stringify(fullMatch)}`);
             return (
                 <div>
                     <Typography variant="body1" className={classes.scoreDiv}>{fullMatch.score.home} - {fullMatch.score.away}</Typography>
