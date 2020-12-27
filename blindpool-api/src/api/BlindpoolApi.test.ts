@@ -11,8 +11,8 @@ describe('Blindpool API', () => {
     const testPool: Blindpool = {
         key: '123',
         PARTICIPANTS_AND_SCORES: [
-            {participant: {name: 'Hoi', userType: 0}, score: {home: '1', away: '0'}},
-            {participant: {name: 'Doei', userType: 0}, score: {home: 'X', away: 'X'}}
+            {participant: {name: 'Hoi', userType: 0}, score: {home: 1, away: 0}},
+            {participant: {name: 'Doei', userType: 0}, score: {home: -1, away: -1}}
         ],
         CREATED_TIMESTAMP: new Date()
     };

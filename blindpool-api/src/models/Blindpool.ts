@@ -20,8 +20,8 @@ export enum UserType {
 }
 
 export interface Score {
-    home: string,
-    away: string
+    home: number,
+    away: number
 }
 
 export interface ParticipantAndScore {

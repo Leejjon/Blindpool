@@ -1,8 +1,8 @@
 import {ParticipantAndScore, Score, UserType} from "../models/Blindpool";
 import deepEqual from "deep-equal";
 
-const wildcardCharacter = 'X';
-const wildcardScore: Score = {home: wildcardCharacter, away: wildcardCharacter};
+const wildcard = -1;
+const wildcardScore: Score = {home: wildcard, away: wildcard};
 
 const generateScores = (numberOfParticipants: number) => {
     let x: number;
@@ -12,8 +12,8 @@ const generateScores = (numberOfParticipants: number) => {
 
     for (x = 0; scores.length < numberOfParticipants; x++) {
         for (y = 0; y <= x && scores.length < numberOfParticipants; y++) {
-            const xyscore: Score = {home: x.toString(), away: y.toString()};
-            const yxscore: Score = {home: y.toString(), away: x.toString()};
+            const xyscore: Score = {home: x, away: y};
+            const yxscore: Score = {home: y, away: x};
 
             scores.push(xyscore); // First combination (ie 1-0)
 
@@ -27,7 +27,6 @@ const generateScores = (numberOfParticipants: number) => {
     return scores;
 }
 
-// I prefer to get stuff done rather than trying to implement algorithms so I copied this from stackoverflow.
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffleArray(array: Array<any>) {
     for (let i = array.length - 1; i > 0; i--) {

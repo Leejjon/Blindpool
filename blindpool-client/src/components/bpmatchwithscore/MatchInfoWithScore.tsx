@@ -14,7 +14,8 @@ const useStyles = makeStyles({
         flexWrap: 'nowrap',
         justifyContent: 'space-between',
         width: '100%',
-        marginTop: '1em'
+        marginTop: '1em',
+        marginBottom: '0.6em'
     },
     clubIconAndTextDiv: {
         width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap'
@@ -23,13 +24,13 @@ const useStyles = makeStyles({
         marginTop: '2em', marginBottom: '2em'
     },
     marginHalfEm: {
-        margin: '0.5em', fontSize: 'small', fontWeight: 'bold'
+        margin: '0.5em', fontSize: 'medium', fontWeight: 'bold'
     },
     justCenter: {
         textAlign: 'center'
     },
     startTimestampMargin: {
-        marginTop: '0', fontSize: 'small', fontWeight: 'bold'
+        marginTop: '0', fontSize: 'medium', fontWeight: 'bold'
     },
     scoreDiv: {
         margin: '0',
@@ -61,6 +62,11 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
     // TODO: Turn this into a component.
     const scoreView = () => {
         if (fullMatchInfo) {
+            let score;
+
+            score = () => {
+                return <Typography variant="body1" className={classes.scoreDiv}>{fullMatch.score.home} - {fullMatch.score.away}</Typography>;
+            }
             let startTimeOrLive: string;
             if (fullMatchInfo?.finished) {
                 startTimeOrLive = 'FINISHED';
@@ -68,11 +74,12 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
                 startTimeOrLive = 'LIVE NOW';
             } else {
                 startTimeOrLive = `${dateString} ${startTimestamp.getHours()}:${minutesToDisplay}`;
+                score = undefined;
             }
             const fullMatch = fullMatchInfo as Match;
             return (
                 <div>
-                    <Typography variant="body1" className={classes.scoreDiv}>{fullMatch.score.home} - {fullMatch.score.away}</Typography>
+                    {score ? score() : undefined}
                     <Typography
                         className={classes.startTimestampMargin}>{startTimeOrLive}
                     </Typography>

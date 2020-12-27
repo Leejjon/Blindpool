@@ -18,6 +18,7 @@ import {Helmet} from "react-helmet";
 import {Match} from "../../model/Match";
 import Blindpool from "../../model/Blindpool";
 import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
+import {isWinner, isWildCard, scoresThatCanStillWin} from "../../logic/ScoresUtil";
 
 const useStyles = makeStyles({
     root: {
@@ -61,6 +62,10 @@ const useStyles = makeStyles({
     freeFormatMatch: {
         // marginTop: '1em'
     },
+    impossibleScore: {
+        textDecoration: 'line-through',
+        // color: 'rgba(0, 0, 0, 0.57)'
+    }
 });
 
 const copyFieldId = "copyTextField";
@@ -109,11 +114,6 @@ const ViewPool: React.FC = () => {
         }
     }
 
-    const getOwner = () => {
-        let participantsAndScores = appState.poolData!.PARTICIPANTS_AND_SCORES;
-        return participantsAndScores[0].participant.name;
-    };
-
     const copy = () => {
         let dummy = document.createElement("input");
         document.body.appendChild(dummy);
@@ -126,23 +126,56 @@ const ViewPool: React.FC = () => {
     const renderTableData = () => {
         return appState.poolData!.PARTICIPANTS_AND_SCORES.map((participantAndScore, index) => {
             const participantName = participantAndScore.participant.name;
-            const score = participantAndScore.score.home + " - " + participantAndScore.score.away;
-            return (
-                <TableRow key={participantName}>
-                    <TableCell>
-                        <Typography>{participantName}</Typography>
-                    </TableCell>
-                    <TableCell>
-                        <Typography>{score}</Typography>
-                    </TableCell>
-                </TableRow>
-            )
+            const home: string = participantAndScore.score.home >= 0 ? participantAndScore.score.home.toString() : 'X';
+            const away: string = participantAndScore.score.away >= 0 ? participantAndScore.score.away.toString() : 'X';
+
+            const trophyIcon = (winner: boolean) => {
+                if (winner) {
+                    return <img alt='Winner' style={{paddingTop: '0em'}} src="/icons/trophy.svg"/>;
+                } else {
+                    return undefined;
+                }
+            };
+
+            const participantAndScoreFC = () => {
+                if (fullMatchInfo && (scoresThatCanStillWin(appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo!.score).includes(participantAndScore.score))) {
+                    const winner: boolean = isWinner(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo);
+                    return (
+                        <TableRow key={participantName}>
+                            <TableCell>
+                                <Typography style={{lineHeight: '2'}}>{participantName} {trophyIcon(winner)}</Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1">{home} - {away}</Typography>
+                            </TableCell>
+                        </TableRow>
+                    );
+                } else {
+                    return (
+                        <TableRow key={participantName}>
+                            <TableCell>
+                                <Typography variant="body1">{participantName}</Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1" className={classes.impossibleScore}>{home} - {away}</Typography>
+                            </TableCell>
+                        </TableRow>
+                    );
+                }
+            };
+            return participantAndScoreFC();
+            // return <TableRow><TableCell><button onClick={() => canThisScoreWin(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo!.score)}>{home}-{away}</button></TableCell></TableRow>;
         });
     };
 
     const handleTextFieldFocus = (event: React.MouseEvent<HTMLElement>) => {
         const copyTextBox = event.target as HTMLInputElement;
         copyTextBox.select();
+    };
+
+    const getOwner = () => {
+        let participantsAndScores = appState.poolData!.PARTICIPANTS_AND_SCORES;
+        return participantsAndScores[0].participant.name;
     };
 
     let matchInfo = undefined;
