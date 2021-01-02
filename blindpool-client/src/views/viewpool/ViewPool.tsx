@@ -126,6 +126,14 @@ const ViewPool: React.FC = () => {
         document.body.removeChild(dummy);
     };
 
+    const trophyIcon = (finished: boolean) => {
+        if (finished) {
+            return <img alt='Winner' style={{marginBottom: '-2px'}} src="/icons/trophy.svg"/>;
+        } else {
+            return undefined;
+        }
+    };
+
     const renderTableData = () => {
         return appState.poolData!.PARTICIPANTS_AND_SCORES.map((participantAndScore, index) => {
             const participantName = participantAndScore.participant.name;
@@ -137,7 +145,7 @@ const ViewPool: React.FC = () => {
                     return (
                         <TableRow key={participantName}>
                             <TableCell>
-                                <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;<img alt='Winner' style={{marginBottom: '-2px'}} src="/icons/trophy.svg"/></Typography>
+                                <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1">{home} - {away}</Typography>
