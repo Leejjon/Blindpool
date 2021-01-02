@@ -1,34 +1,33 @@
 import {ParticipantAndScore} from "../../../blindpool-api/src/models/Blindpool";
 import {Score} from "../model/Score";
-import {Match} from "../model/Match";
 
-export const isWinner = (score: Score, participantScores: Array<ParticipantAndScore>, fullMatchInfo: Match): boolean => {
-    if (fullMatchInfo.finished) {
-        const scores = scoresThatCanStillWin(participantScores, fullMatchInfo.score);
+const compareScore = (score1: Score, score2: Score): boolean => {
+    return score1.home === score2.home && score1.away === score2.away;
+}
 
-        console.log(`isWinner() for score = ${score} and ${fullMatchInfo.score} results in scoresThatCanStillWin= ${scores.length} match is finished: ${fullMatchInfo.finished}`);
-        if (scores.length === 1 && score.home === -1 && score.away === -1) {
+export const canThisScoreStillWin = (scoreThatCouldWin: Score, participantScores: Array<ParticipantAndScore>, actualScore: Score, finished: boolean): boolean => {
+    if (finished) {
+        if (compareScore(scoreThatCouldWin, actualScore)) {
             return true;
-        } else if (score.home === fullMatchInfo.score.home && score.away === fullMatchInfo.score.away) {
+        } else {
+            if (isWildCard(scoreThatCouldWin)) {
+                const matchingScores = participantScores.filter((participantScore) => compareScore(participantScore.score, actualScore));
+                if (matchingScores.length === 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    } else {
+        if (isWildCard(scoreThatCouldWin) || (actualScore.home <= scoreThatCouldWin.home && actualScore.away <= scoreThatCouldWin.away)) {
             return true;
         } else {
             return false;
         }
-    } else {
-        return false;
     }
-};
-
-export const scoresThatCanStillWin = (participantScores: Array<ParticipantAndScore>, score: Score): Array<Score> => {
-    let scoresThatCanStillWin: Array<Score> = [];
-    for (const participantAndScore of participantScores) {
-        if (isWildCard(participantAndScore.score)) {
-            scoresThatCanStillWin.push(participantAndScore.score);
-        } else if (score.home <= participantAndScore.score.home  && score.away <= participantAndScore.score.away) {
-            scoresThatCanStillWin.push(participantAndScore.score);
-        }
-    }
-    return scoresThatCanStillWin;
 };
 
 export const isWildCard = (participantScore: Score): boolean => {

@@ -18,7 +18,7 @@ import {Helmet} from "react-helmet";
 import {Match} from "../../model/Match";
 import Blindpool from "../../model/Blindpool";
 import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
-import {isWinner, scoresThatCanStillWin} from "../../logic/ScoresUtil";
+import {canThisScoreStillWin} from "../../logic/ScoresUtil";
 
 const useStyles = makeStyles({
     root: {
@@ -132,21 +132,12 @@ const ViewPool: React.FC = () => {
             const home: string = participantAndScore.score.home >= 0 ? participantAndScore.score.home.toString() : 'X';
             const away: string = participantAndScore.score.away >= 0 ? participantAndScore.score.away.toString() : 'X';
 
-            const trophyIcon = (winner: boolean) => {
-                if (winner) {
-                    return <img alt='Winner' style={{marginBottom: '-2px'}} src="/icons/trophy.svg"/>;
-                } else {
-                    return undefined;
-                }
-            };
-
             const participantAndScoreFC = () => {
-                if (fullMatchInfo && (scoresThatCanStillWin(appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo!.score).includes(participantAndScore.score))) {
-                    const winner: boolean = isWinner(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo);
+                if (fullMatchInfo && (canThisScoreStillWin(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo.score, fullMatchInfo.finished))) {
                     return (
                         <TableRow key={participantName}>
                             <TableCell>
-                                <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(winner)}</Typography>
+                                <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;<img alt='Winner' style={{marginBottom: '-2px'}} src="/icons/trophy.svg"/></Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1">{home} - {away}</Typography>
