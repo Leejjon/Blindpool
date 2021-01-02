@@ -6,10 +6,13 @@ export const isWinner = (score: Score, participantScores: Array<ParticipantAndSc
     if (fullMatchInfo.finished) {
         const scores = scoresThatCanStillWin(participantScores, fullMatchInfo.score);
 
+        console.log(`isWinner() for score = ${score} and ${fullMatchInfo.score} results in scoresThatCanStillWin= ${scores.length} match is finished: ${fullMatchInfo.finished}`);
         if (scores.length === 1 && score.home === -1 && score.away === -1) {
             return true;
+        } else if (score.home === fullMatchInfo.score.home && score.away === fullMatchInfo.score.away) {
+            return true;
         } else {
-            return score.home === fullMatchInfo.score.home && score.away === fullMatchInfo.score.away;
+            return false;
         }
     } else {
         return false;

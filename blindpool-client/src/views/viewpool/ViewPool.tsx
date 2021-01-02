@@ -65,6 +65,9 @@ const useStyles = makeStyles({
     impossibleScore: {
         textDecoration: 'line-through',
         // color: 'rgba(0, 0, 0, 0.57)'
+    },
+    trophyPadding: {
+        marginTop: '2em'
     }
 });
 
@@ -131,7 +134,7 @@ const ViewPool: React.FC = () => {
 
             const trophyIcon = (winner: boolean) => {
                 if (winner) {
-                    return <img alt='Winner' style={{paddingTop: '0em'}} src="/icons/trophy.svg"/>;
+                    return <img alt='Winner' style={{marginBottom: '-2px'}} src="/icons/trophy.svg"/>;
                 } else {
                     return undefined;
                 }
@@ -143,7 +146,7 @@ const ViewPool: React.FC = () => {
                     return (
                         <TableRow key={participantName}>
                             <TableCell>
-                                <Typography style={{lineHeight: '2'}}>{participantName} {trophyIcon(winner)}</Typography>
+                                <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(winner)}</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1">{home} - {away}</Typography>
