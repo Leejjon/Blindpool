@@ -18,7 +18,7 @@ import {Helmet} from "react-helmet";
 import {Match} from "../../model/Match";
 import Blindpool from "../../model/Blindpool";
 import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
-import {isWinner, isWildCard, scoresThatCanStillWin} from "../../logic/ScoresUtil";
+import {isWinner, scoresThatCanStillWin} from "../../logic/ScoresUtil";
 
 const useStyles = makeStyles({
     root: {
@@ -164,7 +164,6 @@ const ViewPool: React.FC = () => {
                 }
             };
             return participantAndScoreFC();
-            // return <TableRow><TableCell><button onClick={() => canThisScoreWin(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo!.score)}>{home}-{away}</button></TableCell></TableRow>;
         });
     };
 
