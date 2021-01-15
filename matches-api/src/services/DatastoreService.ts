@@ -55,6 +55,7 @@ export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
             const startTimestamp = new Date(match.utcDate);
 
             const isMatchFinished = function () {
+                // SCHEDULED IN_PLAY PAUSED FINISHED
                 return match.status === 'FINISHED';
             }
 
@@ -79,7 +80,6 @@ export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
                 { name: 'homeTeamID', value: match.homeTeam.id },
                 { name: 'awayTeamName', value: getTeamName(match.awayTeam.id)},
                 { name: 'awayTeamID', value: match.awayTeam.id },
-
                 { name: 'score', value: createScoreObject() },
                 { name: 'finished', value: isMatchFinished() }
             ];

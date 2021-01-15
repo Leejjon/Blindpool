@@ -32,23 +32,14 @@ describe('Blindpool API', () => {
         stub = sinon.stub(BlindpoolStorageService, 'insertNewBlindpool')
             .resolves(ok(testPool));
 
-        let validRequest: Partial<Request> = {body: ['Hoi', 'Doei']};
+        let createBlindpoolRequestBody = {
+            participants: ['Hoi', 'doei'],
+        };
+        let validRequest: Partial<Request> = { body: createBlindpoolRequestBody};
 
         await postCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
         sinon.assert.calledWith(res.send as sinon.SinonStub, testPool);
-    });
-
-    it('Create blindpool - empty list in body - FAIL', async () => {
-        let validRequest: Partial<Request> = {body: []};
-        let res: Partial<Response> = {
-            contentType: sinon.stub(),
-            status: sinon.stub(),
-            send: sinon.stub()
-        };
-
-        await postCreateBlindpool(<Request>validRequest, <Response>res);
-        sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
     });
 
     it('Create blindpool - empty body - FAIL', async () => {
@@ -63,8 +54,20 @@ describe('Blindpool API', () => {
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
     });
 
+    it('Create blindpool - empty list in body - FAIL', async () => {
+        let validRequest: Partial<Request> = {body: {participants: []}};
+        let res: Partial<Response> = {
+            contentType: sinon.stub(),
+            status: sinon.stub(),
+            send: sinon.stub()
+        };
+
+        await postCreateBlindpool(<Request>validRequest, <Response>res);
+        sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
+    });
+
     it('Create blindpool - name with invalid character - FAIL', async () => {
-        let validRequest: Partial<Request> = {body: ['Hoi', 'Doei!']};
+        let validRequest: Partial<Request> = {body: {participants: ['Hoi', 'Doei!']}};
         let res: Partial<Response> = {
             contentType: sinon.stub(),
             status: sinon.stub(),
