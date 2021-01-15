@@ -8,6 +8,9 @@ import * as DatastoreService from "./DatastoreService";
 import {Datastore} from "@google-cloud/datastore/build/src";
 import {Entities} from "@google-cloud/datastore/build/src/entity";
 import {ErrorScenarios} from "../models/ErrorScenarios";
+const Hashids = require('hashids/cjs');
+
+const hashids = new Hashids();
 
 describe('BlindpoolStorageService tests', () => {
     const NONE_EXISTING_POOL_KEY = 0;
@@ -35,7 +38,7 @@ describe('BlindpoolStorageService tests', () => {
         expect(result.isOk()).to.be.true;
         result.map((blindpool: Blindpool) => {
             const key = blindpool.key;
-            expect(key).to.equal(109);
+            expect(key).to.equal(hashids.encode(TEST_POOL_KEY));
             const participantsAndScores = blindpool.PARTICIPANTS_AND_SCORES;
             const [first, second] = participantsAndScores;
             expect(first.participant.name).to.equal('Leejjon');
