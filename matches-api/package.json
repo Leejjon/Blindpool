@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/index",
     "local": "$(gcloud beta emulators datastore env-init) && npm start",
-    "webpack": "webpack --config webpackdev.config.ts",
+    "webpack": "webpack --config webpackdev.config.ts --watch",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpacktest": "node --trace-deprecation node_modules/webpack/bin/webpack.js"
@@ -32,7 +32,7 @@
     "ts-loader": "8.0.2",
     "typescript": "3.9.7",
     "webpack": "5.15.0",
-    "webpack-cli": "3.3.12",
+    "webpack-cli": "4.0.0",
     "webpack-node-externals": "2.5.2"
   }
 }

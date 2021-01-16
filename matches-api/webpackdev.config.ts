@@ -5,7 +5,6 @@ const copyFiles = require('copy-webpack-plugin');
 
 module.exports = {
     entry: ["webpack/hot/poll?100", "./src/index.ts"],
-    watch: true,
     target: "node",
     externals: [
         nodeExternalsDev({
