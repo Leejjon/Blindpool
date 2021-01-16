@@ -10,7 +10,7 @@ const router = express.Router();
 // Only allow cors when running locally
 if (environment === 'development') {
     router.use(cors());
-    router.options('*', cors());
+    router.options('*', cors<express.Request>());
 }
 
 router.get('/matches/update', fetchAndSaveScheduledMatches);
