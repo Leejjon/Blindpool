@@ -76,6 +76,8 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
     };
 
     useEffect(() => {
+        let mounted = true;
+
         const supportedMatch = appState.selectedMatch as Match;
         const freeFormatMatch = appState.selectedMatch as string;
 

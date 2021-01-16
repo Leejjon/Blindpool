@@ -16,7 +16,7 @@ describe('Test home page in English', () => {
     });
 
     test('Verify page title', async() => {
-        fetchMock.mock('http://localhost:8080/api/v2/matches/upcoming', {
+        fetchMock.mock('http://localhost:8082/api/v2/matches/upcoming', {
             body: [],
             status: 200
         });
@@ -40,7 +40,7 @@ describe('Test home page in Dutch', () => {
     });
 
     test('Verify home page content', async () => {
-        fetchMock.mock('http://localhost:8080/api/v2/matches/upcoming', {
+        fetchMock.mock('http://localhost:8082/api/v2/matches/upcoming', {
             body: [],
             status: 200
         });

@@ -23,7 +23,11 @@ describe('Test CreatePool view', () => {
     });
 
     test('Create pool with all fields empty - fail with enter a name message', async () => {
-        const {findAllByText, getByText} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
+        const {findAllByText, getByText} = render(
+            <MemoryRouter>
+                <CreatePool message={undefined} setMessage={(message) => console.log(message)}/>
+            </MemoryRouter>
+        );
         const createPoolButton = getByText('CREATE POOL');
         expect(createPoolButton).toBeInTheDocument();
         fireEvent.click(createPoolButton);
@@ -33,7 +37,11 @@ describe('Test CreatePool view', () => {
     });
 
     test('Add a name field - new name field should be added', async () => {
-        const {findAllByLabelText, getByLabelText} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
+        const {findAllByLabelText, getByLabelText} = render(
+            <MemoryRouter>
+                <CreatePool message={undefined} setMessage={(message) => console.log(message)}/>
+            </MemoryRouter>
+        );
 
         let emptyNameFields = await findAllByLabelText(/^Player name /i);
         expect(emptyNameFields.length).toBe(5);
@@ -53,7 +61,11 @@ describe('Test CreatePool view', () => {
     });
 
     test('Remove the last name field - last name field should dissapear', async () => {
-        const {findAllByLabelText, getByLabelText} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
+        const {findAllByLabelText, getByLabelText} = render(
+            <MemoryRouter>
+                <CreatePool message={undefined} setMessage={(message) => console.log(message)}/>
+            </MemoryRouter>
+        );
 
         let emptyNameFields = await findAllByLabelText(/^Player name /i);
         expect(emptyNameFields.length).toBe(5);
@@ -67,13 +79,22 @@ describe('Test CreatePool view', () => {
     });
 
     test('Create a pool - Happy flow', async () => {
-        fetchMock.mock('http://localhost:8080/api/v2/pool', {
+        fetchMock.post('http://localhost:8080/api/v3/pool', {
             body: {key: 'ABC'},
+            status: 200
+        });
+        fetchMock.get('http://localhost:8082/api/v2/matches/upcoming', {
+            body: [],
             status: 200
         });
 
         const {findByTestId, getAllByLabelText, findByDisplayValue, container} = render(
-            <MemoryRouter><CreatePool/></MemoryRouter>);
+            <MemoryRouter>
+                <CreatePool message={undefined} setMessage={(message) => console.log(message)}/>
+            </MemoryRouter>
+        );
+
+        const containerHtmlElement = container as HTMLElement;
         const names = ['Leon', 'Dirk', 'Billy', 'Barry', 'Joop'];
         const createPoolButton = await findByTestId('createPoolButton');
         expect(createPoolButton).toBeInTheDocument();
@@ -100,24 +121,42 @@ describe('Test CreatePool view', () => {
         // Had to replace waitForDomChange to waitFor
         await waitFor(() => {
             // Verify the request to the backend was done.
-            expect(fetchMock.called((url, opts) => {
-                return opts.body === JSON.stringify(names) && url === 'http://localhost:8080/api/v2/pool';
+            expect(fetchMock.called((url, req): boolean => {
+                console.log(`${url} ${req.body}`);
+                if (url === 'http://localhost:8080/api/v3/pool' && req.body === JSON.stringify({participants: names})) {
+                    return true;
+                } else if (url === 'http://localhost:8082/api/v2/matches/upcoming' && req.body === undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
             })).toBe(true);
 
             // The history.push(`/pool/${poolJson.key}`) call doesn't actually execute and navigate to the ViewPool
             // component as we didn't load the complete BrowserRouter in the unit test. It doesn't matter as the scope of
             // CreatePool.test.tsx is to only test CreatePool.tsx. So I mocked it with the mockHistoryPush.
             expect(mockHistoryPush).toHaveBeenCalledWith('/pool/ABC');
-        }, {container});
+        }, {container: containerHtmlElement});
     });
 
     test('Create a pool - No internet', async () => {
-        fetchMock.mock(
-            'http://localhost:8080/api/v2/pool',
+        fetchMock.post(
+            'http://localhost:8080/api/v3/pool',
             Promise.reject('NetworkError when attempting to fetch resource.')
+        ).get(
+            'http://localhost:8082/api/v2/matches/upcoming', {
+            body: [],
+            status: 200
+        });
+        let messageState: string | undefined = undefined;
+
+        const {getByText, getAllByLabelText, container} = render(
+            <MemoryRouter>
+                <CreatePool message={messageState} setMessage={(message) => messageState = message}/>
+            </MemoryRouter>
         );
 
-        const {getByText, getAllByLabelText, container} = render(<MemoryRouter><CreatePool/></MemoryRouter>);
+        const containerHtml = container as HTMLElement;
         const names = ['Leon', 'Dirk', 'Billy', 'Barry', 'Joop'];
         const createPoolButton = getByText('CREATE POOL');
         const nameFields = getAllByLabelText(/^Player name /i);
@@ -128,8 +167,7 @@ describe('Test CreatePool view', () => {
         // Leaving lots of validation out as it's already happening in the happy flow test.
         fireEvent.click(createPoolButton);
         await waitFor(() => {
-            const errorSnackbar = getByText('Could not reach the server. Check your internet connection.');
-            expect(errorSnackbar).toBeInTheDocument();
-        }, {container});
+            expect(messageState).toBe('BACKEND_UNREACHABLE');
+        }, {container: containerHtml});
     });
 });
