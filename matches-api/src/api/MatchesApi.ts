@@ -20,7 +20,7 @@ export const getMatchByKey = async (req: Request, res: Response) => {
 
 export const getTenScheduledMatches = async (req: Request, res: Response) => {
     let tenUpcomingMatchesResult = await selectTenUpcomingMatches();
-    console.log('Hoi');
+
     tenUpcomingMatchesResult
         .map((matches: Array<Match>) => mapSuccess(res, matches))
         .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
