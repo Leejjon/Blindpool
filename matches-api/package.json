@@ -10,7 +10,7 @@
     "webpack": "webpack --config webpackdev.config.ts",
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "emulator-linux": "export DATASTORE_DATASET=nodejs-static && export DATASTORE_EMULATOR_HOST=localhost:8081 && export DATASTORE_EMULATOR_HOST_PATH=localhost:8081/datastore && export DATASTORE_HOST=http://localhost:8081 && export DATASTORE_PROJECT_ID=nodejs-static"
+    "webpacktest": "node --trace-deprecation node_modules/webpack/bin/webpack.js"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +31,7 @@
     "copy-webpack-plugin": "6.0.3",
     "ts-loader": "8.0.2",
     "typescript": "3.9.7",
-    "webpack": "4.44.1",
+    "webpack": "5.15.0",
     "webpack-cli": "3.3.12",
     "webpack-node-externals": "2.5.0"
   }
