@@ -1,6 +1,6 @@
 import {Match} from "../model/Match";
 import {Request, Response} from "express";
-import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApi";
+import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApiService";
 import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/DatastoreService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 
@@ -27,12 +27,20 @@ export const getTenScheduledMatches = async (req: Request, res: Response) => {
 };
 
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {
+    res.contentType('application/json');
+
     let matches = await getMatchesFromFootballDataApi();
+
+    if (matches.isErr()) {
+        res.status(400);
+        res.send({success: false})    ;
+        return;
+    }
+
     matches.map((matches: Array<FootballDataApiMatch>) => {
         upsertMatches(matches);
-    }); // No need to do anything with errors because we're not waiting with responding.
+    });// No need to do anything with errors because we're not waiting with responding.
 
-    res.contentType('application/json');
     res.status(200);
     res.send({success: true});
 };

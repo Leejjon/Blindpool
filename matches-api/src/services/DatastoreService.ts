@@ -2,7 +2,7 @@ import {Datastore} from "@google-cloud/datastore";
 import {Match, Score} from "../model/Match";
 import {EREDIVISIE_NAME} from "./footballdata-api/constants";
 import {err, ok, Result} from "neverthrow";
-import {FootballDataApiMatch} from "./footballdata-api/FootballDataApi";
+import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
 import {getTeamName} from "../constants/Teams";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 
