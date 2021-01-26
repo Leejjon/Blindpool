@@ -31,18 +31,13 @@ export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) 
 
     let matches = await getMatchesFromFootballDataApi();
 
-    if (matches.isErr()) {
-        res.status(400);
-        res.send({success: false})    ;
-        return;
-    }
-
-    matches.map((matches: Array<FootballDataApiMatch>) => {
-        upsertMatches(matches);
-    });// No need to do anything with errors because we're not waiting with responding.
-
-    res.status(200);
-    res.send({success: true});
+    matches
+        .map((matches: Array<FootballDataApiMatch>) => {
+            upsertMatches(matches);
+            res.status(200);
+            res.send();
+        })
+        .mapErr((errorScenario) => mapError(res, errorScenario));
 };
 
 const respond = (res: Response, status: number, message: string) => {
