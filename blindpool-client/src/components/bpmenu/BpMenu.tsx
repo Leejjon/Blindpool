@@ -85,7 +85,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                     </IconButton>
                     <Typography variant="body1" color="inherit" className={classes.grow}>
                         <img alt="BLINDPOOL" className={classes.logoImage}
-                             src={require("../../images/logosmall.png")}/>
+                             src={"/icons/logosmall.png"}/>
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -130,7 +130,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                 </ListItem>
                 <ListItem button className={classes.linkWithoutDecoration}>
                     <ListItemIcon className={classes.otherAppsPadding}>
-                        <img src={require("../bpmenu/bluffpoker-icon.png")} alt="Bluff Poker Icon" />
+                        <img src={"/icons/bluffpoker-icon.png"} alt="Bluff Poker Icon" />
                     </ListItemIcon>
                     <ListItemText className={classes.linktext}>
                         <a className={classes.linkWithoutDecoration} href="https://bluffpoker.app" target="new">Bluff Poker</a>
@@ -138,7 +138,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                 </ListItem>
                 <ListItem button className={classes.linkWithoutDecoration}>
                     <ListItemIcon className={classes.otherAppsPadding}>
-                        <img src={require("../bpmenu/toffeeshare-icon.png")} alt="ToffeeShare Icon" />
+                        <img src={"/icons/toffeeshare-icon.png"} alt="ToffeeShare Icon" />
                     </ListItemIcon>
                     <ListItemText className={classes.linktext}>
                         <a className={classes.linkWithoutDecoration} href="https://toffeeshare.com" target="new">ToffeeShare</a>

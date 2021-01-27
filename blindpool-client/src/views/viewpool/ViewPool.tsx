@@ -152,6 +152,17 @@ const ViewPool: React.FC = () => {
                             </TableCell>
                         </TableRow>
                     );
+                } else if (!fullMatchInfo) {
+                    return (
+                        <TableRow key={participantName}>
+                            <TableCell>
+                                <Typography variant="body1">{participantName}</Typography>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1">{home} - {away}</Typography>
+                            </TableCell>
+                        </TableRow>
+                    );
                 } else {
                     return (
                         <TableRow key={participantName}>

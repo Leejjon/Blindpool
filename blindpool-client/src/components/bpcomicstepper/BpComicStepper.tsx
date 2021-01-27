@@ -31,12 +31,12 @@ const useStyles = makeStyles({
 
 const tutorialSteps = (t: TFunction) => {
     return [
-        {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg')},
-        {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg')},
-        {label: t("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg')},
-        {label: t("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg')},
-        {label: t("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg')},
-        {label: t("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg')},
+        {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg').default},
+        {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg').default},
+        {label: t("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg').default},
+        {label: t("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg').default},
+        {label: t("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg').default},
+        {label: t("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg').default},
     ];
 };
 

@@ -85,7 +85,7 @@ const BpAppBar: React.FC = () => {
                         <BpMenu closeMenu={() => setMenuOpen(false)}/>
                     </SwipeableDrawer>
                     <Typography component={Link} to="/" className={classes.grow} variant="h1" color="inherit">
-                        <img alt="BLINDPOOL" className={classes.logoImage} src={require("../../images/logosmall.png")}/>
+                        <img alt="BLINDPOOL" className={classes.logoImage} src={"/icons/logosmall.png"}/>
                     </Typography>
                     <Button aria-label="Language menu"
                             aria-owns={anchorEl ? 'language-menu' : undefined} aria-haspopup="true"
