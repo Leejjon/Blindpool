@@ -16,6 +16,7 @@
 
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 
 app.get('/sitemap.xml', function(req, res) {
@@ -37,10 +38,33 @@ app.use(function(req, res){
     if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
         res.status(404).send('Not found');
     } else {
-        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-        res.header('Expires', '-1');
-        res.header('Pragma', 'no-cache');
-        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+        const filePath = path.resolve(__dirname, 'build', 'index.html')
+        fs.readFile(filePath, 'utf8', function (err,data) {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Internal error.');
+            }
+
+            let title = 'Blindpool';
+            let description = 'Watching football with friends? Create a blind pool in 30 seconds. Free and no account needed.';
+
+            switch (String(req.get('host'))) {
+                case "blindepool.nl":
+                case "www.blindepool.nl":
+                    title = 'Blindepool';
+                    description = 'Voetbal kijken met vrienden? Maak een blindepool in 30 seconden. Gratis en geen account nodig.';
+                    break;
+                default:
+                    break;
+            }
+
+            data = data.replace(/\$OG_TITLE/g, title);
+            data = data.replace(/\$OG_DESCRIPTION/g, description);
+            res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+            res.header('Expires', '-1');
+            res.header('Pragma', 'no-cache');
+            res.send(data);
+        });
     }
 });
 
