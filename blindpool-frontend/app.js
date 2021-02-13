@@ -36,11 +36,9 @@ app.get('/sitemap.xml', function(req, res) {
 // going to make sure that the correct content will be loaded.
 app.use(function(req, res){
     if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
-        console.log(`Js file ${req.path}`);
         res.status(404).send('Not found');
     } else {
         const filePath = path.resolve(__dirname, 'blindpool-client/build', 'index.html')
-        console.log(`Hallo ${filePath}`);
         fs.readFile(filePath, 'utf8', function (err,data) {
             if (err) {
                 console.log(err);
