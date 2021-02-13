@@ -4,7 +4,7 @@ const nodeExternalsDev = require("webpack-node-externals");
 const copyFiles = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: ["webpack/hot/poll?100", "./src/index.ts"],
+    entry: ["webpack/hot/poll?100", "./src/app.js"],
     target: "node",
     externals: [
         nodeExternalsDev({
