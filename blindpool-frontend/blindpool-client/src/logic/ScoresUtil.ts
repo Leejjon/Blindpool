@@ -1,4 +1,4 @@
-import {ParticipantAndScore} from "../../../blindpool-api/src/models/Blindpool";
+import {ParticipantAndScore} from "../../../../blindpool-api/src/models/Blindpool";
 import {Score} from "../model/Score";
 
 const compareScore = (score1: Score, score2: Score): boolean => {

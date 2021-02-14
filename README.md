@@ -33,6 +33,14 @@ $(gcloud beta emulators datastore env-init)
 npm start
 ```
 
-To run the front end:
+To run the front end in blindpool-client:
 
-```npm run start2```
+```npm run start```
+
+To deploy any of the Node.js runtimes run:
+
+```gcloud app deploy --version=X```
+
+To update the dispatch.yaml that manages the routing to different app engine services:
+
+```gcloud app deploy dispatch.yaml```

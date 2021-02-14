@@ -4,7 +4,7 @@ import CreatePool from "./CreatePool";
 // Wrap our components with MemoryRouter, otherwise the tests complain about the useHistory hook
 import {MemoryRouter} from 'react-router-dom';
 import fetchMock from "fetch-mock";
-import './../../locales/i18n';
+import '../../locales/i18n';
 
 // Thank stackoverflow so much: https://stackoverflow.com/questions/58524183/how-to-mock-history-push-with-the-new-react-router-hooks-using-jest
 const mockHistoryPush = jest.fn();

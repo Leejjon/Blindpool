@@ -12,6 +12,7 @@ import About from "./views/about/About";
 import MuiAlert from "@material-ui/lab/Alert";
 import {makeStyles, Snackbar, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
+import {RouteComponentProps} from "react-router";
 
 const theme = createMuiTheme({
     palette: {
@@ -137,10 +138,10 @@ const App: React.FC = () => {
                 <BpHelmet/>
                 <MuiThemeProvider theme={theme}>
                     <BpAppBar/>
-                    <Route exact path="/" render={(props) => (
+                    <Route exact path="/" render={(props: RouteComponentProps<any>) => (
                         <Home {...props} message={message} setMessage={(message) => setMessage(message)} />
                     )}/>
-                    <Route exact path="/create" render={(props) => (
+                    <Route exact path="/create" render={() => (
                         <CreatePool message={message} setMessage={setMessage} />
                     )} />
                     <Route exact path="/howto" component={HowTo}/>

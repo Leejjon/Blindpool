@@ -6,7 +6,7 @@ interface Participant {
     userType: number
 }
 
-interface ParticipantAndScore {
+export interface ParticipantAndScore {
     participant: Participant,
     score: Score
 }

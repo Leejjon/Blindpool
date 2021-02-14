@@ -1,6 +1,5 @@
 import {canThisScoreStillWin} from "./ScoresUtil";
-import {ParticipantAndScore} from "../../../blindpool-api/src/models/Blindpool";
-
+import {ParticipantAndScore} from "../model/Blindpool";
 
 describe('Test scoresThatCanStillWin function', () => {
     test('Inge has the score 0-2 and wins', () => {

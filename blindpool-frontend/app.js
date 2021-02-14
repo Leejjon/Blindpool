@@ -23,10 +23,10 @@ app.get('/sitemap.xml', function(req, res) {
     switch (String(req.get('host'))) {
         case "blindepool.nl":
         case "www.blindepool.nl":
-            res.sendFile(path.join(__dirname, 'build', 'sitemap-nl.xml'));
+            res.sendFile(path.join(__dirname, 'blindpool-client/build', 'sitemap-nl.xml'));
             break;
         default:
-            res.sendFile(path.join(__dirname, 'build', 'sitemap-en.xml'));
+            res.sendFile(path.join(__dirname, 'blindpool-client/build', 'sitemap-en.xml'));
             break;
     }
 });
@@ -38,7 +38,7 @@ app.use(function(req, res){
     if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
         res.status(404).send('Not found');
     } else {
-        const filePath = path.resolve(__dirname, 'build', 'index.html')
+        const filePath = path.resolve(__dirname, 'blindpool-client/build', 'index.html')
         fs.readFile(filePath, 'utf8', function (err,data) {
             if (err) {
                 console.log(err);

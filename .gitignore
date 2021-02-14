@@ -1,9 +1,8 @@
-backend/.idea/
-backend/target/
-backend/blindpool.iml
-frontend/build/
-frontend/frontend.iml
-frontend/node_modules
+blindpool-frontend/dist
+blindpool-frontend/blindpool-client/build
+blindpool-frontend/blindpool-client/node_modules
+blindpool-frontend/blindpool-client/.eslintcache
+blindpool-frontend/node_modules
 blindpool-api/dist
 blindpool-api/node_modules
 matches-api/dist
