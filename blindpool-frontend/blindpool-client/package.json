@@ -27,7 +27,7 @@
     "react-helmet": "6.1.0",
     "react-i18next": "11.8.5",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "4.0.2",
     "react-swipeable-views": "0.13.9",
     "react-swipeable-views-utils": "0.13.9",
     "typescript": "4.1.3"
