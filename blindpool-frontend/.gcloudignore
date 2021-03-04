@@ -15,10 +15,6 @@
 
 # Node.js dependencies:
 node_modules/
-blindpool-client/node_modules/
-blindpool-client/.eslintcache
-blindpool-client/public
-blindpool-client/src
-blindpool-client/package.json
-blindpool-client/package-lock.json
-blindpool-client/tscconfig.json
+webpack.config.ts
+webpackdev.config.ts
+tscconfig.json

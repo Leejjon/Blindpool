@@ -14,19 +14,22 @@
 // [START app]
 'use strict';
 
+import {Request, Response} from "express";
+import ErrnoException = NodeJS.ErrnoException;
+
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
 
-app.get('/sitemap.xml', function(req, res) {
+app.get('/sitemap.xml', function(req: Request, res: Response) {
     switch (String(req.get('host'))) {
         case "blindepool.nl":
         case "www.blindepool.nl":
-            res.sendFile(path.join(__dirname, 'blindpool-client/build', 'sitemap-nl.xml'));
+            res.sendFile(path.join(__dirname, 'build', 'sitemap-nl.xml'));
             break;
         default:
-            res.sendFile(path.join(__dirname, 'blindpool-client/build', 'sitemap-en.xml'));
+            res.sendFile(path.join(__dirname, 'build', 'sitemap-en.xml'));
             break;
     }
 });
@@ -34,12 +37,12 @@ app.get('/sitemap.xml', function(req, res) {
 // This code makes sure that any request that does not matches a static file
 // in the build folder, will just serve index.html. Client side routing is
 // going to make sure that the correct content will be loaded.
-app.use(function(req, res){
+app.use((req: Request, res: Response) => {
     if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
         res.status(404).send('Not found');
     } else {
-        const filePath = path.resolve(__dirname, 'blindpool-client/build', 'index.html')
-        fs.readFile(filePath, 'utf8', function (err,data) {
+        const filePath = path.resolve(__dirname, 'build', 'index.html')
+        fs.readFile(filePath, 'utf8', (err: ErrnoException | null, data: string) => {
             if (err) {
                 console.log(err);
                 res.status(500).send('Internal error.');

@@ -10,10 +10,10 @@ default_expiration: "7d 0h"
 # These handlers are not easy tbh. Documentation: https://cloud.google.com/appengine/docs/standard/python/config/appref#handlers_element
 handlers:
   - url: /static
-    static_dir: blindpool-client/build/static
+    static_dir: dist/build/static
   - url: /(.*\.(json|ico|js|png|txt|svg))$
-    static_files: blindpool-client/build/\1
-    upload: blindpool-client/build/.*\.(json|ico|js|png|txt|svg)$
+    static_files: dist/build/\1
+    upload: dist/build/.*\.(json|ico|js|png|txt|svg)$
   - url: '.*'
     script: auto
     secure: always

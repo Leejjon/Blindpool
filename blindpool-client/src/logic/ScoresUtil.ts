@@ -1,5 +1,5 @@
-import {ParticipantAndScore} from "../../../../blindpool-api/src/models/Blindpool";
 import {Score} from "../model/Score";
+import {ParticipantAndScore} from "../model/Blindpool";
 
 const compareScore = (score1: Score, score2: Score): boolean => {
     return score1.home === score2.home && score1.away === score2.away;
