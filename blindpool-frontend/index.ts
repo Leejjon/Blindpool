@@ -21,6 +21,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
+const environment = process.env.NODE_ENV || 'development';
 
 app.get('/sitemap.xml', function(req: Request, res: Response) {
     switch (String(req.get('host'))) {
@@ -38,8 +39,12 @@ app.get('/sitemap.xml', function(req: Request, res: Response) {
 // in the build folder, will just serve index.html. Client side routing is
 // going to make sure that the correct content will be loaded.
 app.use((req: Request, res: Response) => {
-    if (/(.ico|.js|.css|.jpg|.png)$/i.test(req.path)) {
-        res.status(404).send('Not found');
+    if (/(.ico|.js|.css|.jpg|.png|.woff2)$/i.test(req.path)) {
+        if (environment === 'development') {
+            res.sendFile(path.join(__dirname, 'build', req.path));
+        } else {
+            res.status(404).send('Not found');
+        }
     } else {
         const filePath = path.resolve(__dirname, 'build', 'index.html')
         fs.readFile(filePath, 'utf8', (err: ErrnoException | null, data: string) => {
@@ -73,8 +78,34 @@ app.use((req: Request, res: Response) => {
 
 // Start the server
 const PORT = process.env.PORT || 8082;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
 });
 // [END app]
+
+/**
+ * Webpack HMR Activation
+ */
+
+type ModuleId = string | number;
+
+interface WebpackHotModule {
+    hot?: {
+        data: any;
+        accept(
+            dependencies: string[],
+            callback?: (updatedDependencies: ModuleId[]) => void,
+        ): void;
+        accept(dependency: string, callback?: () => void): void;
+        accept(errHandler?: (err: Error) => void): void;
+        dispose(callback: (data: any) => void): void;
+    };
+}
+
+declare const module: WebpackHotModule;
+
+if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => server.close());
+}
