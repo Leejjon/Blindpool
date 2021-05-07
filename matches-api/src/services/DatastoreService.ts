@@ -1,9 +1,8 @@
 import {Datastore} from "@google-cloud/datastore";
 import {Match, Score} from "../model/Match";
-import {EREDIVISIE_NAME} from "./footballdata-api/constants";
 import {err, ok, Result} from "neverthrow";
 import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
-import {getTeamName} from "../constants/Teams";
+import {getCompetitionByTeam, getTeamName} from "../constants/Teams";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
@@ -73,12 +72,15 @@ export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
                 }
             }
 
+            // TODO: This is bad logic.
+            const competitionId = getCompetitionByTeam(match.homeTeam.id);
+
             const matchIndexes = [
                 { name: 'startTimestamp', value: startTimestamp.toJSON() },
-                { name: 'competitionName', value: EREDIVISIE_NAME },
-                { name: 'homeTeamName', value: getTeamName(match.homeTeam.id) },
+                { name: 'competitionName', value: getCompetitionByTeam(match.homeTeam.id) },
+                { name: 'homeTeamName', value: getTeamName(match.homeTeam.id, competitionId) },
                 { name: 'homeTeamID', value: match.homeTeam.id },
-                { name: 'awayTeamName', value: getTeamName(match.awayTeam.id)},
+                { name: 'awayTeamName', value: getTeamName(match.awayTeam.id, competitionId)},
                 { name: 'awayTeamID', value: match.awayTeam.id },
                 { name: 'score', value: createScoreObject() },
                 { name: 'finished', value: isMatchFinished() }
