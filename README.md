@@ -33,9 +33,11 @@ $(gcloud beta emulators datastore env-init)
 npm start
 ```
 
+For the matches-api, you need to create a local.key file an put your API key from football-data.org in it
+
 To run the front end in blindpool-client:
 
-```npm run start```
+```npm start```
 
 To deploy any of the Node.js runtimes run:
 
