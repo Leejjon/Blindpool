@@ -20,3 +20,4 @@ webpackdev.config.ts
 
 # Make sure we don't upload our secret key that we use on our local environment to the cloud
 dist/local.key
+local.key

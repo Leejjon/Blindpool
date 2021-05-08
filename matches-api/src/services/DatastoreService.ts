@@ -4,6 +4,7 @@ import {err, ok, Result} from "neverthrow";
 import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
 import {getCompetitionByTeam, getTeamName} from "../constants/Teams";
 import {ErrorScenarios} from "../model/ErrorScenarios";
+import {EREDIVISIE_CODE, EREDIVISIE_NAME, EURO2020_CODE, EURO2020_NAME} from "./footballdata-api/constants";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
     try {
@@ -75,9 +76,17 @@ export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
             // TODO: This is bad logic.
             const competitionId = getCompetitionByTeam(match.homeTeam.id);
 
+            let competitionName = "Competition";
+            if (competitionId === EREDIVISIE_CODE) {
+                competitionName = EREDIVISIE_NAME;
+            }
+            if (competitionId === EURO2020_CODE) {
+                competitionName = EURO2020_NAME;
+            }
+
             const matchIndexes = [
                 { name: 'startTimestamp', value: startTimestamp.toJSON() },
-                { name: 'competitionName', value: getCompetitionByTeam(match.homeTeam.id) },
+                { name: 'competitionName', value:  competitionName},
                 { name: 'homeTeamName', value: getTeamName(match.homeTeam.id, competitionId) },
                 { name: 'homeTeamID', value: match.homeTeam.id },
                 { name: 'awayTeamName', value: getTeamName(match.awayTeam.id, competitionId)},
