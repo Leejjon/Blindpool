@@ -40,7 +40,7 @@ export interface PlayerNameProps {
     player: Player,
     index: number,
     removePlayer: (index: number) => void,
-    onTextFieldChange: (index: number, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    onTextFieldChange: (index: number, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, isBlur: boolean) => void
 }
 
 const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTextFieldChange}) => {
@@ -64,7 +64,8 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                     margin="normal"
                     value={player.name}
                     inputProps={{'aria-label': 'Player name ' + (index + 1)}}
-                    onChange={(event) => onTextFieldChange(index, event)}>
+                    onChange={(event) => onTextFieldChange(index, event, false)}
+                    onBlur={(event) => onTextFieldChange(index, event, true)}>
                 </TextField>
             </TableCell>
             <TableCell align="right" className={classes.buttonColumn}>

@@ -135,12 +135,16 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
         }
     }, [players, justAddedPlayer]);
 
-    const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
+    const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>, isBlur: boolean) => {
         const nameField = event.target;
 
         const playersUpdate = [...players];
         if (nameField.value) {
-            playersUpdate[index].name = nameField.value.trim();
+            if (isBlur) {
+                playersUpdate[index].name = nameField.value.trim();
+            } else {
+                playersUpdate[index].name = nameField.value;
+            }
         } else {
             playersUpdate[index].name = "";
             playersUpdate[index].valid = undefined;
