@@ -133,7 +133,7 @@ const dutchCountryNames: dutchCountryNameMapping = {
     798: 'Tsjechië',
     799: 'Kroatië',
     803: 'Turkije',
-    805: 'Belgie',
+    805: 'België',
     808: 'Rusland',
     816: 'Oostenrijk',
     827: 'Hongarije',
@@ -149,7 +149,6 @@ const getDutchCountryName = (teamId: number) => {
 }
 
 export const getHomeTeamNameToDisplay = (match: Match) => {
-    console.log('Home ' + match);
     if (match.competitionName === 'Euro 2020' && window.location.hostname.endsWith('blindepool.nl')) {
         return getDutchCountryName(parseInt(match.homeTeamID));
     } else {
@@ -158,9 +157,7 @@ export const getHomeTeamNameToDisplay = (match: Match) => {
 }
 
 export const getAwayTeamNameToDisplay = (match: Match) => {
-    console.log('Away' + match.competitionName);
     if (match.competitionName === 'Euro 2020' && window.location.hostname.endsWith('blindepool.nl')) {
-        console.log('Ok?');
         return getDutchCountryName(parseInt(match.awayTeamID));
     } else {
         return match.awayTeamName;
