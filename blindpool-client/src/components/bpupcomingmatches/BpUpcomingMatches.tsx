@@ -13,6 +13,7 @@ import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useHistory} from "react-router-dom";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
+import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 
 const useStyles = makeStyles({
     margin1em: {
@@ -82,6 +83,8 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
                 <Table className={classes.table}>
                     <TableBody>
                         {appState.upcomingMatches?.map((match: Match) => {
+                            const homeTeamName = getHomeTeamNameToDisplay(match);
+                            const awayTeamName = getAwayTeamNameToDisplay(match);
                             const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;
                             const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.svg`;
 
@@ -97,13 +100,13 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
                                             <div className={classes.width100percent}>
                                                 <div className={classes.tableRowContainerForClubIcons}>
                                                     <div className={classes.clubIconAndTextDiv}>
-                                                        <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={match.homeTeamName} />
-                                                        <Typography variant="body1" style={{marginBottom: '0px'}}>{match.homeTeamName}</Typography>
+                                                        <img className={classes.clubIconStyle} src={homeTeamIconUrl} alt={homeTeamName} />
+                                                        <Typography variant="body1" style={{marginBottom: '0px'}}>{homeTeamName}</Typography>
                                                     </div>
                                                     <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
                                                     <div className={classes.clubIconAndTextDiv}>
-                                                        <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={match.awayTeamName} />
-                                                        <Typography variant="body1">{match.awayTeamName}</Typography>
+                                                        <img className={classes.clubIconStyle} src={awayTeamIconUrl} alt={awayTeamName} />
+                                                        <Typography variant="body1">{awayTeamName}</Typography>
                                                     </div>
                                                 </div>
                                                 <Typography variant="body1" className={classes.margin1em}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>

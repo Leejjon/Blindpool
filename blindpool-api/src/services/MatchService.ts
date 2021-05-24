@@ -20,6 +20,7 @@ export const doesThisMatchExists = async (key: string): Promise<Result<Match, Er
             awayTeamName: matchEntity.awayTeamName,
             homeTeamID: matchEntity.homeTeamID,
             homeTeamName: matchEntity.homeTeamName,
+            competitionName: matchEntity.competitionName,
             id: key
         };
         return ok(match);

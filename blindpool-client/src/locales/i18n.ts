@@ -1,5 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import {PageTitleAndDescription} from "../../../blindpool-frontend/src/locales";
+import {Match} from "../model/Match";
 
 // the translations
 // (tip move them in a JSON file and import them)
@@ -110,3 +112,57 @@ i18n
             escapeValue: false // react already safes from xss
         }
     });
+
+export interface dutchCountryNameMapping {
+    [teamID: number]: string;
+}
+
+const dutchCountryNames: dutchCountryNameMapping = {
+    759: 'Duitsland',
+    760: 'Spanje',
+    765: 'Portugal',
+    768: 'Slowakije',
+    770: 'Engeland',
+    773: 'Frankrijk',
+    782: 'Denemarken',
+    784: 'Italië',
+    788: 'Zwitserland',
+    790: 'Oekraïne',
+    792: 'Zweden',
+    794: 'Polen',
+    798: 'Tsjechië',
+    799: 'Kroatië',
+    803: 'Turkije',
+    805: 'Belgie',
+    808: 'Rusland',
+    816: 'Oostenrijk',
+    827: 'Hongarije',
+    833: 'Wales',
+    1976: 'Finland',
+    1977: 'Noord-Macedonië',
+    8601: 'Nederland',
+    8873: 'Schotland'
+};
+
+const getDutchCountryName = (teamId: number) => {
+    return dutchCountryNames[teamId] || 'Unknown country';
+}
+
+export const getHomeTeamNameToDisplay = (match: Match) => {
+    console.log('Home ' + match);
+    if (match.competitionName === 'Euro 2020' && window.location.hostname.endsWith('blindepool.nl')) {
+        return getDutchCountryName(parseInt(match.homeTeamID));
+    } else {
+        return match.homeTeamName;
+    }
+}
+
+export const getAwayTeamNameToDisplay = (match: Match) => {
+    console.log('Away' + match.competitionName);
+    if (match.competitionName === 'Euro 2020' && window.location.hostname.endsWith('blindepool.nl')) {
+        console.log('Ok?');
+        return getDutchCountryName(parseInt(match.awayTeamID));
+    } else {
+        return match.awayTeamName;
+    }
+}

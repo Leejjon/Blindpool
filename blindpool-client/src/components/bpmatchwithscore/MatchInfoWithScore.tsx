@@ -3,6 +3,7 @@ import {Match} from "../../model/Match";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {CircularProgress, makeStyles, Typography} from "@material-ui/core";
 import React from "react";
+import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 
 const useStyles = makeStyles({
     clubIconStyle: {
@@ -49,6 +50,8 @@ export interface MatchInfoWithScoreProps {
 const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo}) => {
     const classes = useStyles();
     const match = appState.poolData!.MATCH as Match;
+    const homeTeamName = getHomeTeamNameToDisplay(match);
+    const awayTeamName = getAwayTeamNameToDisplay(match);
     const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;
     const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.svg`;
 
@@ -97,7 +100,7 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
                     <img className={classes.clubIconStyle} src={homeTeamIconUrl}
                          alt={match.homeTeamName}/>
                     <Typography
-                        className={classes.marginHalfEm}>{match.homeTeamName}</Typography>
+                        className={classes.marginHalfEm}>{homeTeamName}</Typography>
                 </div>
                 <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
                 <div className={classes.clubIconAndTextDiv}>

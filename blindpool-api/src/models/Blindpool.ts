@@ -65,31 +65,18 @@ export class CreateBlindpoolRequest {
     }
 }
 
-export class Match {
-    @IsString()
+export interface Match {
     id: string;
 
-    @IsNumber()
     homeTeamID: number;
 
-    @IsNumber()
     awayTeamID: number;
 
-    @IsString() @Matches(/^[a-zA-Z0-9 ]{2,25}$/)
+    competitionName: string;
+
     homeTeamName: string;
 
-    @IsString() @Matches(/^[a-zA-Z0-9 ]{2,25}$/)
     awayTeamName: string;
 
-    @IsDate()
     startTimestamp: Date;
-
-    constructor(id: string, homeTeamID: number, awayTeamID: number, homeTeamName: string, awayTeamName: string, startTimestamp: Date) {
-        this.id = id;
-        this.homeTeamID = homeTeamID;
-        this.awayTeamID = awayTeamID;
-        this.homeTeamName = homeTeamName;
-        this.awayTeamName= awayTeamName;
-        this.startTimestamp = startTimestamp;
-    }
 }

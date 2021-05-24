@@ -6,6 +6,7 @@ import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
+import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 
 const useStyles = makeStyles({
     bpMatchSelector: {
@@ -72,7 +73,9 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
     }, [setMessage]);
 
     const displayMatchInDropdown = (upcomingMatch: Match): string => {
-        return `${upcomingMatch.homeTeamName} vs ${upcomingMatch.awayTeamName}`;
+        const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch);
+        const awayTeamName = getAwayTeamNameToDisplay(upcomingMatch);
+        return `${homeTeamName} vs ${awayTeamName}`;
     };
 
     useEffect(() => {
@@ -128,6 +131,8 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
             getOptionLabel={displayMatchInDropdown}
             options={matches as Match[]}
             renderOption={(upcomingMatch: Match) => {
+                const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch);
+                const awayTeamName = getAwayTeamNameToDisplay(upcomingMatch);
                 const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.homeTeamID}.svg`;
                 const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.awayTeamID}.svg`;
 
@@ -142,16 +147,16 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
                         <div className={classes.tableRowContainerForClubIcons}>
                             <div className={classes.clubIconAndTextDiv}>
                                 <img className={classes.clubIconStyle} src={homeTeamIconUrl}
-                                     alt={upcomingMatch.homeTeamName}/>
+                                     alt={homeTeamName}/>
                                 <Typography
-                                    className={classes.marginHalfEm}>{upcomingMatch.homeTeamName}</Typography>
+                                    className={classes.marginHalfEm}>{homeTeamName}</Typography>
                             </div>
                             <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
                             <div className={classes.clubIconAndTextDiv}>
                                 <img className={classes.clubIconStyle} src={awayTeamIconUrl}
-                                     alt={upcomingMatch.awayTeamName}/>
+                                     alt={awayTeamName}/>
                                 <Typography
-                                    className={classes.marginHalfEm}>{upcomingMatch.awayTeamName}</Typography>
+                                    className={classes.marginHalfEm}>{awayTeamName}</Typography>
                             </div>
                         </div>
                         <Typography
