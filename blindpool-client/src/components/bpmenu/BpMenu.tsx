@@ -109,7 +109,7 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         </Icon>
                     </ListItemIcon>
                     <ListItemText className={classes.linktext}>
-                        {t("HOW_TO_USE_BLINDPOOL_TITLE")}
+                        {t("HOW_DOES_IT_WORK_TITLE")}
                     </ListItemText>
                 </ListItem>
                 <ListItem button component={Link} onClick={closeMenu} to="/about"

@@ -4,7 +4,7 @@ const nodeExternalsDev = require("webpack-node-externals");
 const copyFilesDev = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: ["webpack/hot/poll?100", './index.ts'],
+    entry: ["webpack/hot/poll?100", './src/index.ts'],
     target: "node",
     mode: "development",
     externals: [
@@ -18,7 +18,7 @@ module.exports = {
     module: {
         rules: [
             // all files with a `.ts` extension will be handled by `ts-loader`
-            { test: /\.tsx?$/, loader: 'ts-loader', exclude: /node_modules/}
+            { test: /\.ts?$/, loader: 'ts-loader', exclude: /node_modules/}
         ]
     },
     plugins: [new webpack.HotModuleReplacementPlugin(), new copyFilesDev({ patterns: [{ from: '../blindpool-client/build', to: 'build'}]})],

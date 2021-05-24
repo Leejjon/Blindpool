@@ -64,7 +64,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                             <Button size="medium">{t("CREATE_POOL")}</Button>
                         </Link>
                         <Link to="/howto" style={{textDecoration: 'none'}}>
-                            <Button size="medium">{t("HOW_TO_USE_BLINDPOOL_TITLE")}</Button>
+                            <Button size="medium">{t("HOW_DOES_IT_WORK_TITLE")}</Button>
                         </Link>
                     </CardActions>
                 </Card>

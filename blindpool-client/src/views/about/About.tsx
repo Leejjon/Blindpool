@@ -1,6 +1,7 @@
 import {Button, Card, CardActions, CardContent, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {Helmet} from "react-helmet";
 
 const useStyles = makeStyles({
     root: {
@@ -27,6 +28,12 @@ const About: React.FC = () => {
 
     return (
         <Grid container justify="center" spacing={2} className={classes.root}>
+            <Helmet>
+                <title>{t('TITLE')} - {t('ABOUT_BLINDPOOL_TITLE')}</title>
+                <meta name="description" content={t('ABOUT_BLINDPOOL_DESCRIPTION')}/>
+                <meta property="og:title" content={t('TITLE') + " - " + t('ABOUT_BLINDPOOL_TITLE')}/>
+                <meta property="og:description" content={t('ABOUT_BLINDPOOL_DESCRIPTION')}/>
+            </Helmet>
             <Grid key="aboutme" item>
                 <Card className={classes.card}>
                     <CardContent>
@@ -35,7 +42,7 @@ const About: React.FC = () => {
                         </Typography>
                         <Divider style={{marginTop: '0.5em'}}/>
                         <Typography component="p">
-                            <br/>{t('MY_DESCRIPTION')}
+                            <br/>{t('ABOUT_BLINDPOOL_DESCRIPTION')}
                         </Typography>
                         <br/>
                         <img alt="Leon Liefting" style={{width: '100%', height: "auto"}} src="/leon.png"/>

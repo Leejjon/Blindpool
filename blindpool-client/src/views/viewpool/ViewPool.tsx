@@ -239,7 +239,7 @@ const ViewPool: React.FC = () => {
                             <TextField
                                 // disabled
                                 id={copyFieldId}
-                                label="Share this pool&nbsp;"
+                                label={t('SHARE_THIS_POOL')}
                                 className={classes.shareUrlInput}
                                 value={shareUrl}
                                 margin="normal"

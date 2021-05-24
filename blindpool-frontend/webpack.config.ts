@@ -3,7 +3,7 @@ const nodeExternals = require("webpack-node-externals");
 const copyFiles = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './index.ts',
+    entry: './src/index.ts',
     target: "node",
     mode: "production",
     externals: [nodeExternals()],
@@ -13,7 +13,7 @@ module.exports = {
     module: {
         rules: [
             // all files with a `.ts` extension will be handled by `ts-loader`
-            { test: /index.ts$/, loader: 'ts-loader', exclude: /node_modules/}
+            { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/}
         ]
     },
     plugins: [new copyFiles({ patterns: [{ from: '../blindpool-client/build', to: 'build'}]})],

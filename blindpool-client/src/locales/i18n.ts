@@ -7,12 +7,11 @@ export const resources = {
     en: {
         translation: {
             "ABOUT_BLINDPOOL_TITLE": "About Blindpool",
+            "ABOUT_BLINDPOOL_DESCRIPTION": "My name is Leon Liefting and I'm a full stack developer (freelance) from the Netherlands that likes to be involved in all phases of software development.",
             "TITLE": "Blindpool",
             "CREATE_POOL": "Create pool",
             "CREATE_POOL_TITLE": "Create a blind pool",
             "CREATE_POOL_DESCRIPTION": "Watching football with friends? Create a blind pool in 30 seconds. Free and no account needed.",
-            "HOW_TO_USE_BLINDPOOL_TITLE": "How does it work?",
-            "HOW_TO_USE_BLINDPOOL_DESCRIPTION": "Learn how to make a blind pool.",
             "BLINDPOOL_DEFINITION_TITLE": "What is a blind pool?",
             "BLINDPOOL_DEFINITION_DESCRIPTION": "A blind pool is a gambling game where all participants are assigned a random score for a football match. The player with the correct final score wins!",
             "BLINDPOOL_VIEW_TITLE": "{{organizer}}'s blindpool",
@@ -40,25 +39,24 @@ export const resources = {
             "BACKEND_UNREACHABLE": "Could not reach the server. Check your internet connection.",
             "BACKEND_OFFLINE": "Our server is not responding as it should. Sorry for the inconvenience.",
             "BEHIND_BLINDPOOL": "Behind Blindpool",
-            "MY_DESCRIPTION": "My name is Leon Liefting and I'm a full stack developer (freelance) from the Netherlands that likes to be involved in all phases of software development.",
             "REACH_OUT": "If you like how Blindpool works and need a freelance developer to help build your next cool app or website, reach out via one of the platforms below.",
             "OTHER_APPS": "Other Apps",
             "UPCOMING_MATCHES": "Upcoming matches",
             "CLICK_ON_MATCH": "Click on a match below to start a pool",
             "SELECT_MATCH": "Select match (optional)",
             "MATCH_ALREADY_STARTED": "Warning: This match has already started.",
-            "FREE_FORMAT_MATCH_PREFIX": "Match: "
+            "FREE_FORMAT_MATCH_PREFIX": "Match: ",
+            "SHARE_THIS_POOL": "Share this pool "
         }
     },
     nl: {
         translation: {
             "ABOUT_BLINDPOOL_TITLE": "Over Blindpool",
+            "ABOUT_BLINDPOOL_DESCRIPTION": "Mijn naam is Leon Liefting en ik ben een full stack developer (freelance). Ik ben graag betrokken in alle fases van software ontwikkeling.",
             "TITLE": "Blindepool",
             "CREATE_POOL": "Maak een pool",
             "CREATE_POOL_TITLE": "Maak een blindepool",
             "CREATE_POOL_DESCRIPTION": "Voetbal kijken met vrienden? Maak een blindepool in 30 seconden. Gratis en geen account nodig.",
-            "HOW_TO_USE_BLINDPOOL_TITLE": "Hoe werkt het?",
-            "HOW_TO_USE_BLINDPOOL_DESCRIPTION": "Leer hoe je een blindepool maakt.",
             "BLINDPOOL_DEFINITION_TITLE": "Wat is een blindepool?",
             "BLINDPOOL_DEFINITION_DESCRIPTION": "Een blindepool is een gokspel waar elke deelnemer een willekeurige voetbal uitslag krijgt. De deelnemer met de uitslag van de wedstrijd, wint.",
             "BLINDPOOL_VIEW_TITLE": "Blindepool van {{organizer}}",
@@ -86,7 +84,6 @@ export const resources = {
             "BACKEND_UNREACHABLE": "Kon de server niet bereiken. Controleer je internet verbinding.",
             "BACKEND_OFFLINE": "Onze server reageert niet zoals het hoort, excuses voor het ongemak.",
             "BEHIND_BLINDPOOL": "Achter Blindpool",
-            "MY_DESCRIPTION": "Mijn naam is Leon Liefting en ik ben een full stack developer (freelance). Ik ben graag betrokken in alle fases van software ontwikkeling.",
             "REACH_OUT": "Als je Blindpool een toffe app vindt en een freelance developer nodig hebt om jouw volgende app of website te bouwen, neem dan contact met me op.",
             "OTHER_APPS": "Andere Apps",
             "UPCOMING_MATCHES": "Aankomende wedstrijden",
@@ -94,6 +91,7 @@ export const resources = {
             "SELECT_MATCH": "Selecteer wedstrijd (optioneel)",
             "MATCH_ALREADY_STARTED": "Waarschuwing: Deze wedstrijd is al begonnen.",
             "FREE_FORMAT_MATCH_PREFIX": "Wedstrijd: ",
+            "SHARE_THIS_POOL": "Deel deze pool "
         }
     }
 };

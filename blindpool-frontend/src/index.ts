@@ -16,6 +16,7 @@
 
 import {Request, Response} from "express";
 import ErrnoException = NodeJS.ErrnoException;
+import {dutchPageTitlesAndDescriptions, englishPageTitlesAndDescriptions} from "./locales";
 
 const express = require('express');
 const path = require('path');
@@ -53,14 +54,18 @@ app.use((req: Request, res: Response) => {
                 res.status(500).send('Internal error.');
             }
 
-            let title = 'Blindpool';
-            let description = 'Watching football with friends? Create a blind pool in 30 seconds. Free and no account needed.';
+            const pageNotFound = 'Page not found.';
+
+            let title = englishPageTitlesAndDescriptions[req.path]?.title || pageNotFound;
+            let description = englishPageTitlesAndDescriptions[req.path]?.description || pageNotFound;
+            let googleAnalyticsId = 'G-8R5VGWKLGN'
 
             switch (String(req.get('host'))) {
                 case "blindepool.nl":
                 case "www.blindepool.nl":
-                    title = 'Blindepool';
-                    description = 'Voetbal kijken met vrienden? Maak een blindepool in 30 seconden. Gratis en geen account nodig.';
+                    title = dutchPageTitlesAndDescriptions[req.path]?.title || pageNotFound;
+                    description = dutchPageTitlesAndDescriptions[req.path]?.description || pageNotFound;
+                    googleAnalyticsId = 'G-RLHXCGFX7D';
                     break;
                 default:
                     break;
@@ -68,6 +73,7 @@ app.use((req: Request, res: Response) => {
 
             data = data.replace(/\$OG_TITLE/g, title);
             data = data.replace(/\$OG_DESCRIPTION/g, description);
+            data = data.replace(/\$GOOGLE_ANALYTICS_ID/g, googleAnalyticsId);
             res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
             res.header('Expires', '-1');
             res.header('Pragma', 'no-cache');

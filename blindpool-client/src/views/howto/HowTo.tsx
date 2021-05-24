@@ -31,9 +31,9 @@ const HowTo: React.FC = () => {
               style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('HOW_DOES_IT_WORK_TITLE')}</title>
-                <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                <meta name="description" content={t('HOW_DOES_IT_WORK_DESCRIPTION')}/>
                 <meta property="og:title" content={t('TITLE') + " - " + t('HOW_DOES_IT_WORK_TITLE')}/>
-                <meta property="og:description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                <meta property="og:description" content={t('HOW_DOES_IT_WORK_DESCRIPTION')}/>
             </Helmet>
             <Grid key="definition" item>
                 <Card className={classes.card}>

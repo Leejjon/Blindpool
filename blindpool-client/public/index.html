@@ -33,6 +33,15 @@
     <meta name="description"        content="$OG_DESCRIPTION" />
     <meta property="og:title"       content="$OG_TITLE" />
     <meta property="og:description" content="$OG_DESCRIPTION" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=$GOOGLE_ANALYTICS_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '$GOOGLE_ANALYTICS_ID');
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
