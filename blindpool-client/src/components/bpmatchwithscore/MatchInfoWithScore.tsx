@@ -105,9 +105,9 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
                 <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
                 <div className={classes.clubIconAndTextDiv}>
                     <img className={classes.clubIconStyle} src={awayTeamIconUrl}
-                         alt={match.awayTeamName}/>
+                         alt={awayTeamName}/>
                     <Typography
-                        className={classes.marginHalfEm}>{match.awayTeamName}</Typography>
+                        className={classes.marginHalfEm}>{awayTeamName}</Typography>
                 </div>
             </div>
             {scoreView()}

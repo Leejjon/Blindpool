@@ -61,16 +61,19 @@ export const getTeamName = (teamId: number, competitionId: number): string => {
     return teamName ? teamName : 'Unknown team';
 };
 
-export const getCompetitionByTeam = (teamId: number): number => {
-    const teamExistsInEredivisie: boolean = !!eredivisieTeams[teamId];
+export const getCompetitionByTeam = (homeTeamId: number | null, awayTeamId: number | null): number => {
+    if (homeTeamId === null || awayTeamId === null) {
+        throw Error('This match is a placeholder, we ignore it.');
+    }
+    const teamExistsInEredivisie: boolean = !!eredivisieTeams[homeTeamId];
     if (teamExistsInEredivisie) {
         return EREDIVISIE_CODE;
     }
-    const teamExistsInEuro2020: boolean = !! euro2020Teams[teamId];
+    const teamExistsInEuro2020: boolean = !! euro2020Teams[homeTeamId];
     if (teamExistsInEuro2020) {
         return EURO2020_CODE;
     } else {
-        console.log(teamId);
+        console.log(`error ${homeTeamId}`);
         throw Error('Invalid team id');
     }
 }

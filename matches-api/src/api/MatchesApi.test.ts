@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import {fetchAndSaveScheduledMatches, getMatchByKey, getTenScheduledMatches} from "./MatchesApi";
 import {err, ok} from "neverthrow";
 import * as FootballDataApi from "../services/footballdata-api/FootballDataApiService";
-import * as DatastoreService from "../services/DatastoreService"
+import * as DatastoreService from "../services/MatchService"
 import {
     FootballDataApiMatch
 } from "../services/footballdata-api/FootballDataApiService";
@@ -12,6 +12,7 @@ import {ErrorScenarios} from "../model/ErrorScenarios";
 import {Match} from "../model/Match";
 
 const testFootballApiMatch: FootballDataApiMatch = {
+    odds: undefined, referees: [],
     id: 1,
     utcDate: '2020-09-12T16:45:00Z',
     status: 'SCHEDULED',

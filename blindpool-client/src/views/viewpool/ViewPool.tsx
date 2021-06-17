@@ -7,8 +7,8 @@ import {
     Table, TableBody,
     TableCell,
     TableHead,
-    TableRow, TextField,
-    Typography
+    TableRow, TextField, Theme, Tooltip,
+    Typography, withStyles
 } from "@material-ui/core";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
@@ -77,6 +77,16 @@ interface KeyInParams {
     key: string
 }
 
+const HtmlTooltip = withStyles((theme: Theme) => ({
+    tooltip: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}))(Tooltip);
+
 const ViewPool: React.FC = () => {
     let { key } = useParams<KeyInParams>();
     const classes = useStyles();
@@ -134,11 +144,36 @@ const ViewPool: React.FC = () => {
         }
     };
 
+    const questionMark = () => {
+        return (
+            <HtmlTooltip enterTouchDelay={5} arrow
+                title={
+                    <React.Fragment>
+                        <Typography variant="h2" color="inherit">Wildcard</Typography>
+                        <Typography>{t('WILDCARD_EXPLANATION')}</Typography>
+                    </React.Fragment>
+                }
+            >
+                <Icon fontSize="small">
+                    help
+                </Icon>
+            </HtmlTooltip>
+        );
+    };
+
     const renderTableData = () => {
         return appState.poolData!.PARTICIPANTS_AND_SCORES.map((participantAndScore, index) => {
             const participantName = participantAndScore.participant.name;
             const home: string = participantAndScore.score.home >= 0 ? participantAndScore.score.home.toString() : 'X';
             const away: string = participantAndScore.score.away >= 0 ? participantAndScore.score.away.toString() : 'X';
+
+            const isWildCard = (home: string, away: string) => {
+                if (home === 'X' && away === 'X') {
+                    return questionMark();
+                } else {
+                    return null;
+                }
+            }
 
             const participantAndScoreFC = () => {
                 if (fullMatchInfo && (canThisScoreStillWin(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo.score, fullMatchInfo.finished))) {
@@ -148,7 +183,7 @@ const ViewPool: React.FC = () => {
                                 <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="body1">{home} - {away}</Typography>
+                                <Typography variant="body1">{home} - {away} {isWildCard(home, away)}</Typography>
                             </TableCell>
                         </TableRow>
                     );
@@ -159,7 +194,7 @@ const ViewPool: React.FC = () => {
                                 <Typography variant="body1">{participantName}</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="body1">{home} - {away}</Typography>
+                                <Typography variant="body1">{home} - {away} {isWildCard(home, away)}</Typography>
                             </TableCell>
                         </TableRow>
                     );
@@ -170,7 +205,7 @@ const ViewPool: React.FC = () => {
                                 <Typography variant="body1">{participantName}</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="body1" className={classes.impossibleScore}>{home} - {away}</Typography>
+                                <Typography variant="body1" className={classes.impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
                             </TableCell>
                         </TableRow>
                     );
@@ -248,7 +283,7 @@ const ViewPool: React.FC = () => {
                             />
                             <IconButton className={classes.copyButton} color="inherit"
                                         aria-label="Copy" aria-haspopup="true" onClick={copy}>
-                                <Icon>content_copy</Icon>
+                                <Icon aria-label={t('COPY')}>content_copy</Icon>
                             </IconButton>
                         </CardActions>
                     </Card>

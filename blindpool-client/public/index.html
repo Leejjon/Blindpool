@@ -35,13 +35,19 @@
     <meta property="og:description" content="$OG_DESCRIPTION" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=$GOOGLE_ANALYTICS_ID"></script>
+    <script data-ad-client="$GOOGLE_ADS_CLIENT_ID" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', '$GOOGLE_ANALYTICS_ID');
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied'
+      });
     </script>
+    <meta name="facebook-domain-verification" content="$FACEBOOK_ADS_CLIENT_ID" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

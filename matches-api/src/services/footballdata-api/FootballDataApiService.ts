@@ -16,11 +16,13 @@ export interface FootballDataApiMatch {
     status: string,
     matchday: number,
     stage: string,
-    group: string,
+    group: string | null,
     lastUpdated: string
     score: FootballDataApiScoreInfo,
     homeTeam: FootballDataApiTeam,
-    awayTeam: FootballDataApiTeam
+    awayTeam: FootballDataApiTeam,
+    odds: any,
+    referees: Array<any>
     // Referees
 }
 
@@ -46,8 +48,8 @@ export interface FootballDataApiScore {
 }
 
 export interface FootballDataApiTeam {
-    id: number,
-    name: string
+    id: number | null,
+    name: string | null
 }
 
 export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {

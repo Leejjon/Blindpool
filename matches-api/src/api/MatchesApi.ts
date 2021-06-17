@@ -1,7 +1,7 @@
 import {Match} from "../model/Match";
 import {Request, Response} from "express";
 import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApiService";
-import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/DatastoreService";
+import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/MatchService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 
 export const getMatchByKey = async (req: Request, res: Response) => {
@@ -41,15 +41,15 @@ export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) 
 };
 
 const respond = (res: Response, status: number, message: string) => {
-    res.status(status);
-    res.send(message);
-}
+        res.status(status);
+        res.send(message);
+};
 
 const mapSuccess = (res: Response, responseEntity: any) => {
     res.contentType('application/json');
     res.status(200);
     res.send(responseEntity);
-}
+};
 
 const mapError = (res: Response, error: ErrorScenarios) => {
     switch (error) {
@@ -63,4 +63,4 @@ const mapError = (res: Response, error: ErrorScenarios) => {
             respond(res, 400, 'Invalid input.');
             break;
     }
-}
+};

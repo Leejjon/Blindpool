@@ -54,18 +54,22 @@ app.use((req: Request, res: Response) => {
                 res.status(500).send('Internal error.');
             }
 
-            const pageNotFound = 'Page not found.';
+            const defaultTitle = 'Blindpool';
 
-            let title = englishPageTitlesAndDescriptions[req.path]?.title || pageNotFound;
-            let description = englishPageTitlesAndDescriptions[req.path]?.description || pageNotFound;
+            let title = englishPageTitlesAndDescriptions[req.path]?.title || defaultTitle;
+            let description = englishPageTitlesAndDescriptions[req.path]?.description || defaultTitle;
             let googleAnalyticsId = 'G-8R5VGWKLGN'
+            let googleAdsClientId = '';
+            let facebookAdsClientId = '';
 
             switch (String(req.get('host'))) {
                 case "blindepool.nl":
                 case "www.blindepool.nl":
-                    title = dutchPageTitlesAndDescriptions[req.path]?.title || pageNotFound;
-                    description = dutchPageTitlesAndDescriptions[req.path]?.description || pageNotFound;
+                    title = dutchPageTitlesAndDescriptions[req.path]?.title || defaultTitle;
+                    description = dutchPageTitlesAndDescriptions[req.path]?.description || defaultTitle;
                     googleAnalyticsId = 'G-RLHXCGFX7D';
+                    googleAdsClientId = 'ca-pub-8436311764742328';
+                    facebookAdsClientId = 'woap2tjubeuc46ufij68ddw21rs97m';
                     break;
                 default:
                     break;
@@ -74,6 +78,8 @@ app.use((req: Request, res: Response) => {
             data = data.replace(/\$OG_TITLE/g, title);
             data = data.replace(/\$OG_DESCRIPTION/g, description);
             data = data.replace(/\$GOOGLE_ANALYTICS_ID/g, googleAnalyticsId);
+            data = data.replace(/\$GOOGLE_ADS_CLIENT_ID/g, googleAdsClientId);
+            data = data.replace(/\$FACEBOOK_ADS_CLIENT_ID/g, facebookAdsClientId);
             res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
             res.header('Expires', '-1');
             res.header('Pragma', 'no-cache');

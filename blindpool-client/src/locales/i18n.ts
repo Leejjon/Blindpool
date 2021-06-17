@@ -1,6 +1,5 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import {PageTitleAndDescription} from "../../../blindpool-frontend/src/locales";
 import {Match} from "../model/Match";
 
 // the translations
@@ -48,7 +47,9 @@ export const resources = {
             "SELECT_MATCH": "Select match (optional)",
             "MATCH_ALREADY_STARTED": "Warning: This match has already started.",
             "FREE_FORMAT_MATCH_PREFIX": "Match: ",
-            "SHARE_THIS_POOL": "Share this pool "
+            "SHARE_THIS_POOL": "Share this pool ",
+            "WILDCARD_EXPLANATION": "The X - X (wildcard) score wins if none of the scores assigned to the other participants are correct at the end of the match.",
+            "COPY": "Copy"
         }
     },
     nl: {
@@ -93,7 +94,9 @@ export const resources = {
             "SELECT_MATCH": "Selecteer wedstrijd (optioneel)",
             "MATCH_ALREADY_STARTED": "Waarschuwing: Deze wedstrijd is al begonnen.",
             "FREE_FORMAT_MATCH_PREFIX": "Wedstrijd: ",
-            "SHARE_THIS_POOL": "Deel deze pool "
+            "SHARE_THIS_POOL": "Deel deze pool ",
+            "WILDCARD_EXPLANATION": "De X - X (wildcard) score wint als geen van de uitslagen van de andere deelnemers overeenkomt met de einduitslag van de wedstrijd.",
+            "COPY": "Kopieer"
         }
     }
 };
