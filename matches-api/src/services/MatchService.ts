@@ -61,9 +61,17 @@ const convertToMatchEntity = (match: FootballDataApiMatch) => {
 
         const createScoreObject = (): Score => {
             if (match.score.fullTime.homeTeam != null && match.score.fullTime.awayTeam != null) {
+                let homeScore: number = match.score.fullTime.homeTeam;
+                let awayScore: number = match.score.fullTime.awayTeam;
+
+                if (match.score.penalties.homeTeam && match.score.penalties.awayTeam) {
+                    homeScore -= match.score.penalties.homeTeam;
+                    awayScore -= match.score.penalties.awayTeam;
+                }
+
                 return {
-                    home: match.score.fullTime.homeTeam,
-                    away: match.score.fullTime.awayTeam,
+                    home: homeScore,
+                    away: awayScore,
                 } as Score;
             } else {
                 return {

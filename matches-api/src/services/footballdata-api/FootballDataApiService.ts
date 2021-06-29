@@ -70,13 +70,14 @@ export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<Foot
             let ereDivisieMatches: Array<FootballDataApiMatch> = ereDivisieResponse.data.matches ?? [];
             let euro2020Matches: Array<FootballDataApiMatch> = euro2020Response.data.matches ?? [];
             let allMatches: Array<FootballDataApiMatch> = ereDivisieMatches.concat(euro2020Matches);
+            console.log(`Updating ${allMatches.length} matches.`);
             return ok(allMatches);
         } else {
             console.error(`Response object: ${JSON.stringify(ereDivisieResponse.data)}`);
             return err(ErrorScenarios.INTERNAL_ERROR);
         }
     } catch (error) {
-        console.error(`Something went wrong with retrieving ${JSON.stringify(ereDivisieResponse)} or ${JSON.stringify(euro2020Response)}`);
+        console.error(`Something went wrong with retrieving ${JSON.stringify(ereDivisieResponse)} or ${JSON.stringify(euro2020Response)}. Error: ${error}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }
