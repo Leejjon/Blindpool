@@ -1,4 +1,4 @@
-import {EREDIVISIE_CODE, EREDIVISIE_NAME, EURO2020_CODE} from "../services/footballdata-api/constants";
+import {EREDIVISIE_CODE, EURO2020_CODE, PREMIER_LEAGUE_CODE} from "../services/footballdata-api/constants";
 
 const eredivisieTeams: {[key: number]: string} = {
     666: 'FC Twente',
@@ -18,8 +18,8 @@ const eredivisieTeams: {[key: number]: string} = {
     684: 'PEC Zwolle',
     718: 'Go Ahead Eagles',
     1909: 'SC Cambuur',
-    1915: 'NEC Nijmegen',
     1914: 'FC Emmen',
+    1915: 'NEC Nijmegen',
     1920: 'Fortuna Sittard',
     6806: 'Sparta'
 }
@@ -51,6 +51,29 @@ const euro2020Teams : {[key: number]: string} = {
     8873: 'Scotland'
 };
 
+const premierLeagueTeams : {[key: number]: string} = {
+    57: 'Arsenal',
+    58: 'Aston Villa',
+    61: 'Chelsea',
+    62: 'Everton',
+    64: 'Liverpool',
+    65: 'Manchester City',
+    66: 'Manchester United',
+    67: 'Newcastle United',
+    68: 'Norwhich City',
+    73: 'Tottenham Hotspur',
+    76: 'Wolverhampton',
+    328: 'Burnley',
+    338: 'Leicester City',
+    340: 'Southhampton',
+    341: 'Leeds United',
+    346: 'Watford',
+    354: 'Crystal Palace',
+    397: 'Brighton Hove',
+    402: 'Bretford',
+    563: 'West Ham'
+}
+
 export const getTeamName = (teamId: number, competitionId: number): string => {
     let teamName;
 
@@ -60,6 +83,10 @@ export const getTeamName = (teamId: number, competitionId: number): string => {
 
     if (competitionId === EURO2020_CODE) {
         teamName = euro2020Teams[teamId];
+    }
+
+    if (competitionId === PREMIER_LEAGUE_CODE) {
+        teamName = premierLeagueTeams[teamId];
     }
     return teamName ? teamName : 'Unknown team';
 };
@@ -71,6 +98,10 @@ export const getCompetitionByTeam = (homeTeamId: number | null, awayTeamId: numb
     const teamExistsInEredivisie: boolean = !!eredivisieTeams[homeTeamId];
     if (teamExistsInEredivisie) {
         return EREDIVISIE_CODE;
+    }
+    const teamExistsInPremierLeague: boolean = !!premierLeagueTeams[homeTeamId];
+    if (teamExistsInPremierLeague) {
+        return PREMIER_LEAGUE_CODE;
     }
     const teamExistsInEuro2020: boolean = !! euro2020Teams[homeTeamId];
     if (teamExistsInEuro2020) {
