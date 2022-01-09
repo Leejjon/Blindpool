@@ -2,7 +2,6 @@ import {Match} from "../model/Match";
 import {Request, Response} from "express";
 import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/MatchService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
-import {isArray} from "class-validator";
 import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApiService";
 
 export const getMatchByKey = async (req: Request, res: Response) => {
@@ -29,34 +28,27 @@ export const getTenScheduledMatches = async (req: Request, res: Response) => {
 
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {
     try {
-        console.log(req.query.competition);
-        if(req.query) {
-            if (isArray(req.query.competition)) {
-                res.contentType('application/json');
+        res.contentType('application/json');
 
-                let matches = await getMatchesFromFootballDataApi(req.query.competition as Array<string>);
-                matches
-                    .map((matches: Array<FootballDataApiMatch>) => {
-                        console.log(matches.length);
-                        while (matches.length) {
-                            upsertMatches(matches.splice(0, 500));
-                        }
-                        res.status(200);
-                        res.send();
-                    })
-                    .mapErr((errorScenario) => mapError(res, errorScenario));
-                return;
-            }
-        }
-        mapError(res, ErrorScenarios.INVALID_INPUT);;
+        let matches = await getMatchesFromFootballDataApi();
+        matches
+            .map((matches: Array<FootballDataApiMatch>) => {
+                console.log(matches.length);
+                while (matches.length) {
+                    upsertMatches(matches.splice(0, 500));
+                }
+                res.status(200);
+                res.send();
+            })
+            .mapErr((errorScenario) => mapError(res, errorScenario));
     } catch (error) {
         mapError(res, ErrorScenarios.INVALID_INPUT);
     }
 };
 
 const respond = (res: Response, status: number, message: string) => {
-        res.status(status);
-        res.send(message);
+    res.status(status);
+    res.send(message);
 };
 
 const mapSuccess = (res: Response, responseEntity: any) => {

@@ -56,14 +56,14 @@ interface FootballDataApiMatches {
     matches: Array<FootballDataApiMatch>
 }
 
-export const getMatchesFromFootballDataApi = async (competitions: Array<string>): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {
-    let ereDivisieResponse;
-    let premierLeagueResponse;
+export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {
+    let responses;
     try {
         const secret = await fetchSecret();
 
         let competitionPromises: Array<Promise<AxiosResponse<FootballDataApiMatches>>> = [];
 
+        const competitions: Array<string> = [EREDIVISIE_CODE, PREMIER_LEAGUE_CODE];
         competitions.forEach((competition) => {
             const competitionPromise = axios.get<FootballDataApiMatches>(
                 `${API_FOOTBAL_DATA_URL}/competitions/${competition}/matches/`,
@@ -72,7 +72,7 @@ export const getMatchesFromFootballDataApi = async (competitions: Array<string>)
             competitionPromises.push(competitionPromise);
         });
 
-        let responses = await Promise.all<AxiosResponse<FootballDataApiMatches>>(competitionPromises);
+        responses = await Promise.all<AxiosResponse<FootballDataApiMatches>>(competitionPromises);
         const matches = responses
             .filter(axiosResponse => {
                 if (axiosResponse.status === 200) {
@@ -89,7 +89,7 @@ export const getMatchesFromFootballDataApi = async (competitions: Array<string>)
         // This is an unsafe cast.
         return ok(([] as Array<FootballDataApiMatch>).concat(...matches));
     } catch (error) {
-        console.error(`Something went wrong with retrieving ${JSON.stringify(ereDivisieResponse)} or ${JSON.stringify(premierLeagueResponse)}. Error: ${error}`);
+        console.error(`Something went wrong with retrieving ${responses ? JSON.stringify(responses) : "<promises not initialized>"} or . Error: ${error}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }

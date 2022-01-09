@@ -74,7 +74,7 @@ const premierLeagueTeams : {[key: number]: string} = {
     563: 'West Ham'
 }
 
-export const getTeamName = (teamId: number, competitionId: number): string => {
+export const getTeamName = (teamId: number, competitionId: string): string => {
     let teamName;
 
     if (competitionId === EREDIVISIE_CODE) {
@@ -91,7 +91,7 @@ export const getTeamName = (teamId: number, competitionId: number): string => {
     return teamName ? teamName : 'Unknown team';
 };
 
-export const getCompetitionByTeam = (homeTeamId: number | null, awayTeamId: number | null): number => {
+export const getCompetitionByTeam = (homeTeamId: number | null, awayTeamId: number | null): string => {
     if (homeTeamId === null || awayTeamId === null) {
         throw Error('This match is a placeholder, we ignore it.');
     }
