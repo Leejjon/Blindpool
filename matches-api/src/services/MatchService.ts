@@ -116,7 +116,7 @@ const convertToMatchEntity = (match: FootballDataApiMatch) => {
 
 export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
     try {
-        const matchEntities: Entity[]= matches.map(convertToMatchEntity).filter((match) => match != null);
+        const matchEntities: Entity[] = matches.map(convertToMatchEntity).filter((match) => match != null);
         await datastore.upsert(matchEntities);
     } catch (error) {
         console.error(`Something went wrong with storing the matches in Google Datastore, error: ${error}`);

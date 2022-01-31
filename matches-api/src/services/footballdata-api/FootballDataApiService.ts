@@ -1,6 +1,6 @@
 import {ok, err, Result} from "neverthrow";
-import axios from "axios";
-import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE, EURO2020_CODE} from "./constants";
+import axios, {AxiosResponse} from "axios";
+import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE, PREMIER_LEAGUE_CODE} from "./constants";
 import {fetchSecret} from "../SecretService";
 import {ErrorScenarios} from "../../model/ErrorScenarios";
 
@@ -52,32 +52,44 @@ export interface FootballDataApiTeam {
     name: string | null
 }
 
+interface FootballDataApiMatches {
+    matches: Array<FootballDataApiMatch>
+}
+
 export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {
-    let ereDivisieResponse;
-    let euro2020Response;
+    let responses;
     try {
         const secret = await fetchSecret();
-        const eredivisiePromise = axios.get(
-            `${API_FOOTBAL_DATA_URL}/competitions/${EREDIVISIE_CODE}/matches/`,
-            {headers: {"X-Auth-Token": secret}}
-        );
-        const euro2020Promise = axios.get(
-            `${API_FOOTBAL_DATA_URL}/competitions/${EURO2020_CODE}/matches/`,
-            {headers: {"X-Auth-Token": secret}}
-        );
-        let [ereDivisieResponse, euro2020Response] = await Promise.all([eredivisiePromise, euro2020Promise]);
-        if (ereDivisieResponse.status === 200 && euro2020Response.status === 200) {
-            let ereDivisieMatches: Array<FootballDataApiMatch> = ereDivisieResponse.data.matches ?? [];
-            let euro2020Matches: Array<FootballDataApiMatch> = euro2020Response.data.matches ?? [];
-            let allMatches: Array<FootballDataApiMatch> = ereDivisieMatches.concat(euro2020Matches);
-            console.log(`Updating ${allMatches.length} matches.`);
-            return ok(allMatches);
-        } else {
-            console.error(`Response object: ${JSON.stringify(ereDivisieResponse.data)}`);
-            return err(ErrorScenarios.INTERNAL_ERROR);
-        }
+
+        let competitionPromises: Array<Promise<AxiosResponse<FootballDataApiMatches>>> = [];
+
+        const competitions: Array<string> = [EREDIVISIE_CODE, PREMIER_LEAGUE_CODE];
+        competitions.forEach((competition) => {
+            const competitionPromise = axios.get<FootballDataApiMatches>(
+                `${API_FOOTBAL_DATA_URL}/competitions/${competition}/matches/`,
+                {headers: {"X-Auth-Token": secret}}
+            );
+            competitionPromises.push(competitionPromise);
+        });
+
+        responses = await Promise.all<AxiosResponse<FootballDataApiMatches>>(competitionPromises);
+        const matches = responses
+            .filter(axiosResponse => {
+                if (axiosResponse.status === 200) {
+                    return true;
+                } else {
+                    console.log("Couldn't " + JSON.stringify(axiosResponse.request));
+                    return false;
+                }
+            })
+            .map(axiosResponse => {
+                const matches: FootballDataApiMatches = axiosResponse.data;
+                return matches.matches;
+            });
+        // This is an unsafe cast.
+        return ok(([] as Array<FootballDataApiMatch>).concat(...matches));
     } catch (error) {
-        console.error(`Something went wrong with retrieving ${JSON.stringify(ereDivisieResponse)} or ${JSON.stringify(euro2020Response)}. Error: ${error}`);
+        console.error(`Something went wrong with retrieving ${responses ? JSON.stringify(responses) : "<promises not initialized>"} or . Error: ${error}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }
