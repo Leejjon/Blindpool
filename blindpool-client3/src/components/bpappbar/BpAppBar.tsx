@@ -17,9 +17,8 @@ const BpAppBar: React.FC = () => {
         setAnchorEl(null);
     };
 
-
     return (
-        <AppBar sx={{backgroundColor: "#00cc47"}} position="static">
+        <AppBar position="static">
             <Toolbar>
                 <IconButton color="inherit"
                             aria-label="Navigation menu" aria-haspopup="true"
