@@ -1,6 +1,8 @@
 blindpool-client/build
 blindpool-client/node_modules
 blindpool-client/.eslintcache
+blindpool-client3/build
+blindpool-client3/node_modules
 blindpool-frontend/dist
 blindpool-frontend/node_modules
 blindpool-api/dist
