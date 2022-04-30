@@ -22,7 +22,6 @@ const BpAppBar: React.FC = () => {
         }
     };
 
-
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
