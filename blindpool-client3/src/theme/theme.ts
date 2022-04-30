@@ -1,17 +1,7 @@
-
 import { createTheme } from '@mui/material/styles';
 
-
-export interface CustomTheme {
-    bg: {
-        main: string,
-        light: string
-    },
-    text: {
-        main: string,
-        light: string
-    }
-}
+// I copied this solution from:
+// https://medium.com/@abdurakhimov.sardor/how-to-use-and-customize-material-ui-version-5-with-styled-components-295e62562e61
 
 const theme = createTheme({
     bg: {
@@ -26,6 +16,10 @@ const theme = createTheme({
         primary: {
             main: '#00cc47',
             contrastText: '#ffffff',
+        },
+        background: {
+            paper: '#fafafa',
+            default: '#d6d6d6',
         }
     }
 });

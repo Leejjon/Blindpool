@@ -19,7 +19,9 @@ const BpAppBar: React.FC = () => {
 
     return (
         <AppBar position="static">
-            <Toolbar>
+            <Toolbar sx={{
+                // margin: 0, padding: 0
+            }}>
                 <IconButton color="inherit"
                             aria-label="Navigation menu" aria-haspopup="true"
                             onClick={() => setMenuOpen(true)}>
@@ -30,7 +32,12 @@ const BpAppBar: React.FC = () => {
                                  onOpen={() => setMenuOpen(true)}>
                     <BpMenu closeMenu={() => setMenuOpen(false)}/>
                 </SwipeableDrawer>
-                <Typography component={Link} to="/" sx={{flexGrow: 1}} variant="h1" color="inherit">
+                <Typography component={Link} to="/" sx={{
+                    flexGrow: 1, fontWeight: 500,
+                    fontSize: "1.1rem",
+                    lineHeight: 1.6,
+                    letterSpacing: "0.0075em"
+                }} variant="h1" color="inherit">
                     <StyledBpLogoFn/>
                 </Typography>
             </Toolbar>

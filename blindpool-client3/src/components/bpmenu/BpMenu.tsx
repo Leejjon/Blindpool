@@ -2,7 +2,6 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {
     AppBar,
-    Icon,
     IconButton,
     List,
     ListItem,
@@ -14,109 +13,52 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import {Link} from "react-router-dom";
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
-
-// const useStyles = makeStyles({
-//     root: {
-//         flexGrow: 1,
-//     },
-//     grow: {
-//         flexGrow: 1,
-//     },
-//     menuButton: {
-//         marginLeft: '0.5em',
-//         marginRight: '0.3em',
-//     },
-//     list: {
-//         width: 250,
-//     },
-//     fullList: {
-//         width: 'auto',
-//     },
-//     icon: {
-//         color: '#00cc47',
-//         marginRight: 0,
-//     },
-//     linktext: {
-//         paddingLeft: 0,
-//         paddingRight: 0,
-//         marginTop: '0.13em',
-//     },
-//     logoImage: {
-//         width: "150px",
-//         height: "24px",
-//         marginTop: "0.4em",
-//     },
-//     linkWithoutDecoration: {
-//         textDecoration: 'none',
-//         color: "rgba(0, 0, 0, 0.87)",
-//     },
-//     negativeLinkPadding: {
-//         //display: 'none'
-//         paddingRight: '0px',
-//         marginRight: '-0.5em'
-//     },
-//     otherAppsPadding: {
-//         paddingRight: '0px',
-//         paddingLeft: '2px',
-//         paddingBottom: '2px',
-//         marginRight: '-0.5em'
-//     },
-//     bottomLinks: {
-//         textDecoration: 'none',
-//         marginBottom: '0px'
-//     },
-// });
+import StyledBpLogoFn from "../bplogo/BpLogo";
+import HelpIcon from '@mui/icons-material/Help';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import "./BpMenu.css"
 
 interface BpMenuProps {
     closeMenu: () => void
 }
 
 const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
-    // const classes = useStyles();
     const { t } = useTranslation();
     return (
-        <div>
+        <div className="BpMenu">
             <AppBar color="primary" position="static" onClick={closeMenu} sx={{width: 250}}>
                 <Toolbar>
-                    <IconButton className="{classes.menuButton}" color="inherit"
-                                aria-label="Navigation menu" aria-haspopup="true">
+                    <IconButton sx={{marginRight: '0.4em', padding: '0.2em', marginLeft: '0em'}}
+                                color="inherit" aria-label="Navigation menu" aria-haspopup="true">
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="body1" color="inherit" className="{classes.grow}">
-                        <img alt="BLINDPOOL" className="{classes.logoImage}"
-                             src={"/icons/logosmall.png"}/>
+                    <Typography variant="body1" color="inherit" sx={{flexGrow: 1}} className="{classes.grow}">
+                        <StyledBpLogoFn/>
                     </Typography>
                 </Toolbar>
             </AppBar>
             <List component="ul">
-                <ListItem button component={Link} onClick={closeMenu} to="/create"
-                          className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="{classes.negativeLinkPadding}">
-                        <Icon className="{classes.icon}" fontSize="large">
-                            add_circle
-                        </Icon>
+                <ListItem button component={Link} onClick={closeMenu} to="/create">
+                    <ListItemIcon className="negativeLinkPadding">
+                        <AddCircleIcon fontSize="large" sx={{color: '#00cc47'}}/>
                     </ListItemIcon>
-                    <ListItemText className="{classes.linktext}">
+                    <ListItemText className="linktext">
                         {t("CREATE_POOL")}
                     </ListItemText>
                 </ListItem>
-                <ListItem button component={Link} onClick={closeMenu} to="/howto"
-                          className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="{classes.negativeLinkPadding}">
-                        <Icon fontSize="large">
-                            help
-                        </Icon>
+                <ListItem button component={Link} onClick={closeMenu} to="/howto">
+                    <ListItemIcon className="negativeLinkPadding">
+                        <HelpIcon fontSize="large" />
                     </ListItemIcon>
-                    <ListItemText className="{classes.linktext}">
+                    <ListItemText className="linktext">
                         {t("HOW_DOES_IT_WORK_TITLE")}
                     </ListItemText>
                 </ListItem>
-                <ListItem button component={Link} onClick={closeMenu} to="/about"
-                          className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="{classes.negativeLinkPadding}">
+                <ListItem button component={Link} onClick={closeMenu} to="/about">
+                    <ListItemIcon className="negativeLinkPadding">
                         <SupervisedUserCircleIcon fontSize="large"/>
                     </ListItemIcon>
-                    <ListItemText className="{classes.linktext}">
+                    <ListItemText className="linktext">
                         {t('ABOUT_BLINDPOOL_TITLE')}
                     </ListItemText>
                 </ListItem>
@@ -128,19 +70,19 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                     </ListItemText>
                 </ListItem>
                 <ListItem button className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="{classes.otherAppsPadding}">
+                    <ListItemIcon className="otherAppsPadding">
                         <img src={"/icons/bluffpoker-icon.png"} alt="Bluff Poker Icon" />
                     </ListItemIcon>
-                    <ListItemText className="{classes.linktext}">
-                        <a className="{classes.linkWithoutDecoration}" href="https://bluffpoker.app" target="new">Bluff Poker</a>
+                    <ListItemText className="linktext">
+                        <a className="linkWithoutDecoration" href="https://bluffpoker.app" target="new">Bluff Poker</a>
                     </ListItemText>
                 </ListItem>
                 <ListItem button className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="{classes.otherAppsPadding}">
+                    <ListItemIcon className="otherAppsPadding">
                         <img src={"/icons/toffeeshare-icon.png"} alt="ToffeeShare Icon" />
                     </ListItemIcon>
-                    <ListItemText className="{classes.linktext}">
-                        <a className="{classes.linkWithoutDecoration}" href="https://toffeeshare.com" target="new">ToffeeShare</a>
+                    <ListItemText className="linktext">
+                        <a className="linkWithoutDecoration" href="https://toffeeshare.com" target="new">ToffeeShare</a>
                     </ListItemText>
                 </ListItem>
             </List>
