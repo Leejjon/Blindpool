@@ -26,9 +26,9 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
     const { t } = useTranslation();
     return (
         <div className="BpMenu">
-            <AppBar color="primary" position="static" onClick={closeMenu} sx={{width: 250}}>
+            <AppBar color="primary" position="static" onClick={closeMenu} sx={{width: 250, marginBottom: '0.3em'}}>
                 <Toolbar>
-                    <IconButton sx={{marginRight: '0.4em', padding: '0.2em', marginLeft: '0em'}}
+                    <IconButton  sx={{marginRight: '0.4em', marginLeft: '-0.4em'}}
                                 color="inherit" aria-label="Navigation menu" aria-haspopup="true">
                         <MenuIcon/>
                     </IconButton>
@@ -38,9 +38,9 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                 </Toolbar>
             </AppBar>
             <List component="ul">
-                <ListItem component={props => <Link {... props} to="/create" />} onClick={closeMenu} className="linkWithoutDecoration">
+                <ListItem className="linkWithoutDecoration" disablePadding={true}>
                     {/*Somehow the ListItemButton can't have a className*/}
-                    <ListItemButton sx={{padding: 0}}>
+                    <ListItemButton component={Link} onClick={closeMenu} to="/create" sx={{padding: '4 16px 4'}}>
                         <ListItemIcon className="negativeLinkPadding">
                             <AddCircleIcon fontSize="large" sx={{color: '#00cc47'}}/>
                         </ListItemIcon>
@@ -49,8 +49,8 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem component={Link} onClick={closeMenu} to="/howto" className="linkWithoutDecoration">
-                    <ListItemButton sx={{padding: 0}}>
+                <ListItem className="linkWithoutDecoration" disablePadding={true}>
+                    <ListItemButton component={Link} onClick={closeMenu} to="/howto" sx={{padding: '4 16px 4'}}>
                         <ListItemIcon className="negativeLinkPadding">
                             <HelpIcon fontSize="large" />
                         </ListItemIcon>
@@ -59,8 +59,8 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem component={Link} onClick={closeMenu} to="/about" className="linkWithoutDecoration">
-                    <ListItemButton sx={{padding: 0}}>
+                <ListItem className="linkWithoutDecoration" disablePadding={true}>
+                    <ListItemButton component={Link} onClick={closeMenu} to="/about"  sx={{padding: '4 16px 4'}}>
                         <ListItemIcon className="negativeLinkPadding">
                             <SupervisedUserCircleIcon fontSize="large"/>
                         </ListItemIcon>
@@ -71,15 +71,15 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                 </ListItem>
             </List>
             <List>
-                <ListItem className="linkWithoutDecoration">
-                    <ListItemButton sx={{padding: 0}}>
+                <ListItem className="linkWithoutDecoration" disablePadding={true}>
+                    <ListItemButton sx={{padding: '4 16px 4'}}>
                         <ListItemText className="{classes.bottomLinks}">
                             <strong>{t('OTHER_APPS')}</strong>
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem className="linkWithoutDecoration">
-                    <ListItemButton sx={{padding: 0}}>
+                <ListItem className="linkWithoutDecoration" disablePadding={true}>
+                    <ListItemButton sx={{padding: '4 16px 4'}}>
                         <ListItemIcon className="otherAppsPadding">
                             <img src={"/icons/bluffpoker-icon.png"} alt="Bluff Poker Icon" />
                         </ListItemIcon>
@@ -88,8 +88,8 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem className="linkWithoutDecoration">
-                    <ListItemButton sx={{padding: 0}}>
+                <ListItem className="linkWithoutDecoration" disablePadding={true}>
+                    <ListItemButton sx={{padding: '4 16px 4'}}>
                         <ListItemIcon className="otherAppsPadding">
                             <img src={"/icons/toffeeshare-icon.png"} alt="ToffeeShare Icon" />
                         </ListItemIcon>

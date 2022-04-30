@@ -22,7 +22,8 @@ const BpAppBar: React.FC = () => {
             <Toolbar sx={{
                 // margin: 0, padding: 0
             }}>
-                <IconButton color="inherit"
+                <IconButton sx={{marginLeft: '-0.4em'}}
+                            color="inherit"
                             aria-label="Navigation menu" aria-haspopup="true"
                             onClick={() => setMenuOpen(true)}>
                     <MenuIcon />
