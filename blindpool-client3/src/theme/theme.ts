@@ -21,7 +21,18 @@ const theme = createTheme({
             paper: '#fafafa',
             default: '#d6d6d6',
         }
-    }
+    },
+    // So this crap doesn't work.
+    // components: {
+    //     MuiToolbar: {
+    //         styleOverrides: {
+    //             root: {
+    //                 paddingLeft: '0px',
+    //                 paddingRight: '0px'
+    //             }
+    //         }
+    //     }
+    // }
 });
 
 export default theme;
