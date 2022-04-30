@@ -4,7 +4,7 @@ import {
     AppBar,
     IconButton,
     List,
-    ListItem,
+    ListItem, ListItemButton,
     ListItemIcon,
     ListItemText,
     Toolbar,
@@ -38,52 +38,65 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
                 </Toolbar>
             </AppBar>
             <List component="ul">
-                <ListItem button component={Link} onClick={closeMenu} to="/create">
-                    <ListItemIcon className="negativeLinkPadding">
-                        <AddCircleIcon fontSize="large" sx={{color: '#00cc47'}}/>
-                    </ListItemIcon>
-                    <ListItemText className="linktext">
-                        {t("CREATE_POOL")}
-                    </ListItemText>
+                <ListItem component={props => <Link {... props} to="/create" />} onClick={closeMenu} className="linkWithoutDecoration">
+                    {/*Somehow the ListItemButton can't have a className*/}
+                    <ListItemButton sx={{padding: 0}}>
+                        <ListItemIcon className="negativeLinkPadding">
+                            <AddCircleIcon fontSize="large" sx={{color: '#00cc47'}}/>
+                        </ListItemIcon>
+                        <ListItemText className="linktext">
+                            {t("CREATE_POOL")}
+                        </ListItemText>
+                    </ListItemButton>
                 </ListItem>
-                <ListItem button component={Link} onClick={closeMenu} to="/howto">
-                    <ListItemIcon className="negativeLinkPadding">
-                        <HelpIcon fontSize="large" />
-                    </ListItemIcon>
-                    <ListItemText className="linktext">
-                        {t("HOW_DOES_IT_WORK_TITLE")}
-                    </ListItemText>
+                <ListItem component={Link} onClick={closeMenu} to="/howto" className="linkWithoutDecoration">
+                    <ListItemButton sx={{padding: 0}}>
+                        <ListItemIcon className="negativeLinkPadding">
+                            <HelpIcon fontSize="large" />
+                        </ListItemIcon>
+                        <ListItemText className="linktext">
+                            {t("HOW_DOES_IT_WORK_TITLE")}
+                        </ListItemText>
+                    </ListItemButton>
                 </ListItem>
-                <ListItem button component={Link} onClick={closeMenu} to="/about">
-                    <ListItemIcon className="negativeLinkPadding">
-                        <SupervisedUserCircleIcon fontSize="large"/>
-                    </ListItemIcon>
-                    <ListItemText className="linktext">
-                        {t('ABOUT_BLINDPOOL_TITLE')}
-                    </ListItemText>
+                <ListItem component={Link} onClick={closeMenu} to="/about" className="linkWithoutDecoration">
+                    <ListItemButton sx={{padding: 0}}>
+                        <ListItemIcon className="negativeLinkPadding">
+                            <SupervisedUserCircleIcon fontSize="large"/>
+                        </ListItemIcon>
+                        <ListItemText className="linktext">
+                            {t('ABOUT_BLINDPOOL_TITLE')}
+                        </ListItemText>
+                    </ListItemButton>
                 </ListItem>
             </List>
             <List>
-                <ListItem button className="{classes.linkWithoutDecoration}">
-                    <ListItemText className="{classes.bottomLinks}">
-                        <strong>{t('OTHER_APPS')}</strong>
-                    </ListItemText>
+                <ListItem className="linkWithoutDecoration">
+                    <ListItemButton sx={{padding: 0}}>
+                        <ListItemText className="{classes.bottomLinks}">
+                            <strong>{t('OTHER_APPS')}</strong>
+                        </ListItemText>
+                    </ListItemButton>
                 </ListItem>
-                <ListItem button className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="otherAppsPadding">
-                        <img src={"/icons/bluffpoker-icon.png"} alt="Bluff Poker Icon" />
-                    </ListItemIcon>
-                    <ListItemText className="linktext">
-                        <a className="linkWithoutDecoration" href="https://bluffpoker.app" target="new">Bluff Poker</a>
-                    </ListItemText>
+                <ListItem className="linkWithoutDecoration">
+                    <ListItemButton sx={{padding: 0}}>
+                        <ListItemIcon className="otherAppsPadding">
+                            <img src={"/icons/bluffpoker-icon.png"} alt="Bluff Poker Icon" />
+                        </ListItemIcon>
+                        <ListItemText className="linktext">
+                            <a className="linkWithoutDecoration" href="https://bluffpoker.app" target="new">Bluff Poker</a>
+                        </ListItemText>
+                    </ListItemButton>
                 </ListItem>
-                <ListItem button className="{classes.linkWithoutDecoration}">
-                    <ListItemIcon className="otherAppsPadding">
-                        <img src={"/icons/toffeeshare-icon.png"} alt="ToffeeShare Icon" />
-                    </ListItemIcon>
-                    <ListItemText className="linktext">
-                        <a className="linkWithoutDecoration" href="https://toffeeshare.com" target="new">ToffeeShare</a>
-                    </ListItemText>
+                <ListItem className="linkWithoutDecoration">
+                    <ListItemButton sx={{padding: 0}}>
+                        <ListItemIcon className="otherAppsPadding">
+                            <img src={"/icons/toffeeshare-icon.png"} alt="ToffeeShare Icon" />
+                        </ListItemIcon>
+                        <ListItemText className="linktext">
+                            <a className="linkWithoutDecoration" href="https://toffeeshare.com" target="new">ToffeeShare</a>
+                        </ListItemText>
+                    </ListItemButton>
                 </ListItem>
             </List>
         </div>
