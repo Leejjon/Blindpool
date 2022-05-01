@@ -15,8 +15,7 @@ const BpAppBar: React.FC = () => {
     const currentFlag = () => {
         if (window.location.hostname === "www.blindepool.nl" ||
             window.location.hostname === "blindepool.nl") {
-            // return <FlagIcon code="nl" size="lg"/>
-            return <p>Hoi</p>
+            return <ReactCountryFlag countryCode="GB" style={{fontSize: '2.2em'}}/>
         } else {
             return <ReactCountryFlag countryCode="NL" style={{fontSize: '2.2em'}}/>
         }
@@ -32,9 +31,9 @@ const BpAppBar: React.FC = () => {
 
     return (
         <AppBar position="static">
-            {/* sx doesn't work on toolbar. Also by default it has a height of 64, which we unset */}
-            <Toolbar style={{paddingLeft: '0px', paddingRight: '0px', minHeight: 'unset'}}>
-                <IconButton sx={{marginLeft: '0.8em', padding: "4px"}}
+            {/* sx doesn't work on toolbar. Also by default it has a minimal height of 64px, which we override */}
+            <Toolbar style={{paddingLeft: '0px', paddingRight: '0px', minHeight: '2.9em'}}>
+                <IconButton sx={{marginLeft: '0.8em'}}
                             color="inherit"
                             aria-label="Navigation menu" aria-haspopup="true"
                             onClick={() => setMenuOpen(true)}>
@@ -55,7 +54,7 @@ const BpAppBar: React.FC = () => {
                 </Typography>
                 <Button aria-label="Language menu"
                         aria-owns={anchorEl ? 'language-menu' : undefined} aria-haspopup="true"
-                        onClick={handleClick} sx={{paddingBottom: '0px'}}>
+                        onClick={handleClick} sx={{paddingBottom: '0px', paddingTop: '0.2em'}}>
                     {currentFlag()}
                     <ArrowDropDownIcon sx={{color: "black", paddingBottom: "0.2em", paddingLeft: "0.2em"}}/>
                 </Button>

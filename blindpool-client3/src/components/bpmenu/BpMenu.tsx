@@ -27,13 +27,13 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
     return (
         <div className="BpMenu">
             <AppBar color="primary" position="static" onClick={closeMenu} sx={{width: 250, marginBottom: '0.3em'}}>
-                <Toolbar style={{paddingLeft: '0px', paddingRight: '0px', minHeight: 'unset'}}>
+                <Toolbar style={{paddingLeft: '0px', paddingRight: '0px', minHeight: '2.9em'}}>
                     <IconButton  sx={{marginRight: '0.4em', marginLeft: '0.6em'}}
                                 color="inherit" aria-label="Navigation menu" aria-haspopup="true">
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="body1" color="inherit" sx={{flexGrow: 1}} className="{classes.grow}">
-                        <StyledBpLogoFn/>
+                    <Typography variant="body1" color="inherit" sx={{flexGrow: 1}}>
+                        <StyledBpLogoFn />
                     </Typography>
                 </Toolbar>
             </AppBar>
