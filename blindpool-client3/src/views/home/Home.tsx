@@ -6,7 +6,6 @@ import {
     CardContent,
     Divider,
     Grid,
-    makeStyles,
     Typography
 } from "@mui/material";
 import {useTranslation} from "react-i18next";
@@ -14,6 +13,7 @@ import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpSnackbarMessage} from "../../App";
+import "./Home.css";
 
 // const useStyles = makeStyles({
 //     root: {
@@ -35,11 +35,11 @@ import {BpSnackbarMessage} from "../../App";
 // });
 
 const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
-    // const classes = useStyles();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     return (
-        <Grid container spacing={2} className="{classes.root}">
+        <Grid container justifyContent={"center"} spacing={2} className="{classes.root}"
+              sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em', marginBottom: '0em'}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
                 <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
@@ -48,14 +48,14 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
             </Helmet>
             {/* The insane style correction makes sure there is no horizontal scrollbar and it's centered on mobile */}
             <Grid key="definition" item>
-                <Card className="{classes.card}">
+                <Card className="card">
                     <CardContent>
-                        <Typography variant="h2" >
+                        <Typography variant="h2">
                             {t("BLINDPOOL_DEFINITION_TITLE")}
                         </Typography>
-                        <Divider style={{marginTop: '0.5em'}} />
+                        <Divider style={{marginTop: '0.5em'}}/>
                         <Typography component="p">
-                            <br />
+                            <br/>
                             {t("BLINDPOOL_DEFINITION_DESCRIPTION")}
                         </Typography>
                     </CardContent>
@@ -70,12 +70,13 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                 </Card>
             </Grid>
             <Grid key="matchers" item>
-                <Card className="{classes.card}">
+                <Card className="card">
                     <CardContent>
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
-                        <Divider style={{marginTop: '0.5em'}} />
-                        <Typography component="p" style={{marginBottom: '0.5em'}} ><br/>{t('CLICK_ON_MATCH')}</Typography>
-                        <BpUpcomingMatches message={message} setMessage={setMessage} />
+                        <Divider style={{marginTop: '0.5em'}}/>
+                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{t('CLICK_ON_MATCH')}
+                        </Typography>
+                        <BpUpcomingMatches message={message} setMessage={setMessage}/>
                     </CardContent>
                 </Card>
             </Grid>

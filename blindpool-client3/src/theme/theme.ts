@@ -22,7 +22,34 @@ const theme = createTheme({
             default: '#d6d6d6',
         }
     },
-    // So this crap doesn't work.
+    typography: {
+        fontFamily: "\"Archivo\", \"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+        fontSize: 12,
+        fontWeightLight: 300,
+        fontWeightRegular: 400,
+        fontWeightMedium: 500,
+        h1: {
+            fontWeight: 500,
+            fontSize: "1.1rem",
+            lineHeight: 1.6,
+            letterSpacing: "0.0075em"
+        },
+        h2: {
+            fontSize: "1.5rem",
+        },
+        body1: {
+            color: "rgba(0, 0, 0, 0.87)",
+            fontFamily: "Archivo, Roboto, Helvetica, Arial, sans-serif",
+            fontWeight: 400,
+            fontSize: "1rem",
+            lineHeight: 1.5
+        },
+
+        button: {
+            textTransform: 'none'
+        }
+    }
+    // So the docs mention the code below but it doesn't work.
     // components: {
     //     MuiToolbar: {
     //         styleOverrides: {

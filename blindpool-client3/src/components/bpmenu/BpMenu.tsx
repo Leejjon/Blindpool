@@ -27,8 +27,8 @@ const BpMenu: React.FC<BpMenuProps> = ({closeMenu}) => {
     return (
         <div className="BpMenu">
             <AppBar color="primary" position="static" onClick={closeMenu} sx={{width: 250, marginBottom: '0.3em'}}>
-                <Toolbar>
-                    <IconButton  sx={{marginRight: '0.4em', marginLeft: '-0.4em'}}
+                <Toolbar style={{paddingLeft: '0px', paddingRight: '0px', minHeight: 'unset'}}>
+                    <IconButton  sx={{marginRight: '0.4em', marginLeft: '0.6em'}}
                                 color="inherit" aria-label="Navigation menu" aria-haspopup="true">
                         <MenuIcon/>
                     </IconButton>
