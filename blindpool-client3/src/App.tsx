@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import BpHelmet from "./components/bphelmet/BpDefaultHelmet";
 import Home from "./views/home/Home";
 import {useTranslation} from "react-i18next";
+import {HelmetProvider} from "react-helmet-async";
 
 export interface BpSnackbarMessage {
     message: string | undefined
@@ -23,15 +24,17 @@ function App() {
     };
 
     return (
-        <BrowserRouter>
-            <div className="App">
-                <BpHelmet/>
-                <BpAppBar/>
-                <Routes>
-                    <Route path="/" element={<Home message={message} setMessage={(message) => setMessage(message)}/>} />
-                </Routes>
-            </div>
-        </BrowserRouter>
+        <HelmetProvider>
+            <BrowserRouter>
+                <div className="App">
+                    <BpHelmet/>
+                    <BpAppBar/>
+                    <Routes>
+                        <Route path="/" element={<Home message={message} setMessage={(message) => setMessage(message)}/>} />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </HelmetProvider>
     );
 }
 

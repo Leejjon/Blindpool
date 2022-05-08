@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpSnackbarMessage} from "../../App";
 import "./Home.css";
+import {Api, getHost} from "../../utils/Network";
 
 // const useStyles = makeStyles({
 //     root: {
@@ -60,11 +61,12 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Link className="{classes.firstButton}" to="/create">
-                            <Button size="medium">{t("CREATE_POOL")}</Button>
+                        <Link className="firstButton" to="/create">
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>{t("CREATE_POOL")}</Button>
                         </Link>
                         <Link to="/howto" style={{textDecoration: 'none'}}>
-                            <Button size="medium">{t("HOW_DOES_IT_WORK_TITLE")}</Button>
+                            <Button size="medium"
+                                    sx={{color: "rgba(0, 0, 0, 0.87)"}}>{t("HOW_DOES_IT_WORK_TITLE")}</Button>
                         </Link>
                     </CardActions>
                 </Card>

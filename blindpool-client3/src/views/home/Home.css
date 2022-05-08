@@ -2,3 +2,9 @@
     min-width: 20em;
     max-width: 20em;
 }
+
+.firstButton {
+    flex-grow: 1;
+    text-align: left;
+    text-decoration: none;
+}
