@@ -35,17 +35,17 @@ const About: React.FC = () => {
                     <CardActions>
                         <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new"
                            className="{classes.firstButton}">
-                            <Button size="medium">LinkedIN</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>LinkedIN</Button>
                         </a>
                         <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">GitHub</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>GitHub</Button>
                         </a>
                         <a href="https://dutchcodersnetwork.nl" target="new"
                            style={{textDecoration: 'none', padding: '0.5em'}}>
-                            <Button size="medium">DCN</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>DCN</Button>
                         </a>
                         <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">Twitter</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>Twitter</Button>
                         </a>
                     </CardActions>
                 </Card>
