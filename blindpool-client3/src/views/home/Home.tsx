@@ -14,33 +14,13 @@ import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpSnackbarMessage} from "../../App";
 import "./Home.css";
-import {Api, getHost} from "../../utils/Network";
-
-// const useStyles = makeStyles({
-//     root: {
-//         flexGrow: 1,
-//         textAlign: 'center',
-//         marginTop: '1em',
-//         marginBottom: '0em',
-//         marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"
-//     },
-//     card: {
-//         minWidth: "20em",
-//         maxWidth: "20em"
-//     },
-//     firstButton: {
-//         flexGrow: 1,
-//         textAlign: "left",
-//         textDecoration: 'none'
-//     },
-// });
 
 const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const {t} = useTranslation();
 
     return (
         <Grid container justifyContent={"center"} spacing={2} className="{classes.root}"
-              sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em', marginBottom: '0em'}}>
+              sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em', marginBottom: '1em'}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
                 <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>

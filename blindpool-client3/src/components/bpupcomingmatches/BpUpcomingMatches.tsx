@@ -44,7 +44,6 @@ import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/
 // });
 
 const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
-    // const classes = useStyles();
     const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
 
@@ -76,11 +75,11 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
     }
 
     if (loading) {
-        return <CircularProgress className="{classes.margin1em}"/>
+        return <CircularProgress style={{margin: "0.5em"}} />
     } else {
         if (appState.upcomingMatches) {
             return (
-                <Table className="{classes.table}">
+                <Table style={{width: "100%", overflowX: "auto"}}>
                     <TableBody>
                         {appState.upcomingMatches?.map((match: Match) => {
                             const homeTeamName = getHomeTeamNameToDisplay(match);
@@ -95,21 +94,23 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
                             const dateString: string = startTimestamp.toLocaleDateString();
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
-                                    <TableCell style={{paddingLeft: '0px', paddingTop: '1em', paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Button size="medium" className="{classes.width100percent}" onClick={(event) => createPoolForMatch(match)}>
-                                            <div className="{classes.width100percent}">
-                                                <div className="{classes.tableRowContainerForClubIcons}">
-                                                    <div className="{classes.clubIconAndTextDiv}">
-                                                        <img className="{classes.clubIconStyle}" src={homeTeamIconUrl} alt={homeTeamName} />
+                                    <TableCell align="center" style={{paddingLeft: '0px', paddingTop: '1em', paddingRight: "0px", paddingBottom: '0.5em', margin: '0px'}}>
+                                        <Button size="medium" style={{width: "100%", margin: "0"}} onClick={(event) => createPoolForMatch(match)}>
+                                            <div style={{width: "100%"}}>
+                                                <div style={{display: "flex", flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between"}}>
+                                                    <div style={{width: '10em', textAlign: 'center', whiteSpace: 'nowrap'}}>
+                                                        <img style={{width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'}}
+                                                             src={homeTeamIconUrl} alt={homeTeamName} />
                                                         <Typography variant="body1" style={{marginBottom: '0px'}}>{homeTeamName}</Typography>
                                                     </div>
-                                                    <div className="{classes.slashIcon}"><Typography variant="body1">/</Typography></div>
-                                                    <div className="{classes.clubIconAndTextDiv}">
-                                                        <img className="{classes.clubIconStyle}" src={awayTeamIconUrl} alt={awayTeamName} />
+                                                    <div style={{marginTop: '2em', marginBottom: '2em'}}><Typography variant="body1">/</Typography></div>
+                                                    <div style={{width: '10em', textAlign: 'center', whiteSpace: 'nowrap'}}>
+                                                        <img style={{width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'}}
+                                                             src={awayTeamIconUrl} alt={awayTeamName} />
                                                         <Typography variant="body1">{awayTeamName}</Typography>
                                                     </div>
                                                 </div>
-                                                <Typography variant="body1" className="{classes.margin1em}">{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                                                <Typography variant="body1" sx={{margin: "0.5em"}}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                                             </div>
                                         </Button>
                                     </TableCell>
