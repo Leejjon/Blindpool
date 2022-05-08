@@ -33,8 +33,7 @@ const About: React.FC = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new"
-                           className="{classes.firstButton}">
+                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new">
                             <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>LinkedIN</Button>
                         </a>
                         <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
