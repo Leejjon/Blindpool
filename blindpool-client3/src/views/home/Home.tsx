@@ -13,7 +13,6 @@ import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpSnackbarMessage} from "../../App";
-import "./Home.css";
 
 const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const {t} = useTranslation();

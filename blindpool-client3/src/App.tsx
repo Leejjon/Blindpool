@@ -6,6 +6,7 @@ import BpHelmet from "./components/bphelmet/BpDefaultHelmet";
 import Home from "./views/home/Home";
 import {useTranslation} from "react-i18next";
 import {HelmetProvider} from "react-helmet-async";
+import About from "./views/about/About";
 
 export interface BpSnackbarMessage {
     message: string | undefined
@@ -31,6 +32,7 @@ function App() {
                     <BpAppBar/>
                     <Routes>
                         <Route path="/" element={<Home message={message} setMessage={(message) => setMessage(message)}/>} />
+                        <Route path="/about" element={<About/>}/>
                     </Routes>
                 </div>
             </BrowserRouter>
