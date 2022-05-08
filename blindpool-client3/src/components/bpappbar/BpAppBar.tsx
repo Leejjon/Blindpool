@@ -56,7 +56,7 @@ const BpAppBar: React.FC = () => {
                         aria-owns={anchorEl ? 'language-menu' : undefined} aria-haspopup="true"
                         onClick={handleClick} sx={{paddingBottom: '0px', paddingTop: '0.2em'}}>
                     {currentFlag()}
-                    <ArrowDropDownIcon sx={{color: "black", paddingBottom: "0.2em", paddingLeft: "0.2em"}}/>
+                    <ArrowDropDownIcon sx={{color: "white", paddingBottom: "0.15em", paddingLeft: "0.2em"}}/>
                 </Button>
                 <Menu id="language-menu" anchorEl={anchorEl} open={Boolean(anchorEl)}
                       onClose={handleClose}>
