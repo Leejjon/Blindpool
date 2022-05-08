@@ -48,6 +48,15 @@ const theme = createTheme({
         button: {
             textTransform: 'none'
         }
+    },
+    components: {
+        MuiDivider: {
+            styleOverrides: {
+                root: {
+                    marginTop: "0.5em"
+                }
+            }
+        }
     }
     // So the docs mention the code below but it doesn't work.
     // components: {

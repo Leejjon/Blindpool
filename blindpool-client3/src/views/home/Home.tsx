@@ -19,7 +19,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const {t} = useTranslation();
 
     return (
-        <Grid container justifyContent={"center"} spacing={2} className="{classes.root}"
+        <Grid container justifyContent={"center"} spacing={2}
               sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em', marginBottom: '1em'}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
@@ -34,7 +34,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                         <Typography variant="h2">
                             {t("BLINDPOOL_DEFINITION_TITLE")}
                         </Typography>
-                        <Divider style={{marginTop: '0.5em'}}/>
+                        <Divider />
                         <Typography component="p">
                             <br/>
                             {t("BLINDPOOL_DEFINITION_DESCRIPTION")}
@@ -55,7 +55,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                 <Card className="card">
                     <CardContent>
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
-                        <Divider style={{marginTop: '0.5em'}}/>
+                        <Divider />
                         <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{t('CLICK_ON_MATCH')}
                         </Typography>
                         <BpUpcomingMatches message={message} setMessage={setMessage}/>
