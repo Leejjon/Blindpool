@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 import {HelmetProvider} from "react-helmet-async";
 import About from "./views/about/About";
 import HowTo from "./views/howto/HowTo";
+import CreatePool from "./views/createpool/CreatePool";
 
 export interface BpSnackbarMessage {
     message: string | undefined
@@ -18,12 +19,12 @@ function App() {
     const {t} = useTranslation();
     const [message, setMessage] = useState<string | undefined>(undefined);
 
-    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setMessage(undefined);
-    };
+    // const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //     setMessage(undefined);
+    // };
 
     return (
         <HelmetProvider>
@@ -34,6 +35,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home message={message} setMessage={(message) => setMessage(message)}/>} />
                         <Route path="/about" element={<About/>}/>
+                        <Route path="/create" element={<CreatePool message={message} setMessage={(message) => setMessage(message)}/>} />
                         <Route path="/howto" element={<HowTo/>}/>
                     </Routes>
                 </div>

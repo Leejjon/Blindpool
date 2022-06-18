@@ -8,7 +8,7 @@ const About: React.FC = () => {
 
     return (
         <Grid container justifyContent={"center"} spacing={2}
-            sx={{flexGrow: 1, textAlign: "center", marginTop: "1em", marginBottom: "1em"}}>
+            sx={{flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('ABOUT_BLINDPOOL_TITLE')}</title>
                 <meta name="description" content={t('ABOUT_BLINDPOOL_DESCRIPTION')}/>

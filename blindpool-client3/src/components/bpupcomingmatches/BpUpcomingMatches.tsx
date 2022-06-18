@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {
     Button,
     CircularProgress,
-    makeStyles,
     Table,
     TableBody, TableCell,
     TableRow,
@@ -14,34 +13,6 @@ import {useNavigate} from "react-router-dom";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
-
-// const useStyles = makeStyles({
-//     margin1em: {
-//         margin: '0.5em',
-//     },
-//     errorMessage: {
-//         color: 'white'
-//     },
-//     table: {
-//         width: '100%',
-//         overflowX: 'auto',
-//     },
-//     tableRowContainerForClubIcons: {
-//         display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', width: '100%'
-//     },
-//     clubIconStyle: {
-//         width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
-//     },
-//     clubIconAndTextDiv: {
-//         width: '10em', textAlign: 'center', whiteSpace: 'nowrap'
-//     },
-//     slashIcon: {
-//         marginTop: '2em', marginBottom: '2em'
-//     },
-//     width100percent: {
-//         width: '100%'
-//     }
-// });
 
 const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const [loading, setLoading] = useState(true);
