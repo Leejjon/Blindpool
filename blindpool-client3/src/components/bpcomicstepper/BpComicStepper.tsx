@@ -4,6 +4,10 @@ import {useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 
+const buttonColor = {
+    color: "rgba(0, 0, 0, 0.87)"
+}
+
 const tutorialSteps = (t: TFunction) => {
     return [
         {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg').default},
@@ -38,13 +42,13 @@ const BpComicStepper: React.FC = () => {
                 variant="text"
                 activeStep={activeStep}
                 nextButton={
-                    <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1} sx={{color: "rgba(0, 0, 0, 0.87)"}}>
+                    <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1} sx={buttonColor}>
                         {t("NEXT")}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
                     </Button>
                 }
                 backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0} sx={{color: "rgba(0, 0, 0, 0.87)"}}>
+                    <Button size="small" onClick={handleBack} disabled={activeStep === 0} sx={buttonColor}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
                         {t("BACK")}
                     </Button>

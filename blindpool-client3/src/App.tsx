@@ -9,6 +9,7 @@ import {HelmetProvider} from "react-helmet-async";
 import About from "./views/about/About";
 import HowTo from "./views/howto/HowTo";
 import CreatePool from "./views/createpool/CreatePool";
+import ViewPool from "./views/viewpool/ViewPool";
 
 export interface BpSnackbarMessage {
     message: string | undefined
@@ -37,6 +38,7 @@ function App() {
                         <Route path="/about" element={<About/>}/>
                         <Route path="/create" element={<CreatePool message={message} setMessage={(message) => setMessage(message)}/>} />
                         <Route path="/howto" element={<HowTo/>}/>
+                        <Route path="/pool/:key" element={<ViewPool/>}/>
                     </Routes>
                 </div>
             </BrowserRouter>

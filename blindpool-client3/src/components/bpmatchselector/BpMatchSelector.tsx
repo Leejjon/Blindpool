@@ -7,13 +7,26 @@ import {useTranslation} from "react-i18next";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import "./BpMatchSelector.css";
+
+const bpMatchSelector = {
+    margin: 'auto',
+    marginTop: '0.8em',
+}
+const marginHalfEm = {
+    margin: '0.5em', fontSize: 'small',
+}
+// justCenter: {
+//     textAlign: 'center'
+// }
 
 export interface MatchValidationProp {
     invalidMatchMessage: string | undefined;
     setInvalidMatchMessage: (message: string | undefined) => void;
 }
 
-export interface BpMatchSelectorProps extends BpSnackbarMessage, MatchValidationProp {}
+export interface BpMatchSelectorProps extends BpSnackbarMessage, MatchValidationProp {
+}
 
 const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMatchMessage, setInvalidMatchMessage}) => {
     const {t} = useTranslation();
@@ -81,11 +94,10 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
     return (
         <Autocomplete
             disabled={matches.length < 1}
-            sx={{margin: "auto", marginTop: "0.8em"}}
+            sx={bpMatchSelector}
             onChange={updateSelectedMatch}
             inputValue={inputValue}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
-                console.log("boe")
                 setInvalidMatchMessage(undefined);
                 if (newSupportedMatch === 'undefined vs undefined') {
                     // Somehow if you press enter while typing a freeformat match, it will throw an input change event
@@ -115,20 +127,22 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
                 return (
                     <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...props}>
                         <div>
-                            <div style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between", width: "100%", margin: "0", marginTop: "0.5em"}} >
-                                <div style={{width: "7.8em", textAlign: "center", whiteSpace: "nowrap"}}>
-                                    <img src={homeTeamIconUrl} alt={homeTeamName}
-                                         style={{width: "3em", height: "3em", display: "block", marginLeft: "auto", marginRight: "auto", marginBottom: "0.5em"}} />
-                                    <Typography sx={{margin: "0.5em", fontSize: "small"}}>{homeTeamName}</Typography>
+                            <div className="tableRowContainerForClubIcons">
+                                <div className="clubIconAndTextDiv">
+                                    <img src={homeTeamIconUrl} alt={homeTeamName} className="clubIconStyle"/>
+                                    <Typography sx={marginHalfEm}>{homeTeamName}</Typography>
                                 </div>
-                                <div style={{marginTop: "2em", marginBottom: "2em"}}><Typography variant="body1">/</Typography></div>
-                                <div style={{width: "7.8em", textAlign: "center", whiteSpace: "nowrap"}}>
-                                    <img src={awayTeamIconUrl} alt={awayTeamName}
-                                         style={{width: "3em", height: "3em", display: "block", marginLeft: "auto", marginRight: "auto", marginBottom: "0.5em"}}/>
-                                    <Typography sx={{margin: "0.5em", fontSize: "small"}}>{awayTeamName}</Typography>
+                                <div className="slashIcon"><Typography
+                                    variant="body1">/</Typography></div>
+                                <div className="clubIconAndTextDiv">
+                                    <img src={awayTeamIconUrl} alt={awayTeamName}className="clubIconStyle"/>
+                                    <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
                                 </div>
                             </div>
-                        <Typography sx={{margin: "0.5em", fontSize: "small"}}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                            <Typography sx={{
+                                margin: "0.5em",
+                                fontSize: "small"
+                            }}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                         </div>
                         <Divider/>
                     </Box>

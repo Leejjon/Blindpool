@@ -44,3 +44,8 @@
   max-width: 20em;
 }
 
+.tableRowContainerForClubIcons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
