@@ -33,6 +33,12 @@
   text-decoration: none;
 }
 
+.lastButton {
+  flex-grow: 1;
+  text-align: right;
+  text-decoration: none;
+}
+
 .card {
   min-width: 20em;
   max-width: 20em;
