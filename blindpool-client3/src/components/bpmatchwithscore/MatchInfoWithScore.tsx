@@ -1,9 +1,10 @@
 import appState from "../../state/AppState";
 import {Match} from "../../model/Match";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
-import {CircularProgress, makeStyles, Typography} from "@mui/material";
+import {CircularProgress, Typography} from "@mui/material";
 import React from "react";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import "./MatchInfoWithScore.css";
 
 const marginHalfEm = {
     margin: '0.5em', fontSize: 'medium', fontWeight: 'bold'
@@ -74,34 +75,15 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
 
     return (
         <div style={{textAlign: "center"}}>
-            <div style={{
-                display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between',
-                width: '100%', marginTop: '1em', marginBottom: '0.6em'
-            }}>
-                <div style={{width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap'}}>
-                    <img style={{
-                        width: '5em',
-                        height: '5em',
-                        display: 'block',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginBottom: '0.5em'
-                    }}
-                         src={homeTeamIconUrl} alt={match.homeTeamName}/>
+            <div className="containerForClubIcons">
+                <div className="clubIconAndTextDiv">
+                    <img className="clubIconStyle" src={homeTeamIconUrl} alt={match.homeTeamName}/>
                     <Typography
                         sx={marginHalfEm}>{homeTeamName}</Typography>
                 </div>
-                <div style={{marginTop: '2em', marginBottom: '2em'}}><Typography variant="body1">/</Typography></div>
-                <div style={{width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap'}}>
-                    <img style={{
-                        width: '5em',
-                        height: '5em',
-                        display: 'block',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginBottom: '0.5em'
-                    }}
-                         src={awayTeamIconUrl} alt={awayTeamName}/>
+                <div className="slashIcon"><Typography variant="body1">/</Typography></div>
+                <div className="clubIconAndTextDiv">
+                    <img className="clubIconStyle" src={awayTeamIconUrl} alt={awayTeamName}/>
                     <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
                 </div>
             </div>

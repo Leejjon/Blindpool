@@ -3,12 +3,16 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
 
+const pagestyle = {
+    flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"
+};
+
 const About: React.FC = () => {
     const { t } = useTranslation();
 
     return (
         <Grid container justifyContent={"center"} spacing={2}
-            sx={{flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"}}>
+            sx={pagestyle}>
             <Helmet>
                 <title>{t('TITLE')} - {t('ABOUT_BLINDPOOL_TITLE')}</title>
                 <meta name="description" content={t('ABOUT_BLINDPOOL_DESCRIPTION')}/>

@@ -89,7 +89,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT || 8083;
 const server = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');

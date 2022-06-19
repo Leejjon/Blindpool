@@ -13,10 +13,26 @@ import {useNavigate} from "react-router-dom";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import {useTranslation} from "react-i18next";
+import "./BpUpcomingMatches.css";
+
+const upcomingMatchTable = {
+    width: "100%", overflowX: "auto"
+};
+
+const upcomingMatchTableCell = {
+    paddingLeft: '0px', paddingTop: '1em', paddingRight: "0px", paddingBottom: '0.5em', margin: '0px'
+};
+
+const upcomingMatchButton = {
+    width: "100%", margin: "0"
+}
+
 
 const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!appState.upcomingMatches && loading) {
@@ -50,7 +66,7 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
     } else {
         if (appState.upcomingMatches) {
             return (
-                <Table style={{width: "100%", overflowX: "auto"}}>
+                <Table sx={upcomingMatchTable}>
                     <TableBody>
                         {appState.upcomingMatches?.map((match: Match) => {
                             const homeTeamName = getHomeTeamNameToDisplay(match);
@@ -65,18 +81,18 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
                             const dateString: string = startTimestamp.toLocaleDateString();
                             return (
                                 <TableRow key={`matchListItem${match.id}`}>
-                                    <TableCell align="center" style={{paddingLeft: '0px', paddingTop: '1em', paddingRight: "0px", paddingBottom: '0.5em', margin: '0px'}}>
-                                        <Button size="medium" style={{width: "100%", margin: "0"}} onClick={(event) => createPoolForMatch(match)}>
+                                    <TableCell align="center" sx={upcomingMatchTableCell}>
+                                        <Button size="medium" sx={upcomingMatchButton} onClick={(event) => createPoolForMatch(match)}>
                                             <div style={{width: "100%"}}>
-                                                <div style={{display: "flex", flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between"}}>
-                                                    <div style={{width: '10em', textAlign: 'center', whiteSpace: 'nowrap'}}>
-                                                        <img style={{width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'}}
+                                                <div className="tableRowContainerForClubIcons">
+                                                    <div className="clubIconAndTextDiv">
+                                                        <img className="clubIconStyle"
                                                              src={homeTeamIconUrl} alt={homeTeamName} />
                                                         <Typography variant="body1" style={{marginBottom: '0px'}}>{homeTeamName}</Typography>
                                                     </div>
-                                                    <div style={{marginTop: '2em', marginBottom: '2em'}}><Typography variant="body1">/</Typography></div>
-                                                    <div style={{width: '10em', textAlign: 'center', whiteSpace: 'nowrap'}}>
-                                                        <img style={{width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'}}
+                                                    <div className="slashIcon"><Typography variant="body1">/</Typography></div>
+                                                    <div className="clubIconAndTextDiv">
+                                                        <img className="clubIconStyle"
                                                              src={awayTeamIconUrl} alt={awayTeamName} />
                                                         <Typography variant="body1">{awayTeamName}</Typography>
                                                     </div>
@@ -94,7 +110,7 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) =
         } else {
             return (
                 <div>
-                    <br/><p>Something went wrong with loading the matches</p>
+                    <br/><p>{t("UPCOMING_MATCHES_FAILURE")}</p>
                 </div>
             );
         }
