@@ -16,10 +16,12 @@ const eredivisieTeams: {[key: number]: string} = {
     682: 'AZ',
     683: 'RKC Waalwijk',
     684: 'PEC Zwolle',
+    670: 'Excelsior',
     718: 'Go Ahead Eagles',
     1909: 'SC Cambuur',
     1914: 'FC Emmen',
     1915: 'NEC Nijmegen',
+    1919: 'FC Volendam',
     1920: 'Fortuna Sittard',
     6806: 'Sparta'
 }

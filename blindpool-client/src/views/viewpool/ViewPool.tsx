@@ -2,98 +2,79 @@ import React, {useState} from "react";
 import {
     Card, CardActions,
     CardContent, CircularProgress,
-    Grid, Icon, IconButton,
-    makeStyles,
+    Grid, IconButton,
     Table, TableBody,
     TableCell,
     TableHead,
-    TableRow, TextField, Theme, Tooltip,
-    Typography, withStyles
-} from "@material-ui/core";
+    TableRow, TextField, Tooltip, Typography, useTheme
+} from "@mui/material";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import appState from "../../state/AppState";
 import {Api, getHost} from "../../utils/Network";
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import {Match} from "../../model/Match";
 import Blindpool from "../../model/Blindpool";
-import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
 import {canThisScoreStillWin} from "../../logic/ScoresUtil";
+import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
+import {ContentCopy, Help} from "@mui/icons-material";
+import {Params} from "react-router-dom";
 
-const useStyles = makeStyles({
-    root: {
-        flexShrink: 0,
-        textAlign: 'center',
-        marginTop: '1em',
-    },
-    header: {
-        marginTop: '1em',
-    },
-    card: {
-        minWidth: "20em",
-        maxWidth: "20em"
-    },
-    table: {
-        width: '100%',
-        // marginTop: theme.spacing(2),
-        overflowX: 'auto',
-    },
-    columnheader: {
-        fontWeight: 700,
-        // fontSize: 15,
-        // flexGrow: 1
-    },
-    namecolumn: {
-        flexGrow: 1
-    },
-    shareUrlInput: {
-        marginTop: '0.45em',
-        marginLeft: '1em',
-        width: '100%',
-    },
-    copyButton: {
-        marginTop: '0em',
-        marginLeft: '0em',
-        marginRight: '0.3em'
-    },
-    progress: {
-        margin: '8em',
-    },
-    freeFormatMatch: {
-        // marginTop: '1em'
-    },
-    impossibleScore: {
-        textDecoration: 'line-through',
-        // color: 'rgba(0, 0, 0, 0.57)'
-    },
-    trophyPadding: {
-        marginTop: '2em'
-    }
-});
+const root = {
+    flexShrink: 0,
+    textAlign: 'center',
+    marginTop: '1em',
+}
+const table = {
+    width: '100%',
+    overflowX: 'auto',
+}
+const columnheader = {
+    fontWeight: 700,
+}
+const namecolumn = {
+    flexGrow: 1
+}
+const shareUrlInput = {
+    marginTop: '0.45em',
+    marginLeft: '1em',
+    width: '100%',
+}
+const copyButton = {
+    marginTop: '0em',
+    marginLeft: '0em',
+    marginRight: '0.3em'
+}
+
+const progress = {
+    margin: '8em',
+}
+const impossibleScore = {
+    textDecoration: 'line-through',
+    // color: 'rgba(0, 0, 0, 0.57)'
+}
+
 
 const copyFieldId = "copyTextField";
 
-interface KeyInParams {
+interface KeyInParams extends Params { // https://github.com/remix-run/react-router/issues/8200#issuecomment-1034662744
     key: string
 }
 
-const HtmlTooltip = withStyles((theme: Theme) => ({
-    tooltip: {
-        backgroundColor: '#f5f5f9',
-        color: 'rgba(0, 0, 0, 0.87)',
-        maxWidth: 220,
-        fontSize: theme.typography.pxToRem(12),
-        border: '1px solid #dadde9',
-    },
-}))(Tooltip);
-
 const ViewPool: React.FC = () => {
-    let { key } = useParams<KeyInParams>();
-    const classes = useStyles();
+    let {key} = useParams() as KeyInParams;
     const {t} = useTranslation();
     const [loading, setLoading] = useState(true);
     const [fullMatchInfo, setFullMatchInfo] = useState<Match | undefined>(undefined);
     const [shareUrl, setShareUrl] = useState("");
+    const theme = useTheme();
+    const tooltip = {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(16),
+        border: '1px solid #dadde9',
+    }
 
     if (loading) {
         if (appState.poolData === undefined || appState.poolData!.key !== key) {
@@ -146,18 +127,16 @@ const ViewPool: React.FC = () => {
 
     const questionMark = () => {
         return (
-            <HtmlTooltip enterTouchDelay={5} arrow
-                title={
-                    <React.Fragment>
-                        <Typography variant="h2" color="inherit">Wildcard</Typography>
-                        <Typography>{t('WILDCARD_EXPLANATION')}</Typography>
-                    </React.Fragment>
-                }
+            <Tooltip sx={tooltip} enterTouchDelay={5} arrow
+                     title={
+                         <React.Fragment>
+                             <Typography variant="h2" color="inherit">Wildcard</Typography>
+                             <Typography sx={{color: "white"}}>{t('WILDCARD_EXPLANATION')}</Typography>
+                         </React.Fragment>
+                     }
             >
-                <Icon fontSize="small">
-                    help
-                </Icon>
-            </HtmlTooltip>
+                <Help fontSize="small"/>
+            </Tooltip>
         );
     };
 
@@ -180,7 +159,8 @@ const ViewPool: React.FC = () => {
                     return (
                         <TableRow key={participantName}>
                             <TableCell>
-                                <Typography variant="body1" style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
+                                <Typography variant="body1"
+                                            style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1">{home} - {away} {isWildCard(home, away)}</Typography>
@@ -205,7 +185,8 @@ const ViewPool: React.FC = () => {
                                 <Typography variant="body1">{participantName}</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="body1" className={classes.impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
+                                <Typography variant="body1"
+                                            sx={impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
                             </TableCell>
                         </TableRow>
                     );
@@ -227,39 +208,41 @@ const ViewPool: React.FC = () => {
 
     let matchInfo = undefined;
     if (!loading && appState.poolData!.MATCH) {
-        matchInfo = <MatchInfoWithScore fullMatchInfo={fullMatchInfo} />;
+        matchInfo = <MatchInfoWithScore fullMatchInfo={fullMatchInfo}/>;
     } else if (!loading && appState.poolData!.FREE_FORMAT_MATCH) {
-        matchInfo = <Typography className={classes.freeFormatMatch} variant="body1"><b>Match:</b> {appState.poolData!.FREE_FORMAT_MATCH as string}</Typography>;
+        matchInfo =
+            <Typography variant="body1"><b>Match:</b> {appState.poolData!.FREE_FORMAT_MATCH as string}</Typography>;
     } /*else {
         matchInfo = <Typography variant="h2">{t("POOL_MADE_BY", {organizer: getOwner()})}</Typography>;
     }*/
 
     if (loading) {
-        return <CircularProgress className={classes.progress}/>
+        return <CircularProgress sx={progress}/>
     } else {
         return (
-            <Grid container justify="center" spacing={2} className={classes.root}
+            <Grid container justifyContent={"center"} spacing={2} sx={root}
                   style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
                 <Helmet>
                     <title>{t('TITLE')} - {t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}</title>
                     <meta name="description" content={t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()})}/>
-                    <meta property="og:title" content={t('TITLE') + " - " + t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}/>
+                    <meta property="og:title"
+                          content={t('TITLE') + " - " + t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}/>
                     <meta property="og:description" content={t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()})}/>
                 </Helmet>
                 <Grid key="definition" item>
-                    <Card className={classes.card}>
+                    <Card className="card">
                         <CardContent>
                             {matchInfo}
-                            <Table className={classes.table}>
+                            <Table sx={table}>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell className={classes.namecolumn}>
-                                            <Typography className={classes.columnheader}>
+                                        <TableCell sx={namecolumn}>
+                                            <Typography sx={columnheader}>
                                                 {t("NAME_COLUMN_HEADER")}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography className={classes.columnheader}>
+                                            <Typography sx={columnheader}>
                                                 {t("NAME_COLUMN_SCORE")}
                                             </Typography>
                                         </TableCell>
@@ -275,15 +258,15 @@ const ViewPool: React.FC = () => {
                                 // disabled
                                 id={copyFieldId}
                                 label={t('SHARE_THIS_POOL')}
-                                className={classes.shareUrlInput}
+                                sx={shareUrlInput}
                                 value={shareUrl}
                                 margin="normal"
                                 variant="outlined"
                                 onClick={(event: React.MouseEvent<HTMLElement>) => handleTextFieldFocus(event)}
                             />
-                            <IconButton className={classes.copyButton} color="inherit"
+                            <IconButton sx={copyButton} color="inherit"
                                         aria-label="Copy" aria-haspopup="true" onClick={copy}>
-                                <Icon aria-label={t('COPY')}>content_copy</Icon>
+                                <ContentCopy aria-label={t('COPY')}/>
                             </IconButton>
                         </CardActions>
                     </Card>

@@ -1,33 +1,18 @@
-import {Button, Card, CardActions, CardContent, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
+import {Button, Card, CardActions, CardContent, Divider, Grid, Typography} from "@mui/material";
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-        textAlign: 'center',
-        marginTop: '1em',
-        marginBottom: '0em',
-        marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"
-    },
-    card: {
-        minWidth: "20em",
-        maxWidth: "20em"
-    },
-    firstButton: {
-        flexGrow: 1,
-        textAlign: "left",
-        textDecoration: 'none'
-    },
-});
+const pagestyle = {
+    flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"
+};
 
 const About: React.FC = () => {
-    const classes = useStyles();
     const { t } = useTranslation();
 
     return (
-        <Grid container justify="center" spacing={2} className={classes.root}>
+        <Grid container justifyContent={"center"} spacing={2}
+            sx={pagestyle}>
             <Helmet>
                 <title>{t('TITLE')} - {t('ABOUT_BLINDPOOL_TITLE')}</title>
                 <meta name="description" content={t('ABOUT_BLINDPOOL_DESCRIPTION')}/>
@@ -35,12 +20,12 @@ const About: React.FC = () => {
                 <meta property="og:description" content={t('ABOUT_BLINDPOOL_DESCRIPTION')}/>
             </Helmet>
             <Grid key="aboutme" item>
-                <Card className={classes.card}>
+                <Card className="card">
                     <CardContent>
                         <Typography variant="h2">
                             {t("BEHIND_BLINDPOOL")}
                         </Typography>
-                        <Divider style={{marginTop: '0.5em'}}/>
+                        <Divider />
                         <Typography component="p">
                             <br/>{t('ABOUT_BLINDPOOL_DESCRIPTION')}
                         </Typography>
@@ -52,19 +37,18 @@ const About: React.FC = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new"
-                           className={classes.firstButton}>
-                            <Button size="medium">LinkedIN</Button>
+                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new">
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>LinkedIN</Button>
                         </a>
                         <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">GitHub</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>GitHub</Button>
                         </a>
                         <a href="https://dutchcodersnetwork.nl" target="new"
                            style={{textDecoration: 'none', padding: '0.5em'}}>
-                            <Button size="medium">DCN</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>DCN</Button>
                         </a>
                         <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium">Twitter</Button>
+                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>Twitter</Button>
                         </a>
                     </CardActions>
                 </Card>

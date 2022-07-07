@@ -1,33 +1,12 @@
 import React from "react";
-import {Button, makeStyles, MobileStepper, Typography} from "@material-ui/core";
+import {Button, MobileStepper, Typography, useTheme} from "@mui/material";
 import {useTranslation} from "react-i18next";
-import SwipeableViews from "react-swipeable-views";
 import {TFunction} from "i18next";
-import {useTheme} from "@material-ui/core";
-import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
+import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 
-const useStyles = makeStyles({
-    root: {
-        maxWidth: 400,
-        flexGrow: 1,
-        textAlign: "justify",
-        textAlignLast: "center"
-    },
-    img: {
-        height: 255,
-        maxWidth: 400,
-        overflow: 'hidden',
-        display: 'block',
-        width: '100%',
-        paddingBottom: '0.5em'
-    },
-    backNextButtons: {
-        backgroundColor: "#FAFAFA"
-    },
-    description: {
-        lineHeight: '1.5em'
-    }
-});
+const buttonColor = {
+    color: "rgba(0, 0, 0, 0.87)"
+}
 
 const tutorialSteps = (t: TFunction) => {
     return [
@@ -41,7 +20,6 @@ const tutorialSteps = (t: TFunction) => {
 };
 
 const BpComicStepper: React.FC = () => {
-    const classes = useStyles();
     const {t} = useTranslation();
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
@@ -55,48 +33,29 @@ const BpComicStepper: React.FC = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
-    const handleStepChange = (step: number) => {
-        setActiveStep(step);
-    };
-
     return (
-        <div className={classes.root}>
-            <SwipeableViews
-                enableMouseEvents
-                index={activeStep}
-                onChangeIndex={handleStepChange}
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}>
-                {
-                    tutorialSteps(t).map((step, index) => {
-                        return (<div key={step.label}>
-                            {Math.abs(activeStep - index) <= 2 ? (
-                                <img className={classes.img} src={step.imgPath} alt={step.label}/>
-                            ) : null}
-                        </div>);
-                    })
-                }
-            </SwipeableViews>
+        <div>
+            <img src={tutorialSteps(t)[activeStep].imgPath} alt={tutorialSteps(t)[activeStep].label} />
             <MobileStepper
-                className={classes.backNextButtons}
                 steps={maxSteps}
                 position="static"
                 variant="text"
                 activeStep={activeStep}
                 nextButton={
-                    <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                    <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1} sx={buttonColor}>
                         {t("NEXT")}
                         {theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
                     </Button>
                 }
                 backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    <Button size="small" onClick={handleBack} disabled={activeStep === 0} sx={buttonColor}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
                         {t("BACK")}
                     </Button>
                 }
+                sx={{backgroundColor: "#FAFAFA"}}
             />
-            <Typography className={classes.description}
-                        variant="body1">{tutorialSteps(t)[activeStep].label}</Typography>
+            <Typography variant="body1">{tutorialSteps(t)[activeStep].label}</Typography>
         </div>
     );
 };

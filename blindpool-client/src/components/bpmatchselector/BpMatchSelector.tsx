@@ -1,52 +1,34 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import {Divider, makeStyles, TextField, Typography} from "@material-ui/core";
-import {Autocomplete} from "@material-ui/lab";
+import {Box, Divider, TextField, Typography} from "@mui/material";
+import Autocomplete from '@mui/material/Autocomplete';
 import appState from "../../state/AppState";
 import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import "./BpMatchSelector.css";
 
-const useStyles = makeStyles({
-    bpMatchSelector: {
-        margin: 'auto',
-        marginTop: '0.8em',
-    },
-    clubIconStyle: {
-        width: '3em', height: '3em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
-    },
-    tableRowContainerForClubIcons: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        justifyContent: 'space-between',
-        width: '100%',
-        margin: '0px'
-    },
-    clubIconAndTextDiv: {
-        width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap'
-    },
-    slashIcon: {
-        marginTop: '2em', marginBottom: '2em'
-    },
-    marginHalfEm: {
-        margin: '0.5em', fontSize: 'small',
-    },
-    justCenter: {
-        textAlign: 'center'
-    }
-});
+const bpMatchSelector = {
+    margin: 'auto',
+    marginTop: '0.8em',
+}
+const marginHalfEm = {
+    margin: '0.5em', fontSize: 'small',
+}
+// justCenter: {
+//     textAlign: 'center'
+// }
 
 export interface MatchValidationProp {
     invalidMatchMessage: string | undefined;
     setInvalidMatchMessage: (message: string | undefined) => void;
 }
 
-export interface BpMatchSelectorProps extends BpSnackbarMessage, MatchValidationProp {}
+export interface BpMatchSelectorProps extends BpSnackbarMessage, MatchValidationProp {
+}
 
 const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMatchMessage, setInvalidMatchMessage}) => {
-    const classes = useStyles();
     const {t} = useTranslation();
     const [matches, setMatches] = useState<Array<Match>>([]);
     const [inputValue, setInputValue] = React.useState('');
@@ -72,9 +54,9 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
         }
     }, [setMessage]);
 
-    const displayMatchInDropdown = (upcomingMatch: Match): string => {
-        const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch);
-        const awayTeamName = getAwayTeamNameToDisplay(upcomingMatch);
+    const displayMatchInDropdown = (upcomingMatch: Match | string): string => {
+        const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch as Match);
+        const awayTeamName = getAwayTeamNameToDisplay(upcomingMatch as Match);
         return `${homeTeamName} vs ${awayTeamName}`;
     };
 
@@ -93,6 +75,7 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
     }, [setInputValue]);
 
     const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
+
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
         if (supportedMatch && supportedMatch.id) {
@@ -111,7 +94,7 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
     return (
         <Autocomplete
             disabled={matches.length < 1}
-            className={classes.bpMatchSelector}
+            sx={bpMatchSelector}
             onChange={updateSelectedMatch}
             inputValue={inputValue}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
@@ -130,7 +113,7 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
             id="bpMatchSelector" freeSolo
             getOptionLabel={displayMatchInDropdown}
             options={matches as Match[]}
-            renderOption={(upcomingMatch: Match) => {
+            renderOption={(props: any, upcomingMatch: Match) => {
                 const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch);
                 const awayTeamName = getAwayTeamNameToDisplay(upcomingMatch);
                 const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${upcomingMatch.homeTeamID}.svg`;
@@ -141,28 +124,28 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
                 const minutes: string = '' + startTimestamp.getMinutes();
                 const minutesToDisplay: string = minutes.padStart(2, minutes);
                 const dateString: string = startTimestamp.toLocaleDateString();
-
                 return (
-                    <div className={classes.justCenter}>
-                        <div className={classes.tableRowContainerForClubIcons}>
-                            <div className={classes.clubIconAndTextDiv}>
-                                <img className={classes.clubIconStyle} src={homeTeamIconUrl}
-                                     alt={homeTeamName}/>
-                                <Typography
-                                    className={classes.marginHalfEm}>{homeTeamName}</Typography>
+                    <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...props}>
+                        <div>
+                            <div className="tableRowContainerForClubIcons">
+                                <div className="clubIconAndTextDiv">
+                                    <img src={homeTeamIconUrl} alt={homeTeamName} className="clubIconStyle"/>
+                                    <Typography sx={marginHalfEm}>{homeTeamName}</Typography>
+                                </div>
+                                <div className="slashIcon"><Typography
+                                    variant="body1">/</Typography></div>
+                                <div className="clubIconAndTextDiv">
+                                    <img src={awayTeamIconUrl} alt={awayTeamName}className="clubIconStyle"/>
+                                    <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
+                                </div>
                             </div>
-                            <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
-                            <div className={classes.clubIconAndTextDiv}>
-                                <img className={classes.clubIconStyle} src={awayTeamIconUrl}
-                                     alt={awayTeamName}/>
-                                <Typography
-                                    className={classes.marginHalfEm}>{awayTeamName}</Typography>
-                            </div>
+                            <Typography sx={{
+                                margin: "0.5em",
+                                fontSize: "small"
+                            }}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                         </div>
-                        <Typography
-                            className={classes.marginHalfEm}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
                         <Divider/>
-                    </div>
+                    </Box>
                 );
             }}
             ListboxProps={{
@@ -175,14 +158,15 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
             style={{width: '100%'}}
             renderInput={(params) =>
                 <TextField {...params}
-                       error={invalidMatchMessage !== undefined}
-                       helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
-                       label={t('SELECT_MATCH')}
-                       inputProps={{
-                           ...params.inputProps,
-                           autoComplete: 'new-password', // disable autocomplete and autofill
-                           style: {fontSize: 'large'}
-                       }}
+                           error={invalidMatchMessage !== undefined}
+                           helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
+                           label={t('SELECT_MATCH')}
+                           variant="standard"
+                           inputProps={{
+                               ...params.inputProps,
+                               autoComplete: 'new-password', // disable autocomplete and autofill
+                               style: {fontSize: 'large'}
+                           }}
                 />
             }
         />

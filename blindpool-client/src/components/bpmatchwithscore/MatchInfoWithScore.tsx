@@ -1,54 +1,33 @@
 import appState from "../../state/AppState";
 import {Match} from "../../model/Match";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
-import {CircularProgress, makeStyles, Typography} from "@material-ui/core";
+import {CircularProgress, Typography} from "@mui/material";
 import React from "react";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import "./MatchInfoWithScore.css";
 
-const useStyles = makeStyles({
-    clubIconStyle: {
-        width: '5em', height: '5em', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5em'
-    },
-    containerForClubIcons: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginTop: '1em',
-        marginBottom: '0.6em'
-    },
-    clubIconAndTextDiv: {
-        width: '7.8em', textAlign: 'center', whiteSpace: 'nowrap'
-    },
-    slashIcon: {
-        marginTop: '2em', marginBottom: '2em'
-    },
-    marginHalfEm: {
-        margin: '0.5em', fontSize: 'medium', fontWeight: 'bold'
-    },
-    justCenter: {
-        textAlign: 'center'
-    },
-    startTimestampMargin: {
-        marginTop: '0', fontSize: 'medium', fontWeight: 'bold'
-    },
-    scoreDiv: {
-        margin: '0',
-        fontSize: 'xxx-large',
-        color: '#333333'
-    },
-    progress: {
-        margin: '1em',
-    },
-});
+const marginHalfEm = {
+    margin: '0.5em', fontSize: 'medium', fontWeight: 'bold'
+}
+
+const startTimestampMargin = {
+    marginTop: '0', fontSize: 'medium', fontWeight: 'bold'
+}
+
+const scoreDiv = {
+    margin: '0',
+    fontSize: 'xxx-large',
+    color: '#333333'
+}
+const progress = {
+    margin: '1em',
+}
 
 export interface MatchInfoWithScoreProps {
     fullMatchInfo: Match | undefined
 }
 
 const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo}) => {
-    const classes = useStyles();
     const match = appState.poolData!.MATCH as Match;
     const homeTeamName = getHomeTeamNameToDisplay(match);
     const awayTeamName = getAwayTeamNameToDisplay(match);
@@ -68,7 +47,8 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
             let score;
 
             score = () => {
-                return <Typography variant="body1" className={classes.scoreDiv}>{fullMatch.score.home} - {fullMatch.score.away}</Typography>;
+                return <Typography variant="body1"
+                                   sx={scoreDiv}>{fullMatch.score.home} - {fullMatch.score.away}</Typography>;
             }
             let startTimeOrLive: string;
             if (fullMatchInfo?.finished) {
@@ -84,30 +64,27 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
                 <div>
                     {score ? score() : undefined}
                     <Typography
-                        className={classes.startTimestampMargin}>{startTimeOrLive}
+                        sx={startTimestampMargin}>{startTimeOrLive}
                     </Typography>
                 </div>
             );
         } else {
-            return <CircularProgress className={classes.progress}/>;
+            return <CircularProgress sx={progress}/>;
         }
     };
 
     return (
-        <div className={classes.justCenter}>
-            <div className={classes.containerForClubIcons}>
-                <div className={classes.clubIconAndTextDiv}>
-                    <img className={classes.clubIconStyle} src={homeTeamIconUrl}
-                         alt={match.homeTeamName}/>
+        <div style={{textAlign: "center"}}>
+            <div className="containerForClubIcons">
+                <div className="clubIconAndTextDiv">
+                    <img className="clubIconStyle" src={homeTeamIconUrl} alt={match.homeTeamName}/>
                     <Typography
-                        className={classes.marginHalfEm}>{homeTeamName}</Typography>
+                        sx={marginHalfEm}>{homeTeamName}</Typography>
                 </div>
-                <div className={classes.slashIcon}><Typography variant="body1">/</Typography></div>
-                <div className={classes.clubIconAndTextDiv}>
-                    <img className={classes.clubIconStyle} src={awayTeamIconUrl}
-                         alt={awayTeamName}/>
-                    <Typography
-                        className={classes.marginHalfEm}>{awayTeamName}</Typography>
+                <div className="slashIcon"><Typography variant="body1">/</Typography></div>
+                <div className="clubIconAndTextDiv">
+                    <img className="clubIconStyle" src={awayTeamIconUrl} alt={awayTeamName}/>
+                    <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
                 </div>
             </div>
             {scoreView()}
