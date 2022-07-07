@@ -17,6 +17,12 @@ root {
     color: rgba(0, 0, 0, 0.87);
 }
 
+.menuToolbar {
+    padding-left: 0;
+    padding-right: 0;
+    min-height: 2.9em;
+}
+
 .negativeLinkPadding {
     padding-right: 0;
     margin-right: -0.7em;

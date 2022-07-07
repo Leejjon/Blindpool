@@ -12,5 +12,5 @@ x-terminal-emulator -T "Matches API" -e "cd matches-api;npm start"
 x-terminal-emulator -T "Webpack for Blindpool API" -e "cd blindpool-api;npm run webpack"
 x-terminal-emulator -T "Blindpool API" -e "cd blindpool-api;npm start"
 #x-terminal-emulator -T "React Dev Server for Blindpool Client" -e "cd blindpool-client3;npm start"
-x-terminal-emulator -e "cd blindpool-frontend;npm run webpack"
+#x-terminal-emulator -e "cd blindpool-frontend;npm run webpack"
 

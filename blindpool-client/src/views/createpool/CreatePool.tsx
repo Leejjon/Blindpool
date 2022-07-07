@@ -1,19 +1,18 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import { useHistory } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {
     Button,
     Card,
     CardContent,
     CircularProgress,
-    Grid, Icon, IconButton,
-    makeStyles,
+    Grid, IconButton,
     Table, TableBody,
     TableCell,
     TableHead, TableRow, TextField,
     Typography
-} from "@material-ui/core";
-import {Helmet} from "react-helmet";
+} from "@mui/material";
+import {Helmet} from "react-helmet-async";
 import appState from "../../state/AppState";
 import Blindpool, {CreateBlindpoolRequest} from "../../model/Blindpool";
 import Player from "../../model/Player";
@@ -22,89 +21,7 @@ import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
 import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
-
-const useStyles = makeStyles({
-    root: {
-        flexShrink: 0,
-        textAlign: 'center',
-        marginTop: '1em',
-    },
-    button: {
-        color: 'white',
-        backgroundColor: '#00cc47',
-        '&:hover': {
-            backgroundColor: '#00cc47',
-        },
-        '&:active': {
-            boxShadow: 'none',
-            backgroundColor: '#73e39a',
-        },
-        border: 0,
-        // borderRadius: 3,
-        fontWeight: 'bolder',
-        fontSize: 15
-    },
-    card: {
-        minWidth: "20em",
-        maxWidth: "20em"
-    },
-    table: {
-        width: '100%',
-        overflowX: 'auto',
-        marginTop: '0px',
-        marginBottom: '1em'
-    },
-    numberColumn: {
-        verticalAlign: 'text-top',
-        padding: '0em',
-        paddingTop: '1.7em',
-        margin: '0em'
-    },
-    buttonColumn: {
-        verticalAlign: 'text-top',
-        padding: '0.3em',
-        paddingTop: '0em',
-        //paddingRight: '0em'
-    },
-    columnname: {
-        fontWeight: 700,
-        fontSize: 15,
-        flexGrow: 1,
-    },
-    progress: {
-        margin: '8em',
-    },
-    icon: {
-        color: 'black',
-    },
-    nameHeader: {
-        // margin: '0px',
-        paddingTop: '1.5em',
-        paddingLeft: '1em',
-        paddingBottom: '1em'
-    },
-    nameInputField: {
-        paddingTop: '0em',
-        marginTop: '0em',
-        marginBottom: '0em',
-        width: '100%'
-    },
-    nameFields: {
-        paddingLeft: '1em',
-        paddingRight: '0em'
-    },
-    addButton: {
-        margin: '0.5em',
-        // backgroundColor: 'black'
-    },
-    addIcon: {
-        margin: '0.5em',
-        color: 'black'
-    },
-    disabledNumber: {
-        color: 'gray'
-    }
-});
+import {AddCircleOutline} from "@mui/icons-material";
 
 const EMPTY_STRING = "";
 
@@ -114,9 +31,8 @@ const EMPTY_PLAYER = () => {
 };
 
 const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
-    const classes = useStyles();
     const {t} = useTranslation();
-    let history = useHistory();
+    let navigate = useNavigate();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState<Player[]>([
@@ -236,7 +152,7 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                     const poolJson: Blindpool = await response.json();
                     appState.setPool(poolJson);
                     setLoading(false);
-                    history.push(`/pool/${poolJson.key}`);
+                    navigate(`/pool/${poolJson.key}`);
                 } else {
                     setLoading(false);
                     setMessage('BACKEND_OFFLINE');
@@ -250,12 +166,11 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
 
     if (loading) {
         return (
-            <CircularProgress className={classes.progress} />
+            <CircularProgress sx={{margin: "8em"}} />
         );
     } else {
         return (
-            <Grid container justify="center" spacing={2} className={classes.root}
-                  style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+            <Grid container justifyContent={"center"}  spacing={2} sx={{flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
                 <Helmet>
                     <title>{t('TITLE')} - {t('CREATE_POOL_TITLE')}</title>
                     <meta name="description" content={t('CREATE_POOL_DESCRIPTION')}/>
@@ -263,16 +178,16 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                     <meta property="og:description" content={t('CREATE_POOL_DESCRIPTION')}/>
                 </Helmet>
                 <Grid key="definition" item>
-                    <Card className={classes.card}>
+                    <Card className="card">
                         <CardContent>
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
                             <BpMatchSelector message={message} setMessage={setMessage}
-                                 invalidMatchMessage={invalidMatchMessage}
-                                 setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}/>
+                                             invalidMatchMessage={invalidMatchMessage}
+                                             setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}/>
                             {/*border={1}*/}
-                            <Table className={classes.table}>
+                            <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
                                 <colgroup>
                                     {/* Seems like a super stupid solution, but it works.*/}
                                     <col style={{width: '5%'}}/>
@@ -281,15 +196,14 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                                 </colgroup>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell className={classes.numberColumn}
+                                        <TableCell sx={{verticalAlign: "text-top", padding: "0em", paddingTop: "1.7em", margin: "0"}}
                                                    align="left">&nbsp;</TableCell>
-                                        <TableCell className={classes.nameHeader} align="left">
-                                            <Typography className={classes.columnname}>
+                                        <TableCell sx={{margin: "0", paddingTop: "1.5em", paddingLeft: "1em", paddingBottom: "1em"}} align="left">
+                                            <Typography sx={{fontWeight: 700, fontSize: 15, flexGrow: 1}}>
                                                 {t("NAME_COLUMN_HEADER")}
                                             </Typography>
                                         </TableCell>
-                                        <TableCell
-                                            className={classes.buttonColumn}>&nbsp;</TableCell>
+                                        <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0em"}}>&nbsp;</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -299,15 +213,16 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                                         );
                                     })}
                                     <TableRow>
-                                        <TableCell className={classes.numberColumn}>
-                                            <Typography className={classes.disabledNumber}>
+                                        <TableCell sx={{verticalAlign: "text-top", padding: "0", paddingTop: "1.7em", margin: 0}}>
+                                            <Typography sx={{color: "gray"}}>
                                                 {players.length + 1}
                                             </Typography>
                                         </TableCell>
-                                        <TableCell className={classes.nameFields}>
+                                        <TableCell sx={{paddingLeft: "1em", paddingRight: 0}}>
                                             <TextField
-                                                id="standard-bare"
-                                                className={classes.nameInputField}
+                                                id="standard-basic"
+                                                variant="standard"
+                                                sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
                                                 margin="normal"
                                                 disabled={true}
                                                 value={t("ADD_PLAYER")}
@@ -315,17 +230,18 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                                                 inputProps={{'aria-label': 'Player name'}}>
                                             </TextField>
                                         </TableCell>
-                                        <TableCell className={classes.buttonColumn}>
+                                        <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
                                             <IconButton aria-label={t("ADD_PLAYER")}
-                                                        className={classes.icon}
+                                                        sx={{color: "black"}}
                                                         onClick={addPlayer}>
-                                                <Icon fontSize="default">add_circle_outline</Icon>
+                                                <AddCircleOutline/>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" className={classes.button} data-testid="createPoolButton">
+                            <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" data-testid="createPoolButton"
+                                sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}>
                                 {t("CREATE_POOL").toUpperCase()}
                             </Button>
                         </CardContent>

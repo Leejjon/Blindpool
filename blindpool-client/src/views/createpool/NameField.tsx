@@ -1,40 +1,8 @@
 import React, {ChangeEvent} from "react";
-import {Icon, IconButton, makeStyles, TableCell, TableRow, TextField, Typography} from "@material-ui/core";
+import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
 import Player from "../../model/Player";
 import {useTranslation} from "react-i18next";
-
-const useStyles = makeStyles({
-    numberColumn: {
-        verticalAlign: 'text-top',
-        padding: '0em',
-        paddingTop: '1.7em',
-        margin: '0em'
-    },
-    columnname: {
-        fontWeight: 700,
-        fontSize: 15,
-        flexGrow: 1,
-    },
-    nameFields: {
-        paddingLeft: '1em',
-        paddingRight: '0em'
-    },
-    nameInputField: {
-        paddingTop: '0em',
-        marginTop: '0em',
-        marginBottom: '0em',
-        width: '100%'
-    },
-    buttonColumn: {
-        verticalAlign: 'text-top',
-        padding: '0.3em',
-        paddingTop: '0em',
-        //paddingRight: '0em'
-    },
-    icon: {
-        color: 'black',
-    },
-});
+import {Person, RemoveCircleOutline} from "@mui/icons-material";
 
 export interface PlayerNameProps {
     player: Player,
@@ -44,23 +12,23 @@ export interface PlayerNameProps {
 }
 
 const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTextFieldChange}) => {
-    const classes = useStyles();
     const {t} = useTranslation();
     let first = index <= 0;
     let invalidMessage = player.valid;
     return (
         <TableRow>
-            <TableCell className={classes.numberColumn}>
-                <Typography className={classes.columnname}>
+            <TableCell sx={{verticalAlign: "text-top", padding: "0", paddingTop: "1.7em", margin: "0"}}>
+                <Typography sx={{fontWeight: 700, fontSize: 15, flexGrow: 1}}>
                     {index + 1}
                 </Typography>
             </TableCell>
-            <TableCell className={classes.nameFields}>
+            <TableCell sx={{paddingLeft: "1em", paddingRight: "0"}}>
                 <TextField
                     error={invalidMessage !== undefined}
                     helperText={invalidMessage !== undefined ? t(invalidMessage) : undefined}
                     id={'nameField' + index}
-                    className={classes.nameInputField}
+                    variant="standard"
+                    sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
                     margin="normal"
                     value={player.name}
                     inputProps={{'aria-label': 'Player name ' + (index + 1)}}
@@ -68,13 +36,11 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                     onBlur={(event) => onTextFieldChange(index, event, true)}>
                 </TextField>
             </TableCell>
-            <TableCell align="right" className={classes.buttonColumn}>
+            <TableCell align="right" sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
                 <IconButton tabIndex={-1} aria-label={t("REMOVE_PLAYER_X", {index: index + 1})}
-                            className={classes.icon} disabled={first}
-                            onClick={() => removePlayer(index)}>
-                    <Icon fontSize="default">
-                        {!first ? "remove_circle_outline" : "person"}
-                    </Icon>
+                            disabled={first} onClick={() => removePlayer(index)}
+                            sx={{color: "black"}}>
+                    {!first ? <RemoveCircleOutline/> : <Person/>}
                 </IconButton>
             </TableCell>
         </TableRow>

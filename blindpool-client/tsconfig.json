@@ -12,14 +12,16 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noFallthroughCasesInSwitch": true,
-    "experimentalDecorators": true
+    "paths": {
+      "@mui/styled-engine": ["./blindpool-client3/node_modules/@mui/styled-engine-sc"]
+    }
   },
   "include": [
     "src"
