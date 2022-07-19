@@ -56,6 +56,44 @@ interface FootballDataApiMatches {
     matches: Array<FootballDataApiMatch>
 }
 
+// export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {
+//     let responses;
+//     try {
+//         const secret = await fetchSecret();
+//
+//         let competitionPromises: Array<Promise<AxiosResponse<FootballDataApiMatches>>> = [];
+//
+//         const competitions: Array<string> = [EREDIVISIE_CODE, PREMIER_LEAGUE_CODE];
+//         competitions.forEach((competition) => {
+//             const competitionPromise = axios.get<FootballDataApiMatches>(
+//                 `${API_FOOTBAL_DATA_URL}/competitions/${competition}/matches/`,
+//                 {headers: {"X-Auth-Token": secret}}
+//             );
+//             competitionPromises.push(competitionPromise);
+//         });
+//
+//         responses = await Promise.all<AxiosResponse<FootballDataApiMatches>>(competitionPromises);
+//         const matches = responses
+//             .filter(axiosResponse => {
+//                 if (axiosResponse.status === 200) {
+//                     return true;
+//                 } else {
+//                     console.log("Couldn't " + JSON.stringify(axiosResponse.request));
+//                     return false;
+//                 }
+//             })
+//             .map(axiosResponse => {
+//                 const matches: FootballDataApiMatches = axiosResponse.data;
+//                 return matches.matches;
+//             });
+//         // This is an unsafe cast.
+//         return ok(([] as Array<FootballDataApiMatch>).concat(...matches));
+//     } catch (error) {
+//         console.error(`Something went wrong with retrieving ${responses ? JSON.stringify(responses) : "<promises not initialized>"} or . Error: ${error}`);
+//         return err(ErrorScenarios.INTERNAL_ERROR);
+//     }
+// }
+
 export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<FootballDataApiMatch>, ErrorScenarios>> => {
     let responses;
     try {
@@ -65,8 +103,7 @@ export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<Foot
 
         const competitions: Array<string> = [EREDIVISIE_CODE, PREMIER_LEAGUE_CODE];
         competitions.forEach((competition) => {
-            const competitionPromise = axios.get<FootballDataApiMatches>(
-                `${API_FOOTBAL_DATA_URL}/competitions/${competition}/matches/`,
+            const competitionPromise = fetch(`${API_FOOTBAL_DATA_URL}/competitions/${competition}/matches/`,
                 {headers: {"X-Auth-Token": secret}}
             );
             competitionPromises.push(competitionPromise);
@@ -93,3 +130,4 @@ export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<Foot
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }
+

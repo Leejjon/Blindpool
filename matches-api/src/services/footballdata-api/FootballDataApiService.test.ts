@@ -1,6 +1,12 @@
+import {getMatchesFromFootballDataApi} from "./FootballDataApiService";
 
 describe('FootballDataApiService', () => {
-    it('getMatchesFromFootballDataApi', () => {
-        console.log("Hoi");
+    it('getMatchesFromFootballDataApi', async () => {
+        let result = await getMatchesFromFootballDataApi();
+        result.map(
+            matches => console.log(matches.length)
+        ).mapErr(
+            e => console.log(e)
+        );
     });
 });
