@@ -47,7 +47,7 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
 
         return ok(blindpool);
     } catch (e) {
-        console.error(e.toString());
+        console.error(e as string);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 };
@@ -96,7 +96,7 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
 
         return ok(blindpoolToReturn);
     } catch (e) {
-        console.error(`Failed to insert pool: ${e.toString()}`);
+        console.error(`Failed to insert pool: ${e as string}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 }
@@ -115,7 +115,7 @@ export const calculateBlindpoolCount = async (): Promise<Result<Number, ErrorSce
 
         return ok(totalNumberOfPools);
     } catch (e) {
-        console.error(e.toString());
+        console.error(e as string);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
 };

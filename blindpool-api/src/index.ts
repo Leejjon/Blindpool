@@ -51,7 +51,7 @@ router.get('/v2/pool/:key', getBlindpoolByKey);
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json() as RequestHandler);
 
 interface SyntaxErrorWithStatusAndBody extends SyntaxError {
     status: number;
