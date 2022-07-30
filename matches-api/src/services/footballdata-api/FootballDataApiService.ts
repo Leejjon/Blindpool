@@ -1,8 +1,9 @@
 import {ok, err, Result} from "neverthrow";
 import axios, {AxiosResponse} from "axios";
-import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE, PREMIER_LEAGUE_CODE} from "./constants";
 import {fetchSecret} from "../SecretService";
 import {ErrorScenarios} from "../../model/ErrorScenarios";
+import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE, PREMIER_LEAGUE_CODE} from "./constants/Teams";
+
 
 export interface MatchWithCompetition {
     [competition: number]: FootballDataApiMatch

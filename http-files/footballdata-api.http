@@ -1,0 +1,14 @@
+### Get all competitions
+GET {{footballdata-api-url}}/v2/competitions
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Eredivisie matches
+GET {{footballdata-api-url}}/v2/competitions/2003/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Premier league
+GET {{footballdata-api-url}}/v2/competitions/2021/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}

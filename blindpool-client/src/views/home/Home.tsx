@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpSnackbarMessage} from "../../App";
+import appState from "../../state/AppState";
 
 const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const {t} = useTranslation();
@@ -55,8 +56,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                     <CardContent>
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider />
-                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{t('CLICK_ON_MATCH')}
-                        </Typography>
+                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{appState.upcomingMatches ? t('CLICK_ON_MATCH') : t('NO_MATCHES')}</Typography>
                         <BpUpcomingMatches message={message} setMessage={setMessage}/>
                     </CardContent>
                 </Card>

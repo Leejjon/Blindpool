@@ -1,0 +1,10 @@
+# Update new matches
+GET {{matches-api-url}}/api/v2/matches/update
+
+### This separator is required in .http files
+
+# Get upcoming matches
+GET {{matches-api-url}}/api/v2/matches/upcoming
+Accept: application/json
+
+

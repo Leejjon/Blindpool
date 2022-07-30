@@ -1,4 +1,11 @@
-import {EREDIVISIE_CODE, EURO2020_CODE, PREMIER_LEAGUE_CODE} from "../services/footballdata-api/constants";
+
+export const API_FOOTBAL_DATA_URL = "http://api.football-data.org/v2";
+export const EREDIVISIE_CODE = '2003';
+export const EREDIVISIE_NAME = "Eredivisie";
+export const EURO2020_CODE = '2018';
+export const EURO2020_NAME = "Euro 2020"
+export const PREMIER_LEAGUE_CODE = '2021';
+export const PREMIER_LEAGUE_NAME = "Premier League";
 
 const eredivisieTeams: {[key: number]: string} = {
     666: 'FC Twente',
@@ -58,22 +65,25 @@ const premierLeagueTeams : {[key: number]: string} = {
     58: 'Aston Villa',
     61: 'Chelsea',
     62: 'Everton',
+    63: 'Fulham',
     64: 'Liverpool',
-    65: 'Manchester City',
-    66: 'Manchester United',
-    67: 'Newcastle United',
+    65: 'Man City',
+    66: 'Man United',
+    67: 'Newcastle',
     68: 'Norwhich City',
-    73: 'Tottenham Hotspur',
+    73: 'Tottenham',
     76: 'Wolverhampton',
     328: 'Burnley',
     338: 'Leicester City',
     340: 'Southhampton',
     341: 'Leeds United',
     346: 'Watford',
+    351: 'Nottingham',
     354: 'Crystal Palace',
     397: 'Brighton Hove',
     402: 'Bretford',
-    563: 'West Ham'
+    563: 'West Ham',
+    1044: 'Bournemouth'
 }
 
 export const getTeamName = (teamId: number, competitionId: string): string => {

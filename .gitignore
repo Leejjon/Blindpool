@@ -11,5 +11,7 @@ matches-api/dist
 matches-api/node_modules
 matches-api/local.key
 
+http-files/http-client.private.env.json
+
 .idea/
 *.iml

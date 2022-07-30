@@ -2,11 +2,15 @@ import {Datastore} from "@google-cloud/datastore";
 import {Match, Score} from "../model/Match";
 import {err, ok, Result} from "neverthrow";
 import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
-import {getCompetitionByTeam, getTeamName} from "../constants/Teams";
 import {ErrorScenarios} from "../model/ErrorScenarios";
-import {EREDIVISIE_CODE, EREDIVISIE_NAME, EURO2020_CODE, EURO2020_NAME} from "./footballdata-api/constants";
 import {Entity} from "@google-cloud/datastore/build/src/entity";
 import {getDatastoreInstance} from "./DatastoreService";
+import {
+    EREDIVISIE_CODE,
+    EREDIVISIE_NAME,
+    EURO2020_CODE, EURO2020_NAME,
+    getCompetitionByTeam, getTeamName
+} from "./footballdata-api/constants/Teams";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
     try {
