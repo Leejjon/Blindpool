@@ -1,6 +1,7 @@
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import {initReactI18next} from "react-i18next";
 import {Match} from "../model/Match";
+import {CompetitionEnum} from "../constants/Competitions";
 
 // the translations
 // (tip move them in a JSON file and import them)
@@ -51,7 +52,8 @@ export const resources = {
             "FREE_FORMAT_MATCH_PREFIX": "Match: ",
             "SHARE_THIS_POOL": "Share this pool ",
             "WILDCARD_EXPLANATION": "The X - X (wildcard) score wins if none of the scores assigned to the other participants are correct at the end of the match.",
-            "COPY": "Copy"
+            "COPY": "Copy",
+            "COMPETITIONS_TITLE": "Competitions",
         }
     },
     nl: {
@@ -100,7 +102,8 @@ export const resources = {
             "FREE_FORMAT_MATCH_PREFIX": "Wedstrijd: ",
             "SHARE_THIS_POOL": "Deel deze pool ",
             "WILDCARD_EXPLANATION": "De X - X (wildcard) score wint als geen van de uitslagen van de andere deelnemers overeenkomt met de einduitslag van de wedstrijd.",
-            "COPY": "Kopieer"
+            "COPY": "Kopieer",
+            "COMPETITIONS_TITLE": "Competities",
         }
     }
 };
@@ -119,6 +122,8 @@ i18n
             escapeValue: false // react already safes from xss
         }
     });
+
+export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [CompetitionEnum.EREDIVISIE] : [CompetitionEnum.PREMIER_LEAGUE];
 
 export interface dutchCountryNameMapping {
     [teamID: number]: string;

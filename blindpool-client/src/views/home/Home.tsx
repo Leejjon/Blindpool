@@ -14,6 +14,7 @@ import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpSnackbarMessage} from "../../App";
 import appState from "../../state/AppState";
+import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 
 const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
     const {t} = useTranslation();
@@ -49,6 +50,15 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                                     sx={{color: "rgba(0, 0, 0, 0.87)"}}>{t("HOW_DOES_IT_WORK_TITLE")}</Button>
                         </Link>
                     </CardActions>
+                </Card>
+                <Card className="card" sx={{marginTop: "1.5em"}}>
+                    <CardContent>
+                        <Typography variant="h2">
+                            {t("COMPETITIONS_TITLE")}
+                        </Typography>
+                        <Divider />
+                        <BpCompetitions/>
+                    </CardContent>
                 </Card>
             </Grid>
             <Grid key="matchers" item>
