@@ -53,7 +53,7 @@ export const resources = {
             "SHARE_THIS_POOL": "Share this pool ",
             "WILDCARD_EXPLANATION": "The X - X (wildcard) score wins if none of the scores assigned to the other participants are correct at the end of the match.",
             "COPY": "Copy",
-            "COMPETITIONS_TITLE": "Competitions",
+            "COMPETITIONS_TITLE": "What do you watch?",
         }
     },
     nl: {
@@ -103,7 +103,7 @@ export const resources = {
             "SHARE_THIS_POOL": "Deel deze pool ",
             "WILDCARD_EXPLANATION": "De X - X (wildcard) score wint als geen van de uitslagen van de andere deelnemers overeenkomt met de einduitslag van de wedstrijd.",
             "COPY": "Kopieer",
-            "COMPETITIONS_TITLE": "Competities",
+            "COMPETITIONS_TITLE": "Wat kijk jij?",
         }
     }
 };

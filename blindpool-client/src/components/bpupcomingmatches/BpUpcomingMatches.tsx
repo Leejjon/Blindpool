@@ -15,6 +15,7 @@ import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import {useTranslation} from "react-i18next";
 import "./BpUpcomingMatches.css";
+import {getUpcomingMatches} from "../../api/GetUpcomingMatches";
 
 const upcomingMatchTable = {
     width: "100%", overflowX: "auto"
@@ -29,28 +30,14 @@ const upcomingMatchButton = {
 }
 
 
-const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
+const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({setMessage}) => {
     const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
     const { t } = useTranslation();
 
     useEffect(() => {
         if (!appState.upcomingMatches && loading) {
-            fetch(`${getHost(Api.matches)}/api/v2/matches/upcoming`)
-                .then(async upcomingMatchesResponse => {
-                    if (upcomingMatchesResponse.status === 200) {
-                        let upcomingMatches = await upcomingMatchesResponse.json();
-                        appState.setUpcomingMatches(upcomingMatches);
-                    } else {
-                        setMessage('BACKEND_OFFLINE');
-                    }
-                    setLoading(false);
-                })
-                .catch(result => {
-                    console.log(`Something went wrong with fetching upcoming matches ${result}`);
-                    setLoading(false);
-                    setMessage('BACKEND_UNREACHABLE');
-                });
+            getUpcomingMatches(setMessage, setLoading);
         } else {
             setLoading(false);
         }

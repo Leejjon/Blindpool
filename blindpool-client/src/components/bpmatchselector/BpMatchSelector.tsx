@@ -8,6 +8,7 @@ import {BpSnackbarMessage} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
+import {getUpcomingMatches} from "../../api/GetUpcomingMatches";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -37,20 +38,7 @@ const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMat
         if (appState.upcomingMatches) {
             setMatches(appState.upcomingMatches);
         } else {
-            fetch(`${getHost(Api.matches)}/api/v2/matches/upcoming`)
-                .then(async upcomingMatchesResponse => {
-                    if (upcomingMatchesResponse.status === 200) {
-                        let upcomingMatches = await upcomingMatchesResponse.json();
-                        appState.setUpcomingMatches(upcomingMatches);
-                        setMatches(upcomingMatches);
-                    } else {
-                        setMessage('BACKEND_OFFLINE');
-                    }
-                })
-                .catch(result => {
-                    console.log(`Something went wrong with fetching upcoming matches ${result}`);
-                    setMessage('BACKEND_UNREACHABLE');
-                });
+            getUpcomingMatches(setMessage, undefined, setMatches)
         }
     }, [setMessage]);
 
