@@ -3,6 +3,7 @@ import {Request, Response} from "express";
 import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/MatchService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApiService";
+import {err, ok, Result} from "neverthrow";
 
 export const getMatchByKey = async (req: Request, res: Response) => {
     const key = req.params.key;
@@ -18,20 +19,32 @@ export const getMatchByKey = async (req: Request, res: Response) => {
     }
 };
 
-export const getTenScheduledMatches = async (req: Request, res: Response) => {
+function getCompetitionsFromQueryString(url: string): Result<Array<number>, ErrorScenarios> {
     try {
-        const querystrings = req.url.split('?')[1].split('&')
-        const competitions = querystrings.map((queryString) => Number(queryString.split('=')[1]));
-        let tenUpcomingMatchesResult = await selectTenUpcomingMatches(competitions);
-
-        tenUpcomingMatchesResult
-            .map((matches: Array<Match>) => mapSuccess(res, matches))
-            .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
+        const querystrings = url.split('?')[1].split('&');
+        return ok(querystrings.map((queryString: string) => Number(queryString.split('=')[1])))
     } catch (e) {
         console.error(`Could not load 10 matches: ${e}`);
-        mapError(res, ErrorScenarios.INVALID_INPUT);
+        return err(ErrorScenarios.INVALID_INPUT)
+    }
+}
+
+export const getTenScheduledMatches = async (req: Request, res: Response) => {
+    let result = getCompetitionsFromQueryString(req.url);
+    if (result.isOk()) {
+        await getTenScheduledMatchesForTheseCompetitions(req, res, result._unsafeUnwrap());
+    } else {
+        await getTenScheduledMatchesForTheseCompetitions(req, res, [2003, 2021]);
     }
 };
+
+const getTenScheduledMatchesForTheseCompetitions = async (req: Request, res: Response, competitions: Array<number>) => {
+    let tenUpcomingMatchesResult = await selectTenUpcomingMatches(competitions);
+
+    tenUpcomingMatchesResult
+        .map((matches: Array<Match>) => mapSuccess(res, matches))
+        .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
+}
 
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {
     try {
