@@ -6,6 +6,7 @@ export DATASTORE_EMULATOR_HOST_PATH=localhost:8081/datastore
 export DATASTORE_HOST=http://localhost:8081
 export DATASTORE_PROJECT_ID=blindepoule
 
+
 #x-terminal-emulator -T "Google Datastore Emulator" -- "gcloud beta emulators datastore start"
 gnome-terminal "Webpack for Matches API" -- sh -c "cd matches-api;npm run webpack"
 gnome-terminal "Matches API" -- sh -c "cd matches-api;npm start"

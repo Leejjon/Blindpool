@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Matches API start" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/matches-api/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start" />
+    </scripts>
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v16.16.0/bin/node" />
+    <envs>
+      <env name="DATASTORE_DATASET" value="blindepoule" />
+      <env name="DATASTORE_EMULATOR_HOST" value="localhost:8081" />
+      <env name="DATASTORE_EMOLATOR_HOST_PATH" value="localhost:8081/datastore" />
+      <env name="DATASTORE_HOST" value="http://localhost:8081" />
+      <env name="DATASTORE_PROJECT_ID" value="blindepoule" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

@@ -19,11 +19,18 @@ export const getMatchByKey = async (req: Request, res: Response) => {
 };
 
 export const getTenScheduledMatches = async (req: Request, res: Response) => {
-    let tenUpcomingMatchesResult = await selectTenUpcomingMatches();
+    try {
+        const querystrings = req.url.split('?')[1].split('&')
+        const competitions = querystrings.map((queryString) => Number(queryString.split('=')[1]));
+        let tenUpcomingMatchesResult = await selectTenUpcomingMatches(competitions);
 
-    tenUpcomingMatchesResult
-        .map((matches: Array<Match>) => mapSuccess(res, matches))
-        .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
+        tenUpcomingMatchesResult
+            .map((matches: Array<Match>) => mapSuccess(res, matches))
+            .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));
+    } catch (e) {
+        console.error(`Could not load 10 matches: ${e}`);
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+    }
 };
 
 export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) => {

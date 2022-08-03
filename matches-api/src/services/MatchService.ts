@@ -1,4 +1,4 @@
-import {Datastore} from "@google-cloud/datastore";
+import {Datastore, Query} from "@google-cloud/datastore";
 import {Match, Score} from "../model/Match";
 import {err, ok, Result} from "neverthrow";
 import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
@@ -11,6 +11,8 @@ import {
     EURO2020_CODE, EURO2020_NAME,
     getCompetitionByTeam, getTeamName
 } from "./footballdata-api/constants/Teams";
+import {google} from "@google-cloud/datastore/build/protos/protos";
+import {RunQueryResponse} from "@google-cloud/datastore/build/src/query";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
     try {
@@ -29,23 +31,39 @@ export const selectMatchByKey = async (key: string): Promise<Result<Match, Error
     }
 };
 
-export const selectTenUpcomingMatches = async (): Promise<Result<Array<Match>, ErrorScenarios>> => {
+export const selectTenUpcomingMatches = async (competitions: Array<number>): Promise<Result<Array<Match>, ErrorScenarios>> => {
     try {
         const currentTimestamp = new Date();
         const datastore = new Datastore();
-        const query = datastore.createQuery('match')
-            .order('startTimestamp', {descending: false})
-            .filter('startTimestamp', '>', currentTimestamp.toJSON())
-            .limit(10);
+        const queries: Array<Promise<RunQueryResponse>> = [];
 
-        let [upcomingTenMatches] = await datastore.runQuery(query);
+        competitions.forEach((competition: number) => {
+            let query = datastore.createQuery('match')
+                .order('startTimestamp', {descending: false})
+                .filter('startTimestamp', '>', currentTimestamp.toJSON())
+                .filter('competitionId', competition.toString())
+                .limit(10);
+            queries.push(datastore.runQuery(query));
+        });
 
-        return ok(upcomingTenMatches.map((upcomingMatch) => {
-            const key = upcomingMatch[datastore.KEY];
-            let match = upcomingMatch;
-            match.id = key.name;
-            return match;
-        }));
+        let matchesFromCompetitions = await Promise.all(queries);
+        const tenMatchesFromEachCompetitionMerged: Array<Match> = [];
+        matchesFromCompetitions.forEach((item) => {
+            const [upcomingTenMatches] = item;
+            upcomingTenMatches.forEach((upcomingMatch) => {
+                const key = upcomingMatch[datastore.KEY];
+                let match = upcomingMatch;
+                match.id = key.name;
+                tenMatchesFromEachCompetitionMerged.push(match);
+            });
+        });
+
+        // Sort by start date from soonest to most in future.
+        function compareStartTimestamp(a: Match, b: Match) {
+            return new Date(a.startTimestamp).getTime() - new Date(b.startTimestamp).getTime();
+        }
+
+        return ok(tenMatchesFromEachCompetitionMerged.sort(compareStartTimestamp).slice(0, 10));
     } catch (error) {
         console.error(`Something went wrong with retrieving ${error}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
@@ -99,6 +117,7 @@ const convertToMatchEntity = (match: FootballDataApiMatch) => {
         const matchIndexes = [
             {name: 'startTimestamp', value: startTimestamp.toJSON()},
             {name: 'competitionName', value: competitionName},
+            {name: 'competitionId', value: competitionId},
             {name: 'homeTeamName', value: getTeamName(match.homeTeam.id as number, competitionId)},
             {name: 'homeTeamID', value: match.homeTeam.id},
             {name: 'awayTeamName', value: getTeamName(match.awayTeam.id as number, competitionId)},
