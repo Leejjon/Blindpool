@@ -19,7 +19,7 @@ export const getMatchByKey = async (req: Request, res: Response) => {
     }
 };
 
-function getCompetitionsFromQueryString(url: string): Result<Array<number>, ErrorScenarios> {
+export function getCompetitionsFromQueryString(url: string): Result<Array<number>, ErrorScenarios> {
     try {
         const querystrings = url.split('?')[1].split('&');
         return ok(querystrings.map((queryString: string) => Number(queryString.split('=')[1])))

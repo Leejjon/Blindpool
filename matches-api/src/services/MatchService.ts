@@ -1,4 +1,3 @@
-import {Datastore, Query} from "@google-cloud/datastore";
 import {Match, Score} from "../model/Match";
 import {err, ok, Result} from "neverthrow";
 import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
@@ -11,12 +10,11 @@ import {
     EURO2020_CODE, EURO2020_NAME,
     getCompetitionByTeam, getTeamName
 } from "./footballdata-api/constants/Teams";
-import {google} from "@google-cloud/datastore/build/protos/protos";
 import {RunQueryResponse} from "@google-cloud/datastore/build/src/query";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
     try {
-        const datastore = new Datastore();
+        const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const matchKey = datastore.key(['match', key]);
         const [matchEntity] = await datastore.get(matchKey);
 
@@ -33,8 +31,8 @@ export const selectMatchByKey = async (key: string): Promise<Result<Match, Error
 
 export const selectTenUpcomingMatches = async (competitions: Array<number>): Promise<Result<Array<Match>, ErrorScenarios>> => {
     try {
+        const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const currentTimestamp = new Date();
-        const datastore = new Datastore();
         const queries: Array<Promise<RunQueryResponse>> = [];
 
         competitions.forEach((competition: number) => {
@@ -70,10 +68,9 @@ export const selectTenUpcomingMatches = async (competitions: Array<number>): Pro
     }
 };
 
-const datastore = getDatastoreInstance();
-
-const convertToMatchEntity = (match: FootballDataApiMatch) => {
+function convertToMatchEntity(match: FootballDataApiMatch) {
     try {
+        const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const startTimestamp = new Date(match.utcDate);
 
         const isMatchFinished = function () {
@@ -139,6 +136,7 @@ const convertToMatchEntity = (match: FootballDataApiMatch) => {
 
 export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
     try {
+        const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const matchEntities: Entity[] = matches.map(convertToMatchEntity).filter((match) => match != null);
         await datastore.upsert(matchEntities);
     } catch (error) {

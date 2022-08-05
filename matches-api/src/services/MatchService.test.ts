@@ -3,6 +3,7 @@ import * as sinon from "sinon";
 import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
 import {Datastore} from "@google-cloud/datastore/build/src";
 import * as DatastoreService from "./DatastoreService";
+import {entity} from "@google-cloud/datastore/build/src/entity";
 
 const turkeyVsItalyMatch = {
     "id": 285418,
@@ -137,6 +138,10 @@ const finalMatch = {
     "referees": []
 };
 
+/*
+* Because it was difficult to mock the datastore key, we usre the real datastore for this.
+* Therefore when running this test with npm run test you need the local datastore environment variables.
+*/
 describe('Test datastore calls', () => {
     afterEach(() => {
         sinon.restore();
@@ -144,7 +149,9 @@ describe('Test datastore calls', () => {
 
     it('Just turkey vs Italy match', async () => {
         const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.key.returns((new Datastore()).key(["match", `football-data-285418`]));
+        datastoreStub.key.returns({
+            namespace: undefined, name: "football-data-285418", kind: "match", path: ["match", `football-data-285418`]
+        } as entity.Key);
         datastoreStub.upsert.resolves(); // Resolve nothing because in production code we don't even await.
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
@@ -154,8 +161,10 @@ describe('Test datastore calls', () => {
 
     it('Turkey vs Italy match and incomplete match', async () => {
         const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.key.returns((new Datastore()).key(["match", `football-data-285418`]));
-        datastoreStub.upsert.resolves(); // Resolve nothing because in production code we don't even await.
+        datastoreStub.key.returns({
+            namespace: undefined, name: "football-data-285418", kind: "match", path: ["match", `football-data-285418`]
+        } as entity.Key);
+        datastoreStub.upsert.resolves(); // Resolve nothing
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
         let matches: Array<FootballDataApiMatch> = [turkeyVsItalyMatch, finalMatch];

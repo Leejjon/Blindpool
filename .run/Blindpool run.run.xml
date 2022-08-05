@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Blindpool run" type="CompoundRunConfigurationType">
+    <toRun name="Blindpool API start" type="js.build_tools.npm" />
     <toRun name="Matches API start" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>

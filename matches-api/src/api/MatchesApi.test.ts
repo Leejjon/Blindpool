@@ -106,7 +106,7 @@ describe('Matches API', () => {
         datastoreApiStub = sinon.stub(DatastoreService, 'selectTenUpcomingMatches')
             .resolves(ok([testDatastoreMatch]));
 
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = { url: "http://localhost/?competition[]=2021" };
 
         await getTenScheduledMatches(<Request> req, <Response> res);
         sinon.assert.calledOnce(datastoreApiStub as sinon.SinonStub);
@@ -118,7 +118,7 @@ describe('Matches API', () => {
         datastoreApiStub = sinon.stub(DatastoreService, 'selectTenUpcomingMatches')
             .resolves(err(ErrorScenarios.INTERNAL_ERROR));
 
-        let req: Partial<Request> = {};
+        let req: Partial<Request> = { url: "http://localhost/?competition[]=2021" };
 
         await getTenScheduledMatches(<Request> req, <Response> res);
         sinon.assert.calledOnce(datastoreApiStub as sinon.SinonStub);
