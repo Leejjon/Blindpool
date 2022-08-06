@@ -8,14 +8,13 @@ import {
     Typography
 } from "@mui/material";
 import appState from "../../state/AppState";
-import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
+import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useNavigate} from "react-router-dom";
-import {BpSnackbarMessage} from "../../App";
+import {BpMatchesProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import {useTranslation} from "react-i18next";
 import "./BpUpcomingMatches.css";
-import {getUpcomingMatches} from "../../api/GetUpcomingMatches";
 
 const upcomingMatchTable = {
     width: "100%", overflowX: "auto"
@@ -29,19 +28,16 @@ const upcomingMatchButton = {
     width: "100%", margin: "0"
 }
 
-
-const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({setMessage}) => {
+const BpUpcomingMatches: React.FC<BpMatchesProps> = ({matches}) => {
     const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
     const { t } = useTranslation();
 
-    useEffect(() => {
-        if (!appState.upcomingMatches && loading) {
-            getUpcomingMatches(setMessage, setLoading);
-        } else {
+    useEffect(() => { // See if this useEffect is even needed.
+        if (matches.length > 0) {
             setLoading(false);
         }
-    }, [loading, setMessage]);
+    }, [loading, matches]);
 
     function createPoolForMatch (match: Match) {
         appState.setSelectedMatch(match);
@@ -51,11 +47,11 @@ const BpUpcomingMatches: React.FC<BpSnackbarMessage> = ({setMessage}) => {
     if (loading) {
         return <CircularProgress style={{margin: "0.5em"}} />
     } else {
-        if (appState.upcomingMatches) {
+        if (matches.length > 0) {
             return (
                 <Table sx={upcomingMatchTable}>
                     <TableBody>
-                        {appState.upcomingMatches?.map((match: Match) => {
+                        {matches.map((match: Match) => {
                             const homeTeamName = getHomeTeamNameToDisplay(match);
                             const awayTeamName = getAwayTeamNameToDisplay(match);
                             const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;

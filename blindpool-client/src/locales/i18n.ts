@@ -123,7 +123,7 @@ i18n
         }
     });
 
-export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [CompetitionEnum.EREDIVISIE] : [CompetitionEnum.PREMIER_LEAGUE];
+export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [CompetitionEnum.EREDIVISIE.valueOf()] : [CompetitionEnum.PREMIER_LEAGUE.valueOf()];
 
 export interface dutchCountryNameMapping {
     [teamID: number]: string;

@@ -19,7 +19,7 @@ import Player from "../../model/Player";
 import NameField from "./NameField";
 import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
-import {BpSnackbarMessage} from "../../App";
+import {BpMatchesProps, BpSnackbarMessageProps} from "../../App";
 import {Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 
@@ -30,7 +30,7 @@ const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
-const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
+const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessage, matches}) => {
     const {t} = useTranslation();
     let navigate = useNavigate();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
@@ -183,8 +183,7 @@ const CreatePool: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <BpMatchSelector message={message} setMessage={setMessage}
-                                             invalidMatchMessage={invalidMatchMessage}
+                            <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
                                              setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}/>
                             {/*border={1}*/}
                             <Table sx={{overflowX: "auto", marginBottom: "1em"}}>

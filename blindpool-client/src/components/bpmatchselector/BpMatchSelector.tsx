@@ -2,13 +2,12 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import appState from "../../state/AppState";
-import {Api, getHost, getHostnameWithPortIfLocal} from "../../utils/Network";
+import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
-import {BpSnackbarMessage} from "../../App";
+import {BpMatchesProps, BpSnackbarMessageProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
-import {getUpcomingMatches} from "../../api/GetUpcomingMatches";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -17,30 +16,15 @@ const bpMatchSelector = {
 const marginHalfEm = {
     margin: '0.5em', fontSize: 'small',
 }
-// justCenter: {
-//     textAlign: 'center'
-// }
 
 export interface MatchValidationProp {
     invalidMatchMessage: string | undefined;
     setInvalidMatchMessage: (message: string | undefined) => void;
 }
 
-export interface BpMatchSelectorProps extends BpSnackbarMessage, MatchValidationProp {
-}
-
-const BpMatchSelector: React.FC<BpMatchSelectorProps> = ({setMessage, invalidMatchMessage, setInvalidMatchMessage}) => {
+const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps> = ({invalidMatchMessage, setInvalidMatchMessage, matches}) => {
     const {t} = useTranslation();
-    const [matches, setMatches] = useState<Array<Match>>([]);
     const [inputValue, setInputValue] = React.useState('');
-
-    useEffect(() => {
-        if (appState.upcomingMatches) {
-            setMatches(appState.upcomingMatches);
-        } else {
-            getUpcomingMatches(setMessage, undefined, setMatches)
-        }
-    }, [setMessage]);
 
     const displayMatchInDropdown = (upcomingMatch: Match | string): string => {
         const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch as Match);

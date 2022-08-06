@@ -12,11 +12,11 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
-import {BpSnackbarMessage} from "../../App";
+import {BpCompetitionProps, BpMatchesProps} from "../../App";
 import appState from "../../state/AppState";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 
-const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
+const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competitionsToWatch, setCompetitionsToWatch}) => {
     const {t} = useTranslation();
 
     return (
@@ -57,7 +57,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                             {t("COMPETITIONS_TITLE")}
                         </Typography>
                         <Divider />
-                        <BpCompetitions/>
+                        <BpCompetitions competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={setCompetitionsToWatch}/>
                     </CardContent>
                 </Card>
             </Grid>
@@ -67,7 +67,7 @@ const Home: React.FC<BpSnackbarMessage> = ({message, setMessage}) => {
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider />
                         <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{appState.upcomingMatches ? t('CLICK_ON_MATCH') : t('NO_MATCHES')}</Typography>
-                        <BpUpcomingMatches message={message} setMessage={setMessage}/>
+                        <BpUpcomingMatches matches={matches}/>
                     </CardContent>
                 </Card>
             </Grid>
