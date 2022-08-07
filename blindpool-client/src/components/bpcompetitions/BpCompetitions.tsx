@@ -18,21 +18,13 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
     return (
         <List sx={{padding: "0", paddingTop: "0.5em"}} >
             {listOfCompetitions.map((key: number) => {
-                let isIncluded = false;
-                competitionsToWatch.forEach((competition) => {
-                    // Typescript is broken.
-                    console.log(`${competition} ${key} ${competition === key}`)
-                    if (competition.toString() === key.toString()) {
-                        isIncluded = true;
-                    }
-                });
                 const competition = competitions[key];
                 const labelId = `competition-label-${key}`;
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
                             <Checkbox sx={{marginLeft: "0.5em"}} edge="start" onChange={(event) => handleChange(event, key)}
-                                      checked={isIncluded} disableRipple color="secondary" />
+                                      checked={competitionsToWatch.includes(key)} disableRipple color="secondary" />
                             <Typography variant="body1">{competition.name}</Typography>
                         </ListItemButton>
                     </ListItem>

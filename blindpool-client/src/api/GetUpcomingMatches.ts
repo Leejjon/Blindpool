@@ -9,6 +9,9 @@ export type setMessageFunction = (message: string | undefined) => void;
 // calling this function can't be async.
 export const getUpcomingMatches = async (setMessage: setMessageFunction, competitionsToWatch: Array<number>): Promise<Array<Match>> => {
     try {
+        if (competitionsToWatch.length === 0) {
+            return [];
+        }
         let url = `${getHost(Api.matches)}/api/v2/matches/upcoming`;
         let separationChar = "?";
         for (let i = 0; i < competitionsToWatch.length; i++) {

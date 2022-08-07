@@ -28,15 +28,35 @@ export interface BpCompetitionProps {
     setCompetitionsToWatch: (competitions: Array<number>) => void;
 }
 
+const localStorageName = "competitions";
+
+function updateCompetitionsInLocalStorage(competitions: Array<number>) {
+    const localCompetitions = localStorage.getItem("competitions");
+    const competitionsStringified = JSON.stringify(competitions);
+    if (JSON.stringify(competitions) === JSON.stringify(defaultCompetitions)) {
+        localStorage.removeItem(localStorageName)
+    } else if (localCompetitions !== competitionsStringified) {
+        localStorage.setItem(localStorageName, competitionsStringified);
+    }
+}
+
+function getCompetitionsFromLocalStorage(): Array<number> {
+    const localCompetitions = localStorage.getItem(localStorageName);
+    if (localCompetitions) {
+        return JSON.parse(localCompetitions);
+    } else {
+        return defaultCompetitions;
+    }
+}
+
 function App() {
     const {t} = useTranslation();
     const [message, setMessage] = useState<string | undefined>(undefined);
-
-
     const [matches, setMatches] = useState<Array<Match>>([]);
-    const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(defaultCompetitions);
+    const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage);
 
     useEffect(() => {
+        updateCompetitionsInLocalStorage(competitionsToWatch);
         getUpcomingMatches(setMessage, competitionsToWatch)
             .then((matches) => {
                 setMatches(matches);

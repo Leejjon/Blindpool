@@ -20,7 +20,7 @@ export const competitions: {[key: number]: Competition} = {
 export function getCompetitionsList() {
     let competitionKeys = [];
     for (let key in competitions) {
-        competitionKeys.push(key as unknown as number);
+        competitionKeys.push(Number(key));
     }
     return competitionKeys;
 }
