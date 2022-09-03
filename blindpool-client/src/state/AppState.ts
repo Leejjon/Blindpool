@@ -3,7 +3,6 @@ import {Match} from "../model/Match";
 
 class AppState {
     poolData: undefined | Blindpool = undefined;
-    upcomingMatches: undefined | Match[] = undefined;
     selectedMatch: undefined | string | Match = undefined;
 
     setPool(poolData: Blindpool) {

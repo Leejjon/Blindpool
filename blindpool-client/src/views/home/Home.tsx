@@ -13,7 +13,6 @@ import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpCompetitionProps, BpMatchesProps} from "../../App";
-import appState from "../../state/AppState";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 
 const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competitionsToWatch, setCompetitionsToWatch}) => {
@@ -66,7 +65,7 @@ const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competiti
                     <CardContent>
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider />
-                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{appState.upcomingMatches ? t('CLICK_ON_MATCH') : t('NO_MATCHES')}</Typography>
+                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{matches.length > 0 ? t('CLICK_ON_MATCH') : t('NO_MATCHES')}</Typography>
                         <BpUpcomingMatches matches={matches}/>
                     </CardContent>
                 </Card>

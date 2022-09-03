@@ -1,4 +1,4 @@
-import {Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography} from "@mui/material";
+import {Checkbox, FormControlLabel, List, ListItem, ListItemButton, Typography} from "@mui/material";
 import {competitions, getCompetitionsList} from "../../constants/Competitions";
 import React from "react";
 import {BpCompetitionProps} from "../../App";
@@ -22,10 +22,12 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
                 const labelId = `competition-label-${key}`;
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
+                        {/* TODO: Make sure checkbox is toggled when entire button is clicked. */}
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
-                            <Checkbox sx={{marginLeft: "0.5em"}} edge="start" onChange={(event) => handleChange(event, key)}
-                                      checked={competitionsToWatch.includes(key)} disableRipple color="secondary" />
-                            <Typography variant="body1">{competition.name}</Typography>
+                            <FormControlLabel label={competition.name} control={
+                                <Checkbox sx={{marginLeft: "0.5em"}} onChange={(event) => handleChange(event, key)}
+                                  checked={competitionsToWatch.includes(key)} disableRipple color="secondary" />
+                            }/>
                         </ListItemButton>
                     </ListItem>
                 )

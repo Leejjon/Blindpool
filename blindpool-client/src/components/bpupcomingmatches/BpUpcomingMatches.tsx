@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {
     Button,
-    CircularProgress,
     Table,
     TableBody, TableCell,
     TableRow,
@@ -29,74 +28,63 @@ const upcomingMatchButton = {
 }
 
 const BpUpcomingMatches: React.FC<BpMatchesProps> = ({matches}) => {
-    const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
     const { t } = useTranslation();
-
-    useEffect(() => { // See if this useEffect is even needed.
-        if (matches.length > 0) {
-            setLoading(false);
-        }
-    }, [loading, matches]);
 
     function createPoolForMatch (match: Match) {
         appState.setSelectedMatch(match);
         navigate('/create');
     }
 
-    if (loading) {
-        return <CircularProgress style={{margin: "0.5em"}} />
-    } else {
-        if (matches.length > 0) {
-            return (
-                <Table sx={upcomingMatchTable}>
-                    <TableBody>
-                        {matches.map((match: Match) => {
-                            const homeTeamName = getHomeTeamNameToDisplay(match);
-                            const awayTeamName = getAwayTeamNameToDisplay(match);
-                            const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;
-                            const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.svg`;
+    if (matches.length > 0) {
+        return (
+            <Table sx={upcomingMatchTable}>
+                <TableBody>
+                    {matches.map((match: Match) => {
+                        const homeTeamName = getHomeTeamNameToDisplay(match);
+                        const awayTeamName = getAwayTeamNameToDisplay(match);
+                        const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;
+                        const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.svg`;
 
-                            // TODO: Move this logic to a util folder.
-                            const startTimestamp: Date = new Date(match.startTimestamp);
-                            const minutes: string = '' + startTimestamp.getMinutes();
-                            const minutesToDisplay: string = minutes.padStart(2, minutes);
-                            const dateString: string = startTimestamp.toLocaleDateString();
-                            return (
-                                <TableRow key={`matchListItem${match.id}`}>
-                                    <TableCell align="center" sx={upcomingMatchTableCell}>
-                                        <Button size="medium" sx={upcomingMatchButton} onClick={(event) => createPoolForMatch(match)}>
-                                            <div style={{width: "100%"}}>
-                                                <div className="tableRowContainerForClubIcons">
-                                                    <div className="clubIconAndTextDiv">
-                                                        <img className="clubIconStyle"
-                                                             src={homeTeamIconUrl} alt={homeTeamName} />
-                                                        <Typography variant="body1" style={{marginBottom: '0px'}}>{homeTeamName}</Typography>
-                                                    </div>
-                                                    <div className="slashIcon"><Typography variant="body1">/</Typography></div>
-                                                    <div className="clubIconAndTextDiv">
-                                                        <img className="clubIconStyle"
-                                                             src={awayTeamIconUrl} alt={awayTeamName} />
-                                                        <Typography variant="body1">{awayTeamName}</Typography>
-                                                    </div>
+                        // TODO: Move this logic to a util folder.
+                        const startTimestamp: Date = new Date(match.startTimestamp);
+                        const minutes: string = '' + startTimestamp.getMinutes();
+                        const minutesToDisplay: string = minutes.padStart(2, minutes);
+                        const dateString: string = startTimestamp.toLocaleDateString();
+                        return (
+                            <TableRow key={`matchListItem${match.id}`}>
+                                <TableCell align="center" sx={upcomingMatchTableCell}>
+                                    <Button size="medium" sx={upcomingMatchButton} onClick={(event) => createPoolForMatch(match)}>
+                                        <div style={{width: "100%"}}>
+                                            <div className="tableRowContainerForClubIcons">
+                                                <div className="clubIconAndTextDiv">
+                                                    <img className="clubIconStyle"
+                                                         src={homeTeamIconUrl} alt={homeTeamName} />
+                                                    <Typography variant="body1" style={{marginBottom: '0px'}}>{homeTeamName}</Typography>
                                                 </div>
-                                                <Typography variant="body1" sx={{margin: "0.5em"}}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                                                <div className="slashIcon"><Typography variant="body1">/</Typography></div>
+                                                <div className="clubIconAndTextDiv">
+                                                    <img className="clubIconStyle"
+                                                         src={awayTeamIconUrl} alt={awayTeamName} />
+                                                    <Typography variant="body1">{awayTeamName}</Typography>
+                                                </div>
                                             </div>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            );
-        } else {
-            return (
-                <div>
-                    <br/><p>{t("UPCOMING_MATCHES_FAILURE")}</p>
-                </div>
-            );
-        }
+                                            <Typography variant="body1" sx={{margin: "0.5em"}}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                                        </div>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        );
+    } else {
+        return (
+            <div>
+                <br/><Typography variant="body1">{t("UPCOMING_MATCHES_FAILURE")}</Typography>
+            </div>
+        );
     }
 }
 

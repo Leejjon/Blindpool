@@ -1,10 +1,10 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import appState from "../../state/AppState";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
-import {BpMatchesProps, BpSnackbarMessageProps} from "../../App";
+import {BpMatchesProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
