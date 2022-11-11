@@ -42,11 +42,11 @@ const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competiti
                     </CardContent>
                     <CardActions>
                         <Link className="firstButton" to="/create">
-                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>{t("CREATE_POOL")}</Button>
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", fontSize: "medium"}}>{t("CREATE_POOL")}</Button>
                         </Link>
                         <Link to="/howto" style={{textDecoration: 'none'}}>
-                            <Button size="medium"
-                                    sx={{color: "rgba(0, 0, 0, 0.87)"}}>{t("HOW_DOES_IT_WORK_TITLE")}</Button>
+                            <Button size="large"
+                                    sx={{color: "rgba(0, 0, 0, 0.87)", fontSize: "medium"}}>{t("HOW_DOES_IT_WORK_TITLE")}</Button>
                         </Link>
                     </CardActions>
                 </Card>
