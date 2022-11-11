@@ -28,7 +28,7 @@ const HowTo: React.FC = () => {
                     </CardContent>
                     <CardActions>
                         <Link className="lastButton" to="/create">
-                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>{t("CREATE_POOL")}</Button>
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", fontSize: "medium"}}>{t("CREATE_POOL")}</Button>
                         </Link>
                     </CardActions>
                 </Card>

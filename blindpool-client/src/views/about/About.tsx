@@ -37,18 +37,19 @@ const About: React.FC = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <a href="https://www.linkedin.com/in/leon-liefting-4b511a29/" target="new">
-                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>LinkedIN</Button>
+                        <a className="firstButton" href="https://www.linkedin.com/in/leon-liefting-4b511a29/" style={{textDecoration: 'none', width: "100%", paddingLeft: '2em'}} target="new">
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>LinkedIN</Button>
                         </a>
-                        <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>GitHub</Button>
+                        <a href="https://github.com/Leejjon" target="new" style={{textDecoration: 'none', width: "100%", paddingRight: '2em'}}>
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>GitHub</Button>
                         </a>
-                        <a href="https://dutchcodersnetwork.nl" target="new"
-                           style={{textDecoration: 'none', padding: '0.5em'}}>
-                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>DCN</Button>
+                    </CardActions>
+                    <CardActions>
+                        <a className="firstButton" href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', width: "100%", paddingLeft: '2em'}}>
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>DCN</Button>
                         </a>
-                        <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none'}}>
-                            <Button size="medium" sx={{color: "rgba(0, 0, 0, 0.87)"}}>Twitter</Button>
+                        <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none', width: "100%", paddingRight: '2em', paddingBottom: '0.5em'}}>
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>Twitter</Button>
                         </a>
                     </CardActions>
                 </Card>

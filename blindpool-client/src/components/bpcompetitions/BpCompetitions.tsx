@@ -1,4 +1,4 @@
-import {Checkbox, FormControlLabel, List, ListItem, ListItemButton, Typography} from "@mui/material";
+import {Checkbox, FormControlLabel, List, ListItem, ListItemButton} from "@mui/material";
 import {competitions, getCompetitionsList} from "../../constants/Competitions";
 import React from "react";
 import {BpCompetitionProps} from "../../App";
