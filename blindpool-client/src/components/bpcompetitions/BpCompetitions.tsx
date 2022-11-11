@@ -22,7 +22,6 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
                 const labelId = `competition-label-${key}`;
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
-                        {/* TODO: Make sure checkbox is toggled when entire button is clicked. */}
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
                             <FormControlLabel label={competition.name} control={
                                 <Checkbox sx={{marginLeft: "0.5em"}} onChange={(event) => handleChange(event, key)}
