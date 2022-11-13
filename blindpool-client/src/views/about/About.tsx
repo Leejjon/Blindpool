@@ -45,7 +45,7 @@ const About: React.FC = () => {
                         </a>
                     </CardActions>
                     <CardActions>
-                        <a className="firstButton" href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', width: "100%", paddingLeft: '2em'}}>
+                        <a className="firstButton" href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', width: "100%", paddingLeft: '2em', paddingBottom: '0.5em'}}>
                             <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>DCN</Button>
                         </a>
                         <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none', width: "100%", paddingRight: '2em', paddingBottom: '0.5em'}}>
