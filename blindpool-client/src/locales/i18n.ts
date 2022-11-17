@@ -123,7 +123,7 @@ i18n
         }
     });
 
-export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [CompetitionEnum.EREDIVISIE.valueOf()] : [CompetitionEnum.PREMIER_LEAGUE.valueOf()];
+export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [CompetitionEnum.WORLD_CUP.valueOf(), CompetitionEnum.EREDIVISIE.valueOf()] : [CompetitionEnum.WORLD_CUP.valueOf(), CompetitionEnum.PREMIER_LEAGUE.valueOf()];
 
 export interface dutchCountryNameMapping {
     [teamID: number]: string;
@@ -138,7 +138,6 @@ const dutchCountryNames: dutchCountryNameMapping = {
     764: 'Brazilië',
     765: 'Portugal',
     766: "Japan",
-    768: 'Slowakije',
     769: 'Mexico',
     770: 'Engeland',
     771: 'Verenigde Staten',
@@ -181,7 +180,7 @@ const getDutchCountryName = (teamId: number) => {
 }
 
 export const getHomeTeamNameToDisplay = (match: Match) => {
-    if (match.competitionName === 'Euro 2020' && window.location.hostname.endsWith('blindepool.nl')) {
+    if (match.competitionName === 'World Cup 2022' && window.location.hostname.endsWith('blindepool.nl')) {
         return getDutchCountryName(parseInt(match.homeTeamID));
     } else {
         return match.homeTeamName;
@@ -189,7 +188,7 @@ export const getHomeTeamNameToDisplay = (match: Match) => {
 }
 
 export const getAwayTeamNameToDisplay = (match: Match) => {
-    if (match.competitionName === 'Euro 2020' && window.location.hostname.endsWith('blindepool.nl')) {
+    if (match.competitionName === 'World Cup 2022' && window.location.hostname.endsWith('blindepool.nl')) {
         return getDutchCountryName(parseInt(match.awayTeamID));
     } else {
         return match.awayTeamName;

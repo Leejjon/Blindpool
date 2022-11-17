@@ -7,8 +7,7 @@ import {getDatastoreInstance} from "./DatastoreService";
 import {
     EREDIVISIE_CODE,
     EREDIVISIE_NAME,
-    EURO2020_CODE, EURO2020_NAME,
-    getCompetitionByTeam, getTeamName
+    getCompetitionByTeam, getTeamName, WORLDCUP2022_CODE, WORLDCUP2022_NAME
 } from "./footballdata-api/constants/Teams";
 import {RunQueryResponse} from "@google-cloud/datastore/build/src/query";
 
@@ -107,8 +106,8 @@ function convertToMatchEntity(match: FootballDataApiMatch) {
         if (competitionId === EREDIVISIE_CODE) {
             competitionName = EREDIVISIE_NAME;
         }
-        if (competitionId === EURO2020_CODE) {
-            competitionName = EURO2020_NAME;
+        if (competitionId === WORLDCUP2022_CODE) {
+            competitionName = WORLDCUP2022_NAME;
         }
 
         const matchIndexes = [

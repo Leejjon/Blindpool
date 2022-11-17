@@ -34,7 +34,7 @@ export const getTenScheduledMatches = async (req: Request, res: Response) => {
     if (result.isOk()) {
         await getTenScheduledMatchesForTheseCompetitions(req, res, result._unsafeUnwrap());
     } else {
-        await getTenScheduledMatchesForTheseCompetitions(req, res, [2003, 2021]);
+        await getTenScheduledMatchesForTheseCompetitions(req, res, [2000, 2003, 2021]);
     }
 };
 

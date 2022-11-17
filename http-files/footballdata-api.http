@@ -17,3 +17,8 @@ X-Auth-Token: {{footballdata-api-key}}
 GET {{footballdata-api-url}}/v4/competitions/2000/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
+
+### World cup 2022 teams
+GET {{footballdata-api-url}}/v4/competitions/2000/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}

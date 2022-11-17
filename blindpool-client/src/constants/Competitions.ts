@@ -1,4 +1,5 @@
 export enum CompetitionEnum {
+    WORLD_CUP = 2000,
     EREDIVISIE = 2003,
     PREMIER_LEAGUE = 2021
 }
@@ -9,6 +10,7 @@ interface Competition {
 }
 
 export const competitions: {[key: number]: Competition} = {
+    2000: {name: "World Cup 2022", icon: "none"},
     // 2002: {name: "Bundesliga", icon: "premierleague.svg"},
     2003: {name: "Eredivisie", icon: "eredivisie.svg"},
     // 2014: {name: "Primera Division", icon: "premierleague.svg"},

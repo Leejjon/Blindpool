@@ -2,7 +2,7 @@ import {ok, err, Result} from "neverthrow";
 import axios, {AxiosResponse} from "axios";
 import {fetchSecret} from "../SecretService";
 import {ErrorScenarios} from "../../model/ErrorScenarios";
-import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE, PREMIER_LEAGUE_CODE} from "./constants/Teams";
+import {API_FOOTBAL_DATA_URL, EREDIVISIE_CODE, PREMIER_LEAGUE_CODE, WORLDCUP2022_CODE} from "./constants/Teams";
 
 
 export interface MatchWithCompetition {
@@ -64,7 +64,7 @@ export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<Foot
 
         let competitionPromises: Array<Promise<AxiosResponse<FootballDataApiMatches>>> = [];
 
-        const competitions: Array<string> = [EREDIVISIE_CODE, PREMIER_LEAGUE_CODE];
+        const competitions: Array<string> = [WORLDCUP2022_CODE, EREDIVISIE_CODE, PREMIER_LEAGUE_CODE];
         competitions.forEach((competition) => {
             const competitionPromise = axios.get<FootballDataApiMatches>(
                 `${API_FOOTBAL_DATA_URL}/competitions/${competition}/matches/`,

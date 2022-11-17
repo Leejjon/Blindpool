@@ -2,8 +2,8 @@
 export const API_FOOTBAL_DATA_URL = "http://api.football-data.org/v2";
 export const EREDIVISIE_CODE = '2003';
 export const EREDIVISIE_NAME = "Eredivisie";
-export const EURO2020_CODE = '2018';
-export const EURO2020_NAME = "Euro 2020"
+export const WORLDCUP2022_CODE = '2000';
+export const WORLDCUP2022_NAME = "World Cup 2022"
 export const PREMIER_LEAGUE_CODE = '2021';
 export const PREMIER_LEAGUE_NAME = "Premier League";
 
@@ -33,31 +33,40 @@ const eredivisieTeams: {[key: number]: string} = {
     6806: 'Sparta'
 }
 
-const euro2020Teams : {[key: number]: string} = {
+const worldCup2022Teams: {[key: number]: string} = {
+    758: 'Uruguay',
     759: 'Germany',
     760: 'Spain',
+    762: 'Argentina',
+    763: 'Ghana',
+    764: 'Brazil',
     765: 'Portugal',
-    768: 'Slovakia',
-    770: 'England',
+    766: 'Japan',
+    769: 'Mexico',
+    770: 'Engeland',
+    771: 'Verenigde Staten',
+    772: 'Zuid Korea',
     773: 'France',
+    779: 'Australia',
+    780: 'Serbia',
+    781: 'Cameroon',
     782: 'Denmark',
     784: 'Italy',
     788: 'Switzerland',
-    790: 'Ukraine',
-    792: 'Sweden',
+    791: 'Ecuador',
+    793: 'Costa Rica',
     794: 'Poland',
-    798: 'Czech Republic',
     799: 'Croatia',
-    803: 'Turkey',
+    801: 'Saudi Arabia',
+    802: 'Tunisia',
+    804: 'Senegal',
     805: 'Belgium',
-    808: 'Russia',
-    816: 'Austria',
-    827: 'Hungary',
+    815: 'Morocco',
+    828: 'Canada',
     833: 'Wales',
-    1976: 'Finland',
-    1977: 'North Macedonia',
+    840: 'Iran',
+    8030: 'Qatar',
     8601: 'Netherlands',
-    8873: 'Scotland'
 };
 
 const premierLeagueTeams : {[key: number]: string} = {
@@ -93,8 +102,8 @@ export const getTeamName = (teamId: number, competitionId: string): string => {
        teamName = eredivisieTeams[teamId];
     }
 
-    if (competitionId === EURO2020_CODE) {
-        teamName = euro2020Teams[teamId];
+    if (competitionId === WORLDCUP2022_CODE) {
+        teamName = worldCup2022Teams[teamId];
     }
 
     if (competitionId === PREMIER_LEAGUE_CODE) {
@@ -115,9 +124,9 @@ export const getCompetitionByTeam = (homeTeamId: number | null, awayTeamId: numb
     if (teamExistsInPremierLeague) {
         return PREMIER_LEAGUE_CODE;
     }
-    const teamExistsInEuro2020: boolean = !! euro2020Teams[homeTeamId];
-    if (teamExistsInEuro2020) {
-        return EURO2020_CODE;
+    const teamExistsInWorldCup2022: boolean = !! worldCup2022Teams[homeTeamId];
+    if (teamExistsInWorldCup2022) {
+        return WORLDCUP2022_CODE;
     } else {
         console.log(`error ${homeTeamId}`);
         throw Error('Invalid team id');
