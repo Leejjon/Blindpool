@@ -21,9 +21,9 @@ import {ContentCopy, Help} from "@mui/icons-material";
 import {Params} from "react-router-dom";
 
 const root = {
-    flexShrink: 0,
+    flexGrow: 1,
     textAlign: 'center',
-    marginTop: '1em',
+    marginTop: '0.5em',
 }
 const table = {
     width: '100%',
