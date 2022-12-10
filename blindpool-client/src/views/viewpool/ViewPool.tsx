@@ -24,6 +24,10 @@ const root = {
     flexGrow: 1,
     textAlign: 'center',
     marginTop: '0.5em',
+    marginBottom: '2em'
+    // marginLeft: '0',
+    // marginRight: '0',
+    // paddingLeft: '0'
 }
 const table = {
     width: '100%',
@@ -221,7 +225,7 @@ const ViewPool: React.FC = () => {
     } else {
         return (
             <Grid container justifyContent={"center"} spacing={2} sx={root}
-                  style={{marginRight: "-16px", marginLeft: "-16px", paddingLeft: "15px"}}>
+                  style={{marginRight: "-16px", marginLeft: "-16px"}}>
                 <Helmet>
                     <title>{t('TITLE')} - {t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}</title>
                     <meta name="description" content={t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()})}/>
