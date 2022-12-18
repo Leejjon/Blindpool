@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import {Helmet} from "react-helmet-async";
 import appState from "../../state/AppState";
-import Blindpool, {CreateBlindpoolRequest} from "../../model/Blindpool";
+import Blindpool from "../../model/Blindpool";
 import Player from "../../model/Player";
 import NameField from "./NameField";
 import {Api, getHost} from "../../utils/Network";
@@ -22,6 +22,8 @@ import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
 import {BpMatchesProps, BpSnackbarMessageProps} from "../../App";
 import {Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
+import {CreateBlindpoolRequest} from "blindpool-common";
+import {validate} from "class-validator";
 
 const EMPTY_STRING = "";
 
@@ -131,10 +133,15 @@ const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessa
         const freeFormatMatch = appState.selectedMatch as string;
         if (validateState([...players],true)) {
             setLoading(true);
+            let requestBody = {
+                participants: players.map(player => player.name)
+            } as CreateBlindpoolRequest;
+            let validationErrors = await validate(requestBody);
+            if (validationErrors.length > 0) {
+                setLoading(false);
+                setMessage("ILLEGAL_CHARACTER_MESSAGE");
+            }
             try {
-                let requestBody = {
-                    participants: players.map(player => player.name)
-                } as CreateBlindpoolRequest;
 
                 if (selectedMatch && selectedMatch.id) {
                     requestBody.selectedMatchID = selectedMatch.id;

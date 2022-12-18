@@ -1,12 +1,4 @@
 import 'reflect-metadata'; // This import is needed for: https://github.com/typestack/class-transformer#working-with-nested-objects
-import {
-    IsDate,
-    IsNumber,
-    IsOptional,
-    IsString,
-    Matches, MaxLength, ValidateNested,
-} from "class-validator";
-import {Type} from "class-transformer";
 
 interface Participant {
     name: string,
@@ -41,27 +33,6 @@ export class Blindpool {
         this.CREATED_TIMESTAMP = CREATED_TIMESTAMP;
         this.MATCH = MATCH;
         this.FREE_FORMAT_MATCH = FREE_FORMAT_MATCH;
-    }
-}
-
-export class CreateBlindpoolRequest {
-    @IsString({each: true})
-    @Matches(/^([a-zA-Z0-9 _]{1,20})$/, {each: true})
-    participants: string[];
-
-    @IsOptional()
-    @IsString()
-    selectedMatchID?: string
-
-    @IsOptional()
-    @IsString()
-    @Matches(/^([a-zA-Z0-9 ]{5,50})$/)
-    freeFormatMatch?: string;
-
-    constructor(participants: string[], selectedMatch?: string, freeFormatMatch?: string) {
-        this.participants = participants;
-        this.selectedMatchID = selectedMatch;
-        this.freeFormatMatch = freeFormatMatch
     }
 }
 
