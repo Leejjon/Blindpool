@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "class-validator": "^0.13.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.17",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

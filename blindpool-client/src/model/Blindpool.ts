@@ -19,10 +19,4 @@ interface Blindpool {
     FREE_FORMAT_MATCH?: string
 }
 
-export interface CreateBlindpoolRequest {
-    participants: string[],
-    selectedMatchID?: string,
-    freeFormatMatch?: string
-}
-
 export default Blindpool;

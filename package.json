@@ -1,0 +1,5 @@
+{
+  "name": "blindpool",
+  "private": true,
+  "workspaces": ["blindpool-common"]
+}

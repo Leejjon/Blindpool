@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {Blindpool, CreateBlindpoolRequest, Match, ParticipantAndScore} from "../models/Blindpool";
+import {Blindpool, Match, ParticipantAndScore} from "../models/Blindpool";
 import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
 import {calculateBlindpoolCount, findBlindpoolByKey, insertNewBlindpool} from "../services/BlindpoolService";
@@ -7,6 +7,7 @@ import {assignRandomScores} from "../logic/ScoreGenerator";
 import {plainToClass} from "class-transformer";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
+import {CreateBlindpoolRequest} from "blindpool-common";
 
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'

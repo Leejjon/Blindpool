@@ -7,7 +7,7 @@ import {
 import {validate} from "class-validator";
 import cors from "cors";
 import {plainToClass} from "class-transformer";
-import {CreateBlindpoolRequest, Match} from "./models/Blindpool";
+import {CreateBlindpoolRequest} from "blindpool-common";
 
 const port = process.env.PORT || '8080';
 const environment = process.env.NODE_ENV || 'development';
