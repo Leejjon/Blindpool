@@ -1,5 +1,5 @@
 export enum CompetitionEnum {
-    WORLD_CUP = 2000,
+    // WORLD_CUP = 2000,
     EREDIVISIE = 2003,
     PREMIER_LEAGUE = 2021
 }

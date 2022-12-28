@@ -148,7 +148,6 @@ const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessa
                 } else if (freeFormatMatch && freeFormatMatch.trim().length >= 0) {
                     requestBody.freeFormatMatch = freeFormatMatch.trim();
                 }
-
                 const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
                     {
                         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
