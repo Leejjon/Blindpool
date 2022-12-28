@@ -6,7 +6,7 @@ import {
 } from "./api/BlindpoolApi";
 import {validate} from "class-validator";
 import cors from "cors";
-import {plainToClass} from "class-transformer";
+import {ClassConstructor, plainToClass} from "class-transformer";
 import {CreateBlindpoolRequest} from "blindpool-common";
 
 const port = process.env.PORT || '8080';
@@ -19,7 +19,7 @@ if (environment === 'development') {
     router.options('*', cors<express.Request>());
 }
 
-function validationMiddleware<T>(type: any): RequestHandler {
+function validationMiddleware<T extends Object>(type: any): RequestHandler {
     return async (req, res, next) => {
         // For some reason the class-transformer and class-validator don't see arrays as a validation error.
         const requestBody: string = JSON.stringify(req.body);
@@ -31,7 +31,8 @@ function validationMiddleware<T>(type: any): RequestHandler {
             return;
         }
 
-        let validationErrors = await validate(plainToClass(type, req.body));
+        const responseBody: T = plainToClass(type, req.body as Object);
+        let validationErrors = await validate(responseBody);
 
         if (validationErrors.length > 0) {
             validationErrors.forEach((validationError) => {
