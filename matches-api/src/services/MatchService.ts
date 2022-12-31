@@ -32,35 +32,23 @@ export const selectTenUpcomingMatches = async (competitions: Array<number>): Pro
     try {
         const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const currentTimestamp = new Date();
-        const queries: Array<Promise<RunQueryResponse>> = [];
 
-        competitions.forEach((competition: number) => {
-            let query = datastore.createQuery('match')
-                .order('startTimestamp', {descending: false})
-                .filter('startTimestamp', '>', currentTimestamp.toJSON())
-                .filter('competitionId', competition.toString())
-                .limit(10);
-            queries.push(datastore.runQuery(query));
+        let query = datastore.createQuery('match')
+            .order('startTimestamp', {descending: false})
+            .filter('startTimestamp', '>', currentTimestamp.toJSON())
+            .filter('competitionId', 'IN', competitions.map((competition) => competition.toString()))
+            .limit(10);
+        const result: RunQueryResponse = await datastore.runQuery(query);
+
+        const [upcomingTenMatches] = result;
+        const tenMatchesFromEachCompetition: Array<Match> = upcomingTenMatches.map((upcomingMatch) => {
+            const key = upcomingMatch[datastore.KEY];
+            let match = upcomingMatch;
+            match.id = key.name;
+            return match;
         });
 
-        let matchesFromCompetitions = await Promise.all(queries);
-        const tenMatchesFromEachCompetitionMerged: Array<Match> = [];
-        matchesFromCompetitions.forEach((item) => {
-            const [upcomingTenMatches] = item;
-            upcomingTenMatches.forEach((upcomingMatch) => {
-                const key = upcomingMatch[datastore.KEY];
-                let match = upcomingMatch;
-                match.id = key.name;
-                tenMatchesFromEachCompetitionMerged.push(match);
-            });
-        });
-
-        // Sort by start date from soonest to most in future.
-        function compareStartTimestamp(a: Match, b: Match) {
-            return new Date(a.startTimestamp).getTime() - new Date(b.startTimestamp).getTime();
-        }
-
-        return ok(tenMatchesFromEachCompetitionMerged.sort(compareStartTimestamp).slice(0, 10));
+        return ok(tenMatchesFromEachCompetition);
     } catch (error) {
         console.error(`Something went wrong with retrieving ${error}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
