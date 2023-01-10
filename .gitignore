@@ -2,7 +2,8 @@ node_modules
 
 blindpool-client/build
 blindpool-client/.eslintcache
-blindpool-common/dist
+blindpool-common/index.d.ts
+blindpool-common/index.js
 blindpool-frontend/dist
 blindpool-frontend/node_modules
 blindpool-api/dist

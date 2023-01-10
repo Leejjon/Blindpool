@@ -27,7 +27,8 @@
     "express": "4.18.1",
     "hashids": "2.2.10",
     "neverthrow": "4.4.2",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "0.1.13",
+    "wtfnode": "^0.9.1"
   },
   "devDependencies": {
     "@types/chai": "4.3.1",

@@ -8,6 +8,7 @@ import {plainToClass} from "class-transformer";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
 import {CreateBlindpoolRequest} from "blindpool-common";
+import {validate} from "class-validator";
 
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'
@@ -18,6 +19,14 @@ const hashids = new Hashids();
 export const postCreateBlindpool = async (req: Request, res: Response) => {
     try {
         const createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+
+        const validationErrors = await validate(createBlindpoolRequest);
+
+        if (validationErrors.length > 0) {
+            mapError(res, ErrorScenarios.INVALID_INPUT);
+            return;
+        }
+
         const names = createBlindpoolRequest.participants;
 
         if (names.length < 1) {
@@ -26,13 +35,12 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
         }
 
         const checkForDuplicates = (nameToCheck: string) => {
-            const duplicate = names.filter(name => name === nameToCheck);
+            const duplicate = names.filter((name: string) => name === nameToCheck);
             return duplicate.length > 1;
         };
 
-        const regex = /^([a-zA-Z0-9 _]{1,20})$/;
         for (const name of names) {
-            const validName = name && regex.test(name) && !checkForDuplicates(name);
+            const validName = !checkForDuplicates(name);
             if (!validName) {
                 mapError(res, ErrorScenarios.INVALID_INPUT);
                 return;
@@ -57,6 +65,7 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
         }
 
         await handleInsertNewBlindpool(res, participantsAndScores, undefined, freeFormatMatch);
+
     } catch (error) {
         console.log('Something went wrong with creating a blindpool that wasnt handled by our default validations: ', error);
         mapError(res, ErrorScenarios.INVALID_INPUT);

@@ -1,0 +1,12 @@
+### Create a pool
+POST {{blindpool-api-url}}/api/v3/pool/
+Content-Type: application/json
+
+{"participants":["Leon", "Stofkat"],"selectedMatchID":"football-data-285418"}
+
+
+### Fail to create a pool due to illegal character in first name
+POST {{blindpool-api-url}}/api/v3/pool/
+Content-Type: application/json
+
+{"participants":["Leon!", "Stofkat"],"selectedMatchID":"football-data-285418"}
