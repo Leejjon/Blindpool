@@ -24,6 +24,7 @@ import {Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {CreateBlindpoolRequest} from "blindpool-common";
 import {validate} from "class-validator";
+import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 
 const EMPTY_STRING = "";
 
@@ -252,6 +253,7 @@ const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessa
                         </CardContent>
                     </Card>
                 </Grid>
+                <BpSocialMediaLinks/>
             </Grid>
         );
     }

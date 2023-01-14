@@ -14,13 +14,14 @@ import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import {BpCompetitionProps, BpMatchesProps} from "../../App";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
+import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 
 const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competitionsToWatch, setCompetitionsToWatch}) => {
     const {t} = useTranslation();
 
     return (
         <Grid container justifyContent={"center"} spacing={2}
-              sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em', marginBottom: '1em'}}>
+              sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em'}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
                 <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
@@ -60,7 +61,7 @@ const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competiti
                     </CardContent>
                 </Card>
             </Grid>
-            <Grid key="matchers" item>
+            <Grid key="matchers" item sx={{marginBottom: "0.3em"}}>
                 <Card className="card">
                     <CardContent>
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
@@ -70,6 +71,7 @@ const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competiti
                     </CardContent>
                 </Card>
             </Grid>
+            <BpSocialMediaLinks/>
         </Grid>
     );
 };

@@ -54,6 +54,9 @@ export const resources = {
             "WILDCARD_EXPLANATION": "The X - X (wildcard) score wins if none of the scores assigned to the other participants are correct at the end of the match.",
             "COPY": "Copy",
             "COMPETITIONS_TITLE": "What do you watch?",
+            "FOLLOW_US": "Follow blindpool on:",
+            "BLINDPOOL_ON_FB": "Blindpool on Facebook",
+            "BLINDPOOL_ON_IG": "Blindpool on Instagram"
         }
     },
     nl: {
@@ -104,6 +107,9 @@ export const resources = {
             "WILDCARD_EXPLANATION": "De X - X (wildcard) score wint als geen van de uitslagen van de andere deelnemers overeenkomt met de einduitslag van de wedstrijd.",
             "COPY": "Kopieer",
             "COMPETITIONS_TITLE": "Wat kijk jij?",
+            "FOLLOW_US": "Volg Blindepool op:",
+            "BLINDPOOL_ON_FB": "Blindepool op Facebook",
+            "BLINDPOOL_ON_IG": "Blindepool op Instagram"
         }
     }
 };

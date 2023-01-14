@@ -19,6 +19,7 @@ import {canThisScoreStillWin} from "../../logic/ScoresUtil";
 import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
 import {ContentCopy, Help} from "@mui/icons-material";
 import {Params} from "react-router-dom";
+import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 
 const root = {
     flexGrow: 1,
@@ -224,8 +225,7 @@ const ViewPool: React.FC = () => {
         return <CircularProgress sx={progress}/>
     } else {
         return (
-            <Grid container justifyContent={"center"} spacing={2} sx={root}
-                  style={{marginRight: "-16px", marginLeft: "-16px"}}>
+            <Grid container justifyContent={"center"} spacing={2} sx={root}>
                 <Helmet>
                     <title>{t('TITLE')} - {t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}</title>
                     <meta name="description" content={t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()})}/>
@@ -275,6 +275,7 @@ const ViewPool: React.FC = () => {
                         </CardActions>
                     </Card>
                 </Grid>
+                <BpSocialMediaLinks/>
             </Grid>
         );
     }

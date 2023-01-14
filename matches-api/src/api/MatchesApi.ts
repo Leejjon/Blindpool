@@ -4,6 +4,7 @@ import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../serv
 import {ErrorScenarios} from "../model/ErrorScenarios";
 import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApiService";
 import {err, ok, Result} from "neverthrow";
+const environment = process.env.NODE_ENV || 'development';
 
 export const getMatchByKey = async (req: Request, res: Response) => {
     const key = req.params.key;
@@ -39,7 +40,13 @@ export const getTenScheduledMatches = async (req: Request, res: Response) => {
 };
 
 const getTenScheduledMatchesForTheseCompetitions = async (req: Request, res: Response, competitions: Array<number>) => {
-    let tenUpcomingMatchesResult = await selectTenUpcomingMatches(competitions);
+    let competitionsToUse: Array<number>;
+    if (environment === 'development') {
+        competitionsToUse = [competitions[0]];
+    } else {
+        competitionsToUse = competitions;
+    }
+    let tenUpcomingMatchesResult = await selectTenUpcomingMatches(competitionsToUse);
 
     tenUpcomingMatchesResult
         .map((matches: Array<Match>) => mapSuccess(res, matches))

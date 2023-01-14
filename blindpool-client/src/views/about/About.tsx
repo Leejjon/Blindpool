@@ -2,6 +2,7 @@ import {Button, Card, CardActions, CardContent, Divider, Grid, Typography} from 
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {Helmet} from "react-helmet-async";
+import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 
 const pagestyle = {
     flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"
@@ -54,6 +55,7 @@ const About: React.FC = () => {
                     </CardActions>
                 </Card>
             </Grid>
+            <BpSocialMediaLinks/>
         </Grid>
     );
 };

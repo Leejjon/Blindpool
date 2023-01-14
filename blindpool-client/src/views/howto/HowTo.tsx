@@ -4,6 +4,7 @@ import {Button, Card, CardActions, CardContent, Divider, Grid, Typography} from 
 import {Helmet} from "react-helmet-async";
 import {Link} from "react-router-dom";
 import BpComicStepper from "../../components/bpcomicstepper/BpComicStepper";
+import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 
 const HowTo: React.FC = () => {
     const { t } = useTranslation();
@@ -33,6 +34,7 @@ const HowTo: React.FC = () => {
                     </CardActions>
                 </Card>
             </Grid>
+            <BpSocialMediaLinks/>
         </Grid>
     );
 }
