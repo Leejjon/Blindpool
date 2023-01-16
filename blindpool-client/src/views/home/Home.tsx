@@ -19,14 +19,15 @@ import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMedi
 const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competitionsToWatch, setCompetitionsToWatch}) => {
     const {t} = useTranslation();
 
+    const blindpoolDefinitionDescription = t('BLINDPOOL_DEFINITION_DESCRIPTION');
     return (
         <Grid container justifyContent={"center"} spacing={2}
               sx={{flexGrow: 1, textAlign: 'center', marginTop: '0.5em'}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('BLINDPOOL_DEFINITION_TITLE')}</title>
-                <meta name="description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                <meta name="description" content={blindpoolDefinitionDescription}/>
                 <meta property="og:title" content={t('TITLE') + " - " + t('BLINDPOOL_DEFINITION_TITLE')}/>
-                <meta property="og:description" content={t('BLINDPOOL_DEFINITION_DESCRIPTION')}/>
+                <meta property="og:description" content={blindpoolDefinitionDescription}/>
             </Helmet>
             {/* The insane style correction makes sure there is no horizontal scrollbar and it's centered on mobile */}
             <Grid key="definition" item>

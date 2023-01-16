@@ -176,13 +176,14 @@ const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessa
             <CircularProgress sx={{margin: "8em"}} />
         );
     } else {
+        const createPoolDescription = t('CREATE_POOL_DESCRIPTION');
         return (
             <Grid container justifyContent={"center"}  spacing={2} sx={{flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
                 <Helmet>
                     <title>{t('TITLE')} - {t('CREATE_POOL_TITLE')}</title>
-                    <meta name="description" content={t('CREATE_POOL_DESCRIPTION')}/>
+                    <meta name="description" content={createPoolDescription}/>
                     <meta property="og:title" content={t('TITLE') + " - " + t('CREATE_POOL_TITLE')}/>
-                    <meta property="og:description" content={t('CREATE_POOL_DESCRIPTION')}/>
+                    <meta property="og:description" content={createPoolDescription}/>
                 </Helmet>
                 <Grid key="definition" item>
                     <Card className="card">
@@ -237,7 +238,7 @@ const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessa
                                             </TextField>
                                         </TableCell>
                                         <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
-                                            <IconButton aria-label={t("ADD_PLAYER")}
+                                            <IconButton aria-label={t("ADD_PLAYER") + ""}
                                                         sx={{color: "black"}}
                                                         onClick={addPlayer}>
                                                 <AddCircleOutline/>

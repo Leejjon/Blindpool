@@ -121,7 +121,7 @@ i18n
     .init({
         resources,
         lng: locale,
-
+        returnNull: false,
         keySeparator: false, // we do not use keys in form messages.welcome
 
         interpolation: {

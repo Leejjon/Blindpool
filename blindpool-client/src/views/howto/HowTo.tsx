@@ -8,15 +8,15 @@ import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMedi
 
 const HowTo: React.FC = () => {
     const { t } = useTranslation();
-
+    const howDoesItWorkDescription = t('HOW_DOES_IT_WORK_DESCRIPTION');
     return (
         <Grid container justifyContent={"center"}  spacing={2}
               sx={{flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"}}>
             <Helmet>
                 <title>{t('TITLE')} - {t('HOW_DOES_IT_WORK_TITLE')}</title>
-                <meta name="description" content={t('HOW_DOES_IT_WORK_DESCRIPTION')}/>
+                <meta name="description" content={howDoesItWorkDescription}/>
                 <meta property="og:title" content={t('TITLE') + " - " + t('HOW_DOES_IT_WORK_TITLE')}/>
-                <meta property="og:description" content={t('HOW_DOES_IT_WORK_DESCRIPTION')}/>
+                <meta property="og:description" content={howDoesItWorkDescription}/>
             </Helmet>
             <Grid key="definition" item>
                 <Card className="card">

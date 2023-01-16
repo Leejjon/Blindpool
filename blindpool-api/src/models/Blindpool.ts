@@ -1,6 +1,3 @@
-import 'reflect-metadata';
-import {IsOptional, IsString, Matches} from "class-validator"; // This import is needed for: https://github.com/typestack/class-transformer#working-with-nested-objects
-
 interface Participant {
     name: string,
     userType: number

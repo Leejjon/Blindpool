@@ -221,6 +221,8 @@ const ViewPool: React.FC = () => {
         matchInfo = <Typography variant="h2">{t("POOL_MADE_BY", {organizer: getOwner()})}</Typography>;
     }*/
 
+    const blindpoolViewDescription = t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()});
+
     if (loading) {
         return <CircularProgress sx={progress}/>
     } else {
@@ -228,10 +230,10 @@ const ViewPool: React.FC = () => {
             <Grid container justifyContent={"center"} spacing={2} sx={root}>
                 <Helmet>
                     <title>{t('TITLE')} - {t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}</title>
-                    <meta name="description" content={t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()})}/>
+                    <meta name="description" content={blindpoolViewDescription}/>
                     <meta property="og:title"
                           content={t('TITLE') + " - " + t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}/>
-                    <meta property="og:description" content={t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()})}/>
+                    <meta property="og:description" content={blindpoolViewDescription}/>
                 </Helmet>
                 <Grid key="definition" item>
                     <Card className="card">

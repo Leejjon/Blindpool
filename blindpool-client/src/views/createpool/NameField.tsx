@@ -15,6 +15,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
     const {t} = useTranslation();
     let first = index <= 0;
     let invalidMessage = player.valid;
+    const removePlayerLabelAria = t("REMOVE_PLAYER_X", {index: index + 1});
     return (
         <TableRow>
             <TableCell sx={{verticalAlign: "text-top", padding: "0", paddingTop: "1.7em", margin: "0"}}>
@@ -37,7 +38,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                 </TextField>
             </TableCell>
             <TableCell align="right" sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
-                <IconButton tabIndex={-1} aria-label={t("REMOVE_PLAYER_X", {index: index + 1})}
+                <IconButton tabIndex={-1} aria-label={removePlayerLabelAria}
                             disabled={first} onClick={() => removePlayer(index)}
                             sx={{color: "black"}}>
                     {!first ? <RemoveCircleOutline/> : <Person/>}
