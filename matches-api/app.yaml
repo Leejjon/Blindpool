@@ -1,5 +1,4 @@
-
-runtime: nodejs16
+runtime: nodejs18
 service: matches-api
 env: standard
 instance_class: F1

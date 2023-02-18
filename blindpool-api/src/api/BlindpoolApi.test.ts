@@ -25,7 +25,8 @@ describe('Blindpool API', () => {
         send: sinon.stub()
     };
 
-    let next: NextFunction = sinon.stub();
+    // TODO: Figure out how the fuck this works and how you can verify that next() is not called at the end of the test.
+    let next: NextFunction = sinon.stub;
 
     let stub: sinon.SinonStub<any[], any>;
     afterEach(() => {

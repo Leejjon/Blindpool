@@ -207,8 +207,12 @@ const ViewPool: React.FC = () => {
     };
 
     const getOwner = () => {
-        let participantsAndScores = appState.poolData!.PARTICIPANTS_AND_SCORES;
-        return participantsAndScores[0].participant.name;
+        if (appState.poolData) {
+            let participantsAndScores = appState.poolData!.PARTICIPANTS_AND_SCORES;
+            return participantsAndScores[0].participant.name;
+        } else {
+            return "No name yet."
+        }
     };
 
     let matchInfo = undefined;
