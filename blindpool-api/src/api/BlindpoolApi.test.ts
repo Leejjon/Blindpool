@@ -1,4 +1,3 @@
-import 'mocha';
 import * as sinon from 'sinon';
 import {Response, Request, NextFunction} from 'express';
 import {err, ok} from "neverthrow";
@@ -19,14 +18,13 @@ describe('Blindpool API', () => {
         CREATED_TIMESTAMP: new Date()
     };
 
-    let res: Partial<Response> = {
-        contentType: sinon.stub(),
-        status: sinon.stub(),
-        send: sinon.stub()
-    };
-
-    // TODO: Figure out how the fuck this works and how you can verify that next() is not called at the end of the test.
-    let next: NextFunction = sinon.stub;
+    function createStubbedResponse() {
+        return {
+            contentType: sinon.stub(),
+            status: sinon.stub(),
+            send: sinon.stub()
+        }
+    }
 
     let stub: sinon.SinonStub<any[], any>;
     afterEach(() => {
@@ -40,12 +38,18 @@ describe('Blindpool API', () => {
         let createBlindpoolRequestBody = {
             participants: ['Hoi', 'doei'],
         };
+
+        let res: Partial<Response> = createStubbedResponse();
+
+        let next = sinon.stub();
+
         let validRequest: Partial<Request> = { body: createBlindpoolRequestBody};
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
         await postCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
         sinon.assert.calledWith(res.send as sinon.SinonStub, testPool);
+        sinon.assert.calledOnce(next);
     });
 
     it('Create blindpool - invalid name - FAIL', async () => {
@@ -54,63 +58,59 @@ describe('Blindpool API', () => {
         };
 
         let validRequest: Partial<Request> = { body: createBlindpoolRequestBody};
+        let res: Partial<Response> = createStubbedResponse();
+        let next = sinon.stub();
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
         sinon.assert.calledWith(res.send as sinon.SinonStub, "Invalid request.");
+        sinon.assert.notCalled(next);
     });
 
 
     it('Create blindpool - empty body - FAIL', async () => {
         let validRequest: Partial<Request> = { body: {}};
-        let res: Partial<Response> = {
-            contentType: sinon.stub(),
-            status: sinon.stub(),
-            send: sinon.stub()
-        };
+
+        let res: Partial<Response> = createStubbedResponse();
+        let next = sinon.stub();
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
         sinon.assert.calledWith(res.send as sinon.SinonStub, "Invalid request.");
+        sinon.assert.notCalled(next);
     });
 
     it('Create blindpool - empty list in body - FAIL', async () => {
         let validRequest: Partial<Request> = {body: {participants: []}};
-        let res: Partial<Response> = {
-            contentType: sinon.stub(),
-            status: sinon.stub(),
-            send: sinon.stub()
-        };
+
+        let res: Partial<Response> = createStubbedResponse();
+        let next = sinon.stub();
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
         await postCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
         sinon.assert.calledWith(res.send as sinon.SinonStub, 'Invalid input.');
+        sinon.assert.calledOnce(next);
     });
 
     it('Create blindpool - name with invalid character - FAIL', async () => {
         let validRequest: Partial<Request> = {body: {participants: ['Hoi', 'Doei!']}};
-        let res: Partial<Response> = {
-            contentType: sinon.stub(),
-            status: sinon.stub(),
-            send: sinon.stub()
-        };
+
+        let res: Partial<Response> = createStubbedResponse();
+        let next = sinon.stub();
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
-        await postCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
         sinon.assert.calledWith(res.send as sinon.SinonStub, "Invalid request.");
+        sinon.assert.notCalled(next);
     });
 
     it('Retrieve blindpool - SUCCESS', async () => {
         stub = sinon.stub(BlindpoolStorageService, 'findBlindpoolByKey')
             .resolves(ok(testPool));
         let validRequest: Partial<Request> = {params: {key: 'r06'}};
-        let res: Partial<Response> = {
-            contentType: sinon.stub(),
-            status: sinon.stub(),
-            send: sinon.stub()
-        };
+
+        let res: Partial<Response> = createStubbedResponse();
 
         await getBlindpoolByKey(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
@@ -121,6 +121,8 @@ describe('Blindpool API', () => {
         stub = sinon.stub(BlindpoolStorageService, 'findBlindpoolByKey')
             .resolves(err(ErrorScenarios.POOL_NOT_FOUND));
         let requestWithValidKeyButNotExistingPool: Partial<Request> = {params: {key: 'wprD1'}};
+
+        let res: Partial<Response> = createStubbedResponse();
 
         await getBlindpoolByKey(<Request>requestWithValidKeyButNotExistingPool, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 404);
@@ -134,6 +136,8 @@ describe('Blindpool API', () => {
         stub = sinon.stub(BlindpoolStorageService, 'calculateBlindpoolCount')
             .resolves(ok(expectedCount));
 
+        let res: Partial<Response> = createStubbedResponse();
+
         await getBlindpoolStatistics(<Request>emptyRequest, <Response>res);
 
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
@@ -145,6 +149,8 @@ describe('Blindpool API', () => {
 
         stub = sinon.stub(BlindpoolStorageService, 'calculateBlindpoolCount')
             .resolves(err(ErrorScenarios.INTERNAL_ERROR));
+
+        let res: Partial<Response> = createStubbedResponse();
 
         await getBlindpoolStatistics(<Request>emptyRequest, <Response>res);
 
