@@ -5,13 +5,19 @@ import {BpCompetitionProps} from "../../App";
 
 const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, setCompetitionsToWatch}) => {
     const listOfCompetitions = getCompetitionsList();
+
+    // Sanitizing competitions like the world cup, that somehow seemed to stay in the query after removing it from the getCompetitionList().
+    function filterDisabledCompetitions(competitions: Array<number>) {
+        return competitions.filter((key) => getCompetitionsList().includes(key));
+    }
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, competition: number) => {
         if (!event.target.checked) {
-            setCompetitionsToWatch(competitionsToWatch.filter((key) => key.toString() !== competition.toString()));
+            setCompetitionsToWatch(filterDisabledCompetitions(competitionsToWatch.filter((key) => key.toString() !== competition.toString())));
         } else {
             const newLeaguePreferences: Array<number> = Object.assign([], competitionsToWatch);
             newLeaguePreferences.push(competition);
-            setCompetitionsToWatch(newLeaguePreferences);
+            setCompetitionsToWatch(filterDisabledCompetitions(newLeaguePreferences));
         }
     }
 
