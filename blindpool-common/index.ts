@@ -11,7 +11,7 @@ export class CreateBlindpoolRequest {
 
     @IsOptional()
     @IsString()
-    @Matches(/^([a-zA-Z0-9 ]{5,50})$/)
+    @Matches(/^([-a-zA-Z0-9 ]{5,50})$/)
     freeFormatMatch?: string;
 
     constructor(participants: string[], selectedMatch?: string, freeFormatMatch?: string) {
