@@ -12,12 +12,24 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
-import {BpCompetitionProps, BpMatchesProps} from "../../App";
+import {BpCompetitionProps, BpSnackbarMessageProps} from "../../App";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
+import {useQuery} from "@tanstack/react-query";
+import {Match} from "../../model/Match";
+import {matchesQuery} from "../../App";
 
-const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competitionsToWatch, setCompetitionsToWatch}) => {
+const Home: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({competitionsToWatch, setCompetitionsToWatch, setMessage}) => {
     const {t} = useTranslation();
+    const {data} = useQuery({
+        ...matchesQuery(setMessage, competitionsToWatch),
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        cacheTime: 5000,
+        staleTime: 4000,
+        retry: false,
+    });
+    const matches: Array<Match> = data ?? [];
 
     const blindpoolDefinitionDescription = t('BLINDPOOL_DEFINITION_DESCRIPTION');
     return (

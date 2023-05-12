@@ -5,6 +5,7 @@ import {MemoryRouter} from 'react-router-dom';
 import fetchMock from "fetch-mock";
 import '../../locales/i18n';
 import {HelmetProvider} from "react-helmet-async";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 // This const has to have a name starting with "mock". See: https://lukerogerson.medium.com/two-ways-to-fix-the-jest-test-error-the-module-factory-of-jest-mock-is-not-allowed-to-bf022b5175dd
 const mockNavigate = jest.fn();
@@ -13,6 +14,14 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom') as any,
     useNavigate: () => mockNavigate,
 }));
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
 
 describe('Test CreatePool view', () => {
     afterEach(() => {
@@ -24,7 +33,9 @@ describe('Test CreatePool view', () => {
         const {findAllByText, getByText} = render(
             <HelmetProvider>
                 <MemoryRouter>
-                    <CreatePool setMessage={(message) => console.log(message)} matches={[]}/>
+                    <QueryClientProvider client={queryClient}>
+                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[]}/>
+                    </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
         );
@@ -40,7 +51,9 @@ describe('Test CreatePool view', () => {
         const {findAllByLabelText, getByLabelText} = render(
             <HelmetProvider>
                 <MemoryRouter>
-                    <CreatePool setMessage={(message) => console.log(message)} matches={[]}/>
+                    <QueryClientProvider client={queryClient}>
+                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[]}/>
+                    </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
         );
@@ -66,7 +79,9 @@ describe('Test CreatePool view', () => {
         const {findAllByLabelText, getByLabelText} = render(
             <HelmetProvider>
                 <MemoryRouter>
-                    <CreatePool setMessage={(message) => console.log(message)} matches={[]}/>
+                    <QueryClientProvider client={queryClient}>
+                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[]}/>
+                    </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
         );
@@ -88,7 +103,7 @@ describe('Test CreatePool view', () => {
             body: {key: 'ABC'},
             status: 200
         });
-        fetchMock.get('http://localhost:8082/api/v2/matches/upcoming', {
+        fetchMock.get('http://localhost:8082/api/v2/matches/upcoming?competition[]=2021', {
             body: [],
             status: 200
         });
@@ -96,7 +111,9 @@ describe('Test CreatePool view', () => {
         const {findByTestId, getAllByLabelText, findByDisplayValue, container} = render(
             <HelmetProvider>
                 <MemoryRouter>
-                    <CreatePool setMessage={(message) => console.log(message)} matches={[]}/>
+                    <QueryClientProvider client={queryClient}>
+                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[2021]}/>
+                    </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
         );
@@ -131,8 +148,6 @@ describe('Test CreatePool view', () => {
             expect(fetchMock.called((url, req): boolean => {
                 if (url === 'http://localhost:8080/api/v3/pool' && req.body === JSON.stringify({participants: names})) {
                     return true;
-                } else if (url === 'http://localhost:8082/api/v2/matches/upcoming' && req.body === undefined) {
-                    return true;
                 } else {
                     return false;
                 }
@@ -151,7 +166,7 @@ describe('Test CreatePool view', () => {
             'http://localhost:8080/api/v3/pool',
             Promise.reject('NetworkError when attempting to fetch resource.')
         ).get(
-            'http://localhost:8082/api/v2/matches/upcoming', {
+            'http://localhost:8082/api/v2/matches/upcoming?competition[]=2021', {
                 body: [],
                 status: 200
             });
@@ -160,7 +175,9 @@ describe('Test CreatePool view', () => {
         const {getByText, getAllByLabelText, container} = render(
             <HelmetProvider>
                 <MemoryRouter>
-                    <CreatePool setMessage={(message) => messageState = message} matches={[]}/>
+                    <QueryClientProvider client={queryClient}>
+                        <CreatePool setMessage={(message) => messageState = message} competitionsToWatch={[]}/>
+                    </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
         );

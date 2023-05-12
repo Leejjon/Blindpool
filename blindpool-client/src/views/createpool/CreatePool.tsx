@@ -19,12 +19,13 @@ import Player from "../../model/Player";
 import NameField from "./NameField";
 import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
-import {BpMatchesProps, BpSnackbarMessageProps} from "../../App";
+import {BpCompetitionProps, BpSnackbarMessageProps, matchesQuery} from "../../App";
 import {Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {CreateBlindpoolRequest} from "blindpool-common";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
+import {useQuery} from "@tanstack/react-query";
 
 const EMPTY_STRING = "";
 
@@ -33,8 +34,13 @@ const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
-const CreatePool: React.FC<BpSnackbarMessageProps & BpMatchesProps> = ({setMessage, matches}) => {
+const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({competitionsToWatch, setMessage}) => {
     const {t} = useTranslation();
+    const {data} = useQuery({
+        ...matchesQuery(setMessage, competitionsToWatch),
+    });
+    const matches: Array<Match> = data ?? [];
+
     let navigate = useNavigate();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
     const [loading, setLoading] = useState(false);

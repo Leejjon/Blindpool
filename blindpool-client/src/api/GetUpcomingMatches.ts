@@ -18,7 +18,6 @@ export const getUpcomingMatches = async (setMessage: setMessageFunction, competi
             url += `${separationChar}competition[]=${competitionsToWatch[i]}`;
             separationChar = "&"
         }
-        console.log(url);
         const response = await fetch(url);
         if (response.status === 200) {
             return await response.json();

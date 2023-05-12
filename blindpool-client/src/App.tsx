@@ -25,7 +25,7 @@ export interface BpMatchesProps {
 
 export interface BpCompetitionProps {
     competitionsToWatch: Array<number>;
-    setCompetitionsToWatch: (competitions: Array<number>) => void;
+    setCompetitionsToWatch?: (competitions: Array<number>) => void;
 }
 
 const localStorageName = "competitions";
@@ -49,19 +49,26 @@ function getCompetitionsFromLocalStorage(): Array<number> {
     }
 }
 
+export const matchesQuery = (setMessage: (message: string | undefined) => void, competitionsToWatch: Array<number>) => (
+    {
+        queryKey: ["matches", competitionsToWatch.toString()],
+        queryFn: async () => { return await getUpcomingMatches(setMessage, competitionsToWatch)},
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        cacheTime: 5000,
+        staleTime: 4000,
+        retry: false,
+    }
+);
+
 function App() {
     const {t} = useTranslation();
     const [message, setMessage] = useState<string | undefined>(undefined);
-    const [matches, setMatches] = useState<Array<Match>>([]);
     const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage);
 
     useEffect(() => {
         updateCompetitionsInLocalStorage(competitionsToWatch);
-        getUpcomingMatches(setMessage, competitionsToWatch)
-            .then((matches) => {
-                setMatches(matches);
-            }) // Do we need a .catch here? There is already one inside getUpcomingMatches
-    }, [competitionsToWatch]);
+    }, [competitionsToWatch, setCompetitionsToWatch]);
 
     const handleClose = (event: any, reason?: string) => {
         if (reason === 'clickaway') {
@@ -78,11 +85,11 @@ function App() {
                     <BpAppBar/>
                     <Routes>
                         <Route path="/" element={
-                            <Home matches={matches} competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={(competitions) => setCompetitionsToWatch(competitions)} />
+                            <Home setMessage={setMessage} competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={(competitions) => setCompetitionsToWatch(competitions)} />
                         } />
                         <Route path="/about" element={<About/>}/>
                         <Route path="/create" element={
-                            <CreatePool setMessage={(message) => setMessage(message)} matches={matches}/>}
+                            <CreatePool competitionsToWatch={competitionsToWatch} setMessage={(message) => setMessage(message)} />}
                         />
                         <Route path="/howto" element={<HowTo/>}/>
                         <Route path="/pool/:key" element={<ViewPool/>}/>

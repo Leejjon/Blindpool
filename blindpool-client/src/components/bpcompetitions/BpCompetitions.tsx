@@ -13,11 +13,11 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, competition: number) => {
         if (!event.target.checked) {
-            setCompetitionsToWatch(filterDisabledCompetitions(competitionsToWatch.filter((key) => key.toString() !== competition.toString())));
+            setCompetitionsToWatch?.(filterDisabledCompetitions(competitionsToWatch.filter((key) => key.toString() !== competition.toString())));
         } else {
             const newLeaguePreferences: Array<number> = Object.assign([], competitionsToWatch);
             newLeaguePreferences.push(competition);
-            setCompetitionsToWatch(filterDisabledCompetitions(newLeaguePreferences));
+            setCompetitionsToWatch?.(filterDisabledCompetitions(newLeaguePreferences));
         }
     }
 
