@@ -9,7 +9,7 @@ interface Competition {
     icon: string
 }
 
-export const competitions: {[key: number]: Competition} = {
+export const allCompetitions: {[key: number]: Competition} = {
     // 2000: {name: "World Cup 2022", icon: "none"},
     // 2002: {name: "Bundesliga", icon: "premierleague.svg"},
     2003: {name: "Eredivisie", icon: "eredivisie.svg"},
@@ -21,7 +21,7 @@ export const competitions: {[key: number]: Competition} = {
 
 export function getCompetitionsList() {
     let competitionKeys = [];
-    for (let key in competitions) {
+    for (let key in allCompetitions) {
         competitionKeys.push(Number(key));
     }
     return competitionKeys;

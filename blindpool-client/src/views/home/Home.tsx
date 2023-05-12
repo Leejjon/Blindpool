@@ -12,12 +12,23 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
-import {BpCompetitionProps, BpMatchesProps} from "../../App";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
+import {matchesQuery} from "../../index";
+import {useQuery} from "@tanstack/react-query";
+import {Match} from "../../model/Match";
 
-const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competitionsToWatch, setCompetitionsToWatch}) => {
+const Home: React.FC = () => {
     const {t} = useTranslation();
+    const {data} = useQuery({
+        ...matchesQuery(),
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        cacheTime: 5000,
+        staleTime: 4000,
+        retry: false,
+    });
+    const matches: Array<Match> = data ?? [];
 
     const blindpoolDefinitionDescription = t('BLINDPOOL_DEFINITION_DESCRIPTION');
     return (
@@ -58,7 +69,7 @@ const Home: React.FC<BpMatchesProps & BpCompetitionProps> = ({matches, competiti
                             {t("COMPETITIONS_TITLE")}
                         </Typography>
                         <Divider />
-                        <BpCompetitions competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={setCompetitionsToWatch}/>
+                        <BpCompetitions />
                     </CardContent>
                 </Card>
             </Grid>
