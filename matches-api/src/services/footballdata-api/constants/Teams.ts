@@ -1,11 +1,13 @@
 
 export const API_FOOTBAL_DATA_URL = "http://api.football-data.org/v2";
-export const EREDIVISIE_CODE = '2003';
+export const EREDIVISIE_CODE = "2003";
 export const EREDIVISIE_NAME = "Eredivisie";
-export const WORLDCUP2022_CODE = '2000';
+export const WORLDCUP2022_CODE = "2000";
 export const WORLDCUP2022_NAME = "World Cup 2022"
-export const PREMIER_LEAGUE_CODE = '2021';
+export const PREMIER_LEAGUE_CODE = "2021";
 export const PREMIER_LEAGUE_NAME = "Premier League";
+export const LA_LIGA_CODE = "2014";
+export const LA_LIGA_NAME = "La Liga";
 
 const eredivisieTeams: {[key: number]: string} = {
     666: 'FC Twente',
@@ -95,6 +97,29 @@ const premierLeagueTeams : {[key: number]: string} = {
     1044: 'Bournemouth'
 }
 
+const laLigaTeams : {[key: number]: string} = {
+    77: "Atletic Club",
+    78: "Atlético",
+    79: "CA Osasuna",
+    80: "Espanyol",
+    81: "FC Barcalona",
+    82: "Getafe CF",
+    86: "Real Madrid",
+    87: "Rayo Vallecano",
+    89: "RCD Mallorca",
+    90: "Real Betis",
+    92: "Real Sociedad",
+    94: "Villareal CF",
+    95: "Valencia CF",
+    250: "Valladolid",
+    264: "Cádiz CF",
+    267: "UD Almería",
+    285: "Elche CF",
+    298: "Girona FC",
+    558: "RC Celta de Vigo",
+    559: "Sevilla FC"
+}
+
 export const getTeamName = (teamId: number, competitionId: string): string => {
     let teamName;
 
@@ -108,6 +133,10 @@ export const getTeamName = (teamId: number, competitionId: string): string => {
 
     if (competitionId === PREMIER_LEAGUE_CODE) {
         teamName = premierLeagueTeams[teamId];
+    }
+
+    if (competitionId === LA_LIGA_CODE) {
+        teamName = laLigaTeams[teamId];
     }
     return teamName ? teamName : 'Unknown team';
 };
@@ -123,6 +152,10 @@ export const getCompetitionByTeam = (homeTeamId: number | null, awayTeamId: numb
     const teamExistsInPremierLeague: boolean = !!premierLeagueTeams[homeTeamId];
     if (teamExistsInPremierLeague) {
         return PREMIER_LEAGUE_CODE;
+    }
+    const teamExistsInLaLiga: boolean = !!laLigaTeams[homeTeamId];
+    if (teamExistsInLaLiga) {
+        return LA_LIGA_CODE;
     }
     const teamExistsInWorldCup2022: boolean = !! worldCup2022Teams[homeTeamId];
     if (teamExistsInWorldCup2022) {

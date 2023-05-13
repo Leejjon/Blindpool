@@ -7,7 +7,13 @@ import {getDatastoreInstance} from "./DatastoreService";
 import {
     EREDIVISIE_CODE,
     EREDIVISIE_NAME,
-    getCompetitionByTeam, getTeamName, PREMIER_LEAGUE_CODE, PREMIER_LEAGUE_NAME, WORLDCUP2022_CODE, WORLDCUP2022_NAME
+    getCompetitionByTeam,
+    getTeamName,
+    LA_LIGA_CODE, LA_LIGA_NAME,
+    PREMIER_LEAGUE_CODE,
+    PREMIER_LEAGUE_NAME,
+    WORLDCUP2022_CODE,
+    WORLDCUP2022_NAME
 } from "./footballdata-api/constants/Teams";
 import {RunQueryResponse} from "@google-cloud/datastore/build/src/query";
 
@@ -99,6 +105,9 @@ function convertToMatchEntity(match: FootballDataApiMatch) {
         }
         if (competitionId === WORLDCUP2022_CODE) {
             competitionName = WORLDCUP2022_NAME;
+        }
+        if (competitionId === LA_LIGA_CODE) {
+            competitionName = LA_LIGA_NAME;
         }
 
         const matchIndexes = [

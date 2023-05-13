@@ -10,7 +10,8 @@
     "webpack": "webpack --config webpackdev.config.ts --watch",
     "build": "webpack --mode production",
     "test": "mocha -r ts-node/register src/**/*test.ts",
-    "webpacktest": "node --trace-deprecation node_modules/webpack/bin/webpack.js"
+    "webpacktest": "node --trace-deprecation node_modules/webpack/bin/webpack.js",
+    "gcp-build": ""
   },
   "keywords": [],
   "author": "",

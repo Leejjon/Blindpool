@@ -13,6 +13,16 @@ GET {{footballdata-api-url}}/v2/competitions/2021/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
+### La Liga teams
+GET {{footballdata-api-url}}/v2/competitions/2014/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### La Liga matches
+GET {{footballdata-api-url}}/v2/competitions/2014/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
 ### World cup 2022 matches
 GET {{footballdata-api-url}}/v4/competitions/2000/matches
 Accept: application/json
