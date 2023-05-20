@@ -1,7 +1,7 @@
 import {Checkbox, FormControlLabel, List, ListItem, ListItemButton} from "@mui/material";
-import {competitions, getCompetitionsList} from "../../constants/Competitions";
 import React from "react";
 import {BpCompetitionProps} from "../../App";
+import {competitions, getCompetitionsList} from "blindpool-common/constants/Competitions";
 
 const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, setCompetitionsToWatch}) => {
     const listOfCompetitions = getCompetitionsList();
@@ -29,7 +29,7 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
-                            <FormControlLabel label={competition.name} control={
+                            <FormControlLabel label={competition.competition} control={
                                 <Checkbox sx={{marginLeft: "0.5em"}} onChange={(event) => handleChange(event, key)}
                                   checked={competitionsToWatch.includes(key)} disableRipple color="secondary" />
                             }/>

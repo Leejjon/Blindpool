@@ -22,10 +22,10 @@ import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
 import {BpCompetitionProps, BpSnackbarMessageProps, matchesQuery} from "../../App";
 import {Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
-import {CreateBlindpoolRequest} from "blindpool-common";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQuery} from "@tanstack/react-query";
+import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 
 const EMPTY_STRING = "";
 

@@ -7,8 +7,8 @@ import {assignRandomScores} from "../logic/ScoreGenerator";
 import {plainToClass} from "class-transformer";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
-import {CreateBlindpoolRequest} from "blindpool-common";
 import {validate} from "class-validator";
+import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 
 // Switch to import to get code completion... The import version crashes on runtime though.
 // import Hashids from 'hashids'

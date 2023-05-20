@@ -64,11 +64,11 @@ export const matchesQuery = (setMessage: (message: string | undefined) => void, 
 function App() {
     const {t} = useTranslation();
     const [message, setMessage] = useState<string | undefined>(undefined);
-    const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage);
+    const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage());
 
     useEffect(() => {
         updateCompetitionsInLocalStorage(competitionsToWatch);
-    }, [competitionsToWatch, setCompetitionsToWatch]);
+    }, [setCompetitionsToWatch]);
 
     const handleClose = (event: any, reason?: string) => {
         if (reason === 'clickaway') {

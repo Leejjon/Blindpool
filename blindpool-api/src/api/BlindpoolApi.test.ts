@@ -4,9 +4,9 @@ import {err, ok} from "neverthrow";
 import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
 import * as BlindpoolStorageService from "../services/BlindpoolService";
-import {CreateBlindpoolRequest} from "blindpool-common";
 import {tryValidation} from "../validation/Validation";
 import {ErrorScenarios} from "../models/ErrorScenarios";
+import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 
 describe('Blindpool API', () => {
     const testPool: Blindpool = {

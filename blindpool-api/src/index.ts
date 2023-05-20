@@ -4,11 +4,9 @@ import {
     getBlindpoolStatistics,
     postCreateBlindpool
 } from "./api/BlindpoolApi";
-import {validate} from "class-validator";
 import cors from "cors";
-import {ClassConstructor, plainToClass} from "class-transformer";
-import {CreateBlindpoolRequest} from "blindpool-common";
 import {tryValidation} from "./validation/Validation";
+import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 
 const port = process.env.PORT || '8080';
 const environment = process.env.NODE_ENV || 'development';

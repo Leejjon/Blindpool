@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import {initReactI18next} from "react-i18next";
 import {Match} from "../model/Match";
-import {CompetitionEnum} from "../constants/Competitions";
+import {CompetitionEnum, getCompetitionKey} from "blindpool-common/constants/Competitions";
 
 // the translations
 // (tip move them in a JSON file and import them)
@@ -123,13 +123,12 @@ i18n
         lng: locale,
         returnNull: false,
         keySeparator: false, // we do not use keys in form messages.welcome
-
         interpolation: {
             escapeValue: false // react already safes from xss
         }
     });
 
-export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [CompetitionEnum.EREDIVISIE.valueOf()] : [CompetitionEnum.PREMIER_LEAGUE.valueOf()];
+export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [getCompetitionKey(CompetitionEnum.EREDIVISIE)] : [getCompetitionKey(CompetitionEnum.PREMIER_LEAGUE)];
 
 export interface dutchCountryNameMapping {
     [teamID: number]: string;
