@@ -29,12 +29,15 @@ describe('Test CreatePool view', () => {
         mockNavigate.mockClear();
     });
 
+    const fakeSetter = (matchId: string | undefined) => { };
+
     test('Create pool with all fields empty - fail with enter a name message', async () => {
         const {findAllByText, getByText} = render(
             <HelmetProvider>
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[]}/>
+                        <CreatePool setMessage={(message) => console.log(message)}
+                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter}/>
                     </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
@@ -52,7 +55,8 @@ describe('Test CreatePool view', () => {
             <HelmetProvider>
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[]}/>
+                        <CreatePool setMessage={(message) => console.log(message)}
+                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter}/>
                     </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
@@ -80,7 +84,8 @@ describe('Test CreatePool view', () => {
             <HelmetProvider>
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[]}/>
+                        <CreatePool setMessage={(message) => console.log(message)}
+                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter}/>
                     </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
@@ -112,7 +117,8 @@ describe('Test CreatePool view', () => {
             <HelmetProvider>
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)} competitionsToWatch={[2021]}/>
+                        <CreatePool setMessage={(message) => console.log(message)}
+                                    competitionsToWatch={[2021]} setSelectedMatchId={fakeSetter}/>
                     </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>
@@ -176,7 +182,8 @@ describe('Test CreatePool view', () => {
             <HelmetProvider>
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => messageState = message} competitionsToWatch={[]}/>
+                        <CreatePool setMessage={(message) => messageState = message}
+                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter} />
                     </QueryClientProvider>
                 </MemoryRouter>
             </HelmetProvider>

@@ -13,19 +13,19 @@ import {
     Typography
 } from "@mui/material";
 import {Helmet} from "react-helmet-async";
-import appState from "../../state/AppState";
 import Blindpool from "../../model/Blindpool";
 import Player from "../../model/Player";
 import NameField from "./NameField";
 import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
-import {BpCompetitionProps, BpSnackbarMessageProps, matchesQuery} from "../../App";
-import {Match} from "../../model/Match";
+import {BpCompetitionProps, BpSelectedMatchProps, BpSnackbarMessageProps} from "../../App";
+import {doesMatchExistIn, Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQuery} from "@tanstack/react-query";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
+import {matchesQuery} from "../../queries/MatchesQuery";
 
 const EMPTY_STRING = "";
 
@@ -34,7 +34,7 @@ const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
-const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({competitionsToWatch, setMessage}) => {
+const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelectedMatchProps> = ({competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId}) => {
     const {t} = useTranslation();
     const {data} = useQuery({
         ...matchesQuery(setMessage, competitionsToWatch),
@@ -136,8 +136,6 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({comp
     };
 
     const sendCreatePoolRequest = async () => {
-        const selectedMatch = appState.selectedMatch as Match;
-        const freeFormatMatch = appState.selectedMatch as string;
         if (validateState([...players],true)) {
             setLoading(true);
             let requestBody = {
@@ -149,11 +147,13 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({comp
                 setMessage("ILLEGAL_CHARACTER_MESSAGE");
             }
             try {
-
-                if (selectedMatch && selectedMatch.id) {
-                    requestBody.selectedMatchID = selectedMatch.id;
-                } else if (freeFormatMatch && freeFormatMatch.trim().length >= 0) {
-                    requestBody.freeFormatMatch = freeFormatMatch.trim();
+                if (selectedMatchId) {
+                    const matchId = doesMatchExistIn(selectedMatchId, matches);
+                    if (matchId) {
+                        requestBody.selectedMatchID = matchId;
+                    } else {
+                        requestBody.freeFormatMatch = selectedMatchId.trim();
+                    }
                 }
                 const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
                     {
@@ -163,7 +163,7 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({comp
                 );
                 if (response.status === 200) {
                     const poolJson: Blindpool = await response.json();
-                    appState.setPool(poolJson);
+                    // appState.setPool(poolJson);
                     setLoading(false);
                     navigate(`/pool/${poolJson.key}`);
                 } else {
@@ -198,7 +198,8 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({comp
                                 {t("CREATE_POOL")}
                             </Typography>
                             <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
-                                             setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}/>
+                                             setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
+                                             selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />
                             {/*border={1}*/}
                             <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
                                 <colgroup>

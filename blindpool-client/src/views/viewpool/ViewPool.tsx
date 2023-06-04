@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {
     Card, CardActions,
     CardContent, CircularProgress,
@@ -10,16 +10,16 @@ import {
 } from "@mui/material";
 import {useParams} from "react-router";
 import {useTranslation} from "react-i18next";
-import appState from "../../state/AppState";
-import {Api, getHost} from "../../utils/Network";
 import {Helmet} from "react-helmet-async";
-import {Match} from "../../model/Match";
-import Blindpool from "../../model/Blindpool";
 import {canThisScoreStillWin} from "../../logic/ScoresUtil";
 import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
 import {ContentCopy, Help} from "@mui/icons-material";
 import {Params} from "react-router-dom";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
+import {useQuery} from "@tanstack/react-query";
+import {poolQuery} from "../../queries/PoolQuery";
+import {matchInfoQuery} from "../../queries/MatchResultQuery";
+import Blindpool from "../../model/Blindpool";
 
 const root = {
     flexGrow: 1,
@@ -67,11 +67,19 @@ interface KeyInParams extends Params { // https://github.com/remix-run/react-rou
 }
 
 const ViewPool: React.FC = () => {
-    let {key} = useParams() as KeyInParams;
+    const {key} = useParams() as KeyInParams;
     const {t} = useTranslation();
-    const [loading, setLoading] = useState(true);
-    const [fullMatchInfo, setFullMatchInfo] = useState<Match | undefined>(undefined);
-    const [shareUrl, setShareUrl] = useState("");
+    // const [loading, setLoading] = useState(true);
+
+    const poolResult = useQuery({...poolQuery(key)});
+    const pool: Blindpool | undefined = poolResult.data;
+    const match = pool?.MATCH;
+    const poolIsLoading = poolResult.isLoading;
+
+    const matchScoreResult = useQuery({...matchInfoQuery(match?.id), enabled: !!pool?.MATCH});
+    const fullMatchInfo = matchScoreResult.data;
+
+    const shareUrl = `${window.location.protocol}//${window.location.host}/pool/${key}`;
     const theme = useTheme();
     const tooltip = {
         backgroundColor: '#f5f5f9',
@@ -79,38 +87,6 @@ const ViewPool: React.FC = () => {
         maxWidth: 220,
         fontSize: theme.typography.pxToRem(16),
         border: '1px solid #dadde9',
-    }
-
-    if (loading) {
-        if (appState.poolData === undefined || appState.poolData!.key !== key) {
-            // TODO:  Need to add a catch mechanism.
-            fetch(`${getHost(Api.pool)}/api/v2/pool/${key}`)
-                .then(poolJsonFromServer => poolJsonFromServer.json())
-                .then((poolJson: Blindpool) => {
-                    appState.setPool(poolJson);
-                    setLoading(false);
-                    setShareUrl(`${window.location.protocol}//${window.location.host}/pool/${appState.poolData!.key}`);
-
-                    if (poolJson.MATCH /*&& poolJson.MATCH.startTimestamp < new Date()*/) {
-                        fetch(`${getHost(Api.matches)}/api/v2/matches/${poolJson.MATCH.id}`)
-                            .then(matchJsonFromServer => matchJsonFromServer.json())
-                            .then((matchJson: Match) => {
-                                setFullMatchInfo(matchJson);
-                            });
-                    }
-                });
-        } else {
-            setLoading(false);
-            setShareUrl(`${window.location.protocol}//${window.location.host}/pool/${appState.poolData!.key}`);
-            if (appState.selectedMatch && typeof appState.selectedMatch !== 'string') {
-                const actualMatch = appState.selectedMatch as Match;
-                fetch(`${getHost(Api.matches)}/api/v2/matches/${actualMatch.id}`)
-                    .then(matchJsonFromServer => matchJsonFromServer.json())
-                    .then((matchJson: Match) => {
-                        setFullMatchInfo(matchJson);
-                    });
-            }
-        }
     }
 
     const copy = () => {
@@ -146,7 +122,7 @@ const ViewPool: React.FC = () => {
     };
 
     const renderTableData = () => {
-        return appState.poolData!.PARTICIPANTS_AND_SCORES.map((participantAndScore, index) => {
+        return pool!.PARTICIPANTS_AND_SCORES.map((participantAndScore, index) => {
             const participantName = participantAndScore.participant.name;
             const home: string = participantAndScore.score.home >= 0 ? participantAndScore.score.home.toString() : 'X';
             const away: string = participantAndScore.score.away >= 0 ? participantAndScore.score.away.toString() : 'X';
@@ -160,7 +136,7 @@ const ViewPool: React.FC = () => {
             }
 
             const participantAndScoreFC = () => {
-                if (fullMatchInfo && (canThisScoreStillWin(participantAndScore.score, appState.poolData!.PARTICIPANTS_AND_SCORES, fullMatchInfo.score, fullMatchInfo.finished))) {
+                if (fullMatchInfo && (canThisScoreStillWin(participantAndScore.score, pool!.PARTICIPANTS_AND_SCORES, fullMatchInfo.score, fullMatchInfo.finished))) {
                     return (
                         <TableRow key={participantName}>
                             <TableCell>
@@ -207,8 +183,8 @@ const ViewPool: React.FC = () => {
     };
 
     const getOwner = () => {
-        if (appState.poolData) {
-            let participantsAndScores = appState.poolData!.PARTICIPANTS_AND_SCORES;
+        if (pool) {
+            let participantsAndScores = pool.PARTICIPANTS_AND_SCORES;
             return participantsAndScores[0].participant.name;
         } else {
             return "No name yet."
@@ -216,20 +192,18 @@ const ViewPool: React.FC = () => {
     };
 
     let matchInfo = undefined;
-    if (!loading && appState.poolData!.MATCH) {
-        matchInfo = <MatchInfoWithScore fullMatchInfo={fullMatchInfo}/>;
-    } else if (!loading && appState.poolData!.FREE_FORMAT_MATCH) {
+    if (!poolIsLoading && pool !== undefined && match !== undefined) {
+        matchInfo = <MatchInfoWithScore matchInfo={match} fullMatchInfo={fullMatchInfo}/>;
+    } else if (!poolIsLoading && pool !== undefined && pool.FREE_FORMAT_MATCH) {
         matchInfo =
-            <Typography variant="body1"><b>Match:</b> {appState.poolData!.FREE_FORMAT_MATCH as string}</Typography>;
+            <Typography variant="body1"><b>Match:</b> {pool.FREE_FORMAT_MATCH as string}</Typography>;
     } /*else {
         matchInfo = <Typography variant="h2">{t("POOL_MADE_BY", {organizer: getOwner()})}</Typography>;
     }*/
 
     const blindpoolViewDescription = t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()});
 
-    if (loading) {
-        return <CircularProgress sx={progress}/>
-    } else {
+    if (!poolIsLoading && pool !== undefined) {
         return (
             <Grid container justifyContent={"center"} spacing={2} sx={root}>
                 <Helmet>
@@ -283,6 +257,10 @@ const ViewPool: React.FC = () => {
                 </Grid>
                 <BpSocialMediaLinks/>
             </Grid>
+        );
+    } else {
+        return (
+            <CircularProgress sx={progress}/>
         );
     }
 };
