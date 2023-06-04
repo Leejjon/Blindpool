@@ -12,7 +12,6 @@ import CreatePool from "./views/createpool/CreatePool";
 import ViewPool from "./views/viewpool/ViewPool";
 import {Alert, Snackbar, Typography} from "@mui/material";
 import {Match} from "./model/Match";
-import {getUpcomingMatches} from "./api/GetUpcomingMatches";
 import {defaultCompetitions} from "./locales/i18n";
 
 export interface BpSnackbarMessageProps {
@@ -26,6 +25,11 @@ export interface BpMatchesProps {
 export interface BpCompetitionProps {
     competitionsToWatch: Array<number>;
     setCompetitionsToWatch?: (competitions: Array<number>) => void;
+}
+
+export interface BpSelectedMatchProps {
+    selectedMatchId?: string;
+    setSelectedMatchId: (matchId: string | undefined) => void;
 }
 
 const localStorageName = "competitions";
@@ -49,26 +53,15 @@ function getCompetitionsFromLocalStorage(): Array<number> {
     }
 }
 
-export const matchesQuery = (setMessage: (message: string | undefined) => void, competitionsToWatch: Array<number>) => (
-    {
-        queryKey: ["matches", competitionsToWatch.toString()],
-        queryFn: async () => { return await getUpcomingMatches(setMessage, competitionsToWatch)},
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        cacheTime: 5000,
-        staleTime: 4000,
-        retry: false,
-    }
-);
-
 function App() {
     const {t} = useTranslation();
     const [message, setMessage] = useState<string | undefined>(undefined);
     const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage());
+    const [selectedMatchId, setSelectedMatchId] = useState<string>();
 
     useEffect(() => {
         updateCompetitionsInLocalStorage(competitionsToWatch);
-    }, [setCompetitionsToWatch]);
+    }, [competitionsToWatch, setCompetitionsToWatch]);
 
     const handleClose = (event: any, reason?: string) => {
         if (reason === 'clickaway') {
@@ -85,11 +78,12 @@ function App() {
                     <BpAppBar/>
                     <Routes>
                         <Route path="/" element={
-                            <Home setMessage={setMessage} competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={(competitions) => setCompetitionsToWatch(competitions)} />
+                            <Home setMessage={setMessage} competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={(competitions) => setCompetitionsToWatch(competitions)}
+                                  setSelectedMatchId={setSelectedMatchId} />
                         } />
                         <Route path="/about" element={<About/>}/>
                         <Route path="/create" element={
-                            <CreatePool competitionsToWatch={competitionsToWatch} setMessage={(message) => setMessage(message)} />}
+                            <CreatePool competitionsToWatch={competitionsToWatch} setMessage={(message) => setMessage(message)} selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />}
                         />
                         <Route path="/howto" element={<HowTo/>}/>
                         <Route path="/pool/:key" element={<ViewPool/>}/>

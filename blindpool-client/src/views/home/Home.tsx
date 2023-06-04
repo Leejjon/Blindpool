@@ -12,22 +12,17 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
-import {BpCompetitionProps, BpSnackbarMessageProps} from "../../App";
+import {BpCompetitionProps, BpSelectedMatchProps, BpSnackbarMessageProps} from "../../App";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQuery} from "@tanstack/react-query";
 import {Match} from "../../model/Match";
-import {matchesQuery} from "../../App";
+import { matchesQuery } from "../../queries/MatchesQuery";
 
-const Home: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({competitionsToWatch, setCompetitionsToWatch, setMessage}) => {
+const Home: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelectedMatchProps> = ({competitionsToWatch, setCompetitionsToWatch, setMessage, setSelectedMatchId}) => {
     const {t} = useTranslation();
     const {data} = useQuery({
-        ...matchesQuery(setMessage, competitionsToWatch),
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        cacheTime: 5000,
-        staleTime: 4000,
-        retry: false,
+        ...matchesQuery(setMessage, competitionsToWatch)
     });
     const matches: Array<Match> = data ?? [];
 
@@ -79,8 +74,9 @@ const Home: React.FC<BpCompetitionProps & BpSnackbarMessageProps> = ({competitio
                     <CardContent>
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider />
+                        {/* Try to avoid passing these properties and use composition here. */}
                         <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{matches.length > 0 ? t('CLICK_ON_MATCH') : t('NO_MATCHES')}</Typography>
-                        <BpUpcomingMatches matches={matches}/>
+                        <BpUpcomingMatches matches={matches} setSelectedMatchId={setSelectedMatchId}/>
                     </CardContent>
                 </Card>
             </Grid>

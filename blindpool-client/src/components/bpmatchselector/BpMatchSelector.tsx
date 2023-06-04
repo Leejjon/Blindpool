@@ -1,10 +1,9 @@
 import React, {ChangeEvent, useEffect} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
-import appState from "../../state/AppState";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
-import {BpMatchesProps} from "../../App";
+import {BpMatchesProps, BpSelectedMatchProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
@@ -22,9 +21,9 @@ export interface MatchValidationProp {
     setInvalidMatchMessage: (message: string | undefined) => void;
 }
 
-const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps> = ({invalidMatchMessage, setInvalidMatchMessage, matches}) => {
+const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelectedMatchProps> = ({invalidMatchMessage, setInvalidMatchMessage, matches, selectedMatchId, setSelectedMatchId}) => {
     const {t} = useTranslation();
-    const [inputValue, setInputValue] = React.useState('');
+    const [inputValue, setInputValue] = React.useState<string>('');
 
     const displayMatchInDropdown = (upcomingMatch: Match | string): string => {
         const homeTeamName = getHomeTeamNameToDisplay(upcomingMatch as Match);
@@ -33,18 +32,23 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps> = ({invali
     };
 
     useEffect(() => {
-        const supportedMatch = appState.selectedMatch as Match;
-        const freeFormatMatch = appState.selectedMatch as string;
-
         let matchToSelectInDropdown: string = '';
-        if (supportedMatch && supportedMatch.id) {
-            matchToSelectInDropdown = displayMatchInDropdown(supportedMatch);
-        } else if (freeFormatMatch) {
-            matchToSelectInDropdown = freeFormatMatch;
+        if (selectedMatchId) {
+            let matchExists = false;
+            for (const match of matches) {
+                if (match.id === selectedMatchId) {
+                    matchToSelectInDropdown = displayMatchInDropdown(match);
+                    matchExists = true;
+                    break;
+                }
+            }
+            if (!matchExists) {
+                matchToSelectInDropdown = selectedMatchId;
+            }
         }
 
         setInputValue(matchToSelectInDropdown);
-    }, [setInputValue]);
+    }, [setInputValue, selectedMatchId, matches]);
 
     const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
 
@@ -54,12 +58,12 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps> = ({invali
             if (supportedMatch.startTimestamp < new Date()) {
                 setInvalidMatchMessage('MATCH_ALREADY_STARTED');
             } else {
-                appState.setSelectedMatch(supportedMatch);
+                setSelectedMatchId(supportedMatch.id);
             }
         } else if (freeFormatMatch) {
-            appState.setSelectedMatch(freeFormatMatch);
+            setSelectedMatchId(freeFormatMatch);
         } else {
-            appState.setSelectedMatch(undefined);
+            setSelectedMatchId(undefined);
         }
     };
 
@@ -78,6 +82,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps> = ({invali
                 }
 
                 setInputValue(newSupportedMatch);
+                console.log("Does this happen")
                 if (event && event.type === 'change') {
                     updateSelectedMatch(null, newSupportedMatch);
                 }
@@ -136,7 +141,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps> = ({invali
                            variant="standard"
                            inputProps={{
                                ...params.inputProps,
-                               autoComplete: 'new-password', // disable autocomplete and autofill
+                               autoComplete: 'off', // disable autocomplete and autofill
                                style: {fontSize: 'large'}
                            }}
                 />

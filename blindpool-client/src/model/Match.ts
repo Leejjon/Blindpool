@@ -11,3 +11,12 @@ export interface Match {
     finished: boolean,
     score: Score
 }
+
+export function doesMatchExistIn(matchId: string, matches: Match[]): string | undefined {
+    for (const match of matches) {
+        if (match.id === matchId) {
+            return matchId;
+        }
+    }
+    return undefined;
+}

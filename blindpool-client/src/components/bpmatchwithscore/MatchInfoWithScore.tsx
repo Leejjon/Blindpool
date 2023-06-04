@@ -1,4 +1,3 @@
-import appState from "../../state/AppState";
 import {Match} from "../../model/Match";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {CircularProgress, Typography} from "@mui/material";
@@ -24,24 +23,22 @@ const progress = {
 }
 
 export interface MatchInfoWithScoreProps {
-    fullMatchInfo: Match | undefined
+    matchInfo: Match;
+    fullMatchInfo: Match | undefined;
 }
 
-const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo}) => {
-    const match = appState.poolData!.MATCH as Match;
-    const homeTeamName = getHomeTeamNameToDisplay(match);
-    const awayTeamName = getAwayTeamNameToDisplay(match);
-    const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.homeTeamID}.svg`;
-    const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${match.awayTeamID}.svg`;
+const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({matchInfo, fullMatchInfo}) => {
+    const homeTeamName = getHomeTeamNameToDisplay(matchInfo);
+    const awayTeamName = getAwayTeamNameToDisplay(matchInfo);
+    const homeTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${matchInfo.homeTeamID}.svg`;
+    const awayTeamIconUrl = `${window.location.protocol}//${getHostnameWithPortIfLocal()}/clubicons/${matchInfo.awayTeamID}.svg`;
 
-    // TODO: Move this logic to a util folder.
-    let startTimestamp: Date = new Date(match.startTimestamp);
+    let startTimestamp: Date = new Date(matchInfo.startTimestamp);
 
     const minutes: string = '' + startTimestamp.getMinutes();
     const minutesToDisplay: string = minutes.padStart(2, minutes);
     const dateString: string = startTimestamp.toLocaleDateString();
 
-    // TODO: Turn this into a component.
     const scoreView = () => {
         if (fullMatchInfo) {
             let score;
@@ -77,7 +74,7 @@ const MatchInfoWithScores: React.FC<MatchInfoWithScoreProps> = ({fullMatchInfo})
         <div style={{textAlign: "center"}}>
             <div className="containerForClubIcons">
                 <div className="clubIconAndTextDiv">
-                    <img className="clubIconStyle" src={homeTeamIconUrl} alt={match.homeTeamName}/>
+                    <img className="clubIconStyle" src={homeTeamIconUrl} alt={homeTeamName}/>
                     <Typography
                         sx={marginHalfEm}>{homeTeamName}</Typography>
                 </div>

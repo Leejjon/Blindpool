@@ -6,10 +6,9 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import appState from "../../state/AppState";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useNavigate} from "react-router-dom";
-import {BpMatchesProps} from "../../App";
+import {BpMatchesProps, BpSelectedMatchProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import {useTranslation} from "react-i18next";
@@ -27,12 +26,12 @@ const upcomingMatchButton = {
     width: "100%", margin: "0"
 }
 
-const BpUpcomingMatches: React.FC<BpMatchesProps> = ({matches}) => {
+const BpUpcomingMatches: React.FC<BpMatchesProps & BpSelectedMatchProps> = ({matches, setSelectedMatchId}) => {
     let navigate = useNavigate();
     const { t } = useTranslation();
 
     function createPoolForMatch (match: Match) {
-        appState.setSelectedMatch(match);
+        setSelectedMatchId(match.id)
         navigate('/create');
     }
 
