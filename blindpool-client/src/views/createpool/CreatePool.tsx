@@ -23,9 +23,10 @@ import {doesMatchExistIn, Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 import {matchesQuery} from "../../queries/MatchesQuery";
+import {poolQuery} from "../../queries/PoolQuery";
 
 const EMPTY_STRING = "";
 
@@ -34,12 +35,14 @@ const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
+
 const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelectedMatchProps> = ({competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId}) => {
     const {t} = useTranslation();
     const {data} = useQuery({
         ...matchesQuery(setMessage, competitionsToWatch),
     });
     const matches: Array<Match> = data ?? [];
+    const queryClient = useQueryClient();
 
     let navigate = useNavigate();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
@@ -136,7 +139,7 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelec
     };
 
     const sendCreatePoolRequest = async () => {
-        if (validateState([...players],true)) {
+        if (validateState([...players], true)) {
             setLoading(true);
             let requestBody = {
                 participants: players.map(player => player.name)
@@ -163,7 +166,8 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelec
                 );
                 if (response.status === 200) {
                     const poolJson: Blindpool = await response.json();
-                    // appState.setPool(poolJson);
+                    // This will already set the pool and make sure we don't fetch the pool we already have.
+                    await queryClient.ensureQueryData(poolQuery(poolJson));
                     setLoading(false);
                     navigate(`/pool/${poolJson.key}`);
                 } else {
@@ -175,7 +179,7 @@ const CreatePool: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelec
                 setMessage('BACKEND_UNREACHABLE');
             }
         }
-    };
+    }
 
     if (loading) {
         return (

@@ -1,6 +1,6 @@
 import {upsertMatches} from "./MatchService";
 import * as sinon from "sinon";
-import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
+import {FootballDataApiMatch, MatchWithCompetitionIncluded} from "./footballdata-api/FootballDataApiService";
 import {Datastore} from "@google-cloud/datastore/build/src";
 import * as DatastoreService from "./DatastoreService";
 import {entity} from "@google-cloud/datastore/build/src/entity";
@@ -87,7 +87,8 @@ const turkeyVsItalyMatch = {
             "role": "VIDEO_ASSISANT_REFEREE_N2",
             "nationality": "Netherlands"
         }
-    ]
+    ],
+    competitionId: 2000
 };
 
 const finalMatch = {
@@ -135,7 +136,8 @@ const finalMatch = {
         "id": null,
         "name": null
     },
-    "referees": []
+    "referees": [],
+    competitionId: 2000
 };
 
 /*
@@ -155,7 +157,7 @@ describe('Test datastore calls', () => {
         datastoreStub.upsert.resolves(); // Resolve nothing because in production code we don't even await.
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
-        let matches: Array<FootballDataApiMatch> = [turkeyVsItalyMatch];
+        let matches: Array<MatchWithCompetitionIncluded> = [turkeyVsItalyMatch];
         await upsertMatches(matches);
     });
 
@@ -167,7 +169,7 @@ describe('Test datastore calls', () => {
         datastoreStub.upsert.resolves(); // Resolve nothing
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
-        let matches: Array<FootballDataApiMatch> = [turkeyVsItalyMatch, finalMatch];
+        let matches: Array<MatchWithCompetitionIncluded> = [turkeyVsItalyMatch, finalMatch];
         await upsertMatches(matches);
     });
 });

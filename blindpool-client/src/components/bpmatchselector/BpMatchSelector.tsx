@@ -67,6 +67,8 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
         }
     };
 
+    // TODO: If there are no matches, hide the entire autocomplete thing.
+
     return (
         <Autocomplete
             disabled={matches.length < 1}

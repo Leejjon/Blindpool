@@ -1,21 +1,14 @@
 import {Match, Score} from "../model/Match";
 import {err, ok, Result} from "neverthrow";
-import {FootballDataApiMatch} from "./footballdata-api/FootballDataApiService";
+import {MatchWithCompetitionIncluded} from "./footballdata-api/FootballDataApiService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 import {Entity} from "@google-cloud/datastore/build/src/entity";
 import {getDatastoreInstance} from "./DatastoreService";
 import {
-    EREDIVISIE_CODE,
-    EREDIVISIE_NAME,
-    getCompetitionByTeam,
     getTeamName,
-    LA_LIGA_CODE, LA_LIGA_NAME,
-    PREMIER_LEAGUE_CODE,
-    PREMIER_LEAGUE_NAME,
-    WORLDCUP2022_CODE,
-    WORLDCUP2022_NAME
 } from "./footballdata-api/constants/Teams";
 import {RunQueryResponse} from "@google-cloud/datastore/build/src/query";
+import {competitions} from "blindpool-common/constants/Competitions";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
     try {
@@ -38,7 +31,6 @@ export const selectTenUpcomingMatches = async (competitions: Array<number>): Pro
     try {
         const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const currentTimestamp = new Date();
-
         let query = datastore.createQuery('match')
             .order('startTimestamp', {descending: false})
             .filter('startTimestamp', '>', currentTimestamp.toJSON())
@@ -61,7 +53,7 @@ export const selectTenUpcomingMatches = async (competitions: Array<number>): Pro
     }
 };
 
-function convertToMatchEntity(match: FootballDataApiMatch) {
+function convertToMatchEntity(match: MatchWithCompetitionIncluded) {
     try {
         const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const startTimestamp = new Date(match.utcDate);
@@ -93,30 +85,17 @@ function convertToMatchEntity(match: FootballDataApiMatch) {
             }
         }
 
-        // TODO: This is bad logic.
-        const competitionId = getCompetitionByTeam(match.homeTeam.id, match.awayTeam.id);
-
-        let competitionName = "Competition";
-        if (competitionId === EREDIVISIE_CODE) {
-            competitionName = EREDIVISIE_NAME;
-        }
-        if (competitionId === PREMIER_LEAGUE_CODE) {
-            competitionName = PREMIER_LEAGUE_NAME;
-        }
-        if (competitionId === WORLDCUP2022_CODE) {
-            competitionName = WORLDCUP2022_NAME;
-        }
-        if (competitionId === LA_LIGA_CODE) {
-            competitionName = LA_LIGA_NAME;
+        if (match.homeTeam.id === null || match.awayTeam.id === null) {
+            throw Error('This match is a placeholder, we ignore it.');
         }
 
         const matchIndexes = [
             {name: 'startTimestamp', value: startTimestamp.toJSON()},
-            {name: 'competitionName', value: competitionName},
-            {name: 'competitionId', value: competitionId},
-            {name: 'homeTeamName', value: getTeamName(match.homeTeam.id as number, competitionId)},
+            {name: 'competitionName', value: competitions[match.competitionId].competition.toString()},
+            {name: 'competitionId', value: match.competitionId.toString()},
+            {name: 'homeTeamName', value: getTeamName(match.homeTeam.id as number, match.competitionId.toString())},
             {name: 'homeTeamID', value: match.homeTeam.id},
-            {name: 'awayTeamName', value: getTeamName(match.awayTeam.id as number, competitionId)},
+            {name: 'awayTeamName', value: getTeamName(match.awayTeam.id as number, match.competitionId.toString())},
             {name: 'awayTeamID', value: match.awayTeam.id},
             {name: 'score', value: createScoreObject()},
             {name: 'finished', value: isMatchFinished()}
@@ -133,7 +112,7 @@ function convertToMatchEntity(match: FootballDataApiMatch) {
     }
 }
 
-export const upsertMatches = async (matches: Array<FootballDataApiMatch>) => {
+export const upsertMatches = async (matches: Array<MatchWithCompetitionIncluded>) => {
     try {
         const datastore = getDatastoreInstance(); // This has to happen inside this function for the tests to work.
         const matchEntities: Entity[] = matches.map(convertToMatchEntity).filter((match) => match != null);

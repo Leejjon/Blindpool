@@ -1,9 +1,18 @@
 import {getPoolData} from "../api/GetPoolData";
+import Blindpool from "../model/Blindpool";
 
-export const poolQuery = (key: string) => (
+export function getPoolId(pool: string | Blindpool) {
+    if ((pool as Blindpool).key) {
+        return (pool as Blindpool).key;
+    } else {
+        return pool as string;
+    }
+}
+
+export const poolQuery = (pool: string | Blindpool) => (
     {
-        queryKey: ["pool", key],
-        queryFn: async () => { return await getPoolData(key)},
+        queryKey: ["pool", getPoolId(pool)],
+        queryFn: async () => { return await getPoolData(pool) },
         refetchOnWindowFocus: false,
         refetchOnMount: false,
         cacheTime: 5000,

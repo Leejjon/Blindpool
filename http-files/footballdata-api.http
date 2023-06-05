@@ -23,6 +23,21 @@ GET {{footballdata-api-url}}/v2/competitions/2014/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
+### Serie A teams
+GET {{footballdata-api-url}}/v2/competitions/2019/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Serie A matches
+GET {{footballdata-api-url}}/v2/competitions/2019/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Champions league matches
+GET {{footballdata-api-url}}/v2/competitions/2001/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
 ### World cup 2022 matches
 GET {{footballdata-api-url}}/v4/competitions/2000/matches
 Accept: application/json

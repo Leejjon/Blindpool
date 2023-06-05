@@ -2,8 +2,12 @@ import {Match} from "../model/Match";
 import {Request, Response} from "express";
 import {selectMatchByKey, selectTenUpcomingMatches, upsertMatches} from "../services/MatchService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
-import {FootballDataApiMatch, getMatchesFromFootballDataApi} from "../services/footballdata-api/FootballDataApiService";
+import {
+    getMatchesFromFootballDataApi,
+    MatchWithCompetitionIncluded
+} from "../services/footballdata-api/FootballDataApiService";
 import {err, ok, Result} from "neverthrow";
+
 const environment = process.env.NODE_ENV || 'development';
 
 export const getMatchByKey = async (req: Request, res: Response) => {
@@ -59,7 +63,7 @@ export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) 
 
         let matches = await getMatchesFromFootballDataApi();
         matches
-            .map((matches: Array<FootballDataApiMatch>) => {
+            .map((matches: Array<MatchWithCompetitionIncluded>) => {
                 console.log(matches.length);
                 while (matches.length) {
                     upsertMatches(matches.splice(0, 500));

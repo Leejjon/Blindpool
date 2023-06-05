@@ -6,12 +6,12 @@ import {err, ok} from "neverthrow";
 import * as FootballDataApi from "../services/footballdata-api/FootballDataApiService";
 import * as DatastoreService from "../services/MatchService"
 import {
-    FootballDataApiMatch
+    FootballDataApiMatch, MatchWithCompetitionIncluded
 } from "../services/footballdata-api/FootballDataApiService";
 import {ErrorScenarios} from "../model/ErrorScenarios";
 import {Match} from "../model/Match";
 
-const testFootballApiMatch: FootballDataApiMatch = {
+const testFootballApiMatch: MatchWithCompetitionIncluded = {
     odds: undefined, referees: [],
     id: 1,
     utcDate: '2020-09-12T16:45:00Z',
@@ -47,7 +47,8 @@ const testFootballApiMatch: FootballDataApiMatch = {
     awayTeam: {
         id: 682,
         name: 'Feyenoord Rotterdam'
-    }
+    },
+    competitionId: 2003
 };
 
 const testDatastoreMatch: Match = {
@@ -74,7 +75,7 @@ describe('Matches API', () => {
     });
 
     it('fetchAndSaveScheduledMatches success', async () => {
-        const matchesForTest: Array<FootballDataApiMatch> = [testFootballApiMatch];
+        const matchesForTest: Array<MatchWithCompetitionIncluded> = [testFootballApiMatch];
         footballApiStub = sinon.stub(FootballDataApi, 'getMatchesFromFootballDataApi')
             .resolves(ok(matchesForTest));
         datastoreApiStub = sinon.stub(DatastoreService, 'upsertMatches');

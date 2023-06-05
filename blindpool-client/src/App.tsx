@@ -83,7 +83,8 @@ function App() {
                         } />
                         <Route path="/about" element={<About/>}/>
                         <Route path="/create" element={
-                            <CreatePool competitionsToWatch={competitionsToWatch} setMessage={(message) => setMessage(message)} selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />}
+                            <CreatePool competitionsToWatch={competitionsToWatch} setMessage={(message) => setMessage(message)}
+                                        selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />}
                         />
                         <Route path="/howto" element={<HowTo/>}/>
                         <Route path="/pool/:key" element={<ViewPool/>}/>
