@@ -13,6 +13,11 @@ GET {{footballdata-api-url}}/v2/competitions/2021/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
+### Premier league
+GET {{footballdata-api-url}}/v2/competitions/2021/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
 ### La Liga teams
 GET {{footballdata-api-url}}/v2/competitions/2014/teams
 Accept: application/json
