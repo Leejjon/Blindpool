@@ -128,7 +128,9 @@ i18n
         }
     });
 
-export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [getCompetitionKey(CompetitionEnum.EREDIVISIE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE)] : [getCompetitionKey(CompetitionEnum.PREMIER_LEAGUE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE)];
+export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [
+    getCompetitionKey(CompetitionEnum.EREDIVISIE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE)
+] : [getCompetitionKey(CompetitionEnum.PREMIER_LEAGUE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE)];
 
 export interface dutchCountryNameMapping {
     [teamID: number]: string;

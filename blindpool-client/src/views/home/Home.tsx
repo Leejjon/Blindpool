@@ -75,7 +75,7 @@ const Home: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelectedMat
                         <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>
                         <Divider />
                         {/* Try to avoid passing these properties and use composition here. */}
-                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{matches.length > 0 ? t('CLICK_ON_MATCH') : t('NO_MATCHES')}</Typography>
+                        <Typography component="p" style={{marginBottom: '0.5em'}}><br/>{matches.length > 0 ? t('CLICK_ON_MATCH') : ""}</Typography>
                         <BpUpcomingMatches matches={matches} setSelectedMatchId={setSelectedMatchId}/>
                     </CardContent>
                 </Card>
