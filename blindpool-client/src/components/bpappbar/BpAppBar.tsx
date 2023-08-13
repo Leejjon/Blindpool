@@ -41,7 +41,7 @@ const BpAppBar: React.FC = () => {
             window.location.hostname === "blindepool.nl") {
             return <ReactCountryFlag countryCode="NL" style={{fontSize: '2.2em'}}/>
         } else {
-            return <ReactCountryFlag countryCode="NL" style={{fontSize: '2.2em'}}/>
+            return <ReactCountryFlag countryCode="GB" style={{fontSize: '2.2em'}}/>
         }
     };
 
