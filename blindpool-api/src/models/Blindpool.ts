@@ -1,3 +1,5 @@
+import {competitions} from "blindpool-common/constants/Competitions";
+
 interface Participant {
     name: string,
     userType: number
@@ -25,6 +27,8 @@ export class Blindpool {
     CREATED_TIMESTAMP: Date;
     MATCH?: Match;
     FREE_FORMAT_MATCH?: string;
+    // This data is duplicate, but is useful to query on.
+    START_TIMESTAMP?: Date;
 
     constructor(PARTICIPANTS_AND_SCORES: Array<ParticipantAndScore>, CREATED_TIMESTAMP: Date, MATCH?: Match, FREE_FORMAT_MATCH?: string) {
         this.PARTICIPANTS_AND_SCORES = PARTICIPANTS_AND_SCORES;

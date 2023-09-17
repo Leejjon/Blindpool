@@ -4,11 +4,14 @@ import {MatchWithCompetitionIncluded} from "./footballdata-api/FootballDataApiSe
 import {ErrorScenarios} from "../model/ErrorScenarios";
 import {Entity} from "@google-cloud/datastore/build/src/entity";
 import {getDatastoreInstance} from "./DatastoreService";
-import {
-    getTeamName,
-} from "./footballdata-api/constants/Teams";
+import {getTeamName,} from "./footballdata-api/constants/Teams";
 import {RunQueryResponse} from "@google-cloud/datastore/build/src/query";
-import {competitions} from "blindpool-common/constants/Competitions";
+import {
+    CompetitionEnum,
+    competitions,
+    getCompetitionByStringName,
+} from "blindpool-common/constants/Competitions";
+import {PropertyFilter} from "@google-cloud/datastore";
 
 export const selectMatchByKey = async (key: string): Promise<Result<Match, ErrorScenarios>> => {
     try {
@@ -33,8 +36,8 @@ export const selectTenUpcomingMatches = async (competitions: Array<number>): Pro
         const currentTimestamp = new Date();
         let query = datastore.createQuery('match')
             .order('startTimestamp', {descending: false})
-            .filter('startTimestamp', '>', currentTimestamp.toJSON())
-            .filter('competitionId', 'IN', competitions.map((competition) => competition.toString()))
+            .filter(new PropertyFilter('startTimestamp', '>', currentTimestamp.toJSON()))
+            .filter(new PropertyFilter('competitionId', 'IN', competitions.map((competition) => competition.toString())))
             .limit(10);
         const result: RunQueryResponse = await datastore.runQuery(query);
 
@@ -51,7 +54,32 @@ export const selectTenUpcomingMatches = async (competitions: Array<number>): Pro
         console.error(`Something went wrong with retrieving ${error}`);
         return err(ErrorScenarios.INTERNAL_ERROR);
     }
-};
+}
+
+export const getCompetitionsThatNeedUpdate = async (): Promise<Result<Array<CompetitionEnum>, ErrorScenarios>> => {
+    try {
+        const datastore = getDatastoreInstance();
+        const currentTimestamp = new Date();
+
+        let query = datastore.createQuery('pool')
+            .filter(new PropertyFilter('START_TIMESTAMP', '<', currentTimestamp)) // The match has started.
+            .filter(new PropertyFilter('START_TIMESTAMP', '>', new Date(currentTimestamp.getTime() - 100*60000))) // But it hasn't gone over 100 minutes.
+            .limit(10);
+        const result: RunQueryResponse = await datastore.runQuery(query);
+
+        const [pools] = result;
+
+        // Remove duplicates by putting the items in a set.
+        const competitionKeys = [...new Set(pools.map((pool: Entity) => {
+            const match = pool.MATCH;
+            return getCompetitionByStringName(match.competitionName);
+        }))];
+        return ok(competitionKeys);
+    } catch (error) {
+        console.error(`Something went wrong with retrieving active pools ${error}`);
+        return err(ErrorScenarios.INTERNAL_ERROR);
+    }
+}
 
 function convertToMatchEntity(match: MatchWithCompetitionIncluded) {
     try {

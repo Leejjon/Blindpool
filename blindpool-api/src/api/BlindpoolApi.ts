@@ -54,7 +54,7 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
             const result = await doesThisMatchExists(createBlindpoolRequest.selectedMatchID);
             result
                 .map((match: Match) => {
-                    handleInsertNewBlindpool(res, participantsAndScores, match, undefined);
+                    handleInsertNewBlindpool(res, participantsAndScores, match, undefined, match.startTimestamp);
                 })
                 .mapErr((errorScenario) => {
                     mapError(res, errorScenario);
@@ -64,7 +64,7 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
             freeFormatMatch = createBlindpoolRequest.freeFormatMatch;
         }
 
-        await handleInsertNewBlindpool(res, participantsAndScores, undefined, freeFormatMatch);
+        await handleInsertNewBlindpool(res, participantsAndScores, undefined, freeFormatMatch, undefined);
 
     } catch (error) {
         console.log('Something went wrong with creating a blindpool that wasnt handled by our default validations: ', error);
@@ -72,8 +72,8 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
     }
 };
 
-const handleInsertNewBlindpool = async (res: Response, participantsAndScores: Array<ParticipantAndScore>, selectedMatch?: Match, freeFormatMatch?: string) => {
-    const result = await insertNewBlindpool(participantsAndScores, selectedMatch, freeFormatMatch);
+const handleInsertNewBlindpool = async (res: Response, participantsAndScores: Array<ParticipantAndScore>, selectedMatch?: Match, freeFormatMatch?: string, startTimestamp?: Date | undefined) => {
+    const result = await insertNewBlindpool(participantsAndScores, selectedMatch, freeFormatMatch, startTimestamp);
     result
         .map((blindpool: Blindpool) => mapSuccess(res, blindpool))
         .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario));

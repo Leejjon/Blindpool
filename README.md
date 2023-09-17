@@ -53,7 +53,7 @@ To update the dispatch.yaml that manages the routing to different app engine ser
 If you are running for the first time, you need to upload the index.yaml file to set the indexes in Google Datastore.
 In the root of the project, run:
 ```
-gcoud app deploy index.yaml
+gcloud app deploy index.yaml
 ```
 
 See https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-datastore-indexes-with-index-yaml

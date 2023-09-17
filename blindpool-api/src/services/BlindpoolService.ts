@@ -30,8 +30,9 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
         // Obtaining the key is weird https://github.com/googleapis/google-cloud-node/issues/1768#issuecomment-258173627
         const participantsAndScores = poolEntity.PARTICIPANTS_AND_SCORES;
         const createdTimestamp = poolEntity.CREATED_TIMESTAMP;
-        const match = poolEntity.MATCH;
-        const freeFormatMatch = poolEntity.FREE_FORMAT_MATCH;
+        const match: Match | undefined = poolEntity.MATCH;
+        const freeFormatMatch: string | undefined = poolEntity.FREE_FORMAT_MATCH;
+        const startTimestamp: Date | undefined = poolEntity.START_TIMESTAMP;
 
         let blindpool: Blindpool = {
             key: hashids.encode(blindpoolKey.id) as string,
@@ -39,8 +40,8 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
             CREATED_TIMESTAMP: createdTimestamp
         };
 
-        if (match) {
-            blindpool.MATCH = match;
+        if (match && startTimestamp) {
+            blindpool.MATCH = {...match, startTimestamp: startTimestamp};
         } else if (freeFormatMatch) {
             blindpool.FREE_FORMAT_MATCH = freeFormatMatch;
         }
@@ -52,7 +53,7 @@ export const findBlindpoolByKey = async (key: number): Promise<Result<Blindpool,
     }
 };
 
-export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>, match?: Match | undefined, freeFormatMatch?: string | undefined): Promise<Result<Blindpool, ErrorScenarios>> => {
+export const insertNewBlindpool = async (participantsAndScores: Array<ParticipantAndScore>, match?: Match | undefined, freeFormatMatch?: string | undefined, startTimestamp?: Date | undefined): Promise<Result<Blindpool, ErrorScenarios>> => {
     try {
         const datastore = getDatastoreInstance();
         const blindpoolKeyToInsert = datastore.key(Kinds.POOL_KIND);
@@ -64,6 +65,7 @@ export const insertNewBlindpool = async (participantsAndScores: Array<Participan
 
         if (match) {
             blindpoolToInsert.MATCH = match;
+            blindpoolToInsert.START_TIMESTAMP = startTimestamp; // If you want to test, change this to Date();
         } else if (freeFormatMatch) {
             blindpoolToInsert.FREE_FORMAT_MATCH = freeFormatMatch;
         }

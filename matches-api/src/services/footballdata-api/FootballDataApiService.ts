@@ -5,7 +5,7 @@ import {ErrorScenarios} from "../../model/ErrorScenarios";
 import {
     API_FOOTBAL_DATA_URL,
 } from "./constants/Teams";
-import {competitions} from "blindpool-common/constants/Competitions";
+import {CompetitionEnum, getCompetitionKey} from "blindpool-common/constants/Competitions";
 
 // Make all fields we don't use optional
 export interface FootballDataApiMatch {
@@ -64,14 +64,15 @@ interface FootballDataApiCompetition {
     id: number;
 }
 
-export const getMatchesFromFootballDataApi = async (): Promise<Result<Array<MatchWithCompetitionIncluded>, ErrorScenarios>> => {
+export const getMatchesFromFootballDataApi = async (competitions: Array<CompetitionEnum>): Promise<Result<Array<MatchWithCompetitionIncluded>, ErrorScenarios>> => {
     let responses;
     try {
         const secret = await fetchSecret();
 
         let competitionPromises: Array<Promise<AxiosResponse<FootballDataApiMatches>>> = [];
 
-        for (const key in competitions) {
+        for (const competition of competitions) {
+            const key = getCompetitionKey(competition);
             const competitionPromise = axios.get<FootballDataApiMatches>(
                 `${API_FOOTBAL_DATA_URL}/competitions/${key}/matches/`,
                 {headers: {"X-Auth-Token": secret}}

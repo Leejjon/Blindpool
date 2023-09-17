@@ -1,6 +1,9 @@
 # Update new matches
 GET {{matches-api-url}}/api/v2/matches/update
 
+### Only update matches that have a pool right now.
+GET {{matches-api-url}}/api/v2/matches/update-pools-with-active-match
+
 ### This separator is required in .http files
 
 # Get upcoming matches

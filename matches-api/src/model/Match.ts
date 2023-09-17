@@ -6,6 +6,7 @@ export interface Match {
     homeTeamID: string,
     awayTeamName: string,
     awayTeamID: string
+    competitionName: string;
 }
 
 export interface Score {

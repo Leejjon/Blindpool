@@ -123,8 +123,26 @@ export const competitions: {[key: number]: Competition} = {
     2019: {
         competition: CompetitionEnum.SERIE_A,
         teams: {
-            108: "Inter Milan"
-            // TODO: Other Italian teams.
+            98: "AC Milan",
+            99: "Fiorentina",
+            100: "AS Roma",
+            102: "Atalanta",
+            103: "Bologna",
+            104: "Cagliari",
+            107: "Genoa",
+            108: "Inter Milan",
+            109: "Juventus",
+            110: "Lazio",
+            113: "Napoli",
+            115: "Udinese",
+            445: "Empoli",
+            450: "Verona",
+            455: "Salernitana",
+            470: "Frosinone",
+            471: "Sassuolo",
+            586: "Torino",
+            5890: "US Lecce",
+            5911: "AC Monza"
         }
     },
     2021: {
@@ -159,8 +177,8 @@ export const competitions: {[key: number]: Competition} = {
     }
 }
 
-export function getCompetitionsList() {
-    let competitionKeys = [];
+export function getCompetitionsList(): Array<number> {
+    let competitionKeys: number[] = [];
     for (let key in competitions) {
         competitionKeys.push(Number(key));
     }
@@ -176,3 +194,13 @@ export function getCompetitionKey(competition: CompetitionEnum) {
     }
     throw Error("Competition does not exist.");
 }
+
+export function getCompetitionByStringName(competitionString: String): CompetitionEnum {
+    for(const existingCompetition of Object.values(CompetitionEnum)) {
+        if (existingCompetition == competitionString) {
+            return existingCompetition;
+        }
+    }
+    throw Error("Competition does not exist.");
+}
+

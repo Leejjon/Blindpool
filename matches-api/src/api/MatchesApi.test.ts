@@ -57,7 +57,8 @@ const testDatastoreMatch: Match = {
     homeTeamID: '675',
     homeTeamName: 'AZ',
     awayTeamID: '682',
-    awayTeamName: 'Feyenoord Rotterdam'
+    awayTeamName: 'Feyenoord Rotterdam',
+    competitionName: 'Eredivisie'
 };
 
 describe('Matches API', () => {

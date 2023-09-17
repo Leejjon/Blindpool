@@ -1,7 +1,12 @@
 import express from "express";
 import cors from "cors";
 
-import {fetchAndSaveScheduledMatches, getMatchByKey, getTenScheduledMatches} from "./api/MatchesApi";
+import {
+    fetchAndSaveScheduledMatches,
+    fetchAndUpdateMatchesThatAreCurrentlyPlaying,
+    getMatchByKey,
+    getTenScheduledMatches
+} from "./api/MatchesApi";
 
 const PORT = process.env.PORT || 8082;
 const environment = process.env.NODE_ENV || 'development';
@@ -14,6 +19,7 @@ if (environment === 'development') {
 }
 
 router.get('/matches/update', fetchAndSaveScheduledMatches);
+router.get('/matches/update-pools-with-active-match', fetchAndUpdateMatchesThatAreCurrentlyPlaying);
 router.get('/matches/upcoming', getTenScheduledMatches);
 router.get('/matches/:key', getMatchByKey);
 
