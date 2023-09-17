@@ -2,3 +2,5 @@ cron:
   - description: Sync latest matches
     url: /api/v2/matches/update
     schedule: every 24 hours
+  - description: Sync matches that are being used in a blindpool
+    url: api/v2/matches/update-pools-with-active-match
