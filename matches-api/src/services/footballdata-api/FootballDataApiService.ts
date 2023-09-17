@@ -72,6 +72,7 @@ export const getMatchesFromFootballDataApi = async (competitions: Array<Competit
         let competitionPromises: Array<Promise<AxiosResponse<FootballDataApiMatches>>> = [];
 
         for (const competition of competitions) {
+            console.log("Updating competition: " + competition.toString());
             const key = getCompetitionKey(competition);
             const competitionPromise = axios.get<FootballDataApiMatches>(
                 `${API_FOOTBAL_DATA_URL}/competitions/${key}/matches/`,

@@ -57,3 +57,9 @@ gcloud app deploy index.yaml
 ```
 
 See https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-datastore-indexes-with-index-yaml
+
+# Cron jobs
+If you are running for the first time, upload a cron.yaml file:
+```
+gcloud app deploy cron.yaml
+```
