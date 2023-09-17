@@ -1,4 +1,4 @@
-runtime: nodejs18
+runtime: nodejs20
 
 # Leejjon: I first wanted to call this service "frontend", but having a default service seems to be required.
 # Source: https://stackoverflow.com/questions/42360790/why-do-i-need-to-deploy-a-default-app-before-i-can-deploy-multiple-services-in/42361987#42361987
