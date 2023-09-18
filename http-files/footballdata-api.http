@@ -8,6 +8,16 @@ GET {{footballdata-api-url}}/v2/competitions/2002/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
+### Get Ligue un teams
+GET {{footballdata-api-url}}/v2/competitions/2015/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Get Ligue un teams
+GET {{footballdata-api-url}}/v2/competitions/2017/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
 ### Eredivisie matches
 GET {{footballdata-api-url}}/v4/competitions/2003/matches
 Accept: application/json
@@ -44,7 +54,7 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Champions league matches
-GET {{footballdata-api-url}}/v2/competitions/2001/matches
+GET {{footballdata-api-url}}/v2/competitions/2001/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 

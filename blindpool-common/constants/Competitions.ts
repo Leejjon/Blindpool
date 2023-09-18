@@ -4,7 +4,9 @@ export enum CompetitionEnum {
     BUNDESLIGA = "Bundesliga",
     EREDIVISIE = "Eredivisie",
     PREMIER_LEAGUE = "Premier League",
+    PREMEIRA_LIGA = "Primeira Liga",
     LA_LIGA = "La Liga",
+    LIGUE_1 = "Ligue 1",
     SERIE_A = "Serie A",
     CHAMPIONS_LEAGUE = "Champions League",
     // WORLD_CUP = "World cup"
@@ -88,6 +90,48 @@ const laLigaTeams: {[key: number]: string} = {
     298: "Girona FC",
     558: "RC Celta de Vigo",
     559: "Sevilla FC"
+}
+
+const ligue1Teams: {[key: number]: string} = {
+    511: "Toulouse FC",
+    512: "Stade Brestois",
+    516: "Marseille",
+    518: "Montpellier",
+    521: 'Lille OSC',
+    522: 'OGC Nice',
+    523: 'Olympique Lyon',
+    524: 'PSG',
+    525: 'FC Lorient',
+    529: 'Stade Rennais',
+    533: 'Le Havre AC',
+    541: 'Clermont Foot',
+    543: 'FC Nantes',
+    545: 'FC Metz',
+    546: 'RC Lens',
+    547: 'Stade de Reims',
+    548: 'AS Monaco FC',
+    576: 'Strasbourg'
+}
+
+const premeiraLigaTeams: {[key: number]: string} = {
+    496: 'Rio Ave FC',
+    498: 'Sporting CP',
+    503: 'FC Porto',
+    582: 'Estoril Praia',
+    583: 'Moreirense FC',
+    712: 'FC Arouca',
+    810: 'Boavista FC',
+    1103: 'GD Chaves',
+    1903: 'SL Benfica',
+    5531: 'FC Famalicão',
+    5533: 'Gil Vicente',
+    5543: 'Vitória SC',
+    5589: 'FC Vizela',
+    5601: 'Portimonese',
+    5602: 'SC Farense',
+    5613: 'Braga',
+    6618: 'Casa Pia AC',
+    9136: 'Amadora'
 }
 
 const serieATeams: {[key: number]: string} = {
@@ -180,6 +224,10 @@ export const competitions: {[key: number]: Competition} = {
     //         8601: 'Netherlands',
     //     }
     // },
+    2002: {
+        competition: CompetitionEnum.BUNDESLIGA,
+        teams: bundesLigaTeams
+    },
     2001: {
         competition: CompetitionEnum.CHAMPIONS_LEAGUE,
         teams: {
@@ -187,12 +235,17 @@ export const competitions: {[key: number]: Competition} = {
             ...eredivisieTeams,
             ...serieATeams,
             ...laLigaTeams,
-            ...premierLeagueTeams
+            ...ligue1Teams,
+            ...premierLeagueTeams,
+            610: "Galatasaray",
+            732: "Celtic",
+            1864: "Antwerp FC",
+            1876: "FC København",
+            1877: "RB Salzburg",
+            1887: "Shaktar",
+            2234: "Young Boys",
+            7283: "Crvena Zvedza"
         }
-    },
-    2002: {
-        competition: CompetitionEnum.BUNDESLIGA,
-        teams: bundesLigaTeams
     },
     2003: {
         competition: CompetitionEnum.EREDIVISIE,
@@ -202,14 +255,21 @@ export const competitions: {[key: number]: Competition} = {
         competition: CompetitionEnum.LA_LIGA,
         teams: laLigaTeams
     },
-    // 2015: {name: "Ligue 1"},
-    2019: {
-        competition: CompetitionEnum.SERIE_A,
-        teams: serieATeams
+    2015: {
+        competition: CompetitionEnum.LIGUE_1,
+        teams: ligue1Teams
+    },
+    2017: {
+        competition: CompetitionEnum.PREMEIRA_LIGA,
+        teams: premeiraLigaTeams
     },
     2021: {
         competition: CompetitionEnum.PREMIER_LEAGUE,
         teams: premierLeagueTeams
+    },
+    2019: {
+        competition: CompetitionEnum.SERIE_A,
+        teams: serieATeams
     }
 }
 
