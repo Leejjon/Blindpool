@@ -237,13 +237,14 @@ export const competitions: {[key: number]: Competition} = {
             ...laLigaTeams,
             ...ligue1Teams,
             ...premierLeagueTeams,
+            ...premeiraLigaTeams,
             610: "Galatasaray",
             732: "Celtic",
             1864: "Antwerp FC",
             1876: "FC København",
             1877: "RB Salzburg",
             1887: "Shaktar",
-            2234: "Young Boys",
+            1871: "Young Boys",
             7283: "Crvena Zvedza"
         }
     },
