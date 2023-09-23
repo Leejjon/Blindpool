@@ -62,16 +62,14 @@ export const fetchAndUpdateMatchesThatAreCurrentlyPlaying = async (req: Request,
     const competitionsKeysToUpdate = await getCompetitionsThatNeedUpdate();
 
     competitionsKeysToUpdate
-        .map((competitionKeysToUpdate) => {
-            const competitionKeysAsStrings = competitionKeysToUpdate.map(competition => {
-                return competition.toString();
-            });
-            if (competitionKeysToUpdate.length === 0) {
-                res.status(200);
-                res.send();
-            } else {
-                upsertMatchesForCompetitions(res, competitionKeysToUpdate);
-            }
+        .map(async (competitionKeysToUpdate) => {
+            console.log(competitionKeysToUpdate);
+            res.status(200);
+            res.send();
+            // if (competitionKeysToUpdate.length === 0) {
+            // } else {
+            //     await upsertMatchesForCompetitions(res, competitionKeysToUpdate);
+            // }
         })
         .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario))
 }
