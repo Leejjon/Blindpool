@@ -1,4 +1,4 @@
-import createTheme from '@mui/material/styles/createTheme';
+import {createTheme} from '@mui/material';
 
 // I copied this solution from:
 // https://medium.com/@abdurakhimov.sardor/how-to-use-and-customize-material-ui-version-5-with-styled-components-295e62562e61
