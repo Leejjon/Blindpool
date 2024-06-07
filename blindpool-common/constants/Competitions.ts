@@ -10,6 +10,7 @@ export enum CompetitionEnum {
     SERIE_A = "Serie A",
     CHAMPIONS_LEAGUE = "Champions League",
     // WORLD_CUP = "World cup"
+    EUROPEAN_CUP = "European Cup"
 }
 
 interface Competition {
@@ -224,10 +225,6 @@ export const competitions: {[key: number]: Competition} = {
     //         8601: 'Netherlands',
     //     }
     // },
-    2002: {
-        competition: CompetitionEnum.BUNDESLIGA,
-        teams: bundesLigaTeams
-    },
     2001: {
         competition: CompetitionEnum.CHAMPIONS_LEAGUE,
         teams: {
@@ -248,6 +245,10 @@ export const competitions: {[key: number]: Competition} = {
             7283: "Crvena Zvedza"
         }
     },
+    2002: {
+        competition: CompetitionEnum.BUNDESLIGA,
+        teams: bundesLigaTeams
+    },
     2003: {
         competition: CompetitionEnum.EREDIVISIE,
         teams: eredivisieTeams
@@ -263,6 +264,35 @@ export const competitions: {[key: number]: Competition} = {
     2017: {
         competition: CompetitionEnum.PREMEIRA_LIGA,
         teams: premeiraLigaTeams
+    },
+    2018: {
+        competition: CompetitionEnum.EUROPEAN_CUP,
+        teams: {
+            759: 'Germany',
+            760: 'Spain',
+            765: 'Portugal',
+            768: 'Slovakia',
+            770: 'England',
+            773: 'France',
+            777: 'Slovenia',
+            780: 'Serbia',
+            782: 'Denmark',
+            784: 'Italy',
+            788: 'Switzerland',
+            790: 'Ukraine',
+            794: 'Poland',
+            798: 'Czech Republic',
+            799: 'Croatia',
+            803: 'Turkey',
+            805: 'Belgium',
+            811: 'Romania',
+            816: 'Austria',
+            827: 'Hungary',
+            1065: 'Albania',
+            1978: 'Georgia',
+            8601: 'Netherlands',
+            8873: 'Scotland'
+        }
     },
     2021: {
         competition: CompetitionEnum.PREMIER_LEAGUE,

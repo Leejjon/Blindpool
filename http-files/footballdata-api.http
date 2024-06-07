@@ -67,3 +67,8 @@ X-Auth-Token: {{footballdata-api-key}}
 GET {{footballdata-api-url}}/v4/competitions/2000/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
+
+### European cup 2018 matches
+GET {{footballdata-api-url}}/v4/competitions/2018/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}

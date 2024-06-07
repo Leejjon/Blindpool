@@ -4,7 +4,7 @@ import {BpCompetitionProps} from "../../App";
 import {competitions, getCompetitionsList} from "blindpool-common/constants/Competitions";
 
 const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, setCompetitionsToWatch}) => {
-    const listOfCompetitions = getCompetitionsList();
+    const listOfCompetitions= [2018];//getCompetitionsList();
 
     // Sanitizing competitions like the world cup, that somehow seemed to stay in the query after removing it from the getCompetitionList().
     function filterDisabledCompetitions(competitions: Array<number>) {
@@ -26,12 +26,21 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
             {listOfCompetitions.map((key: number) => {
                 const competition = competitions[key];
                 const labelId = `competition-label-${key}`;
+
+                let label: String;
+                if (competition.competition == "European Cup" && window.location.hostname.endsWith('blindepool.nl')) {
+                    label = "EK 2024"
+                } else {
+                    label = competition.competition;
+                }
+
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
-                            <FormControlLabel label={competition.competition} control={
+                            <FormControlLabel label={label} control={
                                 <Checkbox sx={{marginLeft: "0.5em"}} onChange={(event) => handleChange(event, key)}
-                                  checked={competitionsToWatch.includes(key)} disableRipple color="secondary" />
+                                   checked={true} disableRipple color="secondary" />
+                                // checked={competitionsToWatch.includes(key)}
                             }/>
                         </ListItemButton>
                     </ListItem>

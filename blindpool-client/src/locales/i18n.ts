@@ -129,8 +129,8 @@ i18n
     });
 
 export const defaultCompetitions: Array<number> = window.location.hostname.endsWith('blindepool.nl') ? [
-    getCompetitionKey(CompetitionEnum.EREDIVISIE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE)
-] : [getCompetitionKey(CompetitionEnum.PREMIER_LEAGUE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE)];
+    getCompetitionKey(CompetitionEnum.EREDIVISIE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE), getCompetitionKey(CompetitionEnum.EUROPEAN_CUP)
+] : [getCompetitionKey(CompetitionEnum.PREMIER_LEAGUE), getCompetitionKey(CompetitionEnum.CHAMPIONS_LEAGUE), getCompetitionKey(CompetitionEnum.EUROPEAN_CUP)];
 
 export interface dutchCountryNameMapping {
     [teamID: number]: string;
@@ -145,11 +145,13 @@ const dutchCountryNames: dutchCountryNameMapping = {
     764: 'Brazilië',
     765: 'Portugal',
     766: "Japan",
+    768: 'Slowakije',
     769: 'Mexico',
     770: 'Engeland',
     771: 'Verenigde Staten',
     772: 'Zuid Korea',
     773: 'Frankrijk',
+    777: 'Slovenië',
     779: 'Australië',
     780: 'Servië',
     781: 'Kameroen',
@@ -169,14 +171,17 @@ const dutchCountryNames: dutchCountryNameMapping = {
     804: 'Senegal',
     805: 'België',
     808: 'Rusland',
+    811: 'Roemenië',
     815: 'Marokko',
     816: 'Oostenrijk',
     827: 'Hongarije',
     828: 'Canada',
     833: 'Wales',
     840: 'Iran',
+    1065: 'Albanië',
     1976: 'Finland',
     1977: 'Noord-Macedonië',
+    1978: 'Georgië',
     8030: 'Qatar',
     8601: 'Nederland',
     8873: 'Schotland'
@@ -187,7 +192,7 @@ const getDutchCountryName = (teamId: number) => {
 }
 
 export const getHomeTeamNameToDisplay = (match: Match) => {
-    if (match.competitionName === 'World Cup 2022' && window.location.hostname.endsWith('blindepool.nl')) {
+    if (match.competitionName === 'European Cup' && window.location.hostname.endsWith('blindepool.nl')) {
         return getDutchCountryName(parseInt(match.homeTeamID));
     } else {
         return match.homeTeamName;
@@ -195,7 +200,7 @@ export const getHomeTeamNameToDisplay = (match: Match) => {
 }
 
 export const getAwayTeamNameToDisplay = (match: Match) => {
-    if (match.competitionName === 'World Cup 2022' && window.location.hostname.endsWith('blindepool.nl')) {
+    if (match.competitionName === 'European Cup' && window.location.hostname.endsWith('blindepool.nl')) {
         return getDutchCountryName(parseInt(match.awayTeamID));
     } else {
         return match.awayTeamName;
