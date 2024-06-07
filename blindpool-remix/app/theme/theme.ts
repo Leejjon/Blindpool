@@ -1,5 +1,6 @@
 import {createTheme} from '@mui/material/styles';
 //https://stackoverflow.com/questions/75732001/create-theme-error-in-vite-application-using-the-materialui-library
+// https://traviswimer.com/blog/easily-fix-react-hydration-errors
 
 // I copied this solution from:
 // https://medium.com/@abdurakhimov.sardor/how-to-use-and-customize-material-ui-version-5-with-styled-components-295e62562e61
