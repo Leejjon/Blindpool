@@ -47,7 +47,15 @@ function updateCompetitionsInLocalStorage(competitions: Array<number>) {
 function getCompetitionsFromLocalStorage(): Array<number> {
     const localCompetitions = localStorage.getItem(localStorageName);
     if (localCompetitions) {
-        return JSON.parse(localCompetitions);
+        const localCompetitionsObject: Array<number> = JSON.parse(localCompetitions);
+        if (localCompetitionsObject.includes(2018)) {
+            return localCompetitionsObject;
+        } else {
+            localCompetitionsObject.push(2018);
+            return localCompetitionsObject.sort(function(a, b) {
+                return a - b;
+            });
+        }
     } else {
         return defaultCompetitions;
     }

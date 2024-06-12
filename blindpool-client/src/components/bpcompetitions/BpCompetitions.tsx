@@ -28,7 +28,7 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
                 const labelId = `competition-label-${key}`;
 
                 let label: String;
-                if (competition.competition == "European Cup" && window.location.hostname.endsWith('blindepool.nl')) {
+                if (competition.competition === "European Cup" && window.location.hostname.endsWith('blindepool.nl')) {
                     label = "EK 2024"
                 } else {
                     label = competition.competition;
@@ -37,7 +37,7 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
-                            <FormControlLabel label={label} control={
+                            <FormControlLabel disabled={true} label={label} control={
                                 <Checkbox sx={{marginLeft: "0.5em"}} onChange={(event) => handleChange(event, key)}
                                    checked={true} disableRipple color="secondary" />
                                 // checked={competitionsToWatch.includes(key)}

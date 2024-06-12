@@ -31,7 +31,7 @@ const About: React.FC = () => {
                             <br/>{t('ABOUT_BLINDPOOL_DESCRIPTION')}
                         </Typography>
                         <br/>
-                        <img alt="Leon Liefting" style={{width: '100%', height: "auto"}} src="/leon.png"/>
+                        <img alt="Leon Liefting" style={{width: '100%', height: "auto"}} src="/leon.jpg"/>
                         <Typography component="p">
                             <br/>
                             {t('REACH_OUT')}
@@ -46,8 +46,8 @@ const About: React.FC = () => {
                         </a>
                     </CardActions>
                     <CardActions>
-                        <a className="firstButton" href="https://dutchcodersnetwork.nl" target="new" style={{textDecoration: 'none', width: "100%", paddingLeft: '2em', paddingBottom: '0.5em'}}>
-                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>DCN</Button>
+                        <a className="firstButton" href="https://leejjon.medium.com/" target="new" style={{textDecoration: 'none', width: "100%", paddingLeft: '2em', paddingBottom: '0.5em'}}>
+                            <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>Medium</Button>
                         </a>
                         <a href="https://twitter.com/Leejjon_net" target="new" style={{textDecoration: 'none', width: "100%", paddingRight: '2em', paddingBottom: '0.5em'}}>
                             <Button size="large" sx={{color: "rgba(0, 0, 0, 0.87)", width: "100%", fontSize: "medium"}}>X</Button>
