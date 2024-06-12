@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="React dev server" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/blindpool-client/package.json" />
+    <package-json value="$PROJECT_DIR$/blindpool-vite/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start" />
+      <script value="dev" />
     </scripts>
-    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v18.14.1/bin/node" />
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v20.9.0/bin/node" />
     <envs />
     <method v="2" />
   </configuration>

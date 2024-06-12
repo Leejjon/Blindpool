@@ -2,6 +2,9 @@ node_modules
 
 blindpool-client/build
 blindpool-client/.eslintcache
+blindpool-client/node_modules
+blindpool-vite/dist
+blindpool-vite/node_modules
 blindpool-common/constants/**/*.d.ts
 blindpool-common/constants/**/*.js
 blindpool-common/requests/**/*.d.ts
