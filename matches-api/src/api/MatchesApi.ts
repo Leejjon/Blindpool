@@ -63,13 +63,14 @@ export const fetchAndUpdateMatchesThatAreCurrentlyPlaying = async (req: Request,
 
     competitionsKeysToUpdate
         .map(async (competitionKeysToUpdate) => {
-            console.log(competitionKeysToUpdate);
+            if (competitionKeysToUpdate.length === 0) {
+                console.log("No competition required updating.");
+            } else {
+                console.log(`Updating competitions: ${competitionKeysToUpdate}`)
+                await upsertMatchesForCompetitions(res, competitionKeysToUpdate);
+            }
             res.status(200);
             res.send();
-            // if (competitionKeysToUpdate.length === 0) {
-            // } else {
-            //     await upsertMatchesForCompetitions(res, competitionKeysToUpdate);
-            // }
         })
         .mapErr((errorScenario: ErrorScenarios) => mapError(res, errorScenario))
 }
@@ -84,12 +85,12 @@ export const fetchAndSaveScheduledMatches = async (req: Request, res: Response) 
     }
 };
 
-async function upsertMatchesForCompetitions(res: Response, competitionsArray: Array<CompetitionEnum>) {
+export async function upsertMatchesForCompetitions(res: Response, competitionsArray: Array<CompetitionEnum>) {
     let matches = await getMatchesFromFootballDataApi(competitionsArray);
     matches
-        .map((matches: Array<MatchWithCompetitionIncluded>) => {
-            while (matches.length) {
-                upsertMatches(matches.splice(0, 500));
+        .map(async (matches: Array<MatchWithCompetitionIncluded>) => {
+            while (matches.length > 0) {
+                await upsertMatches(matches.splice(0, 500));
             }
             res.status(200);
             res.send();

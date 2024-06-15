@@ -60,26 +60,25 @@ export const getCompetitionsThatNeedUpdate = async (): Promise<Result<Array<Comp
     try {
         const datastore = getDatastoreInstance();
         const currentTimestamp = new Date();
-        const just90MinutesAgo = new Date(currentTimestamp.getTime() - 115*60000);
+        const just150MinutesAgo = new Date(currentTimestamp.getTime() - 150*60000);
 
-        console.log("Starting to query between " + just90MinutesAgo.toJSON() + " and " + currentTimestamp.toJSON());
+        console.log("Starting to query between " + just150MinutesAgo.toJSON() + " and " + currentTimestamp.toJSON());
 
         // Test https://cloud.google.com/datastore/docs/activate
         let query = datastore.createQuery('pool')
             .filter(new PropertyFilter('START_TIMESTAMP', '<', currentTimestamp.toJSON())) // The match has started.
-            .filter(new PropertyFilter('START_TIMESTAMP', '>', just90MinutesAgo.toJSON())) // But it hasn't gone over 100 minutes.
+            .filter(new PropertyFilter('START_TIMESTAMP', '>', just150MinutesAgo.toJSON())) // But it hasn't gone over 100 minutes.
             .limit(10);
         const result: RunQueryResponse = await datastore.runQuery(query);
 
         const [pools] = result;
 
-        console.log("What are we doing?" + pools);
-
         // Remove duplicates by putting the items in a set.
         const competitionKeys = [...new Set(pools.map((pool: Entity) => {
             const match = pool.MATCH;
-            console.log("Match " + JSON.stringify(match));
-            return getCompetitionByStringName(match.competitionName);
+            const competition = getCompetitionByStringName(match.competitionName);
+            console.log(`Pool with id ${pool.ID} found for match ${JSON.stringify(match)} in competition: ${competition}`);
+            return competition;
         }))];
         return ok(competitionKeys);
     } catch (error) {
