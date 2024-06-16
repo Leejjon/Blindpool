@@ -1,3 +1,4 @@
+import { Button } from "@mui/base";
 import { LinksFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 
@@ -13,7 +14,8 @@ export const links: LinksFunction = () => {
 
 export default function Component() {
     return (
-        <div className="App">
+        <div className="font-archivo">
+            <Button className="bg-bpgreen">Create Pool</Button>
             <Outlet/>
         </div>
     );
