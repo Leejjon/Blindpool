@@ -21,7 +21,7 @@ module.exports = {
             { test: /\.ts?$/, loader: 'ts-loader', exclude: /node_modules/}
         ]
     },
-    plugins: [new webpack.HotModuleReplacementPlugin(), new copyFilesDev({ patterns: [{ from: '../blindpool-client/build', to: 'build'}]})],
+    plugins: [new webpack.HotModuleReplacementPlugin(), new copyFilesDev({ patterns: [{ from: '../blindpool-client/dist', to: 'build'}]})],
     output: {
         path: pathDev.resolve(__dirname, 'dist'),
         filename: 'index.js'
