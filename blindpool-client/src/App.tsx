@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
 import './App.css';
-import BpAppBar from "./components/bpappbar/BpAppBar";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import BpHelmet from "./components/bphelmet/BpDefaultHelmet";
-import Home from "./views/home/Home";
-import {useTranslation} from "react-i18next";
 import {HelmetProvider} from "react-helmet-async";
-import About from "./views/about/About";
-import HowTo from "./views/howto/HowTo";
-import CreatePool from "./views/createpool/CreatePool";
-import ViewPool from "./views/viewpool/ViewPool";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import BpDefaultHelmet from "./components/bphelmet/BpDefaultHelmet";
+import BpAppBar from "./components/bpappbar/BpAppBar";
 import {Alert, Snackbar, Typography} from "@mui/material";
-import {Match} from "./model/Match";
+import {useTranslation} from "react-i18next";
 import {defaultCompetitions} from "./locales/i18n";
+import {Match} from "./model/Match";
+import Home from "./views/home/Home";
+import About from "./views/about/About";
+import CreatePool from "./views/createpool/CreatePool";
+import HowTo from "./views/howto/HowTo";
+import ViewPool from "./views/viewpool/ViewPool";
 
 export interface BpSnackbarMessageProps {
     setMessage: (message: string | undefined) => void;
@@ -82,7 +82,7 @@ function App() {
         <HelmetProvider>
             <BrowserRouter>
                 <div className="App">
-                    <BpHelmet/>
+                    <BpDefaultHelmet/>
                     <BpAppBar/>
                     <Routes>
                         <Route path="/" element={
