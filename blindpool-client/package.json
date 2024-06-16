@@ -1,5 +1,5 @@
 {
-  "name": "blindpool-vite",
+  "name": "blindpool-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="React dev server" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/blindpool-vite/package.json" />
+    <package-json value="$PROJECT_DIR$/blindpool-client/package.json" />
     <command value="run" />
     <scripts>
       <script value="dev" />
