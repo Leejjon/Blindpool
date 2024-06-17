@@ -4,18 +4,20 @@ import {useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 
+
+
 const buttonColor = {
     color: "rgba(0, 0, 0, 0.87)"
 }
 
 const tutorialSteps = (t: TFunction) => {
     return [
-        {label: t("COMIC1"), imgPath: require('../../images/comics/Blindpool_1.svg').default},
-        {label: t("COMIC2"), imgPath: require('../../images/comics/Blindpool_2.svg').default},
-        {label: t("COMIC3"), imgPath: require('../../images/comics/Blindpool_3.svg').default},
-        {label: t("COMIC4"), imgPath: require('../../images/comics/Blindpool_4.svg').default},
-        {label: t("COMIC5"), imgPath: require('../../images/comics/Blindpool_5.svg').default},
-        {label: t("COMIC6"), imgPath: require('../../images/comics/Blindpool_6.svg').default},
+        {label: t("COMIC1"), imgPath: '/comics/Blindpool_1.svg'},
+        {label: t("COMIC2"), imgPath: '/comics/Blindpool_2.svg'},
+        {label: t("COMIC3"), imgPath: '/comics/Blindpool_3.svg'},
+        {label: t("COMIC4"), imgPath: '/comics/Blindpool_4.svg'},
+        {label: t("COMIC5"), imgPath: '/comics/Blindpool_5.svg'},
+        {label: t("COMIC6"), imgPath: '/comics/Blindpool_6.svg'},
     ];
 };
 
