@@ -4,8 +4,6 @@ import {useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 
-
-
 const buttonColor = {
     color: "rgba(0, 0, 0, 0.87)"
 }
