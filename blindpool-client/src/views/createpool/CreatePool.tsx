@@ -18,7 +18,7 @@ import Player from "../../model/Player";
 import NameField from "./NameField";
 import {Api, getHost} from "../../utils/Network";
 import BpMatchSelector from "../../components/bpmatchselector/BpMatchSelector";
-import {BpCompetitionProps, BpSelectedMatchProps, BpSnackbarMessageProps} from "../../App";
+import {BpCompetitionProps, BpSelectedMatchProps} from "../../App";
 import {doesMatchExistIn, Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
@@ -27,6 +27,7 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 import {matchesQuery} from "../../queries/MatchesQuery";
 import {poolQuery} from "../../queries/PoolQuery";
+import { BpSnackbarMessageProps } from "../../components/bpsnackbar/BpSnackbar";
 
 const EMPTY_STRING = "";
 
