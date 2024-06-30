@@ -5,12 +5,6 @@ import fetchMock from "fetch-mock";
 import '../../locales/i18n';
 import {HelmetProvider} from "react-helmet-async";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import { afterEach
-    , describe
-    , expect
-    , test
-    , vi
-     } from 'vitest';
 
 // This const has to have a name starting with "mock". See: https://lukerogerson.medium.com/two-ways-to-fix-the-jest-test-error-the-module-factory-of-jest-mock-is-not-allowed-to-bf022b5175dd
 const mockNavigate = vi.fn();
