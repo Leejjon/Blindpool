@@ -13,10 +13,7 @@ import About from "./views/about/About";
 import CreatePool from "./views/createpool/CreatePool";
 import HowTo from "./views/howto/HowTo";
 import ViewPool from "./views/viewpool/ViewPool";
-
-export interface BpSnackbarMessageProps {
-    setMessage: (message: string | undefined) => void;
-}
+import BpSnackbar from './components/bpsnackbar/BpSnackbar';
 
 export interface BpMatchesProps {
     matches: Array<Match>;
@@ -71,13 +68,6 @@ function App() {
         updateCompetitionsInLocalStorage(competitionsToWatch);
     }, [competitionsToWatch, setCompetitionsToWatch]);
 
-    const handleClose = (event: any, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setMessage(undefined);
-    };
-
     return (
         <HelmetProvider>
             <BrowserRouter>
@@ -97,20 +87,7 @@ function App() {
                         <Route path="/howto" element={<HowTo/>}/>
                         <Route path="/pool/:key" element={<ViewPool/>}/>
                     </Routes>
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        }}
-                        open={message !== undefined}
-                        autoHideDuration={6000}
-                        onClose={handleClose}
-                        message={message}>
-                        <Alert elevation={1} variant="filled" severity="warning" className="warningAlert">
-                            <Typography variant="body1" component="p"
-                                        sx={{color: "white"}}>{message !== undefined ? t(message) : null}</Typography>
-                        </Alert>
-                    </Snackbar>
+                    <BpSnackbar message={message} setMessage={setMessage} />
                 </div>
             </BrowserRouter>
         </HelmetProvider>
