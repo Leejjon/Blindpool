@@ -1,5 +1,4 @@
 import {fireEvent, render, waitFor} from "@testing-library/react";
-import React from "react";
 import CreatePool from "./CreatePool";
 import {MemoryRouter} from 'react-router-dom';
 import fetchMock from "fetch-mock";
@@ -8,12 +7,15 @@ import {HelmetProvider} from "react-helmet-async";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 // This const has to have a name starting with "mock". See: https://lukerogerson.medium.com/two-ways-to-fix-the-jest-test-error-the-module-factory-of-jest-mock-is-not-allowed-to-bf022b5175dd
-const mockNavigate = jest.fn();
+const mockNavigate = vi.fn();
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom') as any,
-    useNavigate: () => mockNavigate,
-}));
+vi.mock("react-router-dom", async (importOriginal) => {
+    const actual = await importOriginal() as any;
+    return {
+      ...actual,
+      useNavigate: () => mockNavigate
+    }
+});
 
 const queryClient = new QueryClient({
     defaultOptions: {
