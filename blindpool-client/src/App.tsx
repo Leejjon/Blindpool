@@ -42,24 +42,26 @@ function updateCompetitionsInLocalStorage(competitions: Array<number>) {
 }
 
 function getCompetitionsFromLocalStorage(): Array<number> {
-    const localCompetitions = localStorage.getItem(localStorageName);
-    if (localCompetitions) {
-        const localCompetitionsObject: Array<number> = JSON.parse(localCompetitions);
-        if (localCompetitionsObject.includes(2018)) {
-            return localCompetitionsObject;
-        } else {
-            localCompetitionsObject.push(2018);
-            return localCompetitionsObject.sort(function(a, b) {
-                return a - b;
-            });
-        }
-    } else {
-        return defaultCompetitions;
-    }
+    // const localCompetitions = localStorage.getItem(localStorageName);
+    // if (localCompetitions) {
+    //     const localCompetitionsObject: Array<number> = JSON.parse(localCompetitions);
+    //     if (localCompetitionsObject.includes(2018)) {
+    //         return localCompetitionsObject;
+    //     } else {
+    //         localCompetitionsObject.push(2018);
+    //         return localCompetitionsObject.sort(function(a, b) {
+    //             return a - b;
+    //         });
+    //     }
+    // } else {
+    //     return defaultCompetitions;
+    // }
+    return [2018];
 }
 
 function App() {
     const {t} = useTranslation();
+
     const [message, setMessage] = useState<string | undefined>(undefined);
     const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage());
     const [selectedMatchId, setSelectedMatchId] = useState<string>();
