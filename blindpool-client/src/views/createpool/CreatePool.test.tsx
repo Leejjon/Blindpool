@@ -26,6 +26,7 @@ const queryClient = new QueryClient({
 });
 
 describe('Test CreatePool view', () => {
+    
     afterEach(() => {
         fetchMock.restore();
         mockNavigate.mockClear();
