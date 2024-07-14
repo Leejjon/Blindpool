@@ -41,13 +41,6 @@ describe('Test ViewPool', () => {
 
         const { findByText, getByText } = render(
             <HelmetProvider>
-                {/* <MemoryRouter initialEntries={['/pool/JE6znp9BvnP']}>
-                    <QueryClientProvider client={queryClient}>
-                        <Routes>
-                            <Route path="/pool/:key" element={<ViewPool />} />
-                        </Routes>
-                    </QueryClientProvider>
-                </MemoryRouter> */}
                 <QueryClientProvider client={queryClient}>
                     <ComponentWithBpContext context={EMPTY_CONTEXT} url="/pool/JE6znp9BvnP" urlWithPathParameterDefinition="/pool/:key">
                         <ViewPool />
