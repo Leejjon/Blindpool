@@ -84,7 +84,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 }
 
                 setInputValue(newSupportedMatch);
-                console.log("Does this happen")
                 if (event && event.type === 'change') {
                     updateSelectedMatch(null, newSupportedMatch);
                 }

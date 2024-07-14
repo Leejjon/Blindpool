@@ -1,10 +1,11 @@
-import {fireEvent, render, waitFor} from "@testing-library/react";
+import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import CreatePool from "./CreatePool";
-import {MemoryRouter} from 'react-router-dom';
+import { MemoryRouter, useOutletContext } from 'react-router-dom';
 import fetchMock from "fetch-mock";
 import '../../locales/i18n';
-import {HelmetProvider} from "react-helmet-async";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ComponentWithBpContext, EMPTY_CONTEXT } from "../../test/ComponentWithBpContext";
 
 // This const has to have a name starting with "mock". See: https://lukerogerson.medium.com/two-ways-to-fix-the-jest-test-error-the-module-factory-of-jest-mock-is-not-allowed-to-bf022b5175dd
 const mockNavigate = vi.fn();
@@ -12,8 +13,8 @@ const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async (importOriginal) => {
     const actual = await importOriginal() as any;
     return {
-      ...actual,
-      useNavigate: () => mockNavigate
+        ...actual,
+        useNavigate: () => mockNavigate,
     }
 });
 
@@ -26,23 +27,20 @@ const queryClient = new QueryClient({
 });
 
 describe('Test CreatePool view', () => {
-    
+
     afterEach(() => {
         fetchMock.restore();
         mockNavigate.mockClear();
     });
 
-    const fakeSetter = (matchId: string | undefined) => { };
-
     test('Create pool with all fields empty - fail with enter a name message', async () => {
-        const {findAllByText, getByText} = render(
+        const { findAllByText, getByText } = render(
             <HelmetProvider>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)}
-                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter}/>
-                    </QueryClientProvider>
-                </MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ComponentWithBpContext context={EMPTY_CONTEXT}>
+                        <CreatePool />
+                    </ComponentWithBpContext>
+                </QueryClientProvider>
             </HelmetProvider>
         );
         const createPoolButton = getByText('CREATE POOL');
@@ -54,14 +52,13 @@ describe('Test CreatePool view', () => {
     });
 
     test('Add a name field - new name field should be added', async () => {
-        const {findAllByLabelText, getByLabelText} = render(
+        const { findAllByLabelText, getByLabelText } = render(
             <HelmetProvider>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)}
-                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter}/>
-                    </QueryClientProvider>
-                </MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ComponentWithBpContext context={EMPTY_CONTEXT}>
+                        <CreatePool />
+                    </ComponentWithBpContext>
+                </QueryClientProvider>
             </HelmetProvider>
         );
 
@@ -83,14 +80,13 @@ describe('Test CreatePool view', () => {
     });
 
     test('Remove the last name field - last name field should dissapear', async () => {
-        const {findAllByLabelText, getByLabelText} = render(
+        const { findAllByLabelText, getByLabelText } = render(
             <HelmetProvider>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)}
-                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter}/>
-                    </QueryClientProvider>
-                </MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ComponentWithBpContext context={EMPTY_CONTEXT}>
+                        <CreatePool />
+                    </ComponentWithBpContext>
+                </QueryClientProvider>
             </HelmetProvider>
         );
 
@@ -105,10 +101,10 @@ describe('Test CreatePool view', () => {
         expect(emptyNameFields.length).toBe(4);
     });
 
-    //https://stackoverflow.com/questions/58524183/how-to-mock-history-push-with-the-new-react-router-hooks-using-jest
+    // https://stackoverflow.com/questions/58524183/how-to-mock-history-push-with-the-new-react-router-hooks-using-jest
     test('Create a pool - Happy flow', async () => {
         fetchMock.post('http://localhost:8080/api/v3/pool', {
-            body: {key: 'ABC'},
+            body: { key: 'ABC' },
             status: 200
         });
         fetchMock.get('http://localhost:8082/api/v2/matches/upcoming?competition[]=2021', {
@@ -116,14 +112,13 @@ describe('Test CreatePool view', () => {
             status: 200
         });
 
-        const {findByTestId, getAllByLabelText, findByDisplayValue, container} = render(
+        const { findByTestId, getAllByLabelText, findByDisplayValue, container } = render(
             <HelmetProvider>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => console.log(message)}
-                                    competitionsToWatch={[2021]} setSelectedMatchId={fakeSetter}/>
-                    </QueryClientProvider>
-                </MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ComponentWithBpContext context={{ ...EMPTY_CONTEXT, competitionsToWatch: [2021] }}>
+                        <CreatePool />
+                    </ComponentWithBpContext>
+                </QueryClientProvider>
             </HelmetProvider>
         );
 
@@ -135,7 +130,7 @@ describe('Test CreatePool view', () => {
         // Because no sane people can read regex, this is a simple startsWith expression.
         const nameFields = getAllByLabelText(/^Player name /i);
         nameFields.forEach((item, index) => {
-            fireEvent.change(item, {target: {value: names[index]}});
+            fireEvent.change(item, { target: { value: names[index] } });
         });
 
         for (const name of names) {
@@ -155,7 +150,7 @@ describe('Test CreatePool view', () => {
         await waitFor(() => {
             // Verify the request to the backend was done.
             expect(fetchMock.called((url, req): boolean => {
-                if (url === 'http://localhost:8080/api/v3/pool' && req.body === JSON.stringify({participants: names})) {
+                if (url === 'http://localhost:8080/api/v3/pool' && req.body === JSON.stringify({ participants: names })) {
                     return true;
                 } else {
                     return false;
@@ -167,7 +162,7 @@ describe('Test CreatePool view', () => {
             // component as we didn't load the complete BrowserRouter in the unit test. It doesn't matter as the scope of
             // CreatePool.test.tsx is to only test CreatePool.tsx. So I mocked it with the mockHistoryPush.
             expect(mockNavigate).toHaveBeenCalledWith('/pool/ABC');
-        }, {container: containerHtmlElement});
+        }, { container: containerHtmlElement });
     });
 
     test('Create a pool - No internet', async () => {
@@ -176,19 +171,18 @@ describe('Test CreatePool view', () => {
             Promise.reject('NetworkError when attempting to fetch resource.')
         ).get(
             'http://localhost:8082/api/v2/matches/upcoming?competition[]=2021', {
-                body: [],
-                status: 200
-            });
+            body: [],
+            status: 200
+        });
         let messageState: string | undefined = undefined;
 
-        const {getByText, getAllByLabelText, container} = render(
+        const { getByText, getAllByLabelText, container } = render(
             <HelmetProvider>
-                <MemoryRouter>
-                    <QueryClientProvider client={queryClient}>
-                        <CreatePool setMessage={(message) => messageState = message}
-                                    competitionsToWatch={[]} setSelectedMatchId={fakeSetter} />
-                    </QueryClientProvider>
-                </MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ComponentWithBpContext context={{...EMPTY_CONTEXT, setMessage: (message) => messageState = message}}>
+                        <CreatePool />
+                    </ComponentWithBpContext>
+                </QueryClientProvider>
             </HelmetProvider>
         );
 
@@ -197,13 +191,13 @@ describe('Test CreatePool view', () => {
         const createPoolButton = getByText('CREATE POOL');
         const nameFields = getAllByLabelText(/^Player name /i);
         nameFields.forEach((item, index) => {
-            fireEvent.change(item, {target: {value: names[index]}});
+            fireEvent.change(item, { target: { value: names[index] } });
         });
 
         // Leaving lots of validation out as it's already happening in the happy flow test.
         fireEvent.click(createPoolButton);
         await waitFor(() => {
             expect(messageState).toBe('BACKEND_UNREACHABLE');
-        }, {container: containerHtml});
+        }, { container: containerHtml });
     });
 });

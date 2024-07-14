@@ -22,9 +22,9 @@ export interface BpSnackbarProps {
     setMessage: (message?: string) => void;
 }
 
-export type BlindpoolOutletContext = BpSnackbarProps & BpCompetitionProps & BpSelectedMatchProps;
+export type BpOutletContext = BpSnackbarProps & BpCompetitionProps & BpSelectedMatchProps;
 
-export function useNewBlindpoolOutletContext(setMessage: (message?: string) => void, message?: string): BlindpoolOutletContext {
+export function useNewBlindpoolOutletContext(setMessage: (message?: string) => void, message?: string): BpOutletContext {
     const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage());
     const [selectedMatchId, setSelectedMatchId] = useState<string>();
 
@@ -42,8 +42,8 @@ export function useNewBlindpoolOutletContext(setMessage: (message?: string) => v
     };
 }
 
-export function useExistingBlindpoolOutletContext(): BlindpoolOutletContext {
-    return useOutletContext<BlindpoolOutletContext>();
+export function useExistingBlindpoolOutletContext(): BpOutletContext {
+    return useOutletContext<BpOutletContext>();
 }
 
 const localStorageName = "competitions";
