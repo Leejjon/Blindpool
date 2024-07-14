@@ -10,6 +10,7 @@ interface ComponentWithBpContextProps {
 }
 
 // This solution is inspired on the first answer on this stack overflow post: https://stackoverflow.com/questions/70507413/react-router-useoutletcontext-testing
+// You could delete this class and make specific mocks per tests instead: https://github.com/vitest-dev/vitest/discussions/4328
 
 export const ComponentWithBpContext = ({
   context,
