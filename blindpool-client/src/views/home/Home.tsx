@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Button,
     Card,
@@ -12,15 +11,15 @@ import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
-import {BpCompetitionProps, BpSelectedMatchProps} from "../../App";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQuery} from "@tanstack/react-query";
 import {Match} from "../../model/Match";
 import { matchesQuery } from "../../queries/MatchesQuery";
-import { BpSnackbarMessageProps } from "../../components/bpsnackbar/BpSnackbar";
+import { useExistingBlindpoolOutletContext } from "../../context/BpContext";
 
-const Home: React.FC<BpCompetitionProps & BpSnackbarMessageProps & BpSelectedMatchProps> = ({competitionsToWatch, setCompetitionsToWatch, setMessage, setSelectedMatchId}) => {
+function Home() {
+    const {competitionsToWatch, setCompetitionsToWatch, setMessage, setSelectedMatchId} = useExistingBlindpoolOutletContext();
     const {t} = useTranslation();
     const {data} = useQuery({
         ...matchesQuery(setMessage, competitionsToWatch)

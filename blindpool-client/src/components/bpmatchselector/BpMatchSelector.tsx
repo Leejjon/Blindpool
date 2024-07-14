@@ -3,10 +3,10 @@ import {Box, Divider, TextField, Typography} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
-import {BpMatchesProps, BpSelectedMatchProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
+import { BpMatchesProps, BpSelectedMatchProps } from "../../context/BpContext";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -84,7 +84,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 }
 
                 setInputValue(newSupportedMatch);
-                console.log("Does this happen")
                 if (event && event.type === 'change') {
                     updateSelectedMatch(null, newSupportedMatch);
                 }
