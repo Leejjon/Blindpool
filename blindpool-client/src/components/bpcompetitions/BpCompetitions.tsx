@@ -1,10 +1,11 @@
 import {Checkbox, FormControlLabel, List, ListItem, ListItemButton} from "@mui/material";
 import React from "react";
-import {BpCompetitionProps} from "../../App";
 import {competitions, getCompetitionsList} from "blindpool-common/constants/Competitions";
+import {useExistingBlindpoolOutletContext} from "../../context/BpContext";
 
-const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, setCompetitionsToWatch}) => {
-    const listOfCompetitions= [2018];//getCompetitionsList();
+const BpUpcomingMatches: React.FC = () => {
+    const {competitionsToWatch, setCompetitionsToWatch} = useExistingBlindpoolOutletContext();
+    const listOfCompetitions= getCompetitionsList();
 
     // Sanitizing competitions like the world cup, that somehow seemed to stay in the query after removing it from the getCompetitionList().
     function filterDisabledCompetitions(competitions: Array<number>) {
@@ -27,20 +28,18 @@ const BpUpcomingMatches: React.FC<BpCompetitionProps> = ({competitionsToWatch, s
                 const competition = competitions[key];
                 const labelId = `competition-label-${key}`;
 
-                let label: String;
-                if (competition.competition === "European Cup" && window.location.hostname.endsWith('blindepool.nl')) {
-                    label = "EK 2024"
-                } else {
-                    label = competition.competition;
-                }
+                let label: String = competition.competition;
+                // if (competition.competition === "European Cup" && window.location.hostname.endsWith('blindepool.nl')) {
+                //     label = "EK 2024"
+                // }
 
                 return (
                     <ListItem sx={{margin: "0", padding: "0"}} key={key}>
                         <ListItemButton id={labelId} sx={{margin: "0", padding: "0", marginTop: "0.3em"}}>
-                            <FormControlLabel disabled={true} label={label} control={
+                            <FormControlLabel label={label} control={
                                 <Checkbox sx={{marginLeft: "0.5em"}} onChange={(event) => handleChange(event, key)}
-                                   checked={true} disableRipple color="secondary" />
-                                // checked={competitionsToWatch.includes(key)}
+                                          checked={competitionsToWatch.includes(key)} disableRipple color="secondary" />
+
                             }/>
                         </ListItemButton>
                     </ListItem>
