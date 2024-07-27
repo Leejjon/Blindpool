@@ -32,11 +32,13 @@ const bundesLigaTeams: {[key: number]: string} = {
     16: 'FC Augsburg',
     17: 'SC Freiburg',
     18: "M'gladbach",
-    19: "Frankfurt",
+    19: 'Frankfurt',
+    20: 'St. Pauli',
     28: "Union Berlin",
     36: 'VfL Bochum',
     44: 'Heidenheim',
     55: 'SV Darmstadt',
+    720: 'Holstein Kiel',
     721: 'RB Leipzig'
 }
 
@@ -53,6 +55,7 @@ const eredivisieTeams: {[key: number]: string} = {
     678: 'Ajax',
     679: 'Vitesse',
     680: 'ADO Den Haag',
+    681: 'NAC Breda',
     682: 'AZ',
     683: 'RKC Waalwijk',
     684: 'PEC Zwolle',
@@ -90,7 +93,8 @@ const laLigaTeams: {[key: number]: string} = {
     285: "Elche CF",
     298: "Girona FC",
     558: "RC Celta de Vigo",
-    559: "Sevilla FC"
+    559: "Sevilla FC",
+    745: "CD Leganes"
 }
 
 const ligue1Teams: {[key: number]: string} = {
@@ -98,12 +102,15 @@ const ligue1Teams: {[key: number]: string} = {
     512: "Stade Brestois",
     516: "Marseille",
     518: "Montpellier",
+    519: 'AJ Auxerre',
     521: 'Lille OSC',
     522: 'OGC Nice',
     523: 'Olympique Lyon',
     524: 'PSG',
     525: 'FC Lorient',
+    527: 'Saint-Étienne',
     529: 'Stade Rennais',
+    532: 'Angers SCO',
     533: 'Le Havre AC',
     541: 'Clermont Foot',
     543: 'FC Nantes',
@@ -124,6 +131,8 @@ const premeiraLigaTeams: {[key: number]: string} = {
     810: 'Boavista FC',
     1103: 'GD Chaves',
     1903: 'SL Benfica',
+    5529: 'CD Nacional',
+    5530: 'Santa Clara',
     5531: 'FC Famalicão',
     5533: 'Gil Vicente',
     5543: 'Vitória SC',
@@ -132,7 +141,8 @@ const premeiraLigaTeams: {[key: number]: string} = {
     5602: 'SC Farense',
     5613: 'Braga',
     6618: 'Casa Pia AC',
-    9136: 'Amadora'
+    9136: 'Amadora',
+    10340: 'AVS'
 }
 
 const serieATeams: {[key: number]: string} = {
@@ -146,16 +156,19 @@ const serieATeams: {[key: number]: string} = {
     108: "Inter Milan",
     109: "Juventus",
     110: "Lazio",
+    112: "Parma",
     113: "Napoli",
     115: "Udinese",
     445: "Empoli",
     450: "Verona",
+    454: "Venezia FC",
     455: "Salernitana",
     470: "Frosinone",
     471: "Sassuolo",
     586: "Torino",
     5890: "US Lecce",
-    5911: "AC Monza"
+    5911: "AC Monza",
+    7397: "Como 1907"
 }
 
 const premierLeagueTeams: {[key: number]: string} = {
@@ -176,6 +189,7 @@ const premierLeagueTeams: {[key: number]: string} = {
     340: 'Southhampton',
     341: 'Leeds United',
     346: 'Watford',
+    349: 'Ipswich Town',
     351: 'Nottingham',
     354: 'Crystal Palace',
     356: 'Sheffield',

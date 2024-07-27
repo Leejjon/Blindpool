@@ -53,6 +53,16 @@ GET {{footballdata-api-url}}/v2/competitions/2019/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
+### Primeira liga teams
+GET {{footballdata-api-url}}/v2/competitions/2017/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Primeira liga matches
+GET {{footballdata-api-url}}/v2/competitions/2017/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
 ### Champions league matches
 GET {{footballdata-api-url}}/v2/competitions/2001/teams
 Accept: application/json
