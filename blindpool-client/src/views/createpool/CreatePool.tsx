@@ -22,17 +22,22 @@ import {doesMatchExistIn, Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {QueryClient, useQuery, useQueryClient} from "@tanstack/react-query";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
 import {matchesQuery} from "../../queries/MatchesQuery";
 import {poolQuery} from "../../queries/PoolQuery";
 import { useExistingBlindpoolOutletContext } from "../../context/BpContext";
+import { matchesLoader } from "../../loaders/MatchesLoader";
 
 const EMPTY_STRING = "";
 
 // Create a unique instance of the same empty object.
 const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
+};
+
+export async function loader(queryClient: QueryClient) {
+    return await matchesLoader(queryClient);
 };
 
 function CreatePool() {

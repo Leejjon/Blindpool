@@ -13,10 +13,15 @@ import {Helmet} from "react-helmet-async";
 import BpUpcomingMatches from "../../components/bpupcomingmatches/BpUpcomingMatches";
 import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
-import {useQuery} from "@tanstack/react-query";
+import {QueryClient, useQuery} from "@tanstack/react-query";
 import {Match} from "../../model/Match";
 import { matchesQuery } from "../../queries/MatchesQuery";
 import { useExistingBlindpoolOutletContext } from "../../context/BpContext";
+import { matchesLoader } from "../../loaders/MatchesLoader";
+
+export async function loader(queryClient: QueryClient) {
+    return await matchesLoader(queryClient);
+};
 
 function Home() {
     const {competitionsToWatch, setCompetitionsToWatch, setMessage, setSelectedMatchId} = useExistingBlindpoolOutletContext();

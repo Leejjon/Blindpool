@@ -12,6 +12,8 @@ import About from './views/about/About';
 import CreatePool from './views/createpool/CreatePool';
 import HowTo from './views/howto/HowTo';
 import ViewPool from './views/viewpool/ViewPool';
+import { loader as homeLoader } from './views/home/Home';
+import { loader as createPoolLoader } from './views/createpool/CreatePool';
 
 const queryClient = new QueryClient();
 
@@ -22,9 +24,17 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
-            <Route index={true} element={<Home />} />
+            <Route index={true} element={<Home />} loader={
+                async () => {
+                    return homeLoader(queryClient);
+                }
+            } />
             <Route path="/about" element={<About />} />
-            <Route path="/create" element={<CreatePool />} />
+            <Route path="/create" element={<CreatePool />} loader={
+                async () => {
+                    return createPoolLoader(queryClient)
+                }
+            } />
             <Route path="/howto" element={<HowTo />} />
             <Route path="/pool/:key" element={<ViewPool />} />
         </Route>
