@@ -27,8 +27,8 @@ const router = createBrowserRouter(
             <Route index={true} element={<Home />} loader={
                 async () => {
                     return homeLoader(queryClient);
-                }
-            } />
+                }   
+              } />
             <Route path="/about" element={<About />} />
             <Route path="/create" element={<CreatePool />} loader={
                 async () => {

@@ -1,4 +1,5 @@
 import { Alert, Snackbar, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export interface BpSnackbarMessageProps {
     message?: string,
@@ -6,6 +7,7 @@ export interface BpSnackbarMessageProps {
 }
 
 const BpSnackbar: React.FC<BpSnackbarMessageProps> = ({message, setMessage}) => {
+    const { t } = useTranslation();
     const handleClose = (event: any, reason?: string) => {
         if (reason === 'clickaway') {
             return;

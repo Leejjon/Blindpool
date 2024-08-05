@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useNavigate} from "react-router-dom";
-import {BpMatchesProps, BpSelectedMatchProps} from "../../App";
 import {Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import {useTranslation} from "react-i18next";
 import "./BpUpcomingMatches.css";
+import { BpMatchesProps, BpSelectedMatchProps } from "../../context/BpContext";
 
 const upcomingMatchTable = {
     width: "100%", overflowX: "auto"

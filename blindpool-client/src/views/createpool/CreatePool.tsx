@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {
     Button,
@@ -22,12 +22,12 @@ import {doesMatchExistIn, Match} from "../../model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
-import {QueryClient, useQuery, useQueryClient} from "@tanstack/react-query";
+import {QueryClient, useQueryClient} from "@tanstack/react-query";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
-import {matchesQuery} from "../../queries/MatchesQuery";
 import {poolQuery} from "../../queries/PoolQuery";
 import { useExistingBlindpoolOutletContext } from "../../context/BpContext";
 import { matchesLoader } from "../../loaders/MatchesLoader";
+import { useUpcomingMatches } from "../../queries/MatchesHook";
 
 const EMPTY_STRING = "";
 
@@ -43,10 +43,7 @@ export async function loader(queryClient: QueryClient) {
 function CreatePool() {
     const {competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId} = useExistingBlindpoolOutletContext();
     const {t} = useTranslation();
-    const {data} = useQuery({
-        ...matchesQuery(setMessage, competitionsToWatch),
-    });
-    const matches: Array<Match> = data ?? [];
+    const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
     const queryClient = useQueryClient();
 
     let navigate = useNavigate();

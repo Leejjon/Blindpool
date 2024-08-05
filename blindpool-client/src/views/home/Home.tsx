@@ -15,21 +15,18 @@ import BpCompetitions from "../../components/bpcompetitions/BpCompetitions";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {QueryClient, useQuery} from "@tanstack/react-query";
 import {Match} from "../../model/Match";
-import { matchesQuery } from "../../queries/MatchesQuery";
 import { useExistingBlindpoolOutletContext } from "../../context/BpContext";
 import { matchesLoader } from "../../loaders/MatchesLoader";
+import { useUpcomingMatches } from "../../queries/MatchesHook";
 
 export async function loader(queryClient: QueryClient) {
     return await matchesLoader(queryClient);
 };
 
 function Home() {
-    const {competitionsToWatch, setCompetitionsToWatch, setMessage, setSelectedMatchId} = useExistingBlindpoolOutletContext();
+    const {competitionsToWatch, setMessage, setSelectedMatchId} = useExistingBlindpoolOutletContext();
     const {t} = useTranslation();
-    const {data} = useQuery({
-        ...matchesQuery(setMessage, competitionsToWatch)
-    });
-    const matches: Array<Match> = data ?? [];
+    const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
 
     const blindpoolDefinitionDescription = t('BLINDPOOL_DEFINITION_DESCRIPTION');
     return (
@@ -70,7 +67,7 @@ function Home() {
                             {t("COMPETITIONS_TITLE")}
                         </Typography>
                         <Divider />
-                        <BpCompetitions competitionsToWatch={competitionsToWatch} setCompetitionsToWatch={setCompetitionsToWatch}/>
+                        <BpCompetitions />
                     </CardContent>
                 </Card>
             </Grid>

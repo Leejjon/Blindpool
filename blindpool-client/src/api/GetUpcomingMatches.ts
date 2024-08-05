@@ -3,11 +3,7 @@ import {Match} from "../model/Match";
 
 export type setMessageFunction = (message: string | undefined) => void;
 
-// This is preventing the fetch call being in both BpUpcomingMatches.tsx and BpMatchSelector.tsx BUT
-// It now has both the setLoading and setMatches logic still in.
-// Normally I would fix this by using async/await and put that logic in the react components but the useEffect functions
-// calling this function can't be async.
-export const getUpcomingMatches = async (setMessage: setMessageFunction, competitionsToWatch: Array<number>): Promise<Array<Match>> => {
+export const getUpcomingMatches = async (competitionsToWatch: Array<number>): Promise<Array<Match>> => {
     try {
         if (competitionsToWatch.length === 0) {
             return [];
@@ -22,12 +18,10 @@ export const getUpcomingMatches = async (setMessage: setMessageFunction, competi
         if (response.status === 200) {
             return await response.json();
         } else {
-            setMessage('BACKEND_OFFLINE');
-            return [];
+            throw new Error('BACKEND_OFFLINE');
         }
     } catch (e) {
-        console.error(`Something went wrong with fetching upcoming matches ${e}`);
-        setMessage('BACKEND_UNREACHABLE')
-        return [];
+        console.error(`Something went wrong with fetching upcoming matches`, e);
+        throw new Error('BACKEND_UNREACHABLE');
     }
 }

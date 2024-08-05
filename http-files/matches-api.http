@@ -7,7 +7,7 @@ GET {{matches-api-url}}/api/v2/matches/update-pools-with-active-match
 ### This separator is required in .http files
 
 # Get upcoming matches
-GET {{matches-api-url}}/api/v2/matches/upcoming?competition[]=2001
+GET {{matches-api-url}}/api/v2/matches/upcoming?competition[]=2021npm
 Accept: application/json
 
 
