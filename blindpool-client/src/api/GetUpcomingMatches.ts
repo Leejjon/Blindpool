@@ -1,8 +1,6 @@
 import {Api, getHost} from "../utils/Network";
 import {Match} from "../model/Match";
 
-export type setMessageFunction = (message: string | undefined) => void;
-
 export const getUpcomingMatches = async (competitionsToWatch: Array<number>): Promise<Array<Match>> => {
     try {
         if (competitionsToWatch.length === 0) {

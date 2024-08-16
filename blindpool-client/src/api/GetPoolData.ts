@@ -8,8 +8,14 @@ export async function getPoolData(pool: string | Blindpool) {
     } else {
         const poolKey = pool as string;
         const response = await fetch(`${getHost(Api.pool)}/api/v2/pool/${poolKey}`);
-        const poolJson: Blindpool = await response.json();
-        // TODO: Validation
-        return poolJson;
+        if (response.status === 200) {
+            const poolJson: Blindpool = await response.json();
+            // TODO: Validation
+            return poolJson;
+        } else if (response.status === 404) {
+            throw Error('POOL_NOT_FOUND');
+        } else {
+            throw Error('BACKEND_OFFLINE');
+        }
     }
 }

@@ -11,9 +11,10 @@ import Home from './views/home/Home';
 import About from './views/about/About';
 import CreatePool from './views/createpool/CreatePool';
 import HowTo from './views/howto/HowTo';
-import ViewPool from './views/viewpool/ViewPool';
+import ViewPool, { Args } from './views/viewpool/ViewPool';
 import { loader as homeLoader } from './views/home/Home';
 import { loader as createPoolLoader } from './views/createpool/CreatePool';
+import { loader as viewPoolLoader } from './views/viewpool/ViewPool';
 
 const queryClient = new QueryClient();
 
@@ -32,11 +33,15 @@ const router = createBrowserRouter(
             <Route path="/about" element={<About />} />
             <Route path="/create" element={<CreatePool />} loader={
                 async () => {
-                    return createPoolLoader(queryClient)
+                    return createPoolLoader(queryClient);
                 }
             } />
             <Route path="/howto" element={<HowTo />} />
-            <Route path="/pool/:key" element={<ViewPool />} />
+            <Route path="/pool/:key" element={<ViewPool />} loader={
+                async ({params}) => {
+                    return viewPoolLoader(params as unknown as Args, queryClient);
+                }
+            } />
         </Route>
     )
 );

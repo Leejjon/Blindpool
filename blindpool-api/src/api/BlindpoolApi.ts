@@ -9,10 +9,7 @@ import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
 import {validate} from "class-validator";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
-
-// Switch to import to get code completion... The import version crashes on runtime though.
-// import Hashids from 'hashids'
-const Hashids = require('hashids/cjs');
+import Hashids from 'hashids';
 
 const hashids = new Hashids();
 
@@ -82,7 +79,7 @@ const handleInsertNewBlindpool = async (res: Response, participantsAndScores: Ar
 export const getBlindpoolByKey = async (req: Request, res: Response) => {
     const keyAsNumber = hashids.decode(req.params.key)[0] as number;
     if (keyAsNumber === undefined) {
-        respond(res, 400, 'Invalid request!');
+        mapError(res, ErrorScenarios.POOL_NOT_FOUND);
         return;
     }
 

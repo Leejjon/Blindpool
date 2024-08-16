@@ -56,7 +56,8 @@ export const resources = {
             "COMPETITIONS_TITLE": "What do you watch?",
             "FOLLOW_US": "Follow blindpool on:",
             "BLINDPOOL_ON_FB": "Blindpool on Facebook",
-            "BLINDPOOL_ON_IG": "Blindpool on Instagram"
+            "BLINDPOOL_ON_IG": "Blindpool on Instagram",
+            "POOL_NOT_FOUND": "This pool does not exist."
         }
     },
     nl: {
@@ -109,7 +110,8 @@ export const resources = {
             "COMPETITIONS_TITLE": "Wat kijk jij?",
             "FOLLOW_US": "Volg Blindepool op:",
             "BLINDPOOL_ON_FB": "Blindepool op Facebook",
-            "BLINDPOOL_ON_IG": "Blindepool op Instagram"
+            "BLINDPOOL_ON_IG": "Blindepool op Instagram",
+            "POOL_NOT_FOUND": "Deze pool bestaat niet."
         }
     }
 };

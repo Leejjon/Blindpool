@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     Card, CardActions,
     CardContent, CircularProgress,
@@ -8,18 +8,24 @@ import {
     TableHead,
     TableRow, TextField, Tooltip, Typography, useTheme
 } from "@mui/material";
-import {useParams} from "react-router";
-import {useTranslation} from "react-i18next";
-import {Helmet} from "react-helmet-async";
-import {canThisScoreStillWin} from "../../logic/ScoresUtil";
+import { useParams } from "react-router";
+import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
+import { canThisScoreStillWin } from "../../logic/ScoresUtil";
 import MatchInfoWithScore from "../../components/bpmatchwithscore/MatchInfoWithScore";
-import {ContentCopy, Help} from "@mui/icons-material";
-import {Params} from "react-router-dom";
+import { ContentCopy, Help } from "@mui/icons-material";
+import {
+    ActionFunctionArgs,
+    ParamParseKey,
+    Params,
+    useNavigate
+} from "react-router-dom";
 import BpSocialMediaLinks from "../../components/bpsocialmedialinks/BpSocialMediaLinks";
-import {useQuery} from "@tanstack/react-query";
-import {poolQuery} from "../../queries/PoolQuery";
-import {matchInfoQuery} from "../../queries/MatchResultQuery";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import { poolQuery } from "../../queries/PoolQuery";
+import { matchInfoQuery } from "../../queries/MatchResultQuery";
 import Blindpool from "../../model/Blindpool";
+import {useExistingBlindpoolOutletContext} from "../../context/BpContext";
 
 const root = {
     flexGrow: 1,
@@ -66,17 +72,38 @@ interface KeyInParams extends Params { // https://github.com/remix-run/react-rou
     key: string
 }
 
+const ViewPoolPath = {
+    key: '/pool/:key',
+} as const;
+
+export interface Args extends ActionFunctionArgs {
+    params: Params<ParamParseKey<typeof ViewPoolPath.key>>;
+}
+
+export const loader = async (params: Args, queryClient: QueryClient) => {
+    console.log(params);
+    return null;
+}
+
 const ViewPool: React.FC = () => {
-    const {key} = useParams() as KeyInParams;
-    const {t} = useTranslation();
-    // const [loading, setLoading] = useState(true);
+    const { key } = useParams() as KeyInParams;
+    const { t } = useTranslation();
+    const navigate = useNavigate();
 
-    const poolResult = useQuery({...poolQuery(key)});
-    const pool: Blindpool | undefined = poolResult.data;
+    const {setMessage} = useExistingBlindpoolOutletContext()
+
+    const {data, error, isError, isLoading} = useQuery({ ...poolQuery(key) });
+    const pool: Blindpool | undefined = data;
     const match = pool?.MATCH;
-    const poolIsLoading = poolResult.isLoading;
 
-    const matchScoreResult = useQuery({...matchInfoQuery(match?.id), enabled: !!pool?.MATCH});
+    useEffect(() => {
+        if (isError) {
+            setMessage(error.message.split(error.name)[0]);
+            navigate("/");
+        }
+    }, [isError, error]);
+
+    const matchScoreResult = useQuery({ ...matchInfoQuery(match?.id), enabled: !!pool?.MATCH });
     const fullMatchInfo = matchScoreResult.data;
 
     const shareUrl = `${window.location.protocol}//${window.location.host}/pool/${key}`;
@@ -100,7 +127,7 @@ const ViewPool: React.FC = () => {
 
     const trophyIcon = (finished: boolean) => {
         if (finished) {
-            return <img alt='Winner' style={{marginBottom: '-2px'}} src="/icons/trophy.svg"/>;
+            return <img alt='Winner' style={{ marginBottom: '-2px' }} src="/icons/trophy.svg" />;
         } else {
             return undefined;
         }
@@ -109,14 +136,14 @@ const ViewPool: React.FC = () => {
     const questionMark = () => {
         return (
             <Tooltip sx={tooltip} enterTouchDelay={5} arrow
-                     title={
-                         <React.Fragment>
-                             <Typography variant="h2" color="inherit">Wildcard</Typography>
-                             <Typography sx={{color: "white"}}>{t('WILDCARD_EXPLANATION')}</Typography>
-                         </React.Fragment>
-                     }
+                title={
+                    <React.Fragment>
+                        <Typography variant="h2" color="inherit">Wildcard</Typography>
+                        <Typography sx={{ color: "white" }}>{t('WILDCARD_EXPLANATION')}</Typography>
+                    </React.Fragment>
+                }
             >
-                <Help fontSize="small"/>
+                <Help fontSize="small" />
             </Tooltip>
         );
     };
@@ -141,7 +168,7 @@ const ViewPool: React.FC = () => {
                         <TableRow key={participantName}>
                             <TableCell>
                                 <Typography variant="body1"
-                                            style={{display: 'flex'}}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
+                                    style={{ display: 'flex' }}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1">{home} - {away} {isWildCard(home, away)}</Typography>
@@ -167,7 +194,7 @@ const ViewPool: React.FC = () => {
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1"
-                                            sx={impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
+                                    sx={impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
                             </TableCell>
                         </TableRow>
                     );
@@ -192,26 +219,26 @@ const ViewPool: React.FC = () => {
     };
 
     let matchInfo = undefined;
-    if (!poolIsLoading && pool !== undefined && match !== undefined) {
-        matchInfo = <MatchInfoWithScore matchInfo={match} fullMatchInfo={fullMatchInfo}/>;
-    } else if (!poolIsLoading && pool !== undefined && pool.FREE_FORMAT_MATCH) {
+    if (!isLoading && pool !== undefined && match !== undefined) {
+        matchInfo = <MatchInfoWithScore matchInfo={match} fullMatchInfo={fullMatchInfo} />;
+    } else if (!isLoading && pool !== undefined && pool.FREE_FORMAT_MATCH) {
         matchInfo =
             <Typography variant="body1"><b>Match:</b> {pool.FREE_FORMAT_MATCH as string}</Typography>;
     } /*else {
         matchInfo = <Typography variant="h2">{t("POOL_MADE_BY", {organizer: getOwner()})}</Typography>;
     }*/
 
-    const blindpoolViewDescription = t('BLINDPOOL_VIEW_DESCRIPTION', {organizer: getOwner()});
+    const blindpoolViewDescription = t('BLINDPOOL_VIEW_DESCRIPTION', { organizer: getOwner() });
 
-    if (!poolIsLoading && pool !== undefined) {
+    if (!isLoading && pool !== undefined) {
         return (
             <Grid container justifyContent={"center"} spacing={2} sx={root}>
                 <Helmet>
-                    <title>{t('TITLE')} - {t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}</title>
-                    <meta name="description" content={blindpoolViewDescription}/>
+                    <title>{t('TITLE')} - {t('BLINDPOOL_VIEW_TITLE', { organizer: getOwner() })}</title>
+                    <meta name="description" content={blindpoolViewDescription} />
                     <meta property="og:title"
-                          content={t('TITLE') + " - " + t('BLINDPOOL_VIEW_TITLE', {organizer: getOwner()})}/>
-                    <meta property="og:description" content={blindpoolViewDescription}/>
+                        content={t('TITLE') + " - " + t('BLINDPOOL_VIEW_TITLE', { organizer: getOwner() })} />
+                    <meta property="og:description" content={blindpoolViewDescription} />
                 </Helmet>
                 <Grid key="definition" item>
                     <Card className="card">
@@ -249,18 +276,18 @@ const ViewPool: React.FC = () => {
                                 onClick={(event: React.MouseEvent<HTMLElement>) => handleTextFieldFocus(event)}
                             />
                             <IconButton sx={copyButton} color="inherit"
-                                        aria-label="Copy" aria-haspopup="true" onClick={copy}>
-                                <ContentCopy aria-label={t('COPY')}/>
+                                aria-label="Copy" aria-haspopup="true" onClick={copy}>
+                                <ContentCopy aria-label={t('COPY')} />
                             </IconButton>
                         </CardActions>
                     </Card>
                 </Grid>
-                <BpSocialMediaLinks/>
+                <BpSocialMediaLinks />
             </Grid>
         );
     } else {
         return (
-            <CircularProgress sx={progress}/>
+            <CircularProgress sx={progress} />
         );
     }
 };
