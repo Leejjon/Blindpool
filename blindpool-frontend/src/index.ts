@@ -41,11 +41,11 @@ app.get('/sitemap.xml', function(req: Request, res: Response) {
 // going to make sure that the correct content will be loaded.
 app.use((req: Request, res: Response) => {
     if (/(.ico|.js|.css|.jpg|.png|.woff2|.svg)$/i.test(req.path)) {
-        // if (environment === 'development') {
+        if (environment === 'development') {
             res.sendFile(path.join(__dirname, 'build', req.path));
-        // } else {
-        //     res.status(404).send('Not found');
-        // }
+        } else {
+            res.status(404).send('Not found');
+        }
     } else {
         const filePath = path.resolve(__dirname, 'build', 'index.html')
         fs.readFile(filePath, 'utf8', (err: ErrnoException | null, data: string) => {
