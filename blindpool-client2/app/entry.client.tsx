@@ -4,6 +4,7 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 import theme from "./theme/theme";
+import './locales/i18n';
 import { ThemeProvider } from "@mui/material";
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
