@@ -3,7 +3,8 @@
  * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
  * For more information, see https://remix.run/file-conventions/entry.client
  */
-
+import theme from "./theme/theme";
+import { ThemeProvider } from "@mui/material";
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
@@ -12,7 +13,9 @@ startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <RemixBrowser />
+      <ThemeProvider theme={theme}>
+        <RemixBrowser />
+      </ThemeProvider>
     </StrictMode>
   );
 });

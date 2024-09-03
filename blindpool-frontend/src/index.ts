@@ -75,11 +75,11 @@ app.use((req: Request, res: Response) => {
                     break;
             }
 
-            data = data.replace(/\$OG_TITLE/g, title);
-            data = data.replace(/\$OG_DESCRIPTION/g, description);
-            data = data.replace(/\$GOOGLE_ANALYTICS_ID/g, googleAnalyticsId);
-            data = data.replace(/\$GOOGLE_ADS_CLIENT_ID/g, googleAdsClientId);
-            data = data.replace(/\$FACEBOOK_ADS_CLIENT_ID/g, facebookAdsClientId);
+            // data = data.replace(/\$OG_TITLE/g, title);
+            // data = data.replace(/\$OG_DESCRIPTION/g, description);
+            // data = data.replace(/\$GOOGLE_ANALYTICS_ID/g, googleAnalyticsId);
+            // data = data.replace(/\$GOOGLE_ADS_CLIENT_ID/g, googleAdsClientId);
+            // data = data.replace(/\$FACEBOOK_ADS_CLIENT_ID/g, facebookAdsClientId);
             res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
             res.header('Expires', '-1');
             res.header('Pragma', 'no-cache');
