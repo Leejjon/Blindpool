@@ -9,7 +9,7 @@ export const matchesQuery = (competitionsToWatch: Array<number>) => (
         refetchOnWindowFocus: false,
         refetchOnMount: false,
         cacheTime: 5000,
-        staleTime: 4000,
+        staleTime: 60000,
         retry: false,
     }
 );
