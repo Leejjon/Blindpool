@@ -112,3 +112,7 @@ export const resources = {
 export function getLocale() {
     return window.location.hostname.endsWith('blindepool.nl') ? 'nl' : 'en';
 }
+
+export function getPageTitle(pageTitle: string) {
+    return `${resources[getLocale()].translation.TITLE} - ${pageTitle}`;
+}
