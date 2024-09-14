@@ -5,9 +5,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClientSingleton } from "./singletons/QueryClientSingleton";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,8 +29,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClientSingleton}>
         <Outlet />
+        <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

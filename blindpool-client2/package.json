@@ -20,6 +20,7 @@
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
     "@tanstack/react-query": "^5.53.3",
+    "@tanstack/react-query-devtools": "^5.56.2",
     "i18next": "^23.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -2,6 +2,7 @@ import {Api, getHost} from "../utils/Network";
 import {Match} from "../model/Match";
 
 export const getUpcomingMatches = async (competitionsToWatch: Array<number>): Promise<Array<Match>> => {
+    console.log("Triggered");
     try {
         if (competitionsToWatch.length === 0) {
             return [];

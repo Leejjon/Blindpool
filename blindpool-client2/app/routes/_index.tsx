@@ -2,12 +2,11 @@ import { Button, Grid } from "@mui/material";
 import type { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import { getLocale, getPageTitle, resources } from "../locales/translations";
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { matchesQuery } from "../queries/MatchesQuery";
 import { getCompetitionsFromLocalStorage, updateCompetitionsInLocalStorage } from "../storage/PreferredCompetitions";
 import { useEffect, useState } from "react";
-
-const queryClient = new QueryClient();
+import { queryClientSingleton } from "../singletons/QueryClientSingleton";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,11 +16,9 @@ export const meta: MetaFunction = () => {
 };
 
 export const clientLoader = async () => {
-  queryClient.prefetchQuery(
+  await queryClientSingleton.prefetchQuery(
     matchesQuery(getCompetitionsFromLocalStorage())
   );
-
-  // We have to return something in the loader even though our data will be set on the queryClient directly.
   return null;
 };
 
