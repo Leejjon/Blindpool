@@ -11,9 +11,9 @@ default_expiration: "7d 0h"
 handlers:
   - url: /assets
     static_dir: dist/build/assets
-  - url: /(.*\.(json|ico|js|png|txt|svg|jpg))$
+  - url: /(.*\.(json|ico|js|png|txt|svg|jpg|woff2))$
     static_files: dist/build/\1
-    upload: dist/build/.*\.(json|ico|js|png|txt|svg|jpg)$
+    upload: dist/build/.*\.(json|ico|js|png|txt|svg|jpg|woff2)$
   - url: '.*'
     script: auto
     secure: always
