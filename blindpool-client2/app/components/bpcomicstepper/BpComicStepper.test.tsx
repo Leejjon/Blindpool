@@ -1,6 +1,7 @@
 import {fireEvent, render, waitFor} from "@testing-library/react";
 import BpComicStepper from "./BpComicStepper";
 import '../../locales/i18n';
+import { describe, expect, test } from "vitest";
 
 describe('Test how to page', () => {
 
@@ -10,7 +11,7 @@ describe('Test how to page', () => {
         const comic1DescriptionPart = getByText(/watch a football/i);
         expect(comic1DescriptionPart).toBeInTheDocument();
 
-        let currentComicDisplayer = getByText('1 / 6');
+        const currentComicDisplayer = getByText('1 / 6');
         expect(currentComicDisplayer).toBeInTheDocument();
 
         const nextButton = getByText('Next');

@@ -20,12 +20,6 @@ export default function About() {
     return (
         <Grid container justifyContent={"center"} spacing={2}
             sx={pagestyle}>
-            {/* <Helmet>
-                <title>{t('TITLE')} - {t('ABOUT_BLINDPOOL_TITLE')}</title>
-                <meta name="description" content={aboutBlindpoolDescription}/>
-                <meta property="og:title" content={t('TITLE') + " - " + t('ABOUT_BLINDPOOL_TITLE')}/>
-                <meta property="og:description" content={aboutBlindpoolDescription}/>
-            </Helmet> */}
             <Grid key="aboutme" item>
                 <Card className="card">
                     <CardContent>
