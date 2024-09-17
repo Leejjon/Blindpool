@@ -69,6 +69,9 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
 
     // TODO: If there are no matches, hide the entire autocomplete thing.
 
+    // To prevent Warning: A props object containing a "key" prop is being spread into JSX
+    // https://stackoverflow.com/questions/75818761/material-ui-autocomplete-warning-a-props-object-containing-a-key-prop-is-be
+
     return (
         <Autocomplete
             disabled={matches.length < 1}

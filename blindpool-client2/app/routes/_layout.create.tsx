@@ -26,6 +26,15 @@ import { useExistingBlindpoolOutletContext } from "../context/BpContext";
 import { useUpcomingMatches } from "../queries/MatchesHook";
 import BpMatchSelector from "../components/bpmatchselector/BpMatchSelector";
 import NameField from "../components/bpnamefield/NameField";
+import type {MetaFunction} from "@remix-run/node";
+import {getLocale, getPageTitle, resources} from "~/locales/translations";
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: `${getPageTitle(resources[getLocale()].translation.CREATE_POOL_TITLE)}` },
+        { name: "description", content: resources[getLocale()].translation.CREATE_POOL_DESCRIPTION },
+    ];
+};
 
 const EMPTY_STRING = "";
 
@@ -33,6 +42,8 @@ const EMPTY_STRING = "";
 const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
+
+// TODO: Clientloader
 
 export default function CreatePool() {
     const {competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId} = useExistingBlindpoolOutletContext();
@@ -184,12 +195,6 @@ export default function CreatePool() {
     } else {
         return (
             <Grid container justifyContent={"center"}  spacing={2} sx={{flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
-                {/* <Helmet>
-                    <title>{t('TITLE')} - {t('CREATE_POOL_TITLE')}</title>
-                    <meta name="description" content={createPoolDescription}/>
-                    <meta property="og:title" content={t('TITLE') + " - " + t('CREATE_POOL_TITLE')}/>
-                    <meta property="og:description" content={createPoolDescription}/>
-                </Helmet> */}
                 <Grid key="definition" item>
                     <Card className="card">
                         <CardContent>
