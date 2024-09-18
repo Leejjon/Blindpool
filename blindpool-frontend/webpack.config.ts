@@ -16,7 +16,7 @@ module.exports = {
             { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/}
         ]
     },
-    plugins: [new copyFiles({ patterns: [{ from: '../blindpool-client/dist', to: 'build'}]})],
+    plugins: [new copyFiles({ patterns: [{ from: '../blindpool-client/build/client', to: 'build'}]})],
     output: {
         path: path2.resolve(__dirname, 'dist'),
         filename: 'index.js'
