@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
-import Autocomplete from '@mui/material/Autocomplete';
+import {Autocomplete} from "@mui/material";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
 import {Match} from "../../model/Match";
