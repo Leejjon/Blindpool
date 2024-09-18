@@ -41,11 +41,11 @@ app.get('/sitemap.xml', function(req: Request, res: Response) {
 // going to make sure that the correct content will be loaded.
 app.use((req: Request, res: Response) => {
     if (/(.ico|.js|.css|.jpg|.png|.woff2|.svg)$/i.test(req.path)) {
-        if (environment === 'development') {
+        // if (environment === 'development') {
             res.sendFile(path.join(__dirname, 'build', req.path));
-        } else {
-            res.status(404).send('Not found');
-        }
+        // } else {
+        //     res.status(404).send('Not found');
+        // }
     } else {
         const filePath = path.resolve(__dirname, 'build', 'index.html')
         fs.readFile(filePath, 'utf8', (err: ErrnoException | null, data: string) => {
@@ -75,8 +75,8 @@ app.use((req: Request, res: Response) => {
                     break;
             }
 
-            // data = data.replace(/\$OG_TITLE/g, title);
-            // data = data.replace(/\$OG_DESCRIPTION/g, description);
+            data = data.replace(/\$OG_TITLE/g, title);
+            data = data.replace(/\$OG_DESCRIPTION/g, description);
             // data = data.replace(/\$GOOGLE_ANALYTICS_ID/g, googleAnalyticsId);
             // data = data.replace(/\$GOOGLE_ADS_CLIENT_ID/g, googleAdsClientId);
             // data = data.replace(/\$FACEBOOK_ADS_CLIENT_ID/g, facebookAdsClientId);
