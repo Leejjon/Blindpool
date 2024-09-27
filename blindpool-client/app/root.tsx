@@ -15,10 +15,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <head>
         <meta charSet="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        {/*<title>$OG_TITLE</title>*/}
-        {/*<meta name="description" content="$OG_DESCRIPTION"/>*/}
-        {/*<meta property="og:title" content="$OG_TITLE"/>*/}
-        {/*<meta property="og:description" content="$OG_DESCRIPTION"/>*/}
         <Meta/>
         <Links/>
     </head>

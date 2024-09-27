@@ -260,7 +260,8 @@ export const competitions: {[key: number]: Competition} = {
             1887: "Shaktar",
             1871: "Young Boys",
             2021: "Sturm Graz",
-            7283: "Crvena Zvedza"
+            7283: "Crvena Zvedza",
+            7509: "SL Bratislava"
         }
     },
     2002: {

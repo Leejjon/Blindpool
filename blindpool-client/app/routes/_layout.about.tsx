@@ -12,6 +12,7 @@ export const meta: MetaFunction = () => {
     return [
       { title: `${getPageTitle(resources[getLocale()].translation.ABOUT_BLINDPOOL_TITLE)}` },
       { name: "description", content: resources[getLocale()].translation.ABOUT_BLINDPOOL_DESCRIPTION },
+      { tagName: "link", rel: "canonical", href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/about" : "https://www.blindpool.com/about"}
     ];
   };
 

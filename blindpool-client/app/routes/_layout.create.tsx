@@ -33,6 +33,7 @@ export const meta: MetaFunction = () => {
     return [
         { title: `${getPageTitle(resources[getLocale()].translation.CREATE_POOL_TITLE)}` },
         { name: "description", content: resources[getLocale()].translation.CREATE_POOL_DESCRIPTION },
+        { tagName: "link", rel: "canonical", href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/create" : "https://www.blindpool.com/create" }
     ];
 };
 

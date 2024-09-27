@@ -9,6 +9,7 @@ export const meta: MetaFunction = () => {
     return [
       { title: `${getPageTitle(resources[getLocale()].translation.HOW_DOES_IT_WORK_TITLE)}` },
       { name: "description", content: resources[getLocale()].translation.HOW_DOES_IT_WORK_DESCRIPTION },
+      { tagName: "link", rel: "canonical", href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/howto" : "https://www.blindpool.com/howto"}
     ];
   };
 
