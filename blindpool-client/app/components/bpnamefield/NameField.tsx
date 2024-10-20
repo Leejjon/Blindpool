@@ -34,8 +34,9 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                     value={player.name}
                     inputProps={{'aria-label': 'Player name ' + (index + 1)}}
                     onChange={(event) => onTextFieldChange(index, event, false)}
-                    onBlur={(event) => onTextFieldChange(index, event, true)}>
-                </TextField>
+                    onBlur={(event) => onTextFieldChange(index, event, true)}
+                    name="participants[]"
+                />
             </TableCell>
             <TableCell align="right" sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
                 <IconButton tabIndex={-1} aria-label={removePlayerLabelAria}

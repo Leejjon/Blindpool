@@ -136,6 +136,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
             style={{width: '100%'}}
             renderInput={(params) =>
                 <TextField {...params}
+                           name={selectedMatchId !== undefined ? "selectedMatchID" : "freeFormatMatch"}
                            error={invalidMatchMessage !== undefined}
                            helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
                            label={t('SELECT_MATCH')}

@@ -1,12 +1,13 @@
-import express, {NextFunction, Request, RequestHandler, Response} from "express";
+import express, { NextFunction, Request, RequestHandler, Response } from "express";
 import {
     getBlindpoolByKey,
     getBlindpoolStatistics,
     postCreateBlindpool
 } from "./api/BlindpoolApi";
 import cors from "cors";
-import {tryValidation} from "./validation/Validation";
-import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
+import { tryValidation } from "./validation/Validation";
+import { CreateBlindpoolRequest, createBlindpoolRequestSchema } from "blindpool-common/requests/CreateBpRequest";
+import { ZodError } from "zod";
 
 const port = process.env.PORT || '8080';
 const environment = process.env.NODE_ENV || 'development';
@@ -26,11 +27,29 @@ function validationMiddleware<T extends Object>(type: any): RequestHandler {
 
 router.get('/v2/pool/stats', getBlindpoolStatistics);
 router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), postCreateBlindpool);
+router.post('/v4/pool/', async (req: Request, res: Response) => {
+    try {
+        console.log(createBlindpoolRequestSchema.parse(req.body));
+        res.contentType('application/json');
+        res.status(200);
+        res.send(req.body);
+    } catch (error) {
+        if (error instanceof ZodError) {
+            const errorMessages = error.errors.map((issue: any) => ({
+                message: `${issue.path.join('.')} is ${issue.message}`,
+            }))
+            res.status(400).json({ error: 'Invalid data', details: errorMessages });
+        } else {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+});
 router.get('/v2/pool/:key', getBlindpoolByKey);
 
 const app = express();
 
 app.use(express.json() as RequestHandler);
+app.use(express.urlencoded({ extended: true }));
 
 interface SyntaxErrorWithStatusAndBody extends SyntaxError {
     status: number;
