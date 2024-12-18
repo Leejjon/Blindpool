@@ -1,5 +1,5 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import CreatePool from "../../routes/_layout.create-pool";
+import CreatePool from "../../routes/_layout.create";
 import fetchMock from "fetch-mock";
 import '../../locales/i18n';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

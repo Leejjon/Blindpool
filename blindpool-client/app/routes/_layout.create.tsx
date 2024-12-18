@@ -162,7 +162,14 @@ export default function CreatePool() {
     };
 
     const sendCreatePoolRequest = async () => {
-        return true;
+        // if (selectedMatchId === undefined) {
+
+        // }
+        if (validateState([...players], true)) {
+            return true;
+        } else {
+            return false;
+        }
         // if (validateState([...players], true)) {
         //     setLoading(true);
         //     const requestBody = {
@@ -256,7 +263,7 @@ export default function CreatePool() {
                                     <TableBody>
                                         {players.map((player, index) => {
                                             return (
-                                                <NameField key={index} player={player} index={index} onTextFieldChange={onTextFieldChange} removePlayer={removePlayer} />
+                                                <NameField key={"player" + index} player={player} index={index} onTextFieldChange={onTextFieldChange} removePlayer={removePlayer} />
                                             );
                                         })}
                                         <TableRow>
