@@ -22,7 +22,7 @@ export class CreateBlindpoolRequest {
     }
 }
 
-export const createBlindpoolRequestSchema = z.object({
+export const CreateBlindpoolRequestSchema = z.object({
     participants: z.array(z.string().regex(/^([a-zA-Z0-9 _]{1,20})$/)),
     selectedMatchID: z.string().optional(),
     freeFormatMatch: z.string().regex(/^([-a-zA-Z0-9 ]{5,50})$/).optional()
@@ -30,3 +30,5 @@ export const createBlindpoolRequestSchema = z.object({
     data => data.selectedMatchID || data.freeFormatMatch,
     'Either enter a match or a free format.'
 );
+
+export type CreateBlindpoolRequestSchemaType = z.infer<typeof CreateBlindpoolRequestSchema>;
