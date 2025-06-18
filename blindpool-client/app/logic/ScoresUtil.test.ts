@@ -1,5 +1,6 @@
 import {canThisScoreStillWin} from "./ScoresUtil";
-import {ParticipantAndScore} from "../model/Blindpool";
+import {type ParticipantAndScore} from "../model/Blindpool";
+import { describe, expect, test } from "vitest";
 
 describe('Test scoresThatCanStillWin function', () => {
     test('Inge has the score 0-2 and wins', () => {

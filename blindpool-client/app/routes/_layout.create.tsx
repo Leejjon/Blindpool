@@ -1,5 +1,5 @@
-import React, {ChangeEvent, forwardRef, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {type ChangeEvent, forwardRef, useEffect, useState} from "react";
+import {useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
 import {
     Button,
@@ -12,28 +12,28 @@ import {
     TableHead, TableRow, TextField,
     Typography
 } from "@mui/material";
-import Blindpool from "../model/Blindpool";
-import Player from "../model/Player";
-import {Api, getHost} from "../utils/Network";
-import {doesMatchExistIn, Match} from "../model/Match";
+import {type Blindpool} from "~/model/Blindpool";
+import {type Player} from "~/model/Player";
+import {Api, getHost} from "~/utils/Network";
+import {doesMatchExistIn, type Match} from "~/model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQueryClient} from "@tanstack/react-query";
-import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
-import {poolQuery} from "../queries/PoolQuery";
-import { useExistingBlindpoolOutletContext } from "../context/BpContext";
-import { useUpcomingMatches } from "../queries/MatchesHook";
+import {poolQuery} from "~/queries/PoolQuery";
+import { useExistingBlindpoolOutletContext } from "~/context/BpContext";
+import { useUpcomingMatches } from "~/queries/MatchesHook";
+import type { Route } from "./+types/_layout.create";
 import BpMatchSelector from "../components/bpmatchselector/BpMatchSelector";
 import NameField from "../components/bpnamefield/NameField";
-import type {MetaFunction} from "@remix-run/node";
 import {getLocale, getPageTitle, resources} from "~/locales/translations";
 import {queryClientSingleton} from "~/singletons/QueryClientSingleton";
 import {matchesQuery} from "~/queries/MatchesQuery";
 import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
-import { JSX } from "react/jsx-runtime";
+import { type JSX } from "react/jsx-runtime";
+import type { CreateBlindpoolRequestSchemaType } from "~/requests/CreateBpRequest";
 
-export const meta: MetaFunction = () => {
+export function meta({ }: Route.MetaArgs) {
     return [
         {title: `${getPageTitle(resources[getLocale()].translation.CREATE_POOL_TITLE)}`},
         {name: "description", content: resources[getLocale()].translation.CREATE_POOL_DESCRIPTION},
@@ -43,7 +43,7 @@ export const meta: MetaFunction = () => {
             href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/create" : "https://www.blindpool.com/create"
         }
     ];
-};
+}
 
 const EMPTY_STRING = "";
 
@@ -161,55 +161,48 @@ export default function CreatePool() {
         }
     };
 
-    const sendCreatePoolRequest = async () => {
-        // if (selectedMatchId === undefined) {
-
-        // }
+    const sendCreatePoolRequest = async (): Promise<void> => {
         if (validateState([...players], true)) {
-            return true;
-        } else {
-            return false;
+            setLoading(true);
+            const requestBody = {
+                participants: players.map(player => player.name)
+            } as CreateBlindpoolRequestSchemaType;
+            const validationErrors = await validate(requestBody);
+            if (validationErrors.length > 0) {
+                setLoading(false);
+                setMessage("ILLEGAL_CHARACTER_MESSAGE");
+            }
+
+            try {
+                if (selectedMatchId) {
+                    const matchId = doesMatchExistIn(selectedMatchId, matches);
+                    if (matchId) {
+                        requestBody.selectedMatchID = matchId;
+                    } else {
+                        requestBody.freeFormatMatch = selectedMatchId.trim();
+                    }
+                }
+                const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
+                    {
+                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                        method: "POST", body: JSON.stringify(requestBody)
+                    }
+                );
+                if (response.status === 200) {
+                    const poolJson: Blindpool = await response.json();
+                    // This will already set the pool and make sure we don't fetch the pool we already have.
+                    await queryClient.ensureQueryData(poolQuery(poolJson));
+                    setLoading(false);
+                    navigate(`/pool/${poolJson.key}`);
+                } else {
+                    setLoading(false);
+                    setMessage('BACKEND_OFFLINE');
+                }
+            } catch (error) {
+                setLoading(false);
+                setMessage('BACKEND_UNREACHABLE');
+            }
         }
-        // if (validateState([...players], true)) {
-        //     setLoading(true);
-        //     const requestBody = {
-        //         participants: players.map(player => player.name)
-        //     } as CreateBlindpoolRequest;
-        //     const validationErrors = await validate(requestBody);
-        //     if (validationErrors.length > 0) {
-        //         setLoading(false);
-        //         setMessage("ILLEGAL_CHARACTER_MESSAGE");
-        //     }
-        //     try {
-        //         if (selectedMatchId) {
-        //             const matchId = doesMatchExistIn(selectedMatchId, matches);
-        //             if (matchId) {
-        //                 requestBody.selectedMatchID = matchId;
-        //             } else {
-        //                 requestBody.freeFormatMatch = selectedMatchId.trim();
-        //             }
-        //         }
-        //         const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
-        //             {
-        //                 headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-        //                 method: "POST", body: JSON.stringify(requestBody)
-        //             }
-        //         );
-        //         if (response.status === 200) {
-        //             const poolJson: Blindpool = await response.json();
-        //             // This will already set the pool and make sure we don't fetch the pool we already have.
-        //             await queryClient.ensureQueryData(poolQuery(poolJson));
-        //             setLoading(false);
-        //             navigate(`/pool/${poolJson.key}`);
-        //         } else {
-        //             setLoading(false);
-        //             setMessage('BACKEND_OFFLINE');
-        //         }
-        //     } catch (error) {
-        //         setLoading(false);
-        //         setMessage('BACKEND_UNREACHABLE');
-        //     }
-        // }
     }
 
     // We want this fancy material ui button to behave as an oldschool form submit button. For that we need to add the submit type, which isn't in the MUI button API.
@@ -218,7 +211,7 @@ export default function CreatePool() {
     const submitButton = forwardRef(
         (props: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLButtonElement> & React.ButtonHTMLAttributes<HTMLButtonElement>, ref: React.LegacyRef<HTMLButtonElement> | undefined) => {
         return (
-            <button {...props} onSubmit={sendCreatePoolRequest} ref={ref}/>
+            <button {...props} type="submit" ref={ref}/>
         );
     });
     // Because of this shitty requirement: https://stackoverflow.com/questions/52992932/component-definition-is-missing-display-name-react-display-name
@@ -237,13 +230,15 @@ export default function CreatePool() {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <form method="POST" action={`${getHost(Api.pool)}/api/v4/pool`}>
+                            {/*<form method="POST" action={`${getHost(Api.pool)}/api/v4/pool`} onSubmit={async (event) => {*/}
+                            {/*    event.preventDefault();*/}
+                            {/*    await sendCreatePoolRequest();*/}
+                            {/*}} >*/}
                                 <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
                                                  setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
                                                  selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />
                                 <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
                                     <colgroup>
-                                        {/* Seems like a super stupid solution, but it works.*/}
                                         <col style={{width: '5%'}}/>
                                         <col style={{width: '85%'}}/>
                                         <col style={{width: '10%'}}/>
@@ -296,10 +291,10 @@ export default function CreatePool() {
                                 </Table>
                                 <Button tabIndex={-1} size="large" data-testid="createPoolButton"
                                     sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
-                                    component={submitButton}>
+                                    component={submitButton} onClick={sendCreatePoolRequest}>
                                     {t("CREATE_POOL").toUpperCase()}
                                 </Button>
-                            </form>
+                            {/*</form>*/}
                         </CardContent>
                     </Card>
                 </Grid>

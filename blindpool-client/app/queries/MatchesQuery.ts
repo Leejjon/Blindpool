@@ -1,4 +1,4 @@
-import {getUpcomingMatches} from "../api/GetUpcomingMatches";
+import {getUpcomingMatches} from "../api2/GetUpcomingMatches";
 
 export const matchesQuery = (competitionsToWatch: Array<number>) => (
     {

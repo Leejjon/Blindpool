@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, MobileStepper, Typography, useTheme} from "@mui/material";
 import {useTranslation} from "react-i18next";
-import {TFunction} from "i18next";
+import {type TFunction} from "i18next";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 
 const buttonColor = {

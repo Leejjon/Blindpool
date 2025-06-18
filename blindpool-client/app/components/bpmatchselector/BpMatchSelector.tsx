@@ -1,12 +1,12 @@
-import React, {ChangeEvent, useEffect} from "react";
+import React, {type ChangeEvent, useEffect} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
 import {Autocomplete} from "@mui/material";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
-import {Match} from "../../model/Match";
+import {type Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
-import { BpMatchesProps, BpSelectedMatchProps } from "../../context/BpContext";
+import { type BpMatchesProps, type BpSelectedMatchProps } from "../../context/BpContext";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -32,7 +32,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
     };
 
     useEffect(() => {
-        console.log(JSON.stringify(matches));
         let matchToSelectInDropdown: string = '';
         if (selectedMatchId) {
             let matchExists = false;
@@ -103,30 +102,29 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 const minutes: string = '' + startTimestamp.getMinutes();
                 const minutesToDisplay: string = minutes.padStart(2, minutes);
                 const dateString: string = startTimestamp.toLocaleDateString();
-                // const {_key, ...propsWithoutKey} = props;
+                const {key, ...propsWithoutKey} = props;
                 return (
-                    <li {...props}>Hoi</li>
-                    // <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...props}>
-                    //     <div>
-                    //         <div className="tableRowContainerForClubIcons">
-                    //             <div className="clubIconAndTextDiv">
-                    //                 <img src={homeTeamIconUrl} alt={homeTeamName} className="clubIconStyle"/>
-                    //                 <Typography sx={marginHalfEm}>{homeTeamName}</Typography>
-                    //             </div>
-                    //             <div className="slashIcon"><Typography
-                    //                 variant="body1">/</Typography></div>
-                    //             <div className="clubIconAndTextDiv">
-                    //                 <img src={awayTeamIconUrl} alt={awayTeamName}className="clubIconStyle"/>
-                    //                 <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
-                    //             </div>
-                    //         </div>
-                    //         <Typography sx={{
-                    //             margin: "0.5em",
-                    //             fontSize: "small"
-                    //         }}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
-                    //     </div>
-                    //     <Divider/>
-                    // </Box>
+                    <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...propsWithoutKey}>
+                        <div>
+                            <div className="tableRowContainerForClubIcons">
+                                <div className="clubIconAndTextDiv">
+                                    <img src={homeTeamIconUrl} alt={homeTeamName} className="clubIconStyle"/>
+                                    <Typography sx={marginHalfEm}>{homeTeamName}</Typography>
+                                </div>
+                                <div className="slashIcon"><Typography
+                                    variant="body1">/</Typography></div>
+                                <div className="clubIconAndTextDiv">
+                                    <img src={awayTeamIconUrl} alt={awayTeamName}className="clubIconStyle"/>
+                                    <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
+                                </div>
+                            </div>
+                            <Typography sx={{
+                                margin: "0.5em",
+                                fontSize: "small"
+                            }}>{dateString} {startTimestamp.getHours()}:{minutesToDisplay}</Typography>
+                        </div>
+                        <Divider/>
+                    </Box>
                 );
             }}
             ListboxProps={{

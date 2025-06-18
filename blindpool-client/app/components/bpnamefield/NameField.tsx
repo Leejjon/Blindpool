@@ -1,6 +1,6 @@
-import React, {ChangeEvent} from "react";
+import React, { type ChangeEvent } from "react";
 import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
-import Player from "../../model/Player";
+import {type Player} from "../../model/Player";
 import {useTranslation} from "react-i18next";
 import {Person, RemoveCircleOutline} from "@mui/icons-material";
 

@@ -4,8 +4,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "class-validator": "0.14.1",
-    "zod": "^3.23.8"
+    "class-validator": "0.14.1"
   },
   "devDependencies": {
     "@types/node": "20.14.2",

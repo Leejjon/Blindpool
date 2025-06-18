@@ -2,6 +2,7 @@ import {fireEvent, render, waitFor} from "@testing-library/react";
 import BpComicStepper from "./BpComicStepper";
 import '../../locales/i18n';
 import { describe, expect, test } from "vitest";
+import '@testing-library/jest-dom';
 
 describe('Test how to page', () => {
 

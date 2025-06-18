@@ -1,4 +1,4 @@
-import {Match} from "../../model/Match";
+import {type Match} from "../../model/Match";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {CircularProgress, Typography} from "@mui/material";
 import React from "react";

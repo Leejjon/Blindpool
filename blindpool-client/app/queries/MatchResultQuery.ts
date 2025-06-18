@@ -1,4 +1,4 @@
-import {getMatchResultData} from "../api/GetMatchResultData";
+import {getMatchResultData} from "../api2/GetMatchResultData";
 
 export const matchInfoQuery = (matchId: string | undefined, /*setMessage: (message: string | undefined) => void*/) => (
     {

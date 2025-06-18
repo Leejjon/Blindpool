@@ -1,5 +1,5 @@
-import {Score} from "../model/Score";
-import {ParticipantAndScore} from "../model/Blindpool";
+import {type Score} from "../model/Score";
+import {type ParticipantAndScore} from "../model/Blindpool";
 
 const compareScore = (score1: Score, score2: Score): boolean => {
     return score1.home === score2.home && score1.away === score2.away;

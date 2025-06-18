@@ -1,7 +1,7 @@
 import {Checkbox, FormControlLabel, List, ListItem, ListItemButton} from "@mui/material";
-import React from "react";
-import {competitions, getCompetitionsList} from "blindpool-common/constants/Competitions";
-import {useExistingBlindpoolOutletContext} from "../../context/BpContext";
+import React, { type ChangeEvent } from "react";
+import {useExistingBlindpoolOutletContext} from "~/context/BpContext";
+import { competitions, getCompetitionsList } from "blindpool-common/constants/Competitions";
 
 const BpUpcomingMatches: React.FC = () => {
     const {competitionsToWatch, setCompetitionsToWatch} = useExistingBlindpoolOutletContext();
@@ -12,7 +12,7 @@ const BpUpcomingMatches: React.FC = () => {
         return competitions.filter((key) => getCompetitionsList().includes(key));
     }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, competition: number) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>, competition: number) => {
         if (!event.target.checked) {
             setCompetitionsToWatch?.(filterDisabledCompetitions(competitionsToWatch.filter((key) => key.toString() !== competition.toString())));
         } else {

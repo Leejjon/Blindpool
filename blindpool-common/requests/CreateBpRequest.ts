@@ -1,5 +1,5 @@
 import {IsOptional, IsString, Matches} from "class-validator";
-import { z } from "zod";
+// import { z } from "zod";
 
 export class CreateBlindpoolRequest {
     @IsString({each: true})
@@ -22,13 +22,13 @@ export class CreateBlindpoolRequest {
     }
 }
 
-export const CreateBlindpoolRequestSchema = z.object({
-    participants: z.array(z.string().regex(/^([a-zA-Z0-9 _]{1,20})$/)),
-    selectedMatchID: z.string().optional(),
-    freeFormatMatch: z.string().regex(/^([-a-zA-Z0-9 ]{5,50})$/).optional()
-}).refine(
-    data => data.selectedMatchID || data.freeFormatMatch,
-    'Either enter a match or a free format.'
-);
-
-export type CreateBlindpoolRequestSchemaType = z.infer<typeof CreateBlindpoolRequestSchema>;
+// export const CreateBlindpoolRequestSchema = z.object({
+//     participants: z.array(z.string().regex(/^([a-zA-Z0-9 _]{1,20})$/)),
+//     selectedMatchID: z.string().optional(),
+//     freeFormatMatch: z.string().regex(/^([-a-zA-Z0-9 ]{5,50})$/).optional()
+// }).refine(
+//     data => data.selectedMatchID || data.freeFormatMatch,
+//     'Either enter a match or a free format.'
+// );
+//
+// export type CreateBlindpoolRequestSchemaType = z.infer<typeof CreateBlindpoolRequestSchema>;

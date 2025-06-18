@@ -16,7 +16,7 @@ import StyledBpLogoFn from "../bplogo/BpLogo";
 import HelpIcon from '@mui/icons-material/Help';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import "./BpMenu.css"
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 
 interface BpMenuProps {
     closeMenu: () => void
