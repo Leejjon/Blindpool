@@ -20,11 +20,11 @@
     "@google-cloud/datastore": "9.0.0",
     "@google-cloud/secret-manager": "5.6.0",
     "@types/cors": "2.8.17",
-    "axios": "1.7.2",
+    "axios": "1.8.2",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "cors": "2.8.5",
-    "express": "4.19.2",
+    "express": "5.0.0",
     "neverthrow": "6.2.2"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "ts-loader": "9.5.1",
     "ts-node": "10.9.2",
     "typescript": "5.4.5",
-    "webpack": "5.91.0",
+    "webpack": "5.94.0",
     "webpack-cli": "5.1.4",
     "webpack-node-externals": "3.0.0"
   }
