@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Match } from "../model/Match";
-import { useOutletContext } from "react-router-dom";
+import { type Match } from "../model/Match";
+import { useOutletContext } from "react-router";
 import { getCompetitionsFromLocalStorage, updateCompetitionsInLocalStorage } from "../storage/PreferredCompetitions";
 
 export interface BpMatchesProps {

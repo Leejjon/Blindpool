@@ -1,5 +1,5 @@
 import {Api, getHost} from "../utils/Network";
-import {Match} from "../model/Match";
+import {type Match} from "../model/Match";
 
 export async function getMatchResultData(matchId: string | undefined) {
     if (matchId) {

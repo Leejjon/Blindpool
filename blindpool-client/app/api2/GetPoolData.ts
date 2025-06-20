@@ -1,5 +1,5 @@
 import {Api, getHost} from "../utils/Network";
-import Blindpool from "../model/Blindpool";
+import {type Blindpool} from "../model/Blindpool";
 
 export async function getPoolData(pool: string | Blindpool) {
     if ((pool as Blindpool).key) {

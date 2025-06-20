@@ -1,4 +1,4 @@
-import {Score} from "./Score";
+import {type Score} from "./Score";
 
 export interface Match {
     id: string

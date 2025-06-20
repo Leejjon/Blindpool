@@ -5,8 +5,8 @@
 import '@testing-library/jest-dom';
 
 import { use } from "i18next";
-import { getLocale, resources } from "./locales/translations";
 import { initReactI18next } from "react-i18next";
+import { getLocale, resources } from './locales/translations';
 
 // Load the translations for all tests
 use(initReactI18next) // passes i18n down to react-i18next

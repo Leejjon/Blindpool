@@ -1,17 +1,17 @@
 import { Button, Card, CardActions, CardContent, Divider, Grid, Typography } from "@mui/material";
-import type { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import { getLocale, getPageTitle, resources } from "../locales/translations";
 import { matchesQuery } from "../queries/MatchesQuery";
 import { getCompetitionsFromLocalStorage, updateCompetitionsInLocalStorage } from "../storage/PreferredCompetitions";
 import { queryClientSingleton } from "../singletons/QueryClientSingleton";
 import { useUpcomingMatches } from "../queries/MatchesHook";
-import { Match } from "../model/Match";
+import { type Match } from "../model/Match";
 import { useExistingBlindpoolOutletContext } from "../context/BpContext";
-import { Link } from "@remix-run/react";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import BpCompetitions from "../components/bpcompetitions/BpCompetitions";
 import BpUpcomingMatches from "../components/bpupcomingmatches/BpUpcomingMatches";
+import { Link } from "react-router";
+import type { MetaFunction } from "react-router";
 
 export const meta: MetaFunction = () => {
   return [
@@ -22,16 +22,20 @@ export const meta: MetaFunction = () => {
 };
 
 export const clientLoader = async () => {
-  await queryClientSingleton.prefetchQuery(
+  return await queryClientSingleton.prefetchQuery(
     matchesQuery(getCompetitionsFromLocalStorage())
   );
-  return null;
 };
+
+// export const clientLoader = async () => {
+//   return await queryClientSingleton.ensureQueryData(query());
+// }
 
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
 export default function Index() {
   const { competitionsToWatch, setMessage, setSelectedMatchId } = useExistingBlindpoolOutletContext();
+
   const { t } = useTranslation();
   const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
   return (

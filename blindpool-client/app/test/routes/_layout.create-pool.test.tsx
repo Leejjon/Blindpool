@@ -1,15 +1,15 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import CreatePool from "../../routes/_layout.create-pool";
 import fetchMock from "fetch-mock";
 import '../../locales/i18n';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ComponentWithBpContext, EMPTY_CONTEXT } from "../ComponentWithBpContext";
 import { afterEach, describe, expect, test, vi } from "vitest";
+import CreatePool from "../../routes/_layout.create";
 
 // This const has to have a name starting with "mock". See: https://lukerogerson.medium.com/two-ways-to-fix-the-jest-test-error-the-module-factory-of-jest-mock-is-not-allowed-to-bf022b5175dd
 const mockNavigate = vi.fn();
 
-vi.mock("react-router-dom", async (importOriginal) => {
+vi.mock("react-router", async (importOriginal) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const actual = await importOriginal() as any;
     return {
@@ -163,9 +163,9 @@ describe('Test CreatePool view', () => {
             Promise.reject('NetworkError when attempting to fetch resource.')
         ).get(
             'http://localhost:8082/api/v2/matches/upcoming?competition[]=2021', {
-            body: [],
-            status: 200
-        });
+                body: [],
+                status: 200
+            });
         let messageState: string | undefined = undefined;
 
         const { getByText, getAllByLabelText, container } = render(

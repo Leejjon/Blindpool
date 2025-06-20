@@ -1,5 +1,5 @@
 import {Api, getHost} from "../utils/Network";
-import {Match} from "../model/Match";
+import {type Match} from "../model/Match";
 
 export const getUpcomingMatches = async (competitionsToWatch: Array<number>): Promise<Array<Match>> => {
     try {

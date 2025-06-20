@@ -1,5 +1,3 @@
-import {competitions} from "blindpool-common/constants/Competitions";
-
 interface Participant {
     name: string,
     userType: number

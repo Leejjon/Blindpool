@@ -1,12 +1,12 @@
-import React, {ChangeEvent, useEffect} from "react";
+import React, {type ChangeEvent, useEffect} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
 import {Autocomplete} from "@mui/material";
 import {getHostnameWithPortIfLocal} from "../../utils/Network";
 import {useTranslation} from "react-i18next";
-import {Match} from "../../model/Match";
+import {type Match} from "../../model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
 import "./BpMatchSelector.css";
-import { BpMatchesProps, BpSelectedMatchProps } from "../../context/BpContext";
+import { type BpMatchesProps, type BpSelectedMatchProps } from "../../context/BpContext";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -50,7 +50,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
         setInputValue(matchToSelectInDropdown);
     }, [setInputValue, selectedMatchId, matches]);
 
-    const updateSelectedMatch = (event: ChangeEvent<{}> | null, selectedMatch: null | string | Match) => {
+    const updateSelectedMatch = (event: ChangeEvent<object> | null, selectedMatch: null | string | Match) => {
 
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
@@ -102,8 +102,9 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 const minutes: string = '' + startTimestamp.getMinutes();
                 const minutesToDisplay: string = minutes.padStart(2, minutes);
                 const dateString: string = startTimestamp.toLocaleDateString();
+                const {key, ...propsWithoutKey} = props;
                 return (
-                    <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...props}>
+                    <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...propsWithoutKey}>
                         <div>
                             <div className="tableRowContainerForClubIcons">
                                 <div className="clubIconAndTextDiv">
@@ -136,6 +137,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
             style={{width: '100%'}}
             renderInput={(params) =>
                 <TextField {...params}
+                           name={selectedMatchId !== undefined ? "selectedMatchID" : "freeFormatMatch"}
                            error={invalidMatchMessage !== undefined}
                            helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
                            label={t('SELECT_MATCH')}

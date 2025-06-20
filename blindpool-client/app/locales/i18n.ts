@@ -1,5 +1,5 @@
-import { Match } from "../model/Match";
 import { CompetitionEnum, getCompetitionKey } from "blindpool-common/constants/Competitions";
+import { type Match } from "../model/Match";
 
 export function getDefaultCompetitions(): Array<number> {
     return window.location.hostname.endsWith('blindepool.nl') ? [

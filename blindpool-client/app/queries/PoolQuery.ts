@@ -1,5 +1,5 @@
-import {getPoolData} from "../api/GetPoolData";
-import Blindpool from "../model/Blindpool";
+import {getPoolData} from "../api2/GetPoolData";
+import {type Blindpool} from "../model/Blindpool";
 
 export function getPoolId(pool: string | Blindpool) {
     if ((pool as Blindpool).key) {

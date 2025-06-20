@@ -1,14 +1,14 @@
 import {Button, Card, CardActions, CardContent, Divider, Grid, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
-import { getLocale, getPageTitle, resources } from "../locales/translations";
-import { MetaFunction } from "@remix-run/react";
+import { getLocale, getPageTitle, resources } from "~/locales/translations";
+import type {Route} from "../../.react-router/types/app/routes/+types/_layout.about";
 
 const pagestyle = {
     flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"
 };
 
-export const meta: MetaFunction = () => {
+export function meta({ }: Route.MetaArgs) {
     return [
       { title: `${getPageTitle(resources[getLocale()].translation.ABOUT_BLINDPOOL_TITLE)}` },
       { name: "description", content: resources[getLocale()].translation.ABOUT_BLINDPOOL_DESCRIPTION },

@@ -1,5 +1,5 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {type ChangeEvent, forwardRef, useEffect, useState} from "react";
+import {useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
 import {
     Button,
@@ -12,30 +12,38 @@ import {
     TableHead, TableRow, TextField,
     Typography
 } from "@mui/material";
-import Blindpool from "../model/Blindpool";
-import Player from "../model/Player";
-import {Api, getHost} from "../utils/Network";
-import {doesMatchExistIn, Match} from "../model/Match";
+import {type Blindpool} from "~/model/Blindpool";
+import {type Player} from "~/model/Player";
+import {Api, getHost} from "~/utils/Network";
+import {doesMatchExistIn, type Match} from "~/model/Match";
 import {AddCircleOutline} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQueryClient} from "@tanstack/react-query";
-import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
-import {poolQuery} from "../queries/PoolQuery";
-import { useExistingBlindpoolOutletContext } from "../context/BpContext";
-import { useUpcomingMatches } from "../queries/MatchesHook";
+import {poolQuery} from "~/queries/PoolQuery";
+import { useExistingBlindpoolOutletContext } from "~/context/BpContext";
+import { useUpcomingMatches } from "~/queries/MatchesHook";
+import type { Route } from "./+types/_layout.create";
 import BpMatchSelector from "../components/bpmatchselector/BpMatchSelector";
 import NameField from "../components/bpnamefield/NameField";
-import type {MetaFunction} from "@remix-run/node";
 import {getLocale, getPageTitle, resources} from "~/locales/translations";
+import {queryClientSingleton} from "~/singletons/QueryClientSingleton";
+import {matchesQuery} from "~/queries/MatchesQuery";
+import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
+import { type JSX } from "react/jsx-runtime";
+import type { CreateBlindpoolRequestSchemaType } from "~/requests/CreateBpRequest";
 
-export const meta: MetaFunction = () => {
+export function meta({ }: Route.MetaArgs) {
     return [
-        { title: `${getPageTitle(resources[getLocale()].translation.CREATE_POOL_TITLE)}` },
-        { name: "description", content: resources[getLocale()].translation.CREATE_POOL_DESCRIPTION },
-        { tagName: "link", rel: "canonical", href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/create" : "https://www.blindpool.com/create" }
+        {title: `${getPageTitle(resources[getLocale()].translation.CREATE_POOL_TITLE)}`},
+        {name: "description", content: resources[getLocale()].translation.CREATE_POOL_DESCRIPTION},
+        {
+            tagName: "link",
+            rel: "canonical",
+            href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/create" : "https://www.blindpool.com/create"
+        }
     ];
-};
+}
 
 const EMPTY_STRING = "";
 
@@ -44,7 +52,14 @@ const EMPTY_PLAYER = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
-// TODO: Clientloader
+export const clientLoader = async () => {
+    await queryClientSingleton.prefetchQuery(
+        matchesQuery(getCompetitionsFromLocalStorage())
+    );
+    return null;
+};
+
+// DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
 export default function CreatePool() {
     const {competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId} = useExistingBlindpoolOutletContext();
@@ -71,7 +86,7 @@ export default function CreatePool() {
         }
     }, [players, justAddedPlayer]);
 
-    const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>, isBlur: boolean) => {
+    const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, isBlur: boolean) => {
         const nameField = event.target;
 
         const playersUpdate = [...players];
@@ -146,17 +161,18 @@ export default function CreatePool() {
         }
     };
 
-    const sendCreatePoolRequest = async () => {
+    const sendCreatePoolRequest = async (): Promise<void> => {
         if (validateState([...players], true)) {
             setLoading(true);
             const requestBody = {
                 participants: players.map(player => player.name)
-            } as CreateBlindpoolRequest;
+            } as CreateBlindpoolRequestSchemaType;
             const validationErrors = await validate(requestBody);
             if (validationErrors.length > 0) {
                 setLoading(false);
                 setMessage("ILLEGAL_CHARACTER_MESSAGE");
             }
+
             try {
                 if (selectedMatchId) {
                     const matchId = doesMatchExistIn(selectedMatchId, matches);
@@ -189,6 +205,18 @@ export default function CreatePool() {
         }
     }
 
+    // We want this fancy material ui button to behave as an oldschool form submit button. For that we need to add the submit type, which isn't in the MUI button API.
+    // So I hacked it in, but ran into problems with references. So I needed to use React.forwardRef. No idea what is does, but the MUI docs explain it here:
+    // https://mui.com/material-ui/guides/composition/#caveat-with-refs
+    const submitButton = forwardRef(
+        (props: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLButtonElement> & React.ButtonHTMLAttributes<HTMLButtonElement>, ref: React.LegacyRef<HTMLButtonElement> | undefined) => {
+        return (
+            <button {...props} ref={ref}/>
+        );
+    });
+    // Because of this shitty requirement: https://stackoverflow.com/questions/52992932/component-definition-is-missing-display-name-react-display-name
+    submitButton.displayName = "SubmitButton";
+
     if (loading) {
         return (
             <CircularProgress sx={{margin: "8em"}} />
@@ -202,67 +230,71 @@ export default function CreatePool() {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
-                                             setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
-                                             selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />
-                            {/*border={1}*/}
-                            <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
-                                <colgroup>
-                                    {/* Seems like a super stupid solution, but it works.*/}
-                                    <col style={{width: '5%'}}/>
-                                    <col style={{width: '85%'}}/>
-                                    <col style={{width: '10%'}}/>
-                                </colgroup>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell sx={{verticalAlign: "text-top", padding: "0em", paddingTop: "1.7em", margin: "0"}}
-                                                   align="left">&nbsp;</TableCell>
-                                        <TableCell sx={{margin: "0", paddingTop: "1.5em", paddingLeft: "1em", paddingBottom: "1em"}} align="left">
-                                            <Typography sx={{fontWeight: 700, fontSize: 15, flexGrow: 1}}>
-                                                {t("NAME_COLUMN_HEADER")}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0em"}}>&nbsp;</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {players.map((player, index) => {
-                                        return (
-                                            <NameField key={index} player={player} index={index} onTextFieldChange={onTextFieldChange} removePlayer={removePlayer} />
-                                        );
-                                    })}
-                                    <TableRow>
-                                        <TableCell sx={{verticalAlign: "text-top", padding: "0", paddingTop: "1.7em", margin: 0}}>
-                                            <Typography sx={{color: "gray"}}>
-                                                {players.length + 1}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell sx={{paddingLeft: "1em", paddingRight: 0}}>
-                                            <TextField
-                                                id="standard-basic"
-                                                variant="standard"
-                                                sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
-                                                margin="normal"
-                                                disabled={true}
-                                                value={t("ADD_PLAYER")}
-                                                data-testid='playerNameField'
-                                                inputProps={{'aria-label': 'Player name'}}>
-                                            </TextField>
-                                        </TableCell>
-                                        <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
-                                            <IconButton aria-label={t("ADD_PLAYER") + ""}
-                                                        sx={{color: "black"}}
-                                                        onClick={addPlayer}>
-                                                <AddCircleOutline/>
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                            <Button tabIndex={-1} onClick={sendCreatePoolRequest} size="large" data-testid="createPoolButton"
-                                sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}>
-                                {t("CREATE_POOL").toUpperCase()}
-                            </Button>
+                            {/*<form method="POST" action={`${getHost(Api.pool)}/api/v4/pool`} onSubmit={async (event) => {*/}
+                            {/*    event.preventDefault();*/}
+                            {/*    await sendCreatePoolRequest();*/}
+                            {/*}} >*/}
+                                <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
+                                                 setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
+                                                 selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />
+                                <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
+                                    <colgroup>
+                                        <col style={{width: '5%'}}/>
+                                        <col style={{width: '85%'}}/>
+                                        <col style={{width: '10%'}}/>
+                                    </colgroup>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell sx={{verticalAlign: "text-top", padding: "0em", paddingTop: "1.7em", margin: "0"}}
+                                                       align="left">&nbsp;</TableCell>
+                                            <TableCell sx={{margin: "0", paddingTop: "1.5em", paddingLeft: "1em", paddingBottom: "1em"}} align="left">
+                                                <Typography sx={{fontWeight: 700, fontSize: 15, flexGrow: 1}}>
+                                                    {t("NAME_COLUMN_HEADER")}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0em"}}>&nbsp;</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {players.map((player, index) => {
+                                            return (
+                                                <NameField key={"player" + index} player={player} index={index} onTextFieldChange={onTextFieldChange} removePlayer={removePlayer} />
+                                            );
+                                        })}
+                                        <TableRow>
+                                            <TableCell sx={{verticalAlign: "text-top", padding: "0", paddingTop: "1.7em", margin: 0}}>
+                                                <Typography sx={{color: "gray"}}>
+                                                    {players.length + 1}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell sx={{paddingLeft: "1em", paddingRight: 0}}>
+                                                <TextField
+                                                    id="standard-basic"
+                                                    variant="standard"
+                                                    sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
+                                                    margin="normal"
+                                                    disabled={true}
+                                                    value={t("ADD_PLAYER")}
+                                                    data-testid='playerNameField'
+                                                    inputProps={{'aria-label': 'Player name'}}>
+                                                </TextField>
+                                            </TableCell>
+                                            <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
+                                                <IconButton aria-label={t("ADD_PLAYER") + ""}
+                                                            sx={{color: "black"}}
+                                                            onClick={addPlayer}>
+                                                    <AddCircleOutline/>
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                                <Button tabIndex={-1} size="large" data-testid="createPoolButton"
+                                        sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
+                                    /*component={submitButton}*/ onClick={sendCreatePoolRequest}>
+                                    {t("CREATE_POOL").toUpperCase()}
+                                </Button>
+                            {/*</form>*/}
                         </CardContent>
                     </Card>
                 </Grid>

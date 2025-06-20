@@ -8,25 +8,19 @@ import {
     TableHead,
     TableRow, TextField, Tooltip, Typography, useTheme
 } from "@mui/material";
-import { useParams } from "react-router";
+import {useParams, type ActionFunctionArgs, type Params, type ParamParseKey, useNavigate} from "react-router";
 import { useTranslation } from "react-i18next";
-import { canThisScoreStillWin } from "../logic/ScoresUtil";
+import { canThisScoreStillWin } from "~/logic/ScoresUtil";
 import MatchInfoWithScore from "../components/bpmatchwithscore/MatchInfoWithScore";
 import { ContentCopy, Help } from "@mui/icons-material";
-import {
-    ActionFunctionArgs,
-    ParamParseKey,
-    Params,
-    useNavigate
-} from "react-router-dom";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import { poolQuery } from "../queries/PoolQuery";
-import { matchInfoQuery } from "../queries/MatchResultQuery";
-import Blindpool from "../model/Blindpool";
-import {useExistingBlindpoolOutletContext} from "../context/BpContext";
-import type {MetaFunction} from "@remix-run/node";
+import { useQuery } from "@tanstack/react-query";
+import { poolQuery } from "~/queries/PoolQuery";
+import { matchInfoQuery } from "~/queries/MatchResultQuery";
+import type {Blindpool} from "~/model/Blindpool";
+import {useExistingBlindpoolOutletContext} from "~/context/BpContext";
 import {getLocale, getPageTitle, resources} from "~/locales/translations";
+import type {Route} from "../../.react-router/types/app/routes/+types/_layout.pool.$key";
 
 const root = {
     flexGrow: 1,
@@ -82,16 +76,17 @@ export interface Args extends ActionFunctionArgs {
 //     return null;
 // }
 
-export const meta: MetaFunction = () => {
+export function meta({ }: Route.MetaArgs) {
     return [
         { title: `${getPageTitle(resources[getLocale()].translation.BLINDPOOL_VIEW_TITLE)}` },
         { name: "description", content: resources[getLocale()].translation.BLINDPOOL_VIEW_DESCRIPTION },
     ];
 };
 
-const _layoutPool: React.FC = () => {
+const LayoutPool: React.FC = () => {
     const params = useParams();
-    const key = params["*"] as string;
+    const key = params["key"] as string;
+
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -141,12 +136,12 @@ const _layoutPool: React.FC = () => {
     const questionMark = () => {
         return (
             <Tooltip sx={tooltip} enterTouchDelay={5} arrow
-                title={
-                    <React.Fragment>
-                        <Typography variant="h2" color="inherit">Wildcard</Typography>
-                        <Typography sx={{ color: "white" }}>{t('WILDCARD_EXPLANATION')}</Typography>
-                    </React.Fragment>
-                }
+                     title={
+                         <React.Fragment>
+                             <Typography variant="h2" color="inherit">Wildcard</Typography>
+                             <Typography sx={{ color: "white" }}>{t('WILDCARD_EXPLANATION')}</Typography>
+                         </React.Fragment>
+                     }
             >
                 <Help fontSize="small" />
             </Tooltip>
@@ -173,7 +168,7 @@ const _layoutPool: React.FC = () => {
                         <TableRow key={participantName}>
                             <TableCell>
                                 <Typography variant="body1"
-                                    style={{ display: 'flex' }}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
+                                            style={{ display: 'flex' }}>{participantName}&nbsp;{trophyIcon(fullMatchInfo.finished)}</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1">{home} - {away} {isWildCard(home, away)}</Typography>
@@ -199,7 +194,7 @@ const _layoutPool: React.FC = () => {
                             </TableCell>
                             <TableCell>
                                 <Typography variant="body1"
-                                    sx={impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
+                                            sx={impossibleScore}>{home} - {away} {isWildCard(home, away)}</Typography>
                             </TableCell>
                         </TableRow>
                     );
@@ -274,7 +269,7 @@ const _layoutPool: React.FC = () => {
                                 onClick={(event: React.MouseEvent<HTMLElement>) => handleTextFieldFocus(event)}
                             />
                             <IconButton sx={copyButton} color="inherit"
-                                aria-label="Copy" aria-haspopup="true" onClick={copy}>
+                                        aria-label="Copy" aria-haspopup="true" onClick={copy}>
                                 <ContentCopy aria-label={t('COPY')} />
                             </IconButton>
                         </CardActions>
@@ -290,4 +285,4 @@ const _layoutPool: React.FC = () => {
     }
 };
 
-export default _layoutPool;
+export default LayoutPool;
