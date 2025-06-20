@@ -211,7 +211,7 @@ export default function CreatePool() {
     const submitButton = forwardRef(
         (props: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLButtonElement> & React.ButtonHTMLAttributes<HTMLButtonElement>, ref: React.LegacyRef<HTMLButtonElement> | undefined) => {
         return (
-            <button {...props} type="submit" ref={ref}/>
+            <button {...props} ref={ref}/>
         );
     });
     // Because of this shitty requirement: https://stackoverflow.com/questions/52992932/component-definition-is-missing-display-name-react-display-name
@@ -290,8 +290,8 @@ export default function CreatePool() {
                                     </TableBody>
                                 </Table>
                                 <Button tabIndex={-1} size="large" data-testid="createPoolButton"
-                                    sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
-                                    component={submitButton} onClick={sendCreatePoolRequest}>
+                                        sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
+                                    /*component={submitButton}*/ onClick={sendCreatePoolRequest}>
                                     {t("CREATE_POOL").toUpperCase()}
                                 </Button>
                             {/*</form>*/}
