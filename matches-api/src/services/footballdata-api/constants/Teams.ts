@@ -1,6 +1,6 @@
 import {competitions} from "blindpool-common/constants/Competitions";
 
-export const API_FOOTBAL_DATA_URL = "http://api.football-data.org/v2";
+export const API_FOOTBAL_DATA_URL = "https://api.football-data.org/v4";
 
 export const getTeamName = (teamId: number, competitionId: string): string => {
     let teamName;
