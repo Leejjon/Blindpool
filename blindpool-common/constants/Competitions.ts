@@ -25,6 +25,7 @@ const bundesLigaTeams: {[key: number]: string} = {
     3: 'Leverkusen',
     4: 'Dortmund',
     5: 'Bayern',
+    7: 'HSV',
     10: 'VfL Stuttgart',
     11: 'VfL Wolfsburg',
     12: 'Werder Bremen',
@@ -63,6 +64,7 @@ const eredivisieTeams: {[key: number]: string} = {
     718: 'Go Ahead Eagles',
     1909: 'SC Cambuur',
     1911: 'Almere City',
+    1912: 'Telstar',
     1914: 'FC Emmen',
     1915: 'NEC Nijmegen',
     1919: 'FC Volendam',
@@ -80,6 +82,7 @@ const laLigaTeams: {[key: number]: string} = {
     83: "Granada",
     86: "Real Madrid",
     87: "Rayo Vallecano",
+    88: "Levante",
     89: "RCD Mallorca",
     90: "Real Betis",
     92: "Real Sociedad",
@@ -94,7 +97,8 @@ const laLigaTeams: {[key: number]: string} = {
     298: "Girona FC",
     558: "RC Celta de Vigo",
     559: "Sevilla FC",
-    745: "CD Leganes"
+    745: "CD Leganes",
+    1048: "Real Oviedo"
 }
 
 const ligue1Teams: {[key: number]: string} = {
@@ -118,7 +122,8 @@ const ligue1Teams: {[key: number]: string} = {
     546: 'RC Lens',
     547: 'Stade de Reims',
     548: 'AS Monaco FC',
-    576: 'Strasbourg'
+    576: 'Strasbourg',
+    1045: 'Paris FC'
 }
 
 const premeiraLigaTeams: {[key: number]: string} = {
@@ -129,6 +134,7 @@ const premeiraLigaTeams: {[key: number]: string} = {
     583: 'Moreirense FC',
     712: 'FC Arouca',
     810: 'Boavista FC',
+    1049: 'Tondela',
     1103: 'GD Chaves',
     1903: 'SL Benfica',
     5529: 'CD Nacional',
@@ -141,6 +147,7 @@ const premeiraLigaTeams: {[key: number]: string} = {
     5602: 'SC Farense',
     5613: 'Braga',
     6618: 'Casa Pia AC',
+    7822: 'Alverca',
     9136: 'Amadora',
     10340: 'AVS'
 }
@@ -163,8 +170,10 @@ const serieATeams: {[key: number]: string} = {
     450: "Verona",
     454: "Venezia FC",
     455: "Salernitana",
+    457: "Cremonese",
     470: "Frosinone",
     471: "Sassuolo",
+    487: 'AC Pisa',
     586: "Torino",
     5890: "US Lecce",
     5911: "AC Monza",
@@ -182,6 +191,7 @@ const premierLeagueTeams: {[key: number]: string} = {
     66: 'Man United',
     67: 'Newcastle',
     68: 'Norwhich City',
+    71: 'Sunderland',
     73: 'Tottenham',
     76: 'Wolverhampton',
     328: 'Burnley',

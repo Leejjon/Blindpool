@@ -4,16 +4,16 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Get BundesLiga teams
-GET {{footballdata-api-url}}/v2/competitions/2002/teams
+GET {{footballdata-api-url}}/v4/competitions/2002/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Get Ligue un teams
-GET {{footballdata-api-url}}/v2/competitions/2015/teams
+GET {{footballdata-api-url}}/v4/competitions/2015/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
-### Get Ligue un teams
+### Get Primeira teams
 GET {{footballdata-api-url}}/v2/competitions/2017/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
@@ -29,12 +29,12 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Premier league teams
-GET {{footballdata-api-url}}/v2/competitions/2021/teams
+GET {{footballdata-api-url}}/v4/competitions/2021/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### La Liga teams
-GET {{footballdata-api-url}}/v2/competitions/2014/teams
+GET {{footballdata-api-url}}/v4/competitions/2014/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
@@ -44,7 +44,7 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Serie A teams
-GET {{footballdata-api-url}}/v2/competitions/2019/teams
+GET {{footballdata-api-url}}/v4/competitions/2019/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
@@ -54,7 +54,7 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Primeira liga teams
-GET {{footballdata-api-url}}/v2/competitions/2017/teams
+GET {{footballdata-api-url}}/v4/competitions/2017/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
