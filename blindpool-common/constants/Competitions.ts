@@ -260,18 +260,24 @@ export const competitions: {[key: number]: Competition} = {
             ...premierLeagueTeams,
             ...premeiraLigaTeams,
             610: "Galatasaray",
+            611: "Qarabağ Ağdam",
             732: "Celtic",
             755: "Dinamo Zagreb",
             851: "Club Brugge",
             907: "Sparta Praha",
+            930: "Slavia Praha",
             1864: "Antwerp FC",
             1876: "FC København",
             1877: "RB Salzburg",
             1887: "Shaktar",
             1871: "Young Boys",
             2021: "Sturm Graz",
+            3929: "Union SG",
+            5721: "FK Bodø/Glimt",
             7283: "Crvena Zvedza",
-            7509: "SL Bratislava"
+            7509: "SL Bratislava",
+            10601: "FK Kairat",
+            11034: "Paphos FC"
         }
     },
     2002: {

@@ -64,7 +64,7 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### Champions league matches
-GET {{footballdata-api-url}}/v2/competitions/2001/teams
+GET {{footballdata-api-url}}/v4/competitions/2001/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
