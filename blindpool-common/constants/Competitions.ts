@@ -261,6 +261,7 @@ export const competitions: {[key: number]: Competition} = {
             ...premeiraLigaTeams,
             610: "Galatasaray",
             611: "Qarabağ Ağdam",
+            654: "Olympiakos",
             732: "Celtic",
             755: "Dinamo Zagreb",
             851: "Club Brugge",
