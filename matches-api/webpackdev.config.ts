@@ -1,13 +1,13 @@
-const webpack = require("webpack");
-const pathDev = require("path");
-const nodeExternalsDev = require("webpack-node-externals");
-const copyFiles = require('copy-webpack-plugin');
+import * as webpack from 'webpack';
+import * as path from 'path';
+import nodeExternals from 'webpack-node-externals';
+import CopyPlugin from 'copy-webpack-plugin';
 
 module.exports = {
     entry: ["webpack/hot/poll?100", "./src/index.ts"],
     target: "node",
     externals: [
-        nodeExternalsDev({
+        nodeExternals({
             allowlist: ["webpack/hot/poll?100"]
         })
     ],
@@ -24,9 +24,9 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js"]
     },
-    plugins: [new webpack.HotModuleReplacementPlugin(), new copyFiles({ patterns: [{ from: 'local.key'}]})],
+    plugins: [new webpack.HotModuleReplacementPlugin(), new CopyPlugin({ patterns: [{ from: 'local.key'}]})],
     output: {
-        path: pathDev.join(__dirname, "dist"),
+        path: path.join(__dirname, "dist"),
         filename: "index.js"
     }
 };

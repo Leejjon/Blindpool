@@ -1,9 +1,6 @@
-// Imports the Secret Manager library
-// const SecretManager = require('@google-cloud/secret-manager');
 import * as SecretManager from '@google-cloud/secret-manager';
 import fs from "fs";
 
-// Instantiates a client
 const client = new SecretManager.SecretManagerServiceClient();
 
 const environment = process.env.NODE_ENV || 'development';
