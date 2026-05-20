@@ -1,6 +1,6 @@
 import {upsertMatches} from "./MatchService";
 import * as sinon from "sinon";
-import {FootballDataApiMatch, MatchWithCompetitionIncluded} from "./footballdata-api/FootballDataApiService";
+import {MatchWithCompetitionIncluded} from "./footballdata-api/FootballDataApiService";
 import {Datastore} from "@google-cloud/datastore/build/src";
 import * as DatastoreService from "./DatastoreService";
 import {entity} from "@google-cloud/datastore/build/src/entity";
