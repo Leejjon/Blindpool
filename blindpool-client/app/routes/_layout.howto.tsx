@@ -16,14 +16,14 @@ export function meta({}: Route.MetaArgs) {
             href: window.location.hostname.endsWith('blindepool.nl') ? "https://blindepool.nl/howto" : "https://www.blindpool.com/howto"
         }
     ];
-};
+}
 
 export default function HowTo() {
     const {t} = useTranslation();
     return (
-        <Grid container justifyContent={"center"} spacing={2}
-              sx={{flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"}}>
-            <Grid key="definition" item>
+        <Grid container spacing={2}
+              sx={{justifyContent: 'center', flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"}}>
+            <Grid key="definition">
                 <Card className="card">
                     <CardContent>
                         <Typography variant="h2">

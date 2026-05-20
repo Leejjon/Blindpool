@@ -16,7 +16,7 @@ import {type Blindpool} from "~/model/Blindpool";
 import {type Player} from "~/model/Player";
 import {Api, getHost} from "~/utils/Network";
 import {doesMatchExistIn, type Match} from "~/model/Match";
-import {AddCircleOutline} from "@mui/icons-material";
+import {AddCircleOutlined} from "@mui/icons-material";
 import {validate} from "class-validator";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useQueryClient} from "@tanstack/react-query";
@@ -223,8 +223,8 @@ export default function CreatePool() {
         );
     } else {
         return (
-            <Grid container justifyContent={"center"}  spacing={2} sx={{flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
-                <Grid key="definition" item>
+            <Grid container spacing={2} sx={{justifyContent: 'center', flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
+                <Grid key="definition">
                     <Card className="card">
                         <CardContent>
                             <Typography variant="h2">
@@ -275,15 +275,14 @@ export default function CreatePool() {
                                                     margin="normal"
                                                     disabled={true}
                                                     value={t("ADD_PLAYER")}
-                                                    data-testid='playerNameField'
-                                                    inputProps={{'aria-label': 'Player name'}}>
+                                                    data-testid='playerNameField'>
                                                 </TextField>
                                             </TableCell>
                                             <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
                                                 <IconButton aria-label={t("ADD_PLAYER") + ""}
                                                             sx={{color: "black"}}
                                                             onClick={addPlayer}>
-                                                    <AddCircleOutline/>
+                                                    <AddCircleOutlined/>
                                                 </IconButton>
                                             </TableCell>
                                         </TableRow>

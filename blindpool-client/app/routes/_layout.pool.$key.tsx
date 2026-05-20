@@ -23,6 +23,7 @@ import {getLocale, getPageTitle, resources} from "~/locales/translations";
 import type {Route} from "../../.react-router/types/app/routes/+types/_layout.pool.$key";
 
 const root = {
+    justifyContent: 'center',
     flexGrow: 1,
     textAlign: 'center',
     marginTop: '0.5em',
@@ -232,8 +233,8 @@ const LayoutPool: React.FC = () => {
 
     if (!isLoading && pool !== undefined) {
         return (
-            <Grid container justifyContent={"center"} spacing={2} sx={root}>
-                <Grid key="definition" item>
+            <Grid container spacing={2} sx={root}>
+                <Grid key="definition">
                     <Card className="card">
                         <CardContent>
                             {matchInfo}

@@ -39,10 +39,10 @@ export default function Index() {
   const { t } = useTranslation();
   const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
   return (
-    <Grid container justifyContent={"center"} spacing={2}
-      sx={{ flexGrow: 1, textAlign: 'center', marginTop: '0.5em' }}>
+    <Grid container spacing={2}
+      sx={{ justifyContent: 'center', flexGrow: 1, textAlign: 'center', marginTop: '0.5em' }}>
       {/* The insane style correction makes sure there is no horizontal scrollbar and it's centered on mobile */}
-      <Grid key="definition" item>
+      <Grid key="definition">
         <Card className="card">
           <CardContent>
             <Typography variant="h2">
@@ -74,7 +74,7 @@ export default function Index() {
           </CardContent>
         </Card>
       </Grid>
-      <Grid key="matchers" item sx={{ marginBottom: "0.3em" }}>
+      <Grid key="matchers" sx={{ marginBottom: "0.3em" }}>
         <Card className="card">
           <CardContent>
             <Typography variant="h2">{t('UPCOMING_MATCHES')}</Typography>

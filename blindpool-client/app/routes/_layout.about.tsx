@@ -5,7 +5,7 @@ import { getLocale, getPageTitle, resources } from "~/locales/translations";
 import type {Route} from "../../.react-router/types/app/routes/+types/_layout.about";
 
 const pagestyle = {
-    flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"
+    justifyContent: 'center', flexGrow: 1, textAlign: "center", marginTop: "0.5em", marginBottom: "1em"
 };
 
 export function meta({ }: Route.MetaArgs) {
@@ -19,9 +19,9 @@ export function meta({ }: Route.MetaArgs) {
 export default function About() {
     const { t } = useTranslation();
     return (
-        <Grid container justifyContent={"center"} spacing={2}
+        <Grid container spacing={2}
             sx={pagestyle}>
-            <Grid key="aboutme" item>
+            <Grid key="aboutme">
                 <Card className="card">
                     <CardContent>
                         <Typography variant="h2">
