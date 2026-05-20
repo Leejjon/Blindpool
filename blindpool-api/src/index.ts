@@ -16,7 +16,7 @@ const router = express.Router();
 // Only allow cors when running locally
 if (environment === 'development') {
     router.use(cors());
-    router.options('*', cors<express.Request>());
+    router.options('{*path}', cors<express.Request>());
 }
 
 function validationMiddleware<T extends Object>(type: any): RequestHandler {

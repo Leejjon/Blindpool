@@ -1,5 +1,5 @@
 import {ParticipantAndScore, Score, UserType} from "../models/Blindpool";
-import deepEqual from "deep-equal";
+import { isDeepStrictEqual } from "node:util";
 
 const wildcard = -1;
 const wildcardScore: Score = {home: wildcard, away: wildcard};
@@ -17,7 +17,7 @@ const generateScores = (numberOfParticipants: number) => {
 
             scores.push(xyscore); // First combination (ie 1-0)
 
-            if (scores.length < numberOfParticipants && !deepEqual(xyscore, yxscore)) { // Add second combination if it fits (ie 0-1)
+            if (scores.length < numberOfParticipants && !isDeepStrictEqual(xyscore, yxscore)) { // Add second combination if it fits (ie 0-1)
                 scores.push(yxscore);
             } else {
                 break;

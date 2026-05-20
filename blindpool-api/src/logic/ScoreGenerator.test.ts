@@ -1,4 +1,4 @@
-import 'mocha';
+import {describe} from 'mocha';
 import {assignRandomScores} from "./ScoreGenerator";
 import {expect} from 'chai';
 
@@ -8,8 +8,8 @@ describe('Testing the score generator', () => {
         expect(participantAndScores.length).equal(5);
 
         // Easy function to print the scores.
-        // participantAndScores.forEach((participantAndScore) => {
-        //     console.log(`Name: ${participantAndScore.participant.name} Score: ${participantAndScore.score.homeClubScore}-${participantAndScore.score.awayClubScore}`);
-        // });
+        participantAndScores.forEach((participantAndScore) => {
+            console.log(`Name: ${participantAndScore.participant.name} Score: ${participantAndScore.score.home}-${participantAndScore.score.away}`);
+        });
     });
 });

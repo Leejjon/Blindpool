@@ -1,13 +1,13 @@
-const webpack = require("webpack");
-const pathDev = require("path");
-const nodeExternalsDev = require("webpack-node-externals");
+import * as webpack from 'webpack';
+import * as path from 'path';
+import nodeExternals from 'webpack-node-externals';
 
 module.exports = {
     entry: ["webpack/hot/poll?100", "./src/index.ts"],
     watch: true,
     target: "node",
     externals: [
-        nodeExternalsDev({
+        nodeExternals({
             allowlist: ["webpack/hot/poll?100"]
         })
     ],
@@ -26,7 +26,7 @@ module.exports = {
     },
     plugins: [new webpack.HotModuleReplacementPlugin()],
     output: {
-        path: pathDev.join(__dirname, "dist"),
+        path: path.join(__dirname, "dist"),
         filename: "index.js"
     }
 };

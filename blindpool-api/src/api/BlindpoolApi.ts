@@ -77,7 +77,13 @@ const handleInsertNewBlindpool = async (res: Response, participantsAndScores: Ar
 }
 
 export const getBlindpoolByKey = async (req: Request, res: Response) => {
+    if (typeof req.params.key !== 'string' ) {
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+        return;
+    }
+
     const keyAsNumber = hashids.decode(req.params.key)[0] as number;
+
     if (keyAsNumber === undefined) {
         mapError(res, ErrorScenarios.POOL_NOT_FOUND);
         return;
