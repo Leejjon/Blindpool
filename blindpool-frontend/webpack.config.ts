@@ -1,6 +1,6 @@
-const path2 = require("path");
-const nodeExternals = require("webpack-node-externals");
-const copyFiles = require('copy-webpack-plugin');
+import * as path from 'path';
+import nodeExternals from 'webpack-node-externals';
+import CopyPlugin from 'copy-webpack-plugin';
 
 module.exports = {
     entry: './src/index.ts',
@@ -16,9 +16,9 @@ module.exports = {
             { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/}
         ]
     },
-    plugins: [new copyFiles({ patterns: [{ from: '../blindpool-client/build/client', to: 'build'}]})],
+    plugins: [new CopyPlugin({ patterns: [{ from: '../blindpool-client/build/client', to: 'build'}]})],
     output: {
-        path: path2.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'index.js'
     },
 };

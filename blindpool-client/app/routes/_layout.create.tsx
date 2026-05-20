@@ -275,7 +275,9 @@ export default function CreatePool() {
                                                     margin="normal"
                                                     disabled={true}
                                                     value={t("ADD_PLAYER")}
-                                                    data-testid='playerNameField'>
+                                                    data-testid='playerNameField'
+                                                    slotProps={{input: {'aria-label': 'Player name'}}}
+                                                >
                                                 </TextField>
                                             </TableCell>
                                             <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>

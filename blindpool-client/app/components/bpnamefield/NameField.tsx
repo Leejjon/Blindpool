@@ -2,7 +2,7 @@ import React, { type ChangeEvent } from "react";
 import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
 import {type Player} from "../../model/Player";
 import {useTranslation} from "react-i18next";
-import {Person, RemoveCircleOutline} from "@mui/icons-material";
+import {Person, RemoveCircleOutlined} from "@mui/icons-material";
 
 export interface PlayerNameProps {
     player: Player,
@@ -32,7 +32,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                     sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
                     margin="normal"
                     value={player.name}
-                    inputProps={{'aria-label': 'Player name ' + (index + 1)}}
+                    slotProps={{input: {'aria-label': 'Player name ' + (index + 1)}}}
                     onChange={(event) => onTextFieldChange(index, event, false)}
                     onBlur={(event) => onTextFieldChange(index, event, true)}
                     name="participants[]"
@@ -42,7 +42,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                 <IconButton tabIndex={-1} aria-label={removePlayerLabelAria}
                             disabled={first} onClick={() => removePlayer(index)}
                             sx={{color: "black"}}>
-                    {!first ? <RemoveCircleOutline/> : <Person/>}
+                    {!first ? <RemoveCircleOutlined/> : <Person/>}
                 </IconButton>
             </TableCell>
         </TableRow>

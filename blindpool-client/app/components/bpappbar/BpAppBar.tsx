@@ -54,7 +54,7 @@ const BpAppBar: React.FC = () => {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" style={{marginBottom: '1.5em'}}>
             {/* sx doesn't work on toolbar. Also by default it has a minimal height of 64px, which we override */}
             <Toolbar style={{paddingLeft: '0px', paddingRight: '0px', minHeight: '2.9em'}}>
                 <IconButton sx={menuButton}

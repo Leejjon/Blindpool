@@ -1,12 +1,12 @@
 import React, {type ChangeEvent, useEffect} from "react";
 import {Box, Divider, TextField, Typography} from "@mui/material";
 import {Autocomplete} from "@mui/material";
-import {getHostnameWithPortIfLocal} from "../../utils/Network";
+import {getHostnameWithPortIfLocal} from "~/utils/Network";
 import {useTranslation} from "react-i18next";
-import {type Match} from "../../model/Match";
-import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import {type Match} from "~/model/Match";
+import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "~/locales/i18n";
 import "./BpMatchSelector.css";
-import { type BpMatchesProps, type BpSelectedMatchProps } from "../../context/BpContext";
+import {type BpMatchesProps, type BpSelectedMatchProps} from "~/context/BpContext";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -21,7 +21,13 @@ export interface MatchValidationProp {
     setInvalidMatchMessage: (message: string | undefined) => void;
 }
 
-const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelectedMatchProps> = ({invalidMatchMessage, setInvalidMatchMessage, matches, selectedMatchId, setSelectedMatchId}) => {
+const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelectedMatchProps> = ({
+    invalidMatchMessage,
+    setInvalidMatchMessage,
+    matches,
+    selectedMatchId,
+    setSelectedMatchId
+}) => {
     const {t} = useTranslation();
     const [inputValue, setInputValue] = React.useState<string>('');
 
@@ -68,13 +74,13 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
     };
 
     // TODO: If there are no matches, hide the entire autocomplete thing.
-
     return (
         <Autocomplete
             disabled={matches.length < 1}
             sx={bpMatchSelector}
             onChange={updateSelectedMatch}
             inputValue={inputValue}
+            open={true}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
                 setInvalidMatchMessage(undefined);
                 if (newSupportedMatch === 'undefined vs undefined') {
@@ -104,7 +110,8 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 const dateString: string = startTimestamp.toLocaleDateString();
                 const {key, ...propsWithoutKey} = props;
                 return (
-                    <Box component="li" key={upcomingMatch.id} style={{textAlign: "center", width: "18em"}} {...propsWithoutKey}>
+                    <Box component="li" key={upcomingMatch.id}
+                         style={{textAlign: "center", width: "18em"}} {...propsWithoutKey}>
                         <div>
                             <div className="tableRowContainerForClubIcons">
                                 <div className="clubIconAndTextDiv">
@@ -114,7 +121,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                                 <div className="slashIcon"><Typography
                                     variant="body1">/</Typography></div>
                                 <div className="clubIconAndTextDiv">
-                                    <img src={awayTeamIconUrl} alt={awayTeamName}className="clubIconStyle"/>
+                                    <img src={awayTeamIconUrl} alt={awayTeamName} className="clubIconStyle"/>
                                     <Typography sx={marginHalfEm}>{awayTeamName}</Typography>
                                 </div>
                             </div>
@@ -127,11 +134,13 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                     </Box>
                 );
             }}
-            ListboxProps={{
-                style: { /* This position absolute is key. */
-                    position: 'absolute',
-                    backgroundColor: '#fafafa',
-                    maxHeight: '24em'
+            slotProps={{
+                listbox: {
+                    style: { /* This position absolute is key. */
+                        position: 'absolute',
+                        backgroundColor: '#fafafa',
+                        maxHeight: '24em'
+                    }
                 }
             }}
             style={{width: '100%'}}
@@ -142,11 +151,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                            helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
                            label={t('SELECT_MATCH')}
                            variant="standard"
-                           inputProps={{
-                               ...params.inputProps,
-                               autoComplete: 'off', // disable autocomplete and autofill
-                               style: {fontSize: 'large'}
-                           }}
                 />
             }
         />
