@@ -5,6 +5,8 @@ import {Datastore} from "@google-cloud/datastore/build/src";
 import * as DatastoreService from "./DatastoreService";
 import {entity} from "@google-cloud/datastore/build/src/entity";
 
+import {describe} from "mocha";
+
 const turkeyVsItalyMatch = {
     "id": 285418,
     "season": {

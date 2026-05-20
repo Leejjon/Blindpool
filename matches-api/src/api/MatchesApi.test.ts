@@ -161,6 +161,14 @@ describe('Matches API', () => {
         sinon.assert.calledWith(res.send as sinon.SinonStub, 'Invalid input.');
     });
 
+    it('getMatchByKey returns INVALID_INPUT if key is an array', async () => {
+        let req: any = {params: {key: ['football-data-1', 'football-data-2']}};
+
+        await getMatchByKey(<Request> req, <Response> res);
+        sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
+        sinon.assert.calledWith(res.send as sinon.SinonStub, 'Invalid input.');
+    });
+
     function delay(ms: number) {
         return new Promise( resolve => setTimeout(resolve, ms) );
     }

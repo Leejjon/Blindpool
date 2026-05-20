@@ -13,8 +13,12 @@ const environment = process.env.NODE_ENV || 'development';
 
 export const getMatchByKey = async (req: Request, res: Response) => {
     const key = req.params.key;
+    if (typeof key !== 'string') {
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+        return;
+    }
     const matchNumber = parseInt(key.substring(14));
-    const isKeyParamValid = key && key.startsWith('football-data-') && key.length <= 30 && matchNumber;
+    const isKeyParamValid = key.startsWith('football-data-') && key.length <= 30 && matchNumber;
     if (isKeyParamValid) {
         const matchResult = await selectMatchByKey(key);
         matchResult

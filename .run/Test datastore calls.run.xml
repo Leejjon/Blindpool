@@ -1,0 +1,24 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Test datastore calls" type="mocha-javascript-test-runner" nameIsGenerated="true">
+    <node-interpreter>project</node-interpreter>
+    <node-options />
+    <mocha-package>$PROJECT_DIR$/matches-api/node_modules/mocha</mocha-package>
+    <working-directory>$PROJECT_DIR$/matches-api</working-directory>
+    <pass-parent-env>true</pass-parent-env>
+    <envs>
+      <env name="DATASTORE_DATASET" value="blindepoule" />
+      <env name="DATASTORE_EMOLATOR_HOST_PATH" value="localhost:8081/datastore" />
+      <env name="DATASTORE_EMULATOR_HOST" value="localhost:8081" />
+      <env name="DATASTORE_HOST" value="http://localhost:8081" />
+      <env name="DATASTORE_PROJECT_ID" value="blindepoule" />
+    </envs>
+    <ui>bdd</ui>
+    <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+    <test-kind>SUITE</test-kind>
+    <test-file>$PROJECT_DIR$/matches-api/src/services/MatchService.test.ts</test-file>
+    <test-names>
+      <name value="Test datastore calls" />
+    </test-names>
+    <method v="2" />
+  </configuration>
+</component>
