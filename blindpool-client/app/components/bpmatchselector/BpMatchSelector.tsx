@@ -83,10 +83,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
 
     return (
         <>
-            {getMatchById(selectedMatchId, matches) &&
-                <input type="hidden" name="selectedMatchID" value={selectedMatchId}/>}
-            {(!getMatchById(selectedMatchId, matches) && selectedMatchId) &&
-                <input type="hidden" name="freeFormatMatch" value={selectedMatchId}/>}
             <Autocomplete
                 disabled={matches.length < 1}
                 sx={bpMatchSelector}
@@ -157,7 +153,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 style={{width: '100%'}}
                 renderInput={(params) =>
                     <TextField {...params}
-                        // Left out a name here so it won't be part of the form.
+                               name={getMatchById(selectedMatchId, matches) !== undefined ? "selectedMatchID" : "freeFormatMatch"}
                                error={invalidMatchMessage !== undefined}
                                helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
                                label={t('SELECT_MATCH')}

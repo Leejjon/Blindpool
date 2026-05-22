@@ -6,13 +6,13 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import {getHostnameWithPortIfLocal} from "../../utils/Network";
+import {getHostnameWithPortIfLocal} from "~/utils/Network";
 import {useNavigate} from "react-router";
-import {type Match} from "../../model/Match";
-import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "../../locales/i18n";
+import {type Match} from "~/model/Match";
+import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "~/locales/i18n";
 import {useTranslation} from "react-i18next";
 import "./BpUpcomingMatches.css";
-import { type BpMatchesProps, type BpSelectedMatchProps } from "../../context/BpContext";
+import { type BpMatchesProps } from "~/context/BpContext";
 
 const upcomingMatchTable = {
     width: "100%", overflowX: "auto"
@@ -26,7 +26,7 @@ const upcomingMatchButton = {
     width: "100%", margin: "0"
 }
 
-const BpUpcomingMatches: React.FC<BpMatchesProps & BpSelectedMatchProps> = ({matches}) => {
+const BpUpcomingMatches: React.FC<BpMatchesProps> = ({matches}) => {
     let navigate = useNavigate();
     const { t } = useTranslation();
 
