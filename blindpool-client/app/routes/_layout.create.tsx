@@ -205,18 +205,6 @@ export default function CreatePool() {
         }
     }
 
-    // We want this fancy material ui button to behave as an oldschool form submit button. For that we need to add the submit type, which isn't in the MUI button API.
-    // So I hacked it in, but ran into problems with references. So I needed to use React.forwardRef. No idea what is does, but the MUI docs explain it here:
-    // https://mui.com/material-ui/guides/composition/#caveat-with-refs
-    const submitButton = forwardRef(
-        (props: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLButtonElement> & React.ButtonHTMLAttributes<HTMLButtonElement>, ref: React.LegacyRef<HTMLButtonElement> | undefined) => {
-        return (
-            <button {...props} ref={ref}/>
-        );
-    });
-    // Because of this shitty requirement: https://stackoverflow.com/questions/52992932/component-definition-is-missing-display-name-react-display-name
-    submitButton.displayName = "SubmitButton";
-
     if (loading) {
         return (
             <CircularProgress sx={{margin: "8em"}} />
@@ -230,10 +218,11 @@ export default function CreatePool() {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            {/*<form method="POST" action={`${getHost(Api.pool)}/api/v4/pool`} onSubmit={async (event) => {*/}
-                            {/*    event.preventDefault();*/}
-                            {/*    await sendCreatePoolRequest();*/}
-                            {/*}} >*/}
+                            <form method="POST" action={`${getHost(Api.pool)}/api/v4/pool`} onSubmit={async (event) => {
+                                console.log(event);
+                                // event.preventDefault();
+                                // await sendCreatePoolRequest();
+                            }} >
                                 <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
                                                  setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
                                                  selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />
@@ -291,11 +280,11 @@ export default function CreatePool() {
                                     </TableBody>
                                 </Table>
                                 <Button tabIndex={-1} size="large" data-testid="createPoolButton"
-                                        sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
-                                    /*component={submitButton}*/ onClick={sendCreatePoolRequest}>
+                                    type="submit" sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
+                                     /*onClick={sendCreatePoolRequest}*/>
                                     {t("CREATE_POOL").toUpperCase()}
                                 </Button>
-                            {/*</form>*/}
+                            </form>
                         </CardContent>
                     </Card>
                 </Grid>
