@@ -31,12 +31,12 @@ function getMatchById(selectedMatchId: string | undefined, matches: Array<Match>
 }
 
 const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelectedMatchProps> = ({
-                                                                                                    invalidMatchMessage,
-                                                                                                    setInvalidMatchMessage,
-                                                                                                    matches,
-                                                                                                    selectedMatchId,
-                                                                                                    setSelectedMatchId
-                                                                                                }) => {
+    invalidMatchMessage,
+    setInvalidMatchMessage,
+    matches,
+    selectedMatchId,
+    setSelectedMatchId
+}) => {
     const {t} = useTranslation();
     const [inputValue, setInputValue] = React.useState<string>('');
 
