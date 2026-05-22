@@ -26,13 +26,12 @@ const upcomingMatchButton = {
     width: "100%", margin: "0"
 }
 
-const BpUpcomingMatches: React.FC<BpMatchesProps & BpSelectedMatchProps> = ({matches, setSelectedMatchId}) => {
+const BpUpcomingMatches: React.FC<BpMatchesProps & BpSelectedMatchProps> = ({matches}) => {
     let navigate = useNavigate();
     const { t } = useTranslation();
 
     function createPoolForMatch (match: Match) {
-        setSelectedMatchId(match.id)
-        navigate('/create');
+        navigate(`/create?selectedMatchId=${match.id}`);
     }
 
     if (matches.length > 0) {

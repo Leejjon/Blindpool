@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 import {type Match} from "~/model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "~/locales/i18n";
 import "./BpMatchSelector.css";
-import {type BpMatchesProps, type BpSelectedMatchProps} from "~/context/BpContext";
+import {type BpMatchesProps} from "~/context/BpContext";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -28,6 +28,11 @@ function getMatchById(selectedMatchId: string | undefined, matches: Array<Match>
         }
     }
     return undefined;
+}
+
+export interface BpSelectedMatchProps {
+    selectedMatchId?: string;
+    setSelectedMatchId: (matchId: string | undefined) => void;
 }
 
 const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelectedMatchProps> = ({

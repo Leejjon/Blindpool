@@ -1,5 +1,5 @@
 import React, {type ChangeEvent, forwardRef, useEffect, useState} from "react";
-import {useNavigate} from "react-router";
+import {useNavigate, useSearchParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import {
     Button,
@@ -62,7 +62,9 @@ export const clientLoader = async () => {
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
 export default function CreatePool() {
-    const {competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId} = useExistingBlindpoolOutletContext();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const {competitionsToWatch, setMessage} = useExistingBlindpoolOutletContext();
+
     const {t} = useTranslation();
     const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
     const queryClient = useQueryClient();
@@ -161,6 +163,8 @@ export default function CreatePool() {
         }
     };
 
+    const selectedMatchIdQueryParam = searchParams.get("selectedMatchId");
+
     const sendCreatePoolRequest = async (): Promise<void> => {
         if (validateState([...players], true)) {
             setLoading(true);
@@ -174,12 +178,12 @@ export default function CreatePool() {
             }
 
             try {
-                if (selectedMatchId) {
-                    const matchId = doesMatchExistIn(selectedMatchId, matches);
+                if (selectedMatchIdQueryParam) {
+                    const matchId = doesMatchExistIn(selectedMatchIdQueryParam, matches);
                     if (matchId) {
                         requestBody.selectedMatchID = matchId;
                     } else {
-                        requestBody.freeFormatMatch = selectedMatchId.trim();
+                        requestBody.freeFormatMatch = selectedMatchIdQueryParam.trim();
                     }
                 }
                 const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
@@ -225,7 +229,11 @@ export default function CreatePool() {
                             }} >
                                 <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
                                                  setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
-                                                 selectedMatchId={selectedMatchId} setSelectedMatchId={setSelectedMatchId} />
+                                                 selectedMatchId={selectedMatchIdQueryParam ?? undefined} setSelectedMatchId={(matchId: (string | undefined)) => {
+                                                     if (matchId) {
+                                                         setSearchParams({selectedMatchId: matchId})
+                                                     }
+                                                 }} />
                                 <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
                                     <colgroup>
                                         <col style={{width: '5%'}}/>

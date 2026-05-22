@@ -34,7 +34,7 @@ export const clientLoader = async () => {
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
 export default function Index() {
-  const { competitionsToWatch, setMessage, setSelectedMatchId } = useExistingBlindpoolOutletContext();
+  const { competitionsToWatch, setMessage } = useExistingBlindpoolOutletContext();
 
   const { t } = useTranslation();
   const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
@@ -81,7 +81,7 @@ export default function Index() {
             <Divider />
             {/* Try to avoid passing these properties and use composition here. */}
             <Typography component="p" style={{ marginBottom: '0.5em' }}><br />{matches.length > 0 ? t('CLICK_ON_MATCH') : ""}</Typography>
-            <BpUpcomingMatches matches={matches} setSelectedMatchId={setSelectedMatchId} />
+            <BpUpcomingMatches matches={matches} />
           </CardContent>
         </Card>
       </Grid>
