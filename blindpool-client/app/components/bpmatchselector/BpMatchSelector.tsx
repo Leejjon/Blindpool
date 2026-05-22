@@ -80,7 +80,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
             sx={bpMatchSelector}
             onChange={updateSelectedMatch}
             inputValue={inputValue}
-            open={true}
             onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
                 setInvalidMatchMessage(undefined);
                 if (newSupportedMatch === 'undefined vs undefined') {
