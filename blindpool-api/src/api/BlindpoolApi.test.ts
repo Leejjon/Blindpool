@@ -1,13 +1,13 @@
 import * as sinon from 'sinon';
 import {Response, Request, NextFunction} from 'express';
 import {err, ok} from "neverthrow";
-import {describe} from 'mocha';
-import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./BlindpoolApi";
+import {getBlindpoolByKey, getBlindpoolStatistics, legacyPostCreateBlindpool} from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
 import * as BlindpoolStorageService from "../services/BlindpoolService";
 import {tryValidation} from "../validation/Validation";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateLegacyBpRequest";
+import {describe} from "mocha";
 
 describe('Blindpool API', () => {
     const testPool: Blindpool = {
@@ -47,7 +47,7 @@ describe('Blindpool API', () => {
         let validRequest: Partial<Request> = { body: createBlindpoolRequestBody};
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
-        await postCreateBlindpool(createBlindpoolRequestBody, <Response>res);
+        await legacyPostCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
         sinon.assert.calledWith(res.send as sinon.SinonStub, testPool);
         sinon.assert.calledOnce(next);
@@ -82,14 +82,13 @@ describe('Blindpool API', () => {
     });
 
     it('Create blindpool - empty list in body - FAIL', async () => {
-        const createBlindpoolRequestBody: CreateBlindpoolRequest = { participants: [] };
-        let validRequest: Partial<Request> = {body: createBlindpoolRequestBody};
+        let validRequest: Partial<Request> = {body: {participants: []}};
 
         let res: Partial<Response> = createStubbedResponse();
         let next = sinon.stub();
 
         await tryValidation<CreateBlindpoolRequest>(<Request> validRequest, <Response> res, next, CreateBlindpoolRequest);
-        await postCreateBlindpool(createBlindpoolRequestBody, <Response>res);
+        await legacyPostCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
         sinon.assert.calledWith(res.send as sinon.SinonStub, 'Invalid input.');
         sinon.assert.calledOnce(next);

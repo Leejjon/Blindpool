@@ -15,38 +15,38 @@ const hashids = new Hashids();
 
 export async function legacyPostCreateBlindpool(req: Request, res: Response) {
     const createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+    const validationErrors = await validate(createBlindpoolRequest);
+
+    if (validationErrors.length > 0) {
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+        return;
+    }
+
+    const names = createBlindpoolRequest.participants;
+
+    if (names.length < 1) {
+        mapError(res, ErrorScenarios.INVALID_INPUT);
+        return;
+    }
+
+    const checkForDuplicates = (nameToCheck: string) => {
+        const duplicate = names.filter((name: string) => name === nameToCheck);
+        return duplicate.length > 1;
+    };
+
+    for (const name of names) {
+        const validName = !checkForDuplicates(name);
+        if (!validName) {
+            mapError(res, ErrorScenarios.INVALID_INPUT);
+            return;
+        }
+    }
     await postCreateBlindpool(createBlindpoolRequest, res);
 }
 
 export const postCreateBlindpool = async (createBlindpoolRequest: CreateBlindpoolRequest, res: Response) => {
     try {
-        const validationErrors = await validate(createBlindpoolRequest);
-
-        if (validationErrors.length > 0) {
-            mapError(res, ErrorScenarios.INVALID_INPUT);
-            return;
-        }
-
         const names = createBlindpoolRequest.participants;
-
-        if (names.length < 1) {
-            mapError(res, ErrorScenarios.INVALID_INPUT);
-            return;
-        }
-
-        const checkForDuplicates = (nameToCheck: string) => {
-            const duplicate = names.filter((name: string) => name === nameToCheck);
-            return duplicate.length > 1;
-        };
-
-        for (const name of names) {
-            const validName = !checkForDuplicates(name);
-            if (!validName) {
-                mapError(res, ErrorScenarios.INVALID_INPUT);
-                return;
-            }
-        }
-
         const participantsAndScores = assignRandomScores(names);
         let freeFormatMatch: string | undefined = undefined;
 

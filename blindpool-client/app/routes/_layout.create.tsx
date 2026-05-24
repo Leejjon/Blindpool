@@ -61,6 +61,7 @@ export const clientLoader = async () => {
 export async function clientAction({request}: { request: Request }) {
     const formData = await request.formData();
 
+    // https://github.com/colinhacks/zod/issues/3333
     const participants = formData.getAll("participants[]").map(String);
 
     console.log('Participants', participants);
