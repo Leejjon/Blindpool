@@ -6,9 +6,12 @@ import {
 import cors from "cors";
 import {tryValidation} from "./validation/Validation";
 import {
-    CreateBlindpoolRequest,
     CreateBlindpoolRequestSchema, /*CreateBlindpoolRequestSchema*/
 } from "blindpool-common/requests/CreateBpRequest";
+import {
+    CreateBlindpoolRequest,
+    // CreateBlindpoolRequestSchema, /*CreateBlindpoolRequestSchema*/
+} from "blindpool-common/requests/CreateLegacyBpRequest";
 import {z, ZodError} from "zod";
 // import { ZodError } from "zod";
 
@@ -35,8 +38,7 @@ router.post('/v4/pool/', async (req: Request, res: Response) => {
     const createBlindpoolRequest = CreateBlindpoolRequestSchema.safeParse(req.body)
     if (createBlindpoolRequest.success) {
         console.log('Valid request received:', createBlindpoolRequest.data);
-        // await postCreateBlindpool(createBlindpoolRequest.data, res)
-        res.send();
+        await postCreateBlindpool(createBlindpoolRequest.data, res);
     } else {
         res.status(400).json({error: 'Invalid data', details: z.treeifyError(createBlindpoolRequest.error)});
     }

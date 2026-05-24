@@ -8,7 +8,7 @@ import {plainToClass} from "class-transformer";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
 import {validate} from "class-validator";
-import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateBpRequest";
+import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateLegacyBpRequest";
 import Hashids from 'hashids';
 
 const hashids = new Hashids();

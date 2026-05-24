@@ -60,30 +60,30 @@ export const clientLoader = async () => {
 
 export async function clientAction({request}: { request: Request }) {
     const formData = await request.formData();
-    console.log('Received form data:', formData);
 
-    const result = CreateBlindpoolRequestSchema.safeParse({
-        participants: formData
-            .getAll("participants")
-            .map(String)
-            .map((name) => name.trim())
-            .filter(Boolean),
+    const participants = formData.getAll("participants[]").map(String);
 
-        selectedMatchID: formData.get("selectedMatchID") || undefined,
-        freeFormatMatch: formData.get("freeFormatMatch") || undefined,
-    });
+    console.log('Participants', participants);
+
+    const formDataObject = {
+        selectedMatchID: formData.get("selectedMatchID")?.toString(),
+        freeFormatMatch: formData.get("freeFormatMatch")?.toString(),
+        participants,
+    };
+
+    const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
 
     if (result.success) {
         const response: Response = await fetch(`${getHost(Api.pool)}/api/v4/pool`,
             {
                 headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                method: "POST", body: JSON.stringify(request.body)
+                method: "POST", body: JSON.stringify(formDataObject),
             }
         );
         const poolJson: Blindpool = await response.json();
         return redirect(`/pool/${poolJson.key}`);
     } else {
-        console.log("What happens?")
+        console.log(`What happens? ${result.error}`)
         return {
             errors: result.error.flatten(),
         };
@@ -105,6 +105,11 @@ export async function clientAction({request}: { request: Request }) {
 
 export default function CreatePool() {
     const actionData = useActionData<typeof clientAction>();
+
+    useEffect(() => {
+        console.log(`Errors that happened: ${actionData?.errors.formErrors}`)
+    }, [actionData]);
+
     const [searchParams, setSearchParams] = useSearchParams();
     const {competitionsToWatch, setMessage} = useExistingBlindpoolOutletContext();
 
