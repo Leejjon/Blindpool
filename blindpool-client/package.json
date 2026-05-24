@@ -1,5 +1,5 @@
 {
-  "name": "blindpool-client2",
+  "name": "blindpool-client",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "blindpool-common": "file:../blindpool-common",
     "@emotion/styled": "11.14.0",
     "@mui/icons-material": "9.0.1",
     "@mui/material": "9.0.1",

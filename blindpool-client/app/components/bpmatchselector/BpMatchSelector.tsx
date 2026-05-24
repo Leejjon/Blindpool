@@ -65,7 +65,6 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
     }, [setInputValue, selectedMatchId, matches]);
 
     const updateSelectedMatch = (event: ChangeEvent<object> | null, selectedMatch: null | string | Match) => {
-
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
         if (supportedMatch && supportedMatch.id) {
@@ -83,6 +82,23 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
 
     return (
         <>
+            {/* The Autocomplete is accesable and all, but the input that ends up in the textfield is different from
+            the actual value. Basically we should have used something like:
+            <select id="selectedMatchID" name="selectedMatchID">
+              <option value="match-123">Ajax vs Feyenoord</option>
+              <option value="match-456">PSV vs Utrecht</option>
+            </select>
+
+            And
+            <input name="freeFormatMatch" value="My dads football match" />
+
+            The problem is that I try to combine these two things. And the Autocomplete component from MUI is amazing
+            for that. Let's solve it with a hidden input for now, and maybe reevaluate later if we can make this work
+            without JavaScript at all. Maybe I need to build something custom.
+             */}
+            {getMatchById(selectedMatchId, matches) !== undefined && (
+                <input type="hidden" name="selectedMatchID" value={selectedMatchId}/>
+            )}
             <Autocomplete
                 disabled={matches.length < 1}
                 sx={bpMatchSelector}
@@ -153,7 +169,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 style={{width: '100%'}}
                 renderInput={(params) =>
                     <TextField {...params}
-                               name={getMatchById(selectedMatchId, matches) !== undefined ? "selectedMatchID" : "freeFormatMatch"}
+                               name="freeFormatMatch"
                                error={invalidMatchMessage !== undefined}
                                helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
                                label={t('SELECT_MATCH')}

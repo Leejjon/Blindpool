@@ -1,5 +1,5 @@
 import React, {type ChangeEvent, forwardRef, useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router";
+import {Form, redirect, useActionData, useNavigation, useSearchParams} from "react-router";
 import {useTranslation} from "react-i18next";
 import {
     Button,
@@ -17,23 +17,22 @@ import {type Player} from "~/model/Player";
 import {Api, getHost} from "~/utils/Network";
 import {doesMatchExistIn, type Match} from "~/model/Match";
 import {AddCircleOutlined} from "@mui/icons-material";
-import {validate} from "class-validator";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
-import {useQueryClient} from "@tanstack/react-query";
-import {poolQuery} from "~/queries/PoolQuery";
-import { useExistingBlindpoolOutletContext } from "~/context/BpContext";
-import { useUpcomingMatches } from "~/queries/MatchesHook";
-import type { Route } from "./+types/_layout.create";
+import {useExistingBlindpoolOutletContext} from "~/context/BpContext";
+import {useUpcomingMatches} from "~/queries/MatchesHook";
+import type {Route} from "./+types/_layout.create";
 import BpMatchSelector from "../components/bpmatchselector/BpMatchSelector";
 import NameField from "../components/bpnamefield/NameField";
 import {getLocale, getPageTitle, resources} from "~/locales/translations";
 import {queryClientSingleton} from "~/singletons/QueryClientSingleton";
 import {matchesQuery} from "~/queries/MatchesQuery";
 import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
-import { type JSX } from "react/jsx-runtime";
-import type { CreateBlindpoolRequestSchemaType } from "~/requests/CreateBpRequest";
+import {
+    CreateBlindpoolRequestSchema,
+    PARTICIPANT_REGEX
+} from "blindpool-common/requests/CreateBpRequest";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
     return [
         {title: `${getPageTitle(resources[getLocale()].translation.CREATE_POOL_TITLE)}`},
         {name: "description", content: resources[getLocale()].translation.CREATE_POOL_DESCRIPTION},
@@ -59,19 +58,61 @@ export const clientLoader = async () => {
     return null;
 };
 
+export async function clientAction({request}: { request: Request }) {
+    const formData = await request.formData();
+    console.log('Received form data:', formData);
+
+    const result = CreateBlindpoolRequestSchema.safeParse({
+        participants: formData
+            .getAll("participants")
+            .map(String)
+            .map((name) => name.trim())
+            .filter(Boolean),
+
+        selectedMatchID: formData.get("selectedMatchID") || undefined,
+        freeFormatMatch: formData.get("freeFormatMatch") || undefined,
+    });
+
+    if (result.success) {
+        const response: Response = await fetch(`${getHost(Api.pool)}/api/v4/pool`,
+            {
+                headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                method: "POST", body: JSON.stringify(request.body)
+            }
+        );
+        const poolJson: Blindpool = await response.json();
+        return redirect(`/pool/${poolJson.key}`);
+    } else {
+        console.log("What happens?")
+        return {
+            errors: result.error.flatten(),
+        };
+    }
+
+    // if (response.status === 200) {
+    //     const poolJson: Blindpool = await response.json();
+    //     // This will already set the pool and make sure we don't fetch the pool we already have.
+    //     await queryClient.ensureQueryData(poolQuery(poolJson));
+    //     setLoading(false);
+    //     navigate(`/pool/${poolJson.key}`);
+    // } else {
+    //     setLoading(false);
+    //     setMessage('BACKEND_OFFLINE');
+    // }
+}
+
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
 export default function CreatePool() {
+    const actionData = useActionData<typeof clientAction>();
     const [searchParams, setSearchParams] = useSearchParams();
     const {competitionsToWatch, setMessage} = useExistingBlindpoolOutletContext();
 
     const {t} = useTranslation();
     const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
-    const queryClient = useQueryClient();
 
-    const navigate = useNavigate();
+    const navigation = useNavigation();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState<Player[]>([
         EMPTY_PLAYER(),
         EMPTY_PLAYER(),
@@ -110,9 +151,8 @@ export default function CreatePool() {
 
         let allPlayersHaveAValidName: boolean = true;
         playersToValidate.forEach((player) => {
-            const lettersAndNumbersOnly = /^([a-zA-Z0-9 _]{1,20})$/;
             if (player.name) {
-                if (!lettersAndNumbersOnly.test(player.name)) {
+                if (!PARTICIPANT_REGEX.test(player.name)) {
                     allPlayersHaveAValidName = false;
                     player.valid = "ILLEGAL_CHARACTER_MESSAGE";
                 } else {
@@ -165,75 +205,77 @@ export default function CreatePool() {
 
     const selectedMatchIdQueryParam = searchParams.get("selectedMatchId");
 
-    const sendCreatePoolRequest = async (): Promise<void> => {
-        if (validateState([...players], true)) {
-            setLoading(true);
-            const requestBody = {
-                participants: players.map(player => player.name)
-            } as CreateBlindpoolRequestSchemaType;
-            const validationErrors = await validate(requestBody);
-            if (validationErrors.length > 0) {
-                setLoading(false);
-                setMessage("ILLEGAL_CHARACTER_MESSAGE");
-            }
+    // const sendCreatePoolRequest = async (): Promise<void> => {
+    //     if (validateState([...players], true)) {
+    //         setLoading(true);
+    //         const requestBody = {
+    //             participants: players.map(player => player.name)
+    //         } as CreateBlindpoolRequestSchemaType;
+    //         const validationErrors = await validate(requestBody);
+    //         if (validationErrors.length > 0) {
+    //             setLoading(false);
+    //             setMessage("ILLEGAL_CHARACTER_MESSAGE");
+    //         }
+    //
+    //         try {
+    //             if (selectedMatchIdQueryParam) {
+    //                 const matchId = doesMatchExistIn(selectedMatchIdQueryParam, matches);
+    //                 if (matchId) {
+    //                     requestBody.selectedMatchID = matchId;
+    //                 } else {
+    //                     requestBody.freeFormatMatch = selectedMatchIdQueryParam.trim();
+    //                 }
+    //             }
+    //             const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
+    //                 {
+    //                     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+    //                     method: "POST", body: JSON.stringify(requestBody)
+    //                 }
+    //             );
+    //             if (response.status === 200) {
+    //                 const poolJson: Blindpool = await response.json();
+    //                 // This will already set the pool and make sure we don't fetch the pool we already have.
+    //                 await queryClient.ensureQueryData(poolQuery(poolJson));
+    //                 setLoading(false);
+    //                 navigate(`/pool/${poolJson.key}`);
+    //             } else {
+    //                 setLoading(false);
+    //                 setMessage('BACKEND_OFFLINE');
+    //             }
+    //         } catch (error) {
+    //             setLoading(false);
+    //             setMessage('BACKEND_UNREACHABLE');
+    //         }
+    //     }
+    // }
 
-            try {
-                if (selectedMatchIdQueryParam) {
-                    const matchId = doesMatchExistIn(selectedMatchIdQueryParam, matches);
-                    if (matchId) {
-                        requestBody.selectedMatchID = matchId;
-                    } else {
-                        requestBody.freeFormatMatch = selectedMatchIdQueryParam.trim();
-                    }
-                }
-                const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
-                    {
-                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                        method: "POST", body: JSON.stringify(requestBody)
-                    }
-                );
-                if (response.status === 200) {
-                    const poolJson: Blindpool = await response.json();
-                    // This will already set the pool and make sure we don't fetch the pool we already have.
-                    await queryClient.ensureQueryData(poolQuery(poolJson));
-                    setLoading(false);
-                    navigate(`/pool/${poolJson.key}`);
-                } else {
-                    setLoading(false);
-                    setMessage('BACKEND_OFFLINE');
-                }
-            } catch (error) {
-                setLoading(false);
-                setMessage('BACKEND_UNREACHABLE');
-            }
-        }
-    }
-
-    if (loading) {
+    if (navigation.state === "submitting" || navigation.state === "loading") {
         return (
-            <CircularProgress sx={{margin: "8em"}} />
+            <CircularProgress sx={{margin: "8em"}}/>
         );
     } else {
         return (
-            <Grid container spacing={2} sx={{justifyContent: 'center', flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
+            <Grid container spacing={2}
+                  sx={{justifyContent: 'center', flexShrink: 0, textAlign: "center", marginTop: "0.5em"}}>
                 <Grid key="definition">
                     <Card className="card">
                         <CardContent>
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <form method="POST" action={`${getHost(Api.pool)}/api/v4/pool`} onSubmit={async (event) => {
+                            <Form method="POST" action="/create" onSubmit={async (event) => {
                                 console.log(event);
                                 // event.preventDefault();
                                 // await sendCreatePoolRequest();
-                            }} >
+                            }}>
                                 <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
                                                  setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
-                                                 selectedMatchId={selectedMatchIdQueryParam ?? undefined} setSelectedMatchId={(matchId: (string | undefined)) => {
+                                                 selectedMatchId={selectedMatchIdQueryParam ?? undefined}
+                                                 setSelectedMatchId={(matchId: (string | undefined)) => {
                                                      if (matchId) {
                                                          setSearchParams({selectedMatchId: matchId})
                                                      }
-                                                 }} />
+                                                 }}/>
                                 <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
                                     <colgroup>
                                         <col style={{width: '5%'}}/>
@@ -242,24 +284,45 @@ export default function CreatePool() {
                                     </colgroup>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell sx={{verticalAlign: "text-top", padding: "0em", paddingTop: "1.7em", margin: "0"}}
+                                            <TableCell sx={{
+                                                verticalAlign: "text-top",
+                                                padding: "0em",
+                                                paddingTop: "1.7em",
+                                                margin: "0"
+                                            }}
                                                        align="left">&nbsp;</TableCell>
-                                            <TableCell sx={{margin: "0", paddingTop: "1.5em", paddingLeft: "1em", paddingBottom: "1em"}} align="left">
+                                            <TableCell sx={{
+                                                margin: "0",
+                                                paddingTop: "1.5em",
+                                                paddingLeft: "1em",
+                                                paddingBottom: "1em"
+                                            }} align="left">
                                                 <Typography sx={{fontWeight: 700, fontSize: 15, flexGrow: 1}}>
                                                     {t("NAME_COLUMN_HEADER")}
                                                 </Typography>
                                             </TableCell>
-                                            <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0em"}}>&nbsp;</TableCell>
+                                            <TableCell sx={{
+                                                verticalAlign: "text-top",
+                                                padding: "0.3em",
+                                                paddingTop: "0em"
+                                            }}>&nbsp;</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {players.map((player, index) => {
                                             return (
-                                                <NameField key={"player" + index} player={player} index={index} onTextFieldChange={onTextFieldChange} removePlayer={removePlayer} />
+                                                <NameField key={"player" + index} player={player} index={index}
+                                                           onTextFieldChange={onTextFieldChange}
+                                                           removePlayer={removePlayer}/>
                                             );
                                         })}
                                         <TableRow>
-                                            <TableCell sx={{verticalAlign: "text-top", padding: "0", paddingTop: "1.7em", margin: 0}}>
+                                            <TableCell sx={{
+                                                verticalAlign: "text-top",
+                                                padding: "0",
+                                                paddingTop: "1.7em",
+                                                margin: 0
+                                            }}>
                                                 <Typography sx={{color: "gray"}}>
                                                     {players.length + 1}
                                                 </Typography>
@@ -268,7 +331,12 @@ export default function CreatePool() {
                                                 <TextField
                                                     id="standard-basic"
                                                     variant="standard"
-                                                    sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
+                                                    sx={{
+                                                        paddingTop: "0",
+                                                        marginTop: "0",
+                                                        marginBottom: "0",
+                                                        width: "100%"
+                                                    }}
                                                     margin="normal"
                                                     disabled={true}
                                                     value={t("ADD_PLAYER")}
@@ -277,7 +345,8 @@ export default function CreatePool() {
                                                 >
                                                 </TextField>
                                             </TableCell>
-                                            <TableCell sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
+                                            <TableCell
+                                                sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
                                                 <IconButton aria-label={t("ADD_PLAYER") + ""}
                                                             sx={{color: "black"}}
                                                             onClick={addPlayer}>
@@ -288,11 +357,17 @@ export default function CreatePool() {
                                     </TableBody>
                                 </Table>
                                 <Button tabIndex={-1} size="large" data-testid="createPoolButton"
-                                    type="submit" sx={{color: "white", backgroundColor: "#00cc47", border: "0", fontWeight: "bolder", fontSize: 15}}
-                                     /*onClick={sendCreatePoolRequest}*/>
+                                        type="submit" sx={{
+                                    color: "white",
+                                    backgroundColor: "#00cc47",
+                                    border: "0",
+                                    fontWeight: "bolder",
+                                    fontSize: 15
+                                }}
+                                    /*onClick={sendCreatePoolRequest}*/>
                                     {t("CREATE_POOL").toUpperCase()}
                                 </Button>
-                            </form>
+                            </Form>
                         </CardContent>
                     </Card>
                 </Grid>

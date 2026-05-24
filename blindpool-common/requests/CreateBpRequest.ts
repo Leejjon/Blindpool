@@ -1,31 +1,15 @@
-import {IsOptional, IsString, Matches} from "class-validator";
 import { z } from "zod";
 
-export class CreateBlindpoolRequest {
-    @IsString({each: true})
-    @Matches(/^([a-zA-Z0-9 _]{1,20})$/, {each: true})
-    participants: string[];
-
-    @IsOptional()
-    @IsString()
-    selectedMatchID?: string
-
-    @IsOptional()
-    @IsString()
-    @Matches(/^([-a-zA-Z0-9 ]{5,50})$/)
-    freeFormatMatch?: string;
-
-    constructor(participants: string[], selectedMatch?: string, freeFormatMatch?: string) {
-        this.participants = participants;
-        this.selectedMatchID = selectedMatch;
-        this.freeFormatMatch = freeFormatMatch
-    }
-}
+export const PARTICIPANT_REGEX = /^([a-zA-Z0-9 _]{1,20})$/;
+export const FREE_FORMAT_REGEX = /^([-a-zA-Z0-9 ]{5,50})$/;
 
 export const CreateBlindpoolRequestSchema = z.object({
-    participants: z.array(z.string().regex(/^([a-zA-Z0-9 _]{1,20})$/)),
+    participants: z.array(z.string().regex(PARTICIPANT_REGEX)).min(1).refine(
+        items => new Set(items).size === items.length,
+        'Not allowed to have duplicate participant names.'
+    ),
     selectedMatchID: z.string().optional(),
-    freeFormatMatch: z.string().regex(/^([-a-zA-Z0-9 ]{5,50})$/).optional()
+    freeFormatMatch: z.string().regex(FREE_FORMAT_REGEX).optional()
 }).refine(
     data => data.selectedMatchID || data.freeFormatMatch,
     'Either enter a match or a free format.'

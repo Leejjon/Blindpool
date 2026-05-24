@@ -13,10 +13,13 @@ import Hashids from 'hashids';
 
 const hashids = new Hashids();
 
-export const postCreateBlindpool = async (req: Request, res: Response) => {
-    try {
-        const createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+export async function legacyPostCreateBlindpool(req: Request, res: Response) {
+    const createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
+    await postCreateBlindpool(createBlindpoolRequest, res);
+}
 
+export const postCreateBlindpool = async (createBlindpoolRequest: CreateBlindpoolRequest, res: Response) => {
+    try {
         const validationErrors = await validate(createBlindpoolRequest);
 
         if (validationErrors.length > 0) {

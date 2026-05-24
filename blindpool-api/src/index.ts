@@ -1,16 +1,15 @@
-import express, { NextFunction, Request, RequestHandler, Response } from "express";
+import express, {NextFunction, Request, RequestHandler, Response} from "express";
 import {
     getBlindpoolByKey,
-    getBlindpoolStatistics,
-    postCreateBlindpool
+    getBlindpoolStatistics, legacyPostCreateBlindpool, postCreateBlindpool,
 } from "./api/BlindpoolApi";
 import cors from "cors";
-import { tryValidation } from "./validation/Validation";
+import {tryValidation} from "./validation/Validation";
 import {
     CreateBlindpoolRequest,
     CreateBlindpoolRequestSchema, /*CreateBlindpoolRequestSchema*/
 } from "blindpool-common/requests/CreateBpRequest";
-import {ZodError} from "zod";
+import {z, ZodError} from "zod";
 // import { ZodError } from "zod";
 
 const port = process.env.PORT || '8080';
@@ -30,22 +29,16 @@ function validationMiddleware<T extends Object>(type: any): RequestHandler {
 }
 
 router.get('/v2/pool/stats', getBlindpoolStatistics);
-router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), postCreateBlindpool);
+router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), legacyPostCreateBlindpool);
 router.post('/v4/pool/', async (req: Request, res: Response) => {
-    try {
-        console.log(CreateBlindpoolRequestSchema.parse(req.body));
-        res.contentType('application/json');
-        res.status(200);
-        res.send(req.body);
-    } catch (error) {
-        if (error instanceof ZodError) {
-            // const errorMessages = error.errors.map((issue: any) => ({
-            //     message: `${issue.path.join('.')} is ${issue.message}`,
-            // }))
-            res.status(400).json({ error: 'Invalid data', details: error });
-        } else {
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
+    // try {
+    const createBlindpoolRequest = CreateBlindpoolRequestSchema.safeParse(req.body)
+    if (createBlindpoolRequest.success) {
+        console.log('Valid request received:', createBlindpoolRequest.data);
+        // await postCreateBlindpool(createBlindpoolRequest.data, res)
+        res.send();
+    } else {
+        res.status(400).json({error: 'Invalid data', details: z.treeifyError(createBlindpoolRequest.error)});
     }
 });
 router.get('/v2/pool/:key', getBlindpoolByKey);
@@ -53,7 +46,7 @@ router.get('/v2/pool/:key', getBlindpoolByKey);
 const app = express();
 
 app.use(express.json() as RequestHandler);
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 interface SyntaxErrorWithStatusAndBody extends SyntaxError {
     status: number;
