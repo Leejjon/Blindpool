@@ -12,15 +12,21 @@ export interface BpCompetitionProps {
     setCompetitionsToWatch?: (competitions: Array<number>) => void;
 }
 
+export interface BpSelectedMatchProps {
+    selectedMatchId?: string;
+    setSelectedMatchId: (matchId: string | undefined) => void;
+}
+
 export interface BpSnackbarProps {
     message?: string;
     setMessage: (message?: string) => void;
 }
 
-export type BpOutletContext = BpSnackbarProps & BpCompetitionProps;
+export type BpOutletContext = BpSnackbarProps & BpCompetitionProps & BpSelectedMatchProps;
 
 export function useNewBlindpoolOutletContext(setMessage: (message?: string) => void, message?: string): BpOutletContext {
     const [competitionsToWatch, setCompetitionsToWatch] = useState<Array<number>>(getCompetitionsFromLocalStorage());
+    const [selectedMatchId, setSelectedMatchId] = useState<string>();
 
     useEffect(() => {
         updateCompetitionsInLocalStorage(competitionsToWatch);
@@ -31,6 +37,8 @@ export function useNewBlindpoolOutletContext(setMessage: (message?: string) => v
         setMessage,
         competitionsToWatch,
         setCompetitionsToWatch,
+        selectedMatchId,
+        setSelectedMatchId,
     };
 }
 

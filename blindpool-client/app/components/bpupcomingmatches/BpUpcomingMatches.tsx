@@ -12,7 +12,7 @@ import {type Match} from "~/model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "~/locales/i18n";
 import {useTranslation} from "react-i18next";
 import "./BpUpcomingMatches.css";
-import { type BpMatchesProps } from "~/context/BpContext";
+import {type BpMatchesProps, type BpSelectedMatchProps} from "~/context/BpContext";
 
 const upcomingMatchTable = {
     width: "100%", overflowX: "auto"
@@ -26,12 +26,13 @@ const upcomingMatchButton = {
     width: "100%", margin: "0"
 }
 
-const BpUpcomingMatches: React.FC<BpMatchesProps> = ({matches}) => {
+const BpUpcomingMatches: React.FC<BpMatchesProps & BpSelectedMatchProps> = ({matches, setSelectedMatchId}) => {
     let navigate = useNavigate();
     const { t } = useTranslation();
 
     function createPoolForMatch (match: Match) {
-        navigate(`/create?selectedMatchId=${match.id}`);
+        setSelectedMatchId(match.id);
+        navigate('/create');
     }
 
     if (matches.length > 0) {

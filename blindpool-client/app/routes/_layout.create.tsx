@@ -1,5 +1,5 @@
-import React, {type ChangeEvent, forwardRef, useEffect, useState} from "react";
-import {Form, redirect, useActionData, useNavigation, useSearchParams} from "react-router";
+import React, {type ChangeEvent, useEffect, useState} from "react";
+import {Form, redirect, useActionData, useNavigation} from "react-router";
 import {useTranslation} from "react-i18next";
 import {
     Button,
@@ -31,6 +31,7 @@ import {
     CreateBlindpoolRequestSchema,
     PARTICIPANT_REGEX
 } from "blindpool-common/requests/CreateBpRequest";
+import {z} from "zod";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -84,9 +85,8 @@ export async function clientAction({request}: { request: Request }) {
         const poolJson: Blindpool = await response.json();
         return redirect(`/pool/${poolJson.key}`);
     } else {
-        console.log(`What happens? ${result.error}`)
         return {
-            errors: result.error.flatten(),
+            errors: z.treeifyError(result.error),
         };
     }
 
@@ -104,15 +104,20 @@ export async function clientAction({request}: { request: Request }) {
 
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
+type CreatePoolActionErrors = {
+    errors: ReturnType<typeof z.treeifyError>;
+};
+
 export default function CreatePool() {
     const actionData = useActionData<typeof clientAction>();
-
+    const [formErrors, setFormErrors] = useState<CreatePoolActionErrors["errors"] | undefined>();
     useEffect(() => {
-        console.log(`Errors that happened: ${actionData?.errors.formErrors}`)
+        setFormErrors(actionData?.errors);
     }, [actionData]);
+    // TODO: Start using the form errors, and clear them when the user starts updating again after submitting.
+    // Also let the regular validation function use the same zod schema (but without empty fields check)
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const {competitionsToWatch, setMessage} = useExistingBlindpoolOutletContext();
+    const {competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId} = useExistingBlindpoolOutletContext();
 
     const {t} = useTranslation();
     const matches: Array<Match> = useUpcomingMatches(competitionsToWatch, setMessage) ?? [];
@@ -209,8 +214,6 @@ export default function CreatePool() {
         }
     };
 
-    const selectedMatchIdQueryParam = searchParams.get("selectedMatchId");
-
     // const sendCreatePoolRequest = async (): Promise<void> => {
     //     if (validateState([...players], true)) {
     //         setLoading(true);
@@ -276,12 +279,9 @@ export default function CreatePool() {
                             }}>
                                 <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
                                                  setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
-                                                 selectedMatchId={selectedMatchIdQueryParam ?? undefined}
-                                                 setSelectedMatchId={(matchId: (string | undefined)) => {
-                                                     if (matchId) {
-                                                         setSearchParams({selectedMatchId: matchId})
-                                                     }
-                                                 }}/>
+                                                 selectedMatchId={selectedMatchId}
+                                                 setSelectedMatchId={setSelectedMatchId}
+                                />
                                 <Table sx={{overflowX: "auto", marginBottom: "1em"}}>
                                     <colgroup>
                                         <col style={{width: '5%'}}/>
