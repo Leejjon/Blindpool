@@ -13,9 +13,9 @@ import {
     Typography
 } from "@mui/material";
 import {type Blindpool} from "~/model/Blindpool";
-import {type Player} from "~/model/Player";
+import {type Participant} from "~/model/Participant";
 import {Api, getHost} from "~/utils/Network";
-import {doesMatchExistIn, type Match} from "~/model/Match";
+import {type Match} from "~/model/Match";
 import {AddCircleOutlined} from "@mui/icons-material";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useExistingBlindpoolOutletContext} from "~/context/BpContext";
@@ -28,10 +28,9 @@ import {queryClientSingleton} from "~/singletons/QueryClientSingleton";
 import {matchesQuery} from "~/queries/MatchesQuery";
 import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
 import {
-    CREATE_BP_REQUEST_SCHEMA_VERSION,
     CreateBlindpoolRequestSchema, type CreateBlindpoolRequestSchemaType,
-    PARTICIPANT_REGEX
 } from "blindpool-common/requests/CreateBpRequest";
+import {applyParticipantValidations} from "~/logic/validation";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -48,7 +47,7 @@ export function meta({}: Route.MetaArgs) {
 const EMPTY_STRING = "";
 
 // Create a unique instance of the same empty object.
-const EMPTY_PLAYER = () => {
+const EMPTY_PARTICIPANT = () => {
     return Object.assign({}, {name: EMPTY_STRING, valid: undefined});
 };
 
@@ -64,16 +63,15 @@ export async function clientAction({request}: { request: Request }) {
 
     // https://github.com/colinhacks/zod/issues/3333
     const participants = formData.getAll("participants[]").map(String);
-    console.log(participants);
     const freeFormatMatch = formData.get("freeFormatMatch");
+    const selectedMatchID = formData.get("selectedMatchID");
     let formDataObject = {
         participants,
-        selectedMatchID: formData.get("selectedMatchID")?.toString(),
+        selectedMatchID: selectedMatchID,
         freeFormatMatch: freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
     } as CreateBlindpoolRequestSchemaType;
 
     const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
-
     if (result.success) {
         const response: Response = await fetch(`${getHost(Api.pool)}/api/v4/pool`,
             {
@@ -84,72 +82,40 @@ export async function clientAction({request}: { request: Request }) {
         const poolJson: Blindpool = await response.json();
         return redirect(`/pool/${poolJson.key}`);
     } else {
-        const participantsIssue = result.error.issues.find(
-            issue => issue.path.includes('participants')
-        );
-        console.log(participantsIssue);
+        const unvalidatedParticipants = participants.map((participant) => {
+            return Object.assign({}, {name: participant, valid: undefined} as Participant)
+        });
+
+        applyParticipantValidations(result.error, unvalidatedParticipants);
+
         return {
-            errors: result.error,
+            validations: unvalidatedParticipants,
         };
     }
-
-    // if (response.status === 200) {
-    //     const poolJson: Blindpool = await response.json();
-    //     // This will already set the pool and make sure we don't fetch the pool we already have.
-    //     await queryClient.ensureQueryData(poolQuery(poolJson));
-    //     setLoading(false);
-    //     navigate(`/pool/${poolJson.key}`);
-    // } else {
-    //     setLoading(false);
-    //     setMessage('BACKEND_OFFLINE');
-    // }
 }
 
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
-type CustomZodIssueParams = {
-    params: Record<string, any> | undefined
-}
-
 export default function CreatePool() {
-    // console.log("Old" + CREATE_BP_REQUEST_SCHEMA_VERSION);
     const actionData = useActionData<typeof clientAction>();
-    const [players, setPlayers] = useState<Player[]>([
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER()
+    const [participants, setParticipants] = useState<Participant[]>([
+        EMPTY_PARTICIPANT(),
+        EMPTY_PARTICIPANT(),
+        EMPTY_PARTICIPANT(),
+        EMPTY_PARTICIPANT(),
+        EMPTY_PARTICIPANT()
     ]);
+
+    const [errorsFromAction, setErrorsFromAction] = useState<boolean>(false);
+
+    const validations = actionData?.validations;
+    const playersObjects = validations && validations.length > 0 && errorsFromAction ? validations : participants;
 
     useEffect(() => {
         if (actionData) {
-            const participantsIssue = actionData.errors.issues.find(
-                issue => issue.path.includes('participants')
-            );
-            // MOve this out of useeffect
-            // TODO: Add the other validations like regex validation. Also extract this logic in functions and also use it in the buttons directly.
-
-            const playerValidationUpdate = [...players];
-            if (participantsIssue) {
-                const participantsIssueAsAny = participantsIssue as CustomZodIssueParams;
-                if (participantsIssueAsAny.params && participantsIssueAsAny.params.type === 'duplicate_name' && participantsIssueAsAny.params.duplicateIndexes) {
-                    const duplicateIndexes: Array<number> = participantsIssueAsAny.params.duplicateIndexes;
-                    playerValidationUpdate.forEach((_, index) => {
-                        if (duplicateIndexes) {
-                            const indexOfParticipantThatHasDuplicateValue = duplicateIndexes.find((participant: number) => participant === index);
-                            if (indexOfParticipantThatHasDuplicateValue) {
-                                playerValidationUpdate[indexOfParticipantThatHasDuplicateValue].valid = "DUPLICATE_MESSAGE";
-                            }
-                        }
-                    });
-                }
-            }
-            // setPlayers(playerValidationUpdate);
+            setErrorsFromAction(true);
         }
-    }, [actionData, players]);
-    // TODO: Start using the form errors, and clear them when the user starts updating again after submitting.
-    // Also let the regular validation function use the same zod schema (but without empty fields check)
+    }, [actionData]);
 
     const {competitionsToWatch, setMessage, selectedMatchId, setSelectedMatchId} = useExistingBlindpoolOutletContext();
 
@@ -162,128 +128,57 @@ export default function CreatePool() {
 
     useEffect(() => {
         if (justAddedPlayer) {
-            document.getElementById(`nameField${players.length - 1}`)!.focus();
+            document.getElementById(`nameField${participants.length - 1}`)!.focus();
             setJustAddedPlayer(false);
         }
-    }, [players, justAddedPlayer]);
+    }, [participants, justAddedPlayer]);
 
     const onTextFieldChange = (index: number, event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, isBlur: boolean) => {
+        setErrorsFromAction(false);
         const nameField = event.target;
 
-        const playersUpdate = [...players];
+        const participantsUpdate = [...participants];
         if (nameField.value) {
             if (isBlur) {
-                playersUpdate[index].name = nameField.value.trim();
+                participantsUpdate[index].name = nameField.value.trim();
             } else {
-                playersUpdate[index].name = nameField.value;
+                participantsUpdate[index].name = nameField.value;
             }
         } else {
-            playersUpdate[index].name = "";
-            playersUpdate[index].valid = undefined;
+            participantsUpdate[index].name = "";
+            participantsUpdate[index].valid = undefined;
         }
-        validateState(playersUpdate, false);
-    };
 
-    const validateState = (playersToValidate: Array<Player>, complainAboutEmptyFields: boolean): boolean => {
-        const matchIsValid: boolean = true;
+        let formDataObject = {
+            participants: participantsUpdate.map((participant) => participant.name),
+            selectedMatchID: "boe",// TODO,
+            freeFormatMatch: undefined// TODO freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
+        } as CreateBlindpoolRequestSchemaType;
 
-        let allPlayersHaveAValidName: boolean = true;
-        playersToValidate.forEach((player) => {
-            if (player.name) {
-                if (!PARTICIPANT_REGEX.test(player.name)) {
-                    allPlayersHaveAValidName = false;
-                    player.valid = "ILLEGAL_CHARACTER_MESSAGE";
-                } else {
-                    // if (checkForDuplicates(player.name)) {
-                    //     player.valid = "DUPLICATE_MESSAGE";
-                    //     allPlayersHaveAValidName = false;
-                    // } else {
-                        player.valid = undefined;
-                    // }
-                }
-            } else {
-                if (complainAboutEmptyFields) {
-                    player.valid = "EMPTY_MESSAGE";
-                } else {
-                    player.valid = undefined;
-                }
-                allPlayersHaveAValidName = false;
-            }
-        });
+        const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
+        applyParticipantValidations(result.error, participantsUpdate, true)
 
-        setPlayers([...playersToValidate]);
-
-        return allPlayersHaveAValidName && matchIsValid;
-    };
-
-    const checkForDuplicates = (name: string) => {
-        const duplicate = players.filter(player => player.name === name);
-        return duplicate.length > 1;
+        setParticipants([...participantsUpdate]);
     };
 
     const addPlayer = () => {
-        setPlayers([...players, EMPTY_PLAYER()]);
+        setParticipants([...participants, EMPTY_PARTICIPANT()]);
         setJustAddedPlayer(true);
     };
 
     const removePlayer = (index: number) => {
         const first = index <= 0;
         if (!first) {
-            const playersUpdate = [...players];
+            const playersUpdate = [...participants];
             playersUpdate.splice(index, 1);
 
-            // Update names
-            setPlayers(playersUpdate.map((player, index) => {
+            setParticipants(playersUpdate.map((player, index) => {
                 const playerInputField = document.getElementById("nameField" + index) as unknown as HTMLInputElement;
                 playerInputField.value = player.name;
                 return player;
             }));
         }
     };
-
-    // const sendCreatePoolRequest = async (): Promise<void> => {
-    //     if (validateState([...players], true)) {
-    //         setLoading(true);
-    //         const requestBody = {
-    //             participants: players.map(player => player.name)
-    //         } as CreateBlindpoolRequestSchemaType;
-    //         const validationErrors = await validate(requestBody);
-    //         if (validationErrors.length > 0) {
-    //             setLoading(false);
-    //             setMessage("ILLEGAL_CHARACTER_MESSAGE");
-    //         }
-    //
-    //         try {
-    //             if (selectedMatchIdQueryParam) {
-    //                 const matchId = doesMatchExistIn(selectedMatchIdQueryParam, matches);
-    //                 if (matchId) {
-    //                     requestBody.selectedMatchID = matchId;
-    //                 } else {
-    //                     requestBody.freeFormatMatch = selectedMatchIdQueryParam.trim();
-    //                 }
-    //             }
-    //             const response: Response = await fetch(`${getHost(Api.pool)}/api/v3/pool`,
-    //                 {
-    //                     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    //                     method: "POST", body: JSON.stringify(requestBody)
-    //                 }
-    //             );
-    //             if (response.status === 200) {
-    //                 const poolJson: Blindpool = await response.json();
-    //                 // This will already set the pool and make sure we don't fetch the pool we already have.
-    //                 await queryClient.ensureQueryData(poolQuery(poolJson));
-    //                 setLoading(false);
-    //                 navigate(`/pool/${poolJson.key}`);
-    //             } else {
-    //                 setLoading(false);
-    //                 setMessage('BACKEND_OFFLINE');
-    //             }
-    //         } catch (error) {
-    //             setLoading(false);
-    //             setMessage('BACKEND_UNREACHABLE');
-    //         }
-    //     }
-    // }
 
     if (navigation.state === "submitting" || navigation.state === "loading") {
         return (
@@ -299,13 +194,9 @@ export default function CreatePool() {
                             <Typography variant="h2">
                                 {t("CREATE_POOL")}
                             </Typography>
-                            <Form method="POST" action="/create" onSubmit={async (event) => {
-                                console.log(event);
-                                // event.preventDefault();
-                                // await sendCreatePoolRequest();
-                            }}>
+                            <Form method="POST" action="/create">
                                 <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
-                                                 setInvalidMatchMessage={(amessage) => setInvalidMatchMessage(amessage)}
+                                                 setInvalidMatchMessage={(message) => setInvalidMatchMessage(message)}
                                                  selectedMatchId={selectedMatchId}
                                                  setSelectedMatchId={setSelectedMatchId}
                                 />
@@ -338,11 +229,11 @@ export default function CreatePool() {
                                                 verticalAlign: "text-top",
                                                 padding: "0.3em",
                                                 paddingTop: "0em"
-                                            }}>&nbsp;</TableCell>
+                                            }}>&nbsp;{errorsFromAction ? "true" : "false"}</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {players.map((player, index) => {
+                                        {playersObjects.map((player, index) => {
                                             return (
                                                 <NameField key={"player" + index} player={player} index={index}
                                                            onTextFieldChange={onTextFieldChange}
@@ -357,7 +248,7 @@ export default function CreatePool() {
                                                 margin: 0
                                             }}>
                                                 <Typography sx={{color: "gray"}}>
-                                                    {players.length + 1}
+                                                    {playersObjects.length + 1}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell sx={{paddingLeft: "1em", paddingRight: 0}}>
@@ -396,8 +287,7 @@ export default function CreatePool() {
                                     border: "0",
                                     fontWeight: "bolder",
                                     fontSize: 15
-                                }}
-                                    /*onClick={sendCreatePoolRequest}*/>
+                                }}>
                                     {t("CREATE_POOL").toUpperCase()}
                                 </Button>
                             </Form>

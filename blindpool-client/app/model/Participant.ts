@@ -1,4 +1,4 @@
-export interface Player {
+export interface Participant {
     name: string,
     valid?: string | undefined
 }
