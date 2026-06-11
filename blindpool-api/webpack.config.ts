@@ -5,7 +5,14 @@ module.exports = {
     entry: './src/index.ts',
     target: "node",
     mode: "production",
-    externals: [nodeExternals()],
+    externals: [
+        nodeExternals({
+            modulesDir: path.resolve(__dirname, "node_modules")
+        }),
+        nodeExternals({
+            modulesDir: path.resolve(__dirname, "../node_modules")
+        })
+    ],
     resolve: {
         extensions: ['.ts']
     },

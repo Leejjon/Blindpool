@@ -28,10 +28,10 @@ import {queryClientSingleton} from "~/singletons/QueryClientSingleton";
 import {matchesQuery} from "~/queries/MatchesQuery";
 import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
 import {
-    CreateBlindpoolRequestSchema,
+    CREATE_BP_REQUEST_SCHEMA_VERSION,
+    CreateBlindpoolRequestSchema, type CreateBlindpoolRequestSchemaType,
     PARTICIPANT_REGEX
 } from "blindpool-common/requests/CreateBpRequest";
-import {z} from "zod";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -64,14 +64,13 @@ export async function clientAction({request}: { request: Request }) {
 
     // https://github.com/colinhacks/zod/issues/3333
     const participants = formData.getAll("participants[]").map(String);
-
-    console.log('Participants', participants);
-
-    const formDataObject = {
-        selectedMatchID: formData.get("selectedMatchID")?.toString(),
-        freeFormatMatch: formData.get("freeFormatMatch")?.toString(),
+    console.log(participants);
+    const freeFormatMatch = formData.get("freeFormatMatch");
+    let formDataObject = {
         participants,
-    };
+        selectedMatchID: formData.get("selectedMatchID")?.toString(),
+        freeFormatMatch: freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
+    } as CreateBlindpoolRequestSchemaType;
 
     const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
 
@@ -85,8 +84,12 @@ export async function clientAction({request}: { request: Request }) {
         const poolJson: Blindpool = await response.json();
         return redirect(`/pool/${poolJson.key}`);
     } else {
+        const participantsIssue = result.error.issues.find(
+            issue => issue.path.includes('participants')
+        );
+        console.log(participantsIssue);
         return {
-            errors: z.treeifyError(result.error),
+            errors: result.error,
         };
     }
 
@@ -104,16 +107,47 @@ export async function clientAction({request}: { request: Request }) {
 
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
 
-type CreatePoolActionErrors = {
-    errors: ReturnType<typeof z.treeifyError>;
-};
+type CustomZodIssueParams = {
+    params: Record<string, any> | undefined
+}
 
 export default function CreatePool() {
+    // console.log("Old" + CREATE_BP_REQUEST_SCHEMA_VERSION);
     const actionData = useActionData<typeof clientAction>();
-    const [formErrors, setFormErrors] = useState<CreatePoolActionErrors["errors"] | undefined>();
+    const [players, setPlayers] = useState<Player[]>([
+        EMPTY_PLAYER(),
+        EMPTY_PLAYER(),
+        EMPTY_PLAYER(),
+        EMPTY_PLAYER(),
+        EMPTY_PLAYER()
+    ]);
+
     useEffect(() => {
-        setFormErrors(actionData?.errors);
-    }, [actionData]);
+        if (actionData) {
+            const participantsIssue = actionData.errors.issues.find(
+                issue => issue.path.includes('participants')
+            );
+            // MOve this out of useeffect
+            // TODO: Add the other validations like regex validation. Also extract this logic in functions and also use it in the buttons directly.
+
+            const playerValidationUpdate = [...players];
+            if (participantsIssue) {
+                const participantsIssueAsAny = participantsIssue as CustomZodIssueParams;
+                if (participantsIssueAsAny.params && participantsIssueAsAny.params.type === 'duplicate_name' && participantsIssueAsAny.params.duplicateIndexes) {
+                    const duplicateIndexes: Array<number> = participantsIssueAsAny.params.duplicateIndexes;
+                    playerValidationUpdate.forEach((_, index) => {
+                        if (duplicateIndexes) {
+                            const indexOfParticipantThatHasDuplicateValue = duplicateIndexes.find((participant: number) => participant === index);
+                            if (indexOfParticipantThatHasDuplicateValue) {
+                                playerValidationUpdate[indexOfParticipantThatHasDuplicateValue].valid = "DUPLICATE_MESSAGE";
+                            }
+                        }
+                    });
+                }
+            }
+            // setPlayers(playerValidationUpdate);
+        }
+    }, [actionData, players]);
     // TODO: Start using the form errors, and clear them when the user starts updating again after submitting.
     // Also let the regular validation function use the same zod schema (but without empty fields check)
 
@@ -124,13 +158,6 @@ export default function CreatePool() {
 
     const navigation = useNavigation();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
-    const [players, setPlayers] = useState<Player[]>([
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER(),
-        EMPTY_PLAYER()
-    ]);
     const [invalidMatchMessage, setInvalidMatchMessage] = React.useState<string | undefined>(undefined);
 
     useEffect(() => {
@@ -167,12 +194,12 @@ export default function CreatePool() {
                     allPlayersHaveAValidName = false;
                     player.valid = "ILLEGAL_CHARACTER_MESSAGE";
                 } else {
-                    if (checkForDuplicates(player.name)) {
-                        player.valid = "DUPLICATE_MESSAGE";
-                        allPlayersHaveAValidName = false;
-                    } else {
+                    // if (checkForDuplicates(player.name)) {
+                    //     player.valid = "DUPLICATE_MESSAGE";
+                    //     allPlayersHaveAValidName = false;
+                    // } else {
                         player.valid = undefined;
-                    }
+                    // }
                 }
             } else {
                 if (complainAboutEmptyFields) {
