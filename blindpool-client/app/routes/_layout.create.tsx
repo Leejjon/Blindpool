@@ -81,6 +81,12 @@ export async function clientAction({request}: { request: Request }) {
         );
         const poolJson: Blindpool = await response.json();
         return redirect(`/pool/${poolJson.key}`);
+        // TODO: See if we can keep it as smooth as:
+        // const poolJson: Blindpool = await response.json();
+        // // This will already set the pool and make sure we don't fetch the pool we already have.
+        // await queryClient.ensureQueryData(poolQuery(poolJson));
+        // setLoading(false);
+        // navigate(`/pool/${poolJson.key}`);
     } else {
         const unvalidatedParticipants = participants.map((participant) => {
             return Object.assign({}, {name: participant, valid: undefined} as Participant)
@@ -91,7 +97,7 @@ export async function clientAction({request}: { request: Request }) {
         return {
             validations: unvalidatedParticipants,
         };
-    }
+    } // TODO: Also handle errors in case rest call fails
 }
 
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
