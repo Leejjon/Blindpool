@@ -60,7 +60,7 @@ export const getCompetitionsThatNeedUpdate = async (): Promise<Result<Array<Comp
     try {
         const datastore = getDatastoreInstance();
         const currentTimestamp = new Date();
-        const just150MinutesAgo = new Date(currentTimestamp.getTime() - 150*60000);
+        const just150MinutesAgo = new Date(currentTimestamp.getTime() - 150 * 60000);
 
         console.log("Starting to query between " + just150MinutesAgo.toJSON() + " and " + currentTimestamp.toJSON());
 
@@ -98,13 +98,13 @@ function convertToMatchEntity(match: MatchWithCompetitionIncluded) {
         }
 
         const createScoreObject = (): Score => {
-            if (match.score.fullTime.homeTeam != null && match.score.fullTime.awayTeam != null) {
-                let homeScore: number = match.score.fullTime.homeTeam;
-                let awayScore: number = match.score.fullTime.awayTeam;
+            if (match.score.fullTime.home != null && match.score.fullTime.away != null) {
+                let homeScore: number = match.score.fullTime.home;
+                let awayScore: number = match.score.fullTime.away;
 
-                if (match.score.penalties.homeTeam && match.score.penalties.awayTeam) {
-                    homeScore -= match.score.penalties.homeTeam;
-                    awayScore -= match.score.penalties.awayTeam;
+                if (match.score.penalties && match.score.penalties.home && match.score.penalties.away) {
+                    homeScore -= match.score.penalties.home;
+                    awayScore -= match.score.penalties.away;
                 }
 
                 return {

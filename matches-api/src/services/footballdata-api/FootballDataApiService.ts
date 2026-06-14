@@ -40,13 +40,13 @@ export interface FootballDataApiScoreInfo {
     duration: string,
     fullTime: FootballDataApiScore,
     halfTime: FootballDataApiScore,
-    extraTime: FootballDataApiScore,
-    penalties: FootballDataApiScore
+    extraTime?: FootballDataApiScore,
+    penalties?: FootballDataApiScore
 }
 
 export interface FootballDataApiScore {
-    homeTeam: number | null,
-    awayTeam: number | null
+    home: number | null,
+    away: number | null
 }
 
 export interface FootballDataApiTeam {

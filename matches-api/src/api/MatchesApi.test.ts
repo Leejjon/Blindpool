@@ -25,20 +25,20 @@ const testFootballApiMatch: MatchWithCompetitionIncluded = {
         winner: null,
         duration: 'REGULAR',
         fullTime: {
-            homeTeam: null,
-            awayTeam: null
+            home: null,
+            away: null
         },
         halfTime: {
-            homeTeam: null,
-            awayTeam: null
+            home: null,
+            away: null
         },
         extraTime: {
-            homeTeam: null,
-            awayTeam: null
+            home: null,
+            away: null
         },
         penalties: {
-            homeTeam: null,
-            awayTeam: null
+            home: null,
+            away: null
         }
     },
     homeTeam: {

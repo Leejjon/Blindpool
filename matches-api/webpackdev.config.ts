@@ -9,11 +9,11 @@ module.exports = {
     externals: [
         nodeExternals({
             modulesDir: path.resolve(__dirname, "node_modules"),
-            allowlist: ["webpack/hot/poll?100"]
+            allowlist: ["webpack/hot/poll?100", /^blindpool-common/]
         }),
         nodeExternals({
             modulesDir: path.resolve(__dirname, "../node_modules"),
-            allowlist: ["webpack/hot/poll?100"]
+            allowlist: ["webpack/hot/poll?100", /^blindpool-common/]
         })
     ],
     module: {

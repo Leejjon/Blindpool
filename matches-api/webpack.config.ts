@@ -10,10 +10,12 @@ module.exports = {
     mode: "production",
     externals: [
         nodeExternals({
-        modulesDir: path.resolve(__dirname, "node_modules")
+        modulesDir: path.resolve(__dirname, "node_modules"),
+        allowlist: [/^blindpool-common/]
     }),
         nodeExternals({
-            modulesDir: path.resolve(__dirname, "../node_modules")
+            modulesDir: path.resolve(__dirname, "../node_modules"),
+            allowlist: [/^blindpool-common/]
         }),
     ],
     output: {
