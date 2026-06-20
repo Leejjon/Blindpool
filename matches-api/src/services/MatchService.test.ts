@@ -6,6 +6,7 @@ import * as DatastoreService from "./DatastoreService";
 import {entity} from "@google-cloud/datastore/build/src/entity";
 
 import {describe} from "mocha";
+import * as assert from "assert";
 
 const turkeyVsItalyMatch = {
     "id": 285418,
@@ -217,17 +218,35 @@ describe('Test datastore calls', () => {
         await upsertMatches(matches);
     });
 
-    // TODO Do some assertions.
-    it('Netherlands vs Japan', async () => {
+    it('Verify Netherlands vs Japan match', async () => {
+        const matchKey = {
+            namespace: undefined, name: "football-data-537357", kind: "match", path: ["match", `football-data-537357`]
+        } as entity.Key;
         const datastoreStub = createSinonStubInstance(Datastore);
-        datastoreStub.key.returns({
-            namespace: undefined, name: "football-data-285418", kind: "match", path: ["match", `football-data-285418`]
-        } as entity.Key);
+        datastoreStub.key.returns(matchKey);
         datastoreStub.upsert.resolves(); // Resolve nothing
         sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
 
         let matches: Array<MatchWithCompetitionIncluded> = [netherlandsVsJapan];
         await upsertMatches(matches);
+
+        sinon.assert.calledOnce(datastoreStub.upsert);
+        const upsertedEntities = datastoreStub.upsert.firstCall.args[0] as Array<{ key: entity.Key, data: Array<{ name: string, value: unknown }> }>;
+        assert.strictEqual(upsertedEntities.length, 1);
+
+        const matchEntity = upsertedEntities[0];
+        assert.deepStrictEqual(matchEntity.key, matchKey);
+        assert.deepStrictEqual(matchEntity.data, [
+            {name: 'startTimestamp', value: '2026-06-14T20:00:00.000Z'},
+            {name: 'competitionName', value: 'World cup'},
+            {name: 'competitionId', value: '2000'},
+            {name: 'homeTeamName', value: 'Netherlands'},
+            {name: 'homeTeamID', value: 8601},
+            {name: 'awayTeamName', value: 'Japan'},
+            {name: 'awayTeamID', value: 766},
+            {name: 'score', value: {home: 2, away: 2}},
+            {name: 'finished', value: true},
+        ]);
     })
 
     // TODO: Figure out what to do with extra time.
