@@ -1,16 +1,27 @@
-import type {ZodError} from "zod";
+import type {ZodError, ZodSafeParseResult} from "zod";
 import type {Participant} from "~/model/Participant";
 
 type CustomZodIssueParams = {
     params: Record<string, any> | undefined
 }
 
+function mapToValidParticipant(participant: string): {name: string, valid: string | undefined} {
+    return Object.assign({}, {name: participant, valid: undefined});
+}
+
+// TODO: Write tests for this function
+
 export function applyParticipantValidations(
-    error: ZodError<{freeFormatMatch?: string | undefined, participants: string[], selectedMatchID?: string | undefined}> | undefined,
-    participants: Array<Participant>,
+    result: ZodSafeParseResult<{
+        participants: string[];
+        freeFormatMatch: string;
+        selectedMatchID?: string | undefined;
+    }>,
+    participantNames: Array<string>,
     ignoreEmptyFields: boolean = false
-) {
-    error?.issues.forEach((issue) => {
+): Array<Participant> {
+    let participants = participantNames.map(mapToValidParticipant);
+    result.error?.issues.forEach((issue) => {
         if (issue.path.includes('participants')) {
             if (issue.code === 'invalid_format') {
                 const participant = participants[issue.path[1] as number];
@@ -44,4 +55,5 @@ export function applyParticipantValidations(
             }
         }
     });
+    return participants;
 }

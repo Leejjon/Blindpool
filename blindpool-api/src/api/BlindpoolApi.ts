@@ -10,6 +10,7 @@ import {doesThisMatchExists} from "../services/MatchService";
 import {validate} from "class-validator";
 import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateLegacyBpRequest";
 import Hashids from 'hashids';
+import {CREATE_BP_REQUEST_SCHEMA_VERSION} from "blindpool-common/requests/CreateBpRequest";
 
 const hashids = new Hashids();
 

@@ -28,6 +28,7 @@ import {queryClientSingleton} from "~/singletons/QueryClientSingleton";
 import {matchesQuery} from "~/queries/MatchesQuery";
 import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
 import {
+    CREATE_BP_REQUEST_SCHEMA_VERSION,
     CreateBlindpoolRequestSchema, type CreateBlindpoolRequestSchemaType,
 } from "blindpool-common/requests/CreateBpRequest";
 import {applyParticipantValidations} from "~/logic/validation";
@@ -88,14 +89,8 @@ export async function clientAction({request}: { request: Request }) {
         // setLoading(false);
         // navigate(`/pool/${poolJson.key}`);
     } else {
-        const unvalidatedParticipants = participants.map((participant) => {
-            return Object.assign({}, {name: participant, valid: undefined} as Participant)
-        });
-
-        applyParticipantValidations(result.error, unvalidatedParticipants);
-
         return {
-            validations: unvalidatedParticipants,
+            validations: applyParticipantValidations(result, participants, false),
         };
     } // TODO: Also handle errors in case rest call fails
 }
@@ -158,13 +153,11 @@ export default function CreatePool() {
         let formDataObject = {
             participants: participantsUpdate.map((participant) => participant.name),
             selectedMatchID: "boe",// TODO,
-            freeFormatMatch: undefined// TODO freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
+            freeFormatMatch: "undefined"// TODO freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
         } as CreateBlindpoolRequestSchemaType;
 
         const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
-        applyParticipantValidations(result.error, participantsUpdate, true)
-
-        setParticipants([...participantsUpdate]);
+        setParticipants([...applyParticipantValidations(result, participantsUpdate.map((participant) => participant.name), true)]);
     };
 
     const addPlayer = () => {

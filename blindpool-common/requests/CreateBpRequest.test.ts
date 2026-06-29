@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CreateBlindpoolRequestSchema } from './CreateBpRequest.js';
+import {CreateBlindpoolRequestSchema} from './CreateBpRequest.js';
 
 describe('CreateBlindpoolRequestSchema', () => {
     it('should return duplicate_name error with indexes of duplicate participants', () => {
@@ -26,6 +26,32 @@ describe('CreateBlindpoolRequestSchema', () => {
         const result = CreateBlindpoolRequestSchema.safeParse({
             participants: ['Alice', 'Bob', 'Charlie'],
             freeFormatMatch: 'Some match name',
+        });
+
+        expect(result.success).toBe(true);
+    });
+
+    it('should fail when freeFormatMatch has an illegal character and no selectedMatchID is provided', () => {
+        const result = CreateBlindpoolRequestSchema.safeParse({
+            participants: ['Alice', 'Bob', 'Charlie'],
+            freeFormatMatch: 'Ecuador vs Curaçao',
+        });
+
+        expect(result.success).toBe(false);
+        if (!result.success) {
+            const freeFormatIssue = result.error.issues.find(
+                issue => issue.path.includes('freeFormatMatch')
+            );
+            expect(freeFormatIssue).toBeDefined();
+            expect(freeFormatIssue.code).toBe('custom');
+        }
+    });
+
+    it('should pass when freeFormatMatch has an illegal character but a valid selectedMatchID is provided', () => {
+        const result = CreateBlindpoolRequestSchema.safeParse({
+            participants: ['Alice', 'Bob', 'Charlie'],
+            selectedMatchID: 'football-data-285418',
+            freeFormatMatch: 'Ecuador vs Curaçao',
         });
 
         expect(result.success).toBe(true);
