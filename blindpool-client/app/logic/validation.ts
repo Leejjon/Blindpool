@@ -11,7 +11,7 @@ function mapToValidParticipant(participant: string): {name: string, valid: strin
 
 // TODO: Write tests for this function
 
-export function applyParticipantValidations(
+export function validateParticipants(
     result: ZodSafeParseResult<{
         participants: string[];
         freeFormatMatch: string;

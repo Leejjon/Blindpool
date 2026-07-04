@@ -31,7 +31,7 @@ import {
     CREATE_BP_REQUEST_SCHEMA_VERSION,
     CreateBlindpoolRequestSchema, type CreateBlindpoolRequestSchemaType,
 } from "blindpool-common/requests/CreateBpRequest";
-import {applyParticipantValidations} from "~/logic/validation";
+import {validateParticipants} from "~/logic/validation";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -90,7 +90,7 @@ export async function clientAction({request}: { request: Request }) {
         // navigate(`/pool/${poolJson.key}`);
     } else {
         return {
-            validations: applyParticipantValidations(result, participants, false),
+            validations: validateParticipants(result, participants, false),
         };
     } // TODO: Also handle errors in case rest call fails
 }
@@ -150,14 +150,15 @@ export default function CreatePool() {
             participantsUpdate[index].valid = undefined;
         }
 
+        const participantsAsStringArray = participantsUpdate.map((participant) => participant.name)
         let formDataObject = {
-            participants: participantsUpdate.map((participant) => participant.name),
+            participants: participantsAsStringArray,
             selectedMatchID: "boe",// TODO,
             freeFormatMatch: "undefined"// TODO freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
         } as CreateBlindpoolRequestSchemaType;
 
         const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
-        setParticipants([...applyParticipantValidations(result, participantsUpdate.map((participant) => participant.name), true)]);
+        setParticipants([...validateParticipants(result, participantsAsStringArray, true)]);
     };
 
     const addPlayer = () => {
