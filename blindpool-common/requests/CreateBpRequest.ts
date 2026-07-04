@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const PARTICIPANT_REGEX = /^([a-zA-Z0-9 _]{1,20})$/;
 export const FREE_FORMAT_REGEX = /^([-a-zA-Z0-9 ]{5,50})$/;
-export const CREATE_BP_REQUEST_SCHEMA_VERSION = "duplicate-params-debug-3";
+export const CREATE_BP_REQUEST_SCHEMA_VERSION = "duplicate-params-debug-4";
 
 export const CreateBlindpoolRequestSchema = z.object({
     participants: z.array(z.string().regex(PARTICIPANT_REGEX)).min(1).superRefine((items, ctx) => {

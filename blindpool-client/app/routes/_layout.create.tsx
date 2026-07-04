@@ -228,7 +228,7 @@ export default function CreatePool() {
                                                 verticalAlign: "text-top",
                                                 padding: "0.3em",
                                                 paddingTop: "0em"
-                                            }}>&nbsp;{errorsFromAction ? "true" : "false"}</TableCell>
+                                            }}>&nbsp;</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
