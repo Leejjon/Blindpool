@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import {Response, Request, NextFunction} from 'express';
+import {Response, Request} from 'express';
 import {err, ok} from "neverthrow";
 import {getBlindpoolByKey, getBlindpoolStatistics, postCreateBlindpool} from "./BlindpoolApi";
 import {Blindpool} from "../models/Blindpool";
@@ -22,7 +22,8 @@ describe('Blindpool API', () => {
         const res = {
             contentType: sinon.stub(),
             status: sinon.stub(),
-            json: sinon.stub()
+            json: sinon.stub(),
+            send: sinon.stub(),
         };
         res.contentType.returns(res);
         res.status.returns(res);
@@ -91,10 +92,8 @@ describe('Blindpool API', () => {
         let next = sinon.stub();
 
         tryValidation(<Request> validRequest, <Response> res, next);
-        await postCreateBlindpool(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
-        sinon.assert.calledWith(res.send as sinon.SinonStub, 'Invalid input.');
-        sinon.assert.calledOnce(next);
+        sinon.assert.calledWith(res.json as sinon.SinonStub, {participantValidations: []});
     });
 
     it('Create blindpool - name with invalid character - FAIL', async () => {
@@ -105,7 +104,7 @@ describe('Blindpool API', () => {
 
         tryValidation(<Request> validRequest, <Response> res, next);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 400);
-        sinon.assert.calledWith(res.send as sinon.SinonStub, "Invalid request.");
+        sinon.assert.calledWith(res.json as sinon.SinonStub, {participantValidations: [ { name: 'Hoi', valid: undefined }, { name: 'Doei!', valid: 'ILLEGAL_CHARACTER_MESSAGE' } ] });
         sinon.assert.notCalled(next);
     });
 
@@ -118,7 +117,7 @@ describe('Blindpool API', () => {
 
         await getBlindpoolByKey(<Request>validRequest, <Response>res);
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
-        sinon.assert.calledWith(res.send as sinon.SinonStub, testPool);
+        sinon.assert.calledWith(res.json as sinon.SinonStub, testPool);
     });
 
     it('Retrieve blindpool - NOT FOUND', async () => {
@@ -145,7 +144,7 @@ describe('Blindpool API', () => {
         await getBlindpoolStatistics(<Request>emptyRequest, <Response>res);
 
         sinon.assert.calledWith(res.status as sinon.SinonStub, 200);
-        sinon.assert.calledWith(res.send as sinon.SinonStub, {count: expectedCount});
+        sinon.assert.calledWith(res.json as sinon.SinonStub, {count: expectedCount});
     });
 
     it('Retrieve blindpool statistics - INTERNAL ERROR', async () => {

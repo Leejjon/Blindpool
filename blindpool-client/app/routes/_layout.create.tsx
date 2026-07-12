@@ -80,8 +80,15 @@ export async function clientAction({request}: { request: Request }) {
                 method: "POST", body: JSON.stringify(formDataObject),
             }
         );
-        const poolJson: Blindpool = await response.json();
-        return redirect(`/pool/${poolJson.key}`);
+        if (response.status === 200) {
+            const poolJson: Blindpool = await response.json();
+            return redirect(`/pool/${poolJson.key}`);
+        } else if (response.status === 400) {
+            console.warn("Apparently the errors were different compared to the local validation. Your client was most likely out of sync.")
+            const errors: {participantValidations: Array<Participant>} = await response.json();
+            return errors;
+        }
+
         // TODO: See if we can keep it as smooth as:
         // const poolJson: Blindpool = await response.json();
         // // This will already set the pool and make sure we don't fetch the pool we already have.
@@ -90,9 +97,9 @@ export async function clientAction({request}: { request: Request }) {
         // navigate(`/pool/${poolJson.key}`);
     } else {
         return {
-            validations: validateParticipants(result, participants, false),
+            participantValidations: validateParticipants(result, participants, false),
         };
-    } // TODO: Also handle errors in case rest call fails
+    }
 }
 
 // DO THIS https://tanstack.com/query/latest/docs/framework/react/guides/ssr#get-started-fast-with-initialdata
@@ -109,7 +116,7 @@ export default function CreatePool() {
 
     const [errorsFromAction, setErrorsFromAction] = useState<boolean>(false);
 
-    const validations = actionData?.validations;
+    const validations = actionData?.participantValidations;
     const playersObjects = validations && validations.length > 0 && errorsFromAction ? validations : participants;
 
     useEffect(() => {

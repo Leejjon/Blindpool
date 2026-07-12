@@ -16,6 +16,7 @@ const hashids = new Hashids();
 
 export const postCreateBlindpool = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
         const createBlindpoolRequest = req.body as CreateBlindpoolRequestSchemaType; // We can just cast because validation should have already happened in the validationMiddleware
         const names = createBlindpoolRequest.participants;
         const participantsAndScores = assignRandomScores(names);

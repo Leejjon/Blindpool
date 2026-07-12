@@ -5,7 +5,7 @@ import {
 } from "./api/BlindpoolApi";
 import cors from "cors";
 import {
-    CreateBlindpoolRequestSchema,
+    CreateBlindpoolRequestSchema, CreateBlindpoolRequestStructureSchema,
 } from "blindpool-common/requests/validation/CreateBpRequest";
 import {validateParticipants} from "blindpool-common/requests/validation/validation";
 
@@ -22,19 +22,23 @@ if (environment === 'development') {
 router.get('/v2/pool/stats', getBlindpoolStatistics);
 
 export function tryValidation(req: Request, res: Response, next: NextFunction) {
-    const result = CreateBlindpoolRequestSchema.safeParse(req.body);
-    if (result.success) {
-        next();
+    const structureResult = CreateBlindpoolRequestStructureSchema.safeParse(req.body);
+    if (structureResult.success) {
+        const result = CreateBlindpoolRequestSchema.safeParse(req.body);
+        if (result.success) {
+            next();
+        } else {
+            res.status(400).json({
+                participantValidations: validateParticipants(result, structureResult.data.participants, false),
+            });
+        }
     } else {
-        console.log(req.body);
-        res.status(400).json({
-            validations: validateParticipants(result, req.body["participants"], false),
-        });
+        res.status(400).send("Invalid request.");
     }
 }
 
 router.post('/v4/pool/', tryValidation, async (req: Request, res: Response) => {
-    await postCreateBlindpool(req.body, res);
+    await postCreateBlindpool(req, res);
 });
 router.get('/v2/pool/:key', getBlindpoolByKey);
 

@@ -1,10 +1,7 @@
 import {describe, expect, test} from "vitest";
-import {validateParticipants} from "~/logic/validation";
-import {
-    CreateBlindpoolRequestSchema,
-    type CreateBlindpoolRequestSchemaType
-} from "blindpool-common/requests/CreateBpRequest";
-import {ValidationError} from "~/model/Participant";
+import {DUPLICATE_MESSAGE, ILLEGAL_CHARACTER_MESSAGE} from "../model/Participant";
+import {CreateBlindpoolRequestSchema, CreateBlindpoolRequestSchemaType} from "./CreateBpRequest";
+import {validateParticipants} from "./validation";
 
 describe('Test validation function', () => {
     test('Valid participants should have their valid property undefined', () => {
@@ -38,7 +35,7 @@ describe('Test validation function', () => {
         const validatedParticipants = validateParticipants(result, participants);
         expect(validatedParticipants.length).toBe(participants.length);
         const invalidParticipant = validatedParticipants[1]
-        expect(invalidParticipant.valid).toBe(ValidationError.ILLEGAL_CHARACTER_MESSAGE);
+        expect(invalidParticipant.valid).toBe(ILLEGAL_CHARACTER_MESSAGE);
     });
 
     test('Test if participant with empty name is marked as invalid when empty fields are not ignored', () => {
@@ -54,7 +51,7 @@ describe('Test validation function', () => {
         const validatedParticipants = validateParticipants(result, participants);
         expect(validatedParticipants.length).toBe(participants.length);
         const emptyParticipant = validatedParticipants[1];
-        expect(emptyParticipant.valid).toBe(ValidationError.ILLEGAL_CHARACTER_MESSAGE);
+        expect(emptyParticipant.valid).toBe(ILLEGAL_CHARACTER_MESSAGE);
     });
 
 
@@ -88,8 +85,8 @@ describe('Test validation function', () => {
         expect(validatedParticipants.length).toBe(participants.length);
         const duplicatedParticipant1 = validatedParticipants[0];
         const duplicatedParticipant2 = validatedParticipants[1];
-        expect(duplicatedParticipant1.valid).toBe(ValidationError.DUPLICATE_MESSAGE);
-        expect(duplicatedParticipant2.valid).toBe(ValidationError.DUPLICATE_MESSAGE);
+        expect(duplicatedParticipant1.valid).toBe(DUPLICATE_MESSAGE);
+        expect(duplicatedParticipant2.valid).toBe(DUPLICATE_MESSAGE);
     });
 
     test('Two participants that are both empty, should get marked as duplicate', () => {
@@ -106,7 +103,7 @@ describe('Test validation function', () => {
         expect(validatedParticipants.length).toBe(participants.length);
         const duplicatedParticipant1 = validatedParticipants[0];
         const duplicatedParticipant2 = validatedParticipants[1];
-        expect(duplicatedParticipant1.valid).toBe(ValidationError.DUPLICATE_MESSAGE);
-        expect(duplicatedParticipant2.valid).toBe(ValidationError.DUPLICATE_MESSAGE);
+        expect(duplicatedParticipant1.valid).toBe(DUPLICATE_MESSAGE);
+        expect(duplicatedParticipant2.valid).toBe(DUPLICATE_MESSAGE);
     })
 });

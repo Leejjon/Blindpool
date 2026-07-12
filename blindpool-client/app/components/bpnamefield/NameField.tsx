@@ -26,7 +26,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
             <TableCell sx={{paddingLeft: "1em", paddingRight: "0"}}>
                 <TextField
                     error={invalidMessage !== undefined}
-                    helperText={invalidMessage !== undefined ? t(invalidMessage.toString()) : undefined}
+                    helperText={invalidMessage !== undefined ? t(invalidMessage) : undefined}
                     id={'nameField' + index}
                     variant="standard"
                     sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}

@@ -1,5 +1,5 @@
 import type {ZodSafeParseResult} from "zod";
-import {type Participant, ValidationError} from "../model/Participant";
+import {DUPLICATE_MESSAGE, ILLEGAL_CHARACTER_MESSAGE, type Participant} from "../model/Participant";
 
 type CustomZodIssueParams = {
     params: Record<string, any> | undefined
@@ -24,10 +24,10 @@ export function validateParticipants(
             if (issue.code === 'invalid_format') {
                 const participant = participants[issue.path[1] as number];
                 if (participant.name) {
-                    participants[issue.path[1] as number].valid = ValidationError.ILLEGAL_CHARACTER_MESSAGE;
+                    participants[issue.path[1] as number].valid = ILLEGAL_CHARACTER_MESSAGE;
                 } else {
                     if (!ignoreEmptyFields) {
-                        participants[issue.path[1] as number].valid = ValidationError.ILLEGAL_CHARACTER_MESSAGE;
+                        participants[issue.path[1] as number].valid = ILLEGAL_CHARACTER_MESSAGE;
                     }
                 }
             } else if (issue.code === 'custom') {
@@ -40,10 +40,10 @@ export function validateParticipants(
                             if (indexOfParticipantThatHasDuplicateValue !== undefined) {
                                 const participant = participants[indexOfParticipantThatHasDuplicateValue]
                                 if (participant.name) {
-                                    participant.valid = ValidationError.DUPLICATE_MESSAGE;
+                                    participant.valid = DUPLICATE_MESSAGE;
                                 } else {
                                     if (!ignoreEmptyFields) {
-                                        participant.valid = ValidationError.DUPLICATE_MESSAGE;
+                                        participant.valid = DUPLICATE_MESSAGE;
                                     }
                                 }
                             }
