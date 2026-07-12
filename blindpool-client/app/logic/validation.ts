@@ -1,15 +1,13 @@
 import type {ZodError, ZodSafeParseResult} from "zod";
-import type {Participant} from "~/model/Participant";
+import {type Participant, ValidationError} from "~/model/Participant";
 
 type CustomZodIssueParams = {
     params: Record<string, any> | undefined
 }
 
-function mapToValidParticipant(participant: string): {name: string, valid: string | undefined} {
+function mapToValidParticipant(participant: string): Participant {
     return Object.assign({}, {name: participant, valid: undefined});
 }
-
-// TODO: Write tests for this function
 
 export function validateParticipants(
     result: ZodSafeParseResult<{
@@ -26,10 +24,10 @@ export function validateParticipants(
             if (issue.code === 'invalid_format') {
                 const participant = participants[issue.path[1] as number];
                 if (participant.name) {
-                    participants[issue.path[1] as number].valid = "ILLEGAL_CHARACTER_MESSAGE";
+                    participants[issue.path[1] as number].valid = ValidationError.ILLEGAL_CHARACTER_MESSAGE;
                 } else {
                     if (!ignoreEmptyFields) {
-                        participants[issue.path[1] as number].valid = "ILLEGAL_CHARACTER_MESSAGE";
+                        participants[issue.path[1] as number].valid = ValidationError.ILLEGAL_CHARACTER_MESSAGE;
                     }
                 }
             } else if (issue.code === 'custom') {
@@ -42,10 +40,10 @@ export function validateParticipants(
                             if (indexOfParticipantThatHasDuplicateValue !== undefined) {
                                 const participant = participants[indexOfParticipantThatHasDuplicateValue]
                                 if (participant.name) {
-                                    participant.valid = "DUPLICATE_MESSAGE";
+                                    participant.valid = ValidationError.DUPLICATE_MESSAGE;
                                 } else {
                                     if (!ignoreEmptyFields) {
-                                        participant.valid = "DUPLICATE_MESSAGE";
+                                        participant.valid = ValidationError.DUPLICATE_MESSAGE;
                                     }
                                 }
                             }
