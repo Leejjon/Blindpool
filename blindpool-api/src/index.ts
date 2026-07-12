@@ -1,19 +1,13 @@
 import express, {NextFunction, Request, RequestHandler, Response} from "express";
 import {
     getBlindpoolByKey,
-    getBlindpoolStatistics, legacyPostCreateBlindpool, postCreateBlindpool,
+    getBlindpoolStatistics, postCreateBlindpool,
 } from "./api/BlindpoolApi";
 import cors from "cors";
-import {tryValidation} from "./validation/Validation";
 import {
-    CreateBlindpoolRequestSchema, /*CreateBlindpoolRequestSchema*/
-} from "blindpool-common/requests/CreateBpRequest";
-import {
-    CreateBlindpoolRequest,
-    // CreateBlindpoolRequestSchema, /*CreateBlindpoolRequestSchema*/
-} from "blindpool-common/requests/CreateLegacyBpRequest";
-import {z, ZodError} from "zod";
-// import { ZodError } from "zod";
+    CreateBlindpoolRequestSchema,
+} from "blindpool-common/requests/validation/CreateBpRequest";
+import {validateParticipants} from "blindpool-common/requests/validation/validation";
 
 const port = process.env.PORT || '8080';
 const environment = process.env.NODE_ENV || 'development';
@@ -25,23 +19,22 @@ if (environment === 'development') {
     router.options('{*path}', cors<express.Request>());
 }
 
-function validationMiddleware<T extends Object>(type: any): RequestHandler {
-    return async (req, res, next) => {
-        await tryValidation<T>(req, res, next, type);
+router.get('/v2/pool/stats', getBlindpoolStatistics);
+
+export function tryValidation(req: Request, res: Response, next: NextFunction) {
+    const result = CreateBlindpoolRequestSchema.safeParse(req.body);
+    if (result.success) {
+        next();
+    } else {
+        console.log(req.body);
+        res.status(400).json({
+            validations: validateParticipants(result, req.body["participants"], false),
+        });
     }
 }
 
-router.get('/v2/pool/stats', getBlindpoolStatistics);
-router.post('/v3/pool/', validationMiddleware(CreateBlindpoolRequest), legacyPostCreateBlindpool);
-router.post('/v4/pool/', async (req: Request, res: Response) => {
-    // try {
-    const createBlindpoolRequest = CreateBlindpoolRequestSchema.safeParse(req.body)
-    if (createBlindpoolRequest.success) {
-        console.log('Valid request received:', createBlindpoolRequest.data);
-        await postCreateBlindpool(createBlindpoolRequest.data, res);
-    } else {
-        res.status(400).json({error: 'Invalid data', details: z.treeifyError(createBlindpoolRequest.error)});
-    }
+router.post('/v4/pool/', tryValidation, async (req: Request, res: Response) => {
+    await postCreateBlindpool(req.body, res);
 });
 router.get('/v2/pool/:key', getBlindpoolByKey);
 

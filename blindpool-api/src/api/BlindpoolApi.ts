@@ -4,49 +4,19 @@ import {BlindpoolStatistics} from "../models/BlindpoolStatistics";
 import {Result} from "neverthrow";
 import {calculateBlindpoolCount, findBlindpoolByKey, insertNewBlindpool} from "../services/BlindpoolService";
 import {assignRandomScores} from "../logic/ScoreGenerator";
-import {plainToClass} from "class-transformer";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
-import {validate} from "class-validator";
-import {CreateBlindpoolRequest} from "blindpool-common/requests/CreateLegacyBpRequest";
 import Hashids from 'hashids';
-import {CREATE_BP_REQUEST_SCHEMA_VERSION} from "blindpool-common/requests/CreateBpRequest";
+import {
+    CREATE_BP_REQUEST_SCHEMA_VERSION,
+    CreateBlindpoolRequestSchemaType
+} from "blindpool-common/requests/validation/CreateBpRequest";
 
 const hashids = new Hashids();
 
-export async function legacyPostCreateBlindpool(req: Request, res: Response) {
-    const createBlindpoolRequest: CreateBlindpoolRequest = plainToClass(CreateBlindpoolRequest, req.body as Object);
-    const validationErrors = await validate(createBlindpoolRequest);
-
-    if (validationErrors.length > 0) {
-        mapError(res, ErrorScenarios.INVALID_INPUT);
-        return;
-    }
-
-    const names = createBlindpoolRequest.participants;
-
-    if (names.length < 1) {
-        mapError(res, ErrorScenarios.INVALID_INPUT);
-        return;
-    }
-
-    const checkForDuplicates = (nameToCheck: string) => {
-        const duplicate = names.filter((name: string) => name === nameToCheck);
-        return duplicate.length > 1;
-    };
-
-    for (const name of names) {
-        const validName = !checkForDuplicates(name);
-        if (!validName) {
-            mapError(res, ErrorScenarios.INVALID_INPUT);
-            return;
-        }
-    }
-    await postCreateBlindpool(createBlindpoolRequest, res);
-}
-
-export const postCreateBlindpool = async (createBlindpoolRequest: CreateBlindpoolRequest, res: Response) => {
+export const postCreateBlindpool = async (req: Request, res: Response) => {
     try {
+        const createBlindpoolRequest = req.body as CreateBlindpoolRequestSchemaType; // We can just cast because validation should have already happened in the validationMiddleware
         const names = createBlindpoolRequest.participants;
         const participantsAndScores = assignRandomScores(names);
         let freeFormatMatch: string | undefined = undefined;
@@ -109,9 +79,7 @@ export const getBlindpoolStatistics = async (req: Request, res: Response) => {
 };
 
 const mapSuccess = (res: Response, blindpool: Blindpool | BlindpoolStatistics) => {
-    res.contentType('application/json');
-    res.status(200);
-    res.send(blindpool);
+    res.contentType('application/json').status(200).json(blindpool);
 };
 
 const mapError = (res: Response, error: ErrorScenarios) => {

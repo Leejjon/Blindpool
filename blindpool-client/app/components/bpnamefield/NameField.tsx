@@ -1,6 +1,6 @@
 import React, { type ChangeEvent } from "react";
 import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
-import {type Participant} from "../../model/Participant";
+import {type Participant} from "blindpool-common/requests/model/Participant";
 import {useTranslation} from "react-i18next";
 import {Person, RemoveCircleOutlined} from "@mui/icons-material";
 
@@ -26,7 +26,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
             <TableCell sx={{paddingLeft: "1em", paddingRight: "0"}}>
                 <TextField
                     error={invalidMessage !== undefined}
-                    helperText={invalidMessage !== undefined ? t(invalidMessage) : undefined}
+                    helperText={invalidMessage !== undefined ? t(invalidMessage.toString()) : undefined}
                     id={'nameField' + index}
                     variant="standard"
                     sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}

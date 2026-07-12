@@ -38,7 +38,6 @@ export const CreateBlindpoolRequestSchema = z.object({
      * When typing a custom name, I only want regular characters, so people can't attempt cross-site scripting or other
      * kinds of command injection.
      *
-     *
      */
     if (!data.selectedMatchID && !FREE_FORMAT_REGEX.test(data.freeFormatMatch)) {
         ctx.addIssue({

@@ -1,5 +1,5 @@
-import type {ZodError, ZodSafeParseResult} from "zod";
-import {type Participant, ValidationError} from "~/model/Participant";
+import type {ZodSafeParseResult} from "zod";
+import {type Participant, ValidationError} from "../model/Participant";
 
 type CustomZodIssueParams = {
     params: Record<string, any> | undefined

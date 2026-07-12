@@ -13,7 +13,7 @@ import {
     Typography
 } from "@mui/material";
 import {type Blindpool} from "~/model/Blindpool";
-import {type Participant} from "~/model/Participant";
+import {type Participant} from "blindpool-common/requests/model/Participant";
 import {Api, getHost} from "~/utils/Network";
 import {type Match} from "~/model/Match";
 import {AddCircleOutlined} from "@mui/icons-material";
@@ -30,8 +30,8 @@ import {getCompetitionsFromLocalStorage} from "~/storage/PreferredCompetitions";
 import {
     CREATE_BP_REQUEST_SCHEMA_VERSION,
     CreateBlindpoolRequestSchema, type CreateBlindpoolRequestSchemaType,
-} from "blindpool-common/requests/CreateBpRequest";
-import {validateParticipants} from "~/logic/validation";
+} from "blindpool-common/requests/validation/CreateBpRequest";
+import {validateParticipants} from "blindpool-common/requests/validation/validation";
 
 export function meta({}: Route.MetaArgs) {
     return [
