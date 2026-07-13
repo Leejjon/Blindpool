@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { type Match } from "../model/Match";
+import { type Match } from "~/model/Match";
 import { useOutletContext } from "react-router";
-import { getCompetitionsFromLocalStorage, updateCompetitionsInLocalStorage } from "../storage/PreferredCompetitions";
+import { getCompetitionsFromLocalStorage, updateCompetitionsInLocalStorage } from "~/storage/PreferredCompetitions";
 
 export interface BpMatchesProps {
     matches: Array<Match>;
@@ -38,7 +38,7 @@ export function useNewBlindpoolOutletContext(setMessage: (message?: string) => v
         competitionsToWatch,
         setCompetitionsToWatch,
         selectedMatchId,
-        setSelectedMatchId
+        setSelectedMatchId,
     };
 }
 

@@ -6,6 +6,8 @@ dispatch:
     service: pool-api
   - url: "*/api/v3/pool*"
     service: pool-api
+  - url: "*/api/v4/pool*"
+    service: pool-api
 # Route the urls that point to the backend in node-js (typescript)
   - url: "*/api/v2/matches*"
     service: matches-api

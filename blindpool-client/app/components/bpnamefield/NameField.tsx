@@ -1,11 +1,11 @@
 import React, { type ChangeEvent } from "react";
 import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
-import {type Player} from "../../model/Player";
+import {type Participant} from "blindpool-common/requests/model/Participant";
 import {useTranslation} from "react-i18next";
 import {Person, RemoveCircleOutlined} from "@mui/icons-material";
 
 export interface PlayerNameProps {
-    player: Player,
+    player: Participant,
     index: number,
     removePlayer: (index: number) => void,
     onTextFieldChange: (index: number, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, isBlur: boolean) => void

@@ -260,7 +260,7 @@ export const competitions: {[key: number]: Competition} = {
             1836: 'Panama',
             1930: 'Cape Verde',
             1934: 'Congo',
-            1935: 'ivory Coast',
+            1935: 'Ivory Coast',
             8030: 'Qatar',
             8049: 'Jordan',
             8062: 'Iraq',

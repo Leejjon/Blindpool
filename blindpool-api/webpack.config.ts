@@ -5,7 +5,16 @@ module.exports = {
     entry: './src/index.ts',
     target: "node",
     mode: "production",
-    externals: [nodeExternals()],
+    externals: [
+        nodeExternals({
+            modulesDir: path.resolve(__dirname, "node_modules"),
+            allowlist: [/^blindpool-common/]
+        }),
+        nodeExternals({
+            modulesDir: path.resolve(__dirname, "../node_modules"),
+            allowlist: [/^blindpool-common/]
+        })
+    ],
     resolve: {
         extensions: ['.ts']
     },

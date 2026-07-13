@@ -6,6 +6,7 @@ import * as DatastoreService from "./DatastoreService";
 import {entity} from "@google-cloud/datastore/build/src/entity";
 
 import {describe} from "mocha";
+import * as assert from "assert";
 
 const turkeyVsItalyMatch = {
     "id": 285418,
@@ -28,20 +29,20 @@ const turkeyVsItalyMatch = {
         "winner": "AWAY_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-            "homeTeam": 0,
-            "awayTeam": 3
+            "home": 0,
+            "away": 3
         },
         "halfTime": {
-            "homeTeam": 0,
-            "awayTeam": 0
+            "home": 0,
+            "away": 0
         },
         "extraTime": {
-            "homeTeam": null,
-            "awayTeam": null
+            "home": null,
+            "away": null
         },
         "penalties": {
-            "homeTeam": null,
-            "awayTeam": null
+            "home": null,
+            "away": null
         }
     },
     "homeTeam": {
@@ -114,20 +115,20 @@ const finalMatch = {
         "winner": null,
         "duration": "REGULAR",
         "fullTime": {
-            "homeTeam": null,
-            "awayTeam": null
+            "home": null,
+            "away": null
         },
         "halfTime": {
-            "homeTeam": null,
-            "awayTeam": null
+            "home": null,
+            "away": null
         },
         "extraTime": {
-            "homeTeam": null,
-            "awayTeam": null
+            "home": null,
+            "away": null
         },
         "penalties": {
-            "homeTeam": null,
-            "awayTeam": null
+            "home": null,
+            "away": null
         }
     },
     "homeTeam": {
@@ -140,6 +141,48 @@ const finalMatch = {
     },
     "referees": [],
     competitionId: 2000
+};
+
+const netherlandsVsJapan = {
+    "area": {"id": 2267, "name": "World", "code": "INT", "flag": null},
+    "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP",
+        "emblem": "https://crests.football-data.org/wm26.png"
+    },
+    "season": {"id": 2398, "startDate": "2026-06-11", "endDate": "2026-07-19", "currentMatchday": 1, "winner": null},
+    "id": 537357,
+    "utcDate": "2026-06-14T20:00:00Z",
+    "status": "FINISHED",
+    "matchday": 1,
+    "stage": "GROUP_STAGE",
+    "group": "GROUP_F",
+    "lastUpdated": "2026-06-14T22:01:31Z",
+    "homeTeam": {
+        "id": 8601,
+        "name": "Netherlands",
+        "shortName": "Netherlands",
+        "tla": "NED",
+        "crest": "https://crests.football-data.org/8601.svg"
+    },
+    "awayTeam": {
+        "id": 766,
+        "name": "Japan",
+        "shortName": "Japan",
+        "tla": "JPN",
+        "crest": "https://crests.football-data.org/766.svg"
+    },
+    "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {"home": 2, "away": 2},
+        "halfTime": {"home": 0, "away": 0}
+    },
+    "odds": {"msg": "Activate Odds-Package in User-Panel to retrieve odds."},
+    "referees": [{"id": 76608, "name": "Ismail Elfath", "type": "REFEREE", "nationality": "United States"}],
+    "competitionId": 2000
 };
 
 /*
@@ -174,6 +217,39 @@ describe('Test datastore calls', () => {
         let matches: Array<MatchWithCompetitionIncluded> = [turkeyVsItalyMatch, finalMatch];
         await upsertMatches(matches);
     });
+
+    it('Verify Netherlands vs Japan match', async () => {
+        const matchKey = {
+            namespace: undefined, name: "football-data-537357", kind: "match", path: ["match", `football-data-537357`]
+        } as entity.Key;
+        const datastoreStub = createSinonStubInstance(Datastore);
+        datastoreStub.key.returns(matchKey);
+        datastoreStub.upsert.resolves(); // Resolve nothing
+        sinon.stub(DatastoreService, 'getDatastoreInstance').returns(datastoreStub);
+
+        let matches: Array<MatchWithCompetitionIncluded> = [netherlandsVsJapan];
+        await upsertMatches(matches);
+
+        sinon.assert.calledOnce(datastoreStub.upsert);
+        const upsertedEntities = datastoreStub.upsert.firstCall.args[0] as Array<{ key: entity.Key, data: Array<{ name: string, value: unknown }> }>;
+        assert.strictEqual(upsertedEntities.length, 1);
+
+        const matchEntity = upsertedEntities[0];
+        assert.deepStrictEqual(matchEntity.key, matchKey);
+        assert.deepStrictEqual(matchEntity.data, [
+            {name: 'startTimestamp', value: '2026-06-14T20:00:00.000Z'},
+            {name: 'competitionName', value: 'World cup'},
+            {name: 'competitionId', value: '2000'},
+            {name: 'homeTeamName', value: 'Netherlands'},
+            {name: 'homeTeamID', value: 8601},
+            {name: 'awayTeamName', value: 'Japan'},
+            {name: 'awayTeamID', value: 766},
+            {name: 'score', value: {home: 2, away: 2}},
+            {name: 'finished', value: true},
+        ]);
+    })
+
+    // TODO: Figure out what to do with extra time.
 });
 
 // For some reason sinon.createStubInstance(obj) gives an error, this guy solved it with the code below:

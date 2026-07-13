@@ -1,12 +1,12 @@
 import { Button, Card, CardActions, CardContent, Divider, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { getLocale, getPageTitle, resources } from "../locales/translations";
-import { matchesQuery } from "../queries/MatchesQuery";
-import { getCompetitionsFromLocalStorage, updateCompetitionsInLocalStorage } from "../storage/PreferredCompetitions";
-import { queryClientSingleton } from "../singletons/QueryClientSingleton";
-import { useUpcomingMatches } from "../queries/MatchesHook";
-import { type Match } from "../model/Match";
-import { useExistingBlindpoolOutletContext } from "../context/BpContext";
+import { getLocale, getPageTitle, resources } from "~/locales/translations";
+import { matchesQuery } from "~/queries/MatchesQuery";
+import { getCompetitionsFromLocalStorage } from "~/storage/PreferredCompetitions";
+import { queryClientSingleton } from "~/singletons/QueryClientSingleton";
+import { useUpcomingMatches } from "~/queries/MatchesHook";
+import { type Match } from "~/model/Match";
+import { useExistingBlindpoolOutletContext } from "~/context/BpContext";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import BpCompetitions from "../components/bpcompetitions/BpCompetitions";
 import BpUpcomingMatches from "../components/bpupcomingmatches/BpUpcomingMatches";
@@ -81,7 +81,7 @@ export default function Index() {
             <Divider />
             {/* Try to avoid passing these properties and use composition here. */}
             <Typography component="p" style={{ marginBottom: '0.5em' }}><br />{matches.length > 0 ? t('CLICK_ON_MATCH') : ""}</Typography>
-            <BpUpcomingMatches matches={matches} setSelectedMatchId={setSelectedMatchId} />
+            <BpUpcomingMatches matches={matches} setSelectedMatchId={setSelectedMatchId}/>
           </CardContent>
         </Card>
       </Grid>
