@@ -2,7 +2,7 @@ import React, { type ChangeEvent } from "react";
 import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
 import {type Participant} from "blindpool-common/requests/model/Participant";
 import {useTranslation} from "react-i18next";
-import {Person, RemoveCircle, RemoveCircleOutlined} from "@mui/icons-material";
+import {Person, RemoveCircle} from "@mui/icons-material";
 
 export interface PlayerNameProps {
     participant: Participant,

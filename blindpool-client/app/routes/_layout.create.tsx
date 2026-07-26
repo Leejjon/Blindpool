@@ -16,7 +16,7 @@ import {type Blindpool} from "~/model/Blindpool";
 import {type Participant} from "blindpool-common/requests/model/Participant";
 import {Api, getHost} from "~/utils/Network";
 import {type Match} from "~/model/Match";
-import {AddCircle, AddCircleOutlined} from "@mui/icons-material";
+import {AddCircle} from "@mui/icons-material";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useExistingBlindpoolOutletContext} from "~/context/BpContext";
 import {useUpcomingMatches} from "~/queries/MatchesHook";
