@@ -7,7 +7,8 @@ import cors from "cors";
 import {
     CreateBlindpoolRequestSchema, CreateBlindpoolRequestStructureSchema,
 } from "blindpool-common/requests/validation/CreateBpRequest";
-import {validateParticipants} from "blindpool-common/requests/validation/validation";
+import {validateFreeFormatMatch, validateParticipants} from "blindpool-common/requests/validation/validation";
+import {BpRequestValidations} from "blindpool-common/requests/validation/BpRequestValidations";
 
 const port = process.env.PORT || '8080';
 const environment = process.env.NODE_ENV || 'development';
@@ -30,7 +31,9 @@ export function tryValidation(req: Request, res: Response, next: NextFunction) {
         } else {
             res.status(400).json({
                 participantValidations: validateParticipants(result, structureResult.data.participants, false),
-            });
+                selectedMatchIdValidation: undefined,
+                freeFormatMatchValidation: validateFreeFormatMatch(result),
+            } as BpRequestValidations);
         }
     } else {
         res.status(400).send("Invalid request.");

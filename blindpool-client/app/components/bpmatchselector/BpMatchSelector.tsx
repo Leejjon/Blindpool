@@ -7,6 +7,11 @@ import {type Match} from "~/model/Match";
 import {getAwayTeamNameToDisplay, getHomeTeamNameToDisplay} from "~/locales/i18n";
 import "./BpMatchSelector.css";
 import {type BpMatchesProps, type BpSelectedMatchProps} from "~/context/BpContext";
+import {
+    CreateBlindpoolRequestSchema,
+    type CreateBlindpoolRequestSchemaType
+} from "blindpool-common/requests/validation/CreateBpRequest";
+import {validateFreeFormatMatch} from "blindpool-common/requests/validation/validation";
 
 const bpMatchSelector = {
     margin: 'auto',
@@ -17,8 +22,8 @@ const marginHalfEm = {
 }
 
 export interface MatchValidationProp {
-    invalidMatchMessage: string | undefined;
-    setInvalidMatchMessage: (message: string | undefined) => void;
+    matchValidation: "ILLEGAL_CHARACTER_MESSAGE" | "MATCH_ALREADY_STARTED" | undefined;
+    setMatchValidation: (message: "ILLEGAL_CHARACTER_MESSAGE" | "MATCH_ALREADY_STARTED" | undefined) => void;
 }
 
 function getMatchById(selectedMatchId: string | undefined, matches: Array<Match>): Match | undefined {
@@ -31,8 +36,8 @@ function getMatchById(selectedMatchId: string | undefined, matches: Array<Match>
 }
 
 const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelectedMatchProps> = ({
-    invalidMatchMessage,
-    setInvalidMatchMessage,
+    matchValidation,
+    setMatchValidation,
     matches,
     selectedMatchId,
     setSelectedMatchId
@@ -59,16 +64,27 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
         setInputValue(matchToSelectInDropdown);
     }, [setInputValue, selectedMatchId, matches]);
 
+    // TODO: Somehow call this method if the match has been passed from the home page, so we do the match already started thing. Or extract the logic to a function and call it from both places.
     const updateSelectedMatch = (event: ChangeEvent<object> | null, selectedMatch: null | string | Match) => {
         const supportedMatch = selectedMatch as Match;
         const freeFormatMatch = selectedMatch as string;
         if (supportedMatch && supportedMatch.id) {
-            if (supportedMatch.startTimestamp < new Date()) {
-                setInvalidMatchMessage('MATCH_ALREADY_STARTED');
+            if (new Date(supportedMatch.startTimestamp) < new Date()) {
+                setMatchValidation('MATCH_ALREADY_STARTED');
             } else {
                 setSelectedMatchId(supportedMatch.id);
             }
         } else if (freeFormatMatch) {
+            let formDataObject = {
+                participants: ["Dummy name 1", "Dummy name 2"],
+                freeFormatMatch: freeFormatMatch
+            } as CreateBlindpoolRequestSchemaType;
+
+            const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
+            const freeFormatMatchError = validateFreeFormatMatch(result);
+            if (freeFormatMatch !== undefined) {
+                setMatchValidation(freeFormatMatchError)
+            }
             setSelectedMatchId(freeFormatMatch);
         } else {
             setSelectedMatchId(undefined);
@@ -100,7 +116,7 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 onChange={updateSelectedMatch}
                 inputValue={inputValue}
                 onInputChange={(event: ChangeEvent<{}>, newSupportedMatch: string) => {
-                    setInvalidMatchMessage(undefined);
+                    setMatchValidation(undefined);
                     if (newSupportedMatch === 'undefined vs undefined') {
                         // Somehow if you press enter while typing a freeformat match, it will throw an input change event
                         // with 'undefined vs undefined' in the newSupportedMatch string.
@@ -165,8 +181,8 @@ const BpMatchSelector: React.FC<MatchValidationProp & BpMatchesProps & BpSelecte
                 renderInput={(params) =>
                     <TextField {...params}
                                name="freeFormatMatch"
-                               error={invalidMatchMessage !== undefined}
-                               helperText={invalidMatchMessage !== undefined ? t(invalidMatchMessage) : undefined}
+                               error={matchValidation !== undefined}
+                               helperText={matchValidation !== undefined ? t(matchValidation) : undefined}
                                label={t('SELECT_MATCH')}
                                variant="standard"
                     />

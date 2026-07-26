@@ -55,3 +55,20 @@ export function validateParticipants(
     });
     return participants;
 }
+
+export function validateFreeFormatMatch(
+    result: ZodSafeParseResult<{
+        participants: string[];
+        freeFormatMatch: string;
+        selectedMatchID?: string | undefined;
+    }>,
+) {
+    for (const issue of result.error?.issues ?? []) {
+        if (issue.path.includes('freeFormatMatch')) {
+            if (issue.code === 'custom' && issue.message === "Invalid free format match.") {
+                return "ILLEGAL_CHARACTER_MESSAGE";
+            }
+        }
+    }
+    return undefined;
+}

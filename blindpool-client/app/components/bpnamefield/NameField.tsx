@@ -2,19 +2,19 @@ import React, { type ChangeEvent } from "react";
 import {IconButton, TableCell, TableRow, TextField, Typography} from "@mui/material";
 import {type Participant} from "blindpool-common/requests/model/Participant";
 import {useTranslation} from "react-i18next";
-import {Person, RemoveCircleOutlined} from "@mui/icons-material";
+import {Person, RemoveCircle} from "@mui/icons-material";
 
 export interface PlayerNameProps {
-    player: Participant,
+    participant: Participant,
     index: number,
     removePlayer: (index: number) => void,
     onTextFieldChange: (index: number, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, isBlur: boolean) => void
 }
 
-const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTextFieldChange}) => {
+const NameField: React.FC<PlayerNameProps> = ({participant, index, removePlayer, onTextFieldChange}) => {
     const {t} = useTranslation();
     const first = index <= 0;
-    const invalidMessage = player.valid;
+    const invalidMessage = participant.valid;
     const removePlayerLabelAria = t("REMOVE_PLAYER_X", {index: index + 1});
     return (
         <TableRow>
@@ -31,7 +31,7 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
                     variant="standard"
                     sx={{paddingTop: "0", marginTop: "0", marginBottom: "0", width: "100%"}}
                     margin="normal"
-                    value={player.name}
+                    value={participant.name}
                     slotProps={{input: {'aria-label': 'Player name ' + (index + 1)}}}
                     onChange={(event) => onTextFieldChange(index, event, false)}
                     onBlur={(event) => onTextFieldChange(index, event, true)}
@@ -41,8 +41,8 @@ const NameField: React.FC<PlayerNameProps> = ({player, index, removePlayer, onTe
             <TableCell align="right" sx={{verticalAlign: "text-top", padding: "0.3em", paddingTop: "0"}}>
                 <IconButton tabIndex={-1} aria-label={removePlayerLabelAria}
                             disabled={first} onClick={() => removePlayer(index)}
-                            sx={{color: "black"}}>
-                    {!first ? <RemoveCircleOutlined/> : <Person/>}
+                            sx={{color: "#ADADAD"}}>
+                    {!first ? <RemoveCircle/> : <Person/>}
                 </IconButton>
             </TableCell>
         </TableRow>
