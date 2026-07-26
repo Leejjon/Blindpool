@@ -41,7 +41,7 @@ export const resources = {
             "UPCOMING_MATCHES_FAILURE": "No matches found. Did you select a league?",
             "CLICK_ON_MATCH": "Click on a match below to start a pool",
             "SELECT_MATCH": "Select match (optional)",
-            "MATCH_ALREADY_STARTED": "Warning: This match has already started.",
+            "MATCH_ALREADY_STARTED": "This match has already started.",
             "FREE_FORMAT_MATCH_PREFIX": "Match: ",
             "SHARE_THIS_POOL": "Share this pool ",
             "WILDCARD_EXPLANATION": "The X - X (wildcard) score wins if none of the scores assigned to the other participants are correct at the end of the match.",

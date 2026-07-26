@@ -2,7 +2,8 @@
   "name": "blindpool-common",
   "private": true,
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "test": "tsc -b && vitest"
   },
   "dependencies": {
     "zod": "4.4.3"

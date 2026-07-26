@@ -1,7 +1,11 @@
 import {describe, expect, test} from "vitest";
 import {DUPLICATE_MESSAGE, ILLEGAL_CHARACTER_MESSAGE} from "../model/Participant";
-import {CreateBlindpoolRequestSchema, CreateBlindpoolRequestSchemaType} from "./CreateBpRequest";
-import {validateParticipants} from "./validation";
+import {
+    CreateBlindpoolRequestSchema,
+    CreateBlindpoolRequestSchemaType,
+    CreateBlindpoolRequestStructureSchema
+} from "./CreateBpRequest";
+import {validateFreeFormatMatch, validateParticipants} from "./validation";
 
 describe('Test validation function', () => {
     test('Valid participants should have their valid property undefined', () => {
@@ -105,5 +109,29 @@ describe('Test validation function', () => {
         const duplicatedParticipant2 = validatedParticipants[1];
         expect(duplicatedParticipant1.valid).toBe(DUPLICATE_MESSAGE);
         expect(duplicatedParticipant2.valid).toBe(DUPLICATE_MESSAGE);
-    })
+    });
+
+    test('When a valid freeFormatMatch name is entered, validation should pass', () => {
+        const participants = ["a", "b"];
+        const formDataObject = {
+            participants: participants,
+            freeFormatMatch: "Some valid name"
+        } as CreateBlindpoolRequestSchemaType;
+
+        const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
+        const freeFormatMatchError = validateFreeFormatMatch(result);
+        expect(freeFormatMatchError).toBeUndefined();
+    });
+
+    test('When an illegal character is entered in the freeFormatMatch field, ILLEGAL_CHARACTER_MESSAGE should be returned', () => {
+        const participants = ["a", "b"];
+        const formDataObject = {
+            participants: participants,
+            freeFormatMatch: "!"
+        } as CreateBlindpoolRequestSchemaType;
+
+        const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
+        const freeFormatMatchError = validateFreeFormatMatch(result);
+        expect(freeFormatMatchError).toBe(ILLEGAL_CHARACTER_MESSAGE);
+    });
 });

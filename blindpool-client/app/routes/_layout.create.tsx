@@ -16,7 +16,7 @@ import {type Blindpool} from "~/model/Blindpool";
 import {type Participant} from "blindpool-common/requests/model/Participant";
 import {Api, getHost} from "~/utils/Network";
 import {type Match} from "~/model/Match";
-import {AddCircleOutlined} from "@mui/icons-material";
+import {AddCircle, AddCircleOutlined} from "@mui/icons-material";
 import BpSocialMediaLinks from "../components/bpsocialmedialinks/BpSocialMediaLinks";
 import {useExistingBlindpoolOutletContext} from "~/context/BpContext";
 import {useUpcomingMatches} from "~/queries/MatchesHook";
@@ -31,7 +31,8 @@ import {
     CREATE_BP_REQUEST_SCHEMA_VERSION,
     CreateBlindpoolRequestSchema, type CreateBlindpoolRequestSchemaType,
 } from "blindpool-common/requests/validation/CreateBpRequest";
-import {validateParticipants} from "blindpool-common/requests/validation/validation";
+import {validateFreeFormatMatch, validateParticipants} from "blindpool-common/requests/validation/validation";
+import type {BpRequestValidations} from "blindpool-common/requests/validation/BpRequestValidations";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -59,7 +60,7 @@ export const clientLoader = async () => {
     return null;
 };
 
-export async function clientAction({request}: { request: Request }) {
+export async function clientAction({request}: { request: Request }): Promise<Response | BpRequestValidations> {
     const formData = await request.formData();
 
     // https://github.com/colinhacks/zod/issues/3333
@@ -68,7 +69,7 @@ export async function clientAction({request}: { request: Request }) {
     const selectedMatchID = formData.get("selectedMatchID");
     let formDataObject = {
         participants,
-        selectedMatchID: selectedMatchID,
+        selectedMatchID: selectedMatchID ?? undefined,
         freeFormatMatch: freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
     } as CreateBlindpoolRequestSchemaType;
 
@@ -85,8 +86,10 @@ export async function clientAction({request}: { request: Request }) {
             return redirect(`/pool/${poolJson.key}`);
         } else if (response.status === 400) {
             console.warn("Apparently the errors were different compared to the local validation. Your client was most likely out of sync.")
-            const errors: {participantValidations: Array<Participant>} = await response.json();
-            return errors;
+            const invalidRequestResponse: BpRequestValidations = await response.json();
+            return {...invalidRequestResponse, serverError: true};
+        } else {
+            return {serverError: true};
         }
 
         // TODO: See if we can keep it as smooth as:
@@ -98,6 +101,7 @@ export async function clientAction({request}: { request: Request }) {
     } else {
         return {
             participantValidations: validateParticipants(result, participants, false),
+            freeFormatMatchValidation: validateFreeFormatMatch(result),
         };
     }
 }
@@ -116,8 +120,14 @@ export default function CreatePool() {
 
     const [errorsFromAction, setErrorsFromAction] = useState<boolean>(false);
 
-    const validations = actionData?.participantValidations;
-    const playersObjects = validations && validations.length > 0 && errorsFromAction ? validations : participants;
+    const participantValidations = actionData?.participantValidations;
+    const playersObjects = participantValidations && participantValidations.length > 0 && errorsFromAction ? participantValidations : participants;
+
+    // TODO: Check actionData if serverError is true
+    const [invalidMatchMessage, setInvalidMatchMessage] = React.useState<"ILLEGAL_CHARACTER_MESSAGE" | "MATCH_ALREADY_STARTED" | undefined>(undefined);
+    // TODO: Maybe extract this into a function and write unit test
+    const matchValidationFromAction = actionData?.selectedMatchIdValidation ?? actionData?.freeFormatMatchValidation;
+    const matchValidation = matchValidationFromAction && errorsFromAction ? matchValidationFromAction : invalidMatchMessage;
 
     useEffect(() => {
         if (actionData) {
@@ -132,7 +142,6 @@ export default function CreatePool() {
 
     const navigation = useNavigation();
     const [justAddedPlayer, setJustAddedPlayer] = useState(false);
-    const [invalidMatchMessage, setInvalidMatchMessage] = React.useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (justAddedPlayer) {
@@ -161,7 +170,6 @@ export default function CreatePool() {
         let formDataObject = {
             participants: participantsAsStringArray,
             selectedMatchID: "boe",// TODO,
-            freeFormatMatch: "undefined"// TODO freeFormatMatch && freeFormatMatch.toString().length > 0 ? freeFormatMatch.toString() : undefined
         } as CreateBlindpoolRequestSchemaType;
 
         const result = CreateBlindpoolRequestSchema.safeParse(formDataObject);
@@ -202,8 +210,8 @@ export default function CreatePool() {
                                 {t("CREATE_POOL")}
                             </Typography>
                             <Form method="POST" action="/create">
-                                <BpMatchSelector matches={matches} invalidMatchMessage={invalidMatchMessage}
-                                                 setInvalidMatchMessage={(message) => setInvalidMatchMessage(message)}
+                                <BpMatchSelector matches={matches} matchValidation={matchValidation}
+                                                 setMatchValidation={(message) => setInvalidMatchMessage(message)}
                                                  selectedMatchId={selectedMatchId}
                                                  setSelectedMatchId={setSelectedMatchId}
                                 />
@@ -240,9 +248,9 @@ export default function CreatePool() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {playersObjects.map((player, index) => {
+                                        {playersObjects.map((participant, index) => {
                                             return (
-                                                <NameField key={"player" + index} player={player} index={index}
+                                                <NameField key={"player" + index} participant={participant} index={index}
                                                            onTextFieldChange={onTextFieldChange}
                                                            removePlayer={removePlayer}/>
                                             );
@@ -266,13 +274,14 @@ export default function CreatePool() {
                                                         paddingTop: "0",
                                                         marginTop: "0",
                                                         marginBottom: "0",
-                                                        width: "100%"
+                                                        width: "100%",
                                                     }}
                                                     margin="normal"
-                                                    disabled={true}
+                                                    // disabled={true}
                                                     value={t("ADD_PLAYER")}
                                                     data-testid='playerNameField'
-                                                    slotProps={{input: {'aria-label': 'Player name'}}}
+                                                    slotProps={{input: {'aria-label': 'Player name', style: {color: 'gray'}}}}
+                                                    onClick={addPlayer}
                                                 >
                                                 </TextField>
                                             </TableCell>
@@ -281,7 +290,7 @@ export default function CreatePool() {
                                                 <IconButton aria-label={t("ADD_PLAYER") + ""}
                                                             sx={{color: "black"}}
                                                             onClick={addPlayer}>
-                                                    <AddCircleOutlined/>
+                                                    <AddCircle/>
                                                 </IconButton>
                                             </TableCell>
                                         </TableRow>

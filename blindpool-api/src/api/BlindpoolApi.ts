@@ -7,10 +7,8 @@ import {assignRandomScores} from "../logic/ScoreGenerator";
 import {ErrorScenarios} from "../models/ErrorScenarios";
 import {doesThisMatchExists} from "../services/MatchService";
 import Hashids from 'hashids';
-import {
-    CREATE_BP_REQUEST_SCHEMA_VERSION,
-    CreateBlindpoolRequestSchemaType
-} from "blindpool-common/requests/validation/CreateBpRequest";
+import {CreateBlindpoolRequestSchemaType} from "blindpool-common/requests/validation/CreateBpRequest";
+import {BpRequestValidations} from "blindpool-common/requests/validation/BpRequestValidations";
 
 const hashids = new Hashids();
 
@@ -25,12 +23,16 @@ export const postCreateBlindpool = async (req: Request, res: Response) => {
             const result = await doesThisMatchExists(createBlindpoolRequest.selectedMatchID);
             result
                 .map((match: Match) => {
-                    handleInsertNewBlindpool(res, participantsAndScores, match, undefined, match.startTimestamp);
+                    if (new Date(match.startTimestamp) < new Date()) {
+                        mapError(res, ErrorScenarios.MATCH_ALREADY_STARTED);
+                    } else {
+                        handleInsertNewBlindpool(res, participantsAndScores, match, undefined, match.startTimestamp);
+                    }
                 })
                 .mapErr((errorScenario) => {
                     mapError(res, errorScenario);
                 });
-                return;
+            return;
         } else if (createBlindpoolRequest.freeFormatMatch) {
             freeFormatMatch = createBlindpoolRequest.freeFormatMatch;
         }
@@ -51,7 +53,7 @@ const handleInsertNewBlindpool = async (res: Response, participantsAndScores: Ar
 }
 
 export const getBlindpoolByKey = async (req: Request, res: Response) => {
-    if (typeof req.params.key !== 'string' ) {
+    if (typeof req.params.key !== 'string') {
         mapError(res, ErrorScenarios.INVALID_INPUT);
         return;
     }
@@ -90,11 +92,17 @@ const mapError = (res: Response, error: ErrorScenarios) => {
         case ErrorScenarios.MATCH_NOT_FOUND:
             respond(res, 404, "We can't find the match you've selected, sorry!");
             break;
-        case ErrorScenarios.INTERNAL_ERROR:
-            respond(res, 500, 'An error occurred on our side, sorry!');
-            break;
         case ErrorScenarios.INVALID_INPUT:
             respond(res, 400, 'Invalid input.');
+            break;
+        case ErrorScenarios.MATCH_ALREADY_STARTED:
+            res.status(400).json({
+                selectedMatchIdValidation: "MATCH_ALREADY_STARTED"
+            } as BpRequestValidations);
+            break;
+        case ErrorScenarios.INTERNAL_ERROR:
+        default:
+            respond(res, 500, 'An error occurred on our side, sorry!');
             break;
     }
 }
