@@ -13,11 +13,6 @@ GET {{footballdata-api-url}}/v4/competitions/2015/teams
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
-### Get Primeira teams
-GET {{footballdata-api-url}}/v2/competitions/2017/teams
-Accept: application/json
-X-Auth-Token: {{footballdata-api-key}}
-
 ### Eredivisie matches
 GET {{footballdata-api-url}}/v4/competitions/2003/matches
 Accept: application/json
@@ -39,7 +34,7 @@ Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
 ### La Liga matches
-GET {{footballdata-api-url}}/v2/competitions/2014/matches
+GET {{footballdata-api-url}}/v4/competitions/2014/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 
@@ -60,6 +55,16 @@ X-Auth-Token: {{footballdata-api-key}}
 
 ### Primeira liga matches
 GET {{footballdata-api-url}}/v2/competitions/2017/matches
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Get BundesLiga teams
+GET {{footballdata-api-url}}/v4/competitions/2002/teams
+Accept: application/json
+X-Auth-Token: {{footballdata-api-key}}
+
+### Get BundesLiga teams
+GET {{footballdata-api-url}}/v4/competitions/2002/matches
 Accept: application/json
 X-Auth-Token: {{footballdata-api-key}}
 

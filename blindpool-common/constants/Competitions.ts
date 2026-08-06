@@ -25,6 +25,7 @@ const bundesLigaTeams: {[key: number]: string} = {
     3: 'Leverkusen',
     4: 'Dortmund',
     5: 'Bayern',
+    6: 'Schalke',
     7: 'HSV',
     10: 'VfL Stuttgart',
     11: 'VfL Wolfsburg',
@@ -36,9 +37,11 @@ const bundesLigaTeams: {[key: number]: string} = {
     19: 'Frankfurt',
     20: 'St. Pauli',
     28: "Union Berlin",
+    29: "SC Paderborn",
     36: 'VfL Bochum',
     44: 'Heidenheim',
     55: 'SV Darmstadt',
+    719: 'Elversberg',
     720: 'Holstein Kiel',
     721: 'RB Leipzig'
 }
@@ -80,6 +83,7 @@ const laLigaTeams: {[key: number]: string} = {
     81: "FC Barcalona",
     82: "Getafe CF",
     83: "Granada",
+    84: "Málaga",
     86: "Real Madrid",
     87: "Rayo Vallecano",
     88: "Levante",
@@ -97,8 +101,10 @@ const laLigaTeams: {[key: number]: string} = {
     298: "Girona FC",
     558: "RC Celta de Vigo",
     559: "Sevilla FC",
+    560: "Deportivo",
     745: "CD Leganes",
-    1048: "Real Oviedo"
+    1048: "Real Oviedo",
+    5335: "Santander"
 }
 
 const ligue1Teams: {[key: number]: string} = {
@@ -114,8 +120,10 @@ const ligue1Teams: {[key: number]: string} = {
     525: 'FC Lorient',
     527: 'Saint-Étienne',
     529: 'Stade Rennais',
+    531: 'Troyes',
     532: 'Angers SCO',
     533: 'Le Havre AC',
+    535: 'Le Mans FC',
     541: 'Clermont Foot',
     543: 'FC Nantes',
     545: 'FC Metz',
@@ -137,11 +145,13 @@ const premeiraLigaTeams: {[key: number]: string} = {
     1049: 'Tondela',
     1103: 'GD Chaves',
     1903: 'SL Benfica',
+    5527: 'Acad. Viseu',
     5529: 'CD Nacional',
     5530: 'Santa Clara',
     5531: 'FC Famalicão',
     5533: 'Gil Vicente',
     5543: 'Vitória SC',
+    5575: 'Marítimo',
     5589: 'FC Vizela',
     5601: 'Portimonese',
     5602: 'SC Farense',
@@ -194,6 +204,7 @@ const premierLeagueTeams: {[key: number]: string} = {
     71: 'Sunderland',
     73: 'Tottenham',
     76: 'Wolverhampton',
+    322: 'Hull City',
     328: 'Burnley',
     338: 'Leicester City',
     340: 'Southhampton',
@@ -207,7 +218,8 @@ const premierLeagueTeams: {[key: number]: string} = {
     397: 'Brighton Hove',
     402: 'Brentford',
     563: 'West Ham',
-    1044: 'Bournemouth'
+    1044: 'Bournemouth',
+    1076: 'Coventry City'
 }
 
 export const competitions: {[key: number]: Competition} = {
