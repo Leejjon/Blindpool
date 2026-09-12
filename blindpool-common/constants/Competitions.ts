@@ -306,12 +306,15 @@ export const competitions: {[key: number]: Competition} = {
             1877: "RB Salzburg",
             1887: "Shaktar",
             1871: "Young Boys",
+            2016: "LASK Linz",
             2021: "Sturm Graz",
             3929: "Union SG",
+            5720: "Viking",
             5721: "FK Bodø/Glimt",
             7283: "Crvena Zvedza",
             7509: "SL Bratislava",
             10601: "FK Kairat",
+            10233: "Sabah FK",
             11034: "Paphos FC"
         }
     },
